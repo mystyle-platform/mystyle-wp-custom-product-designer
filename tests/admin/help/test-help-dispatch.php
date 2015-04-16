@@ -33,25 +33,5 @@ class HelpDispatchTest extends WP_UnitTestCase {
         $this->assertContains('MyStyle Plugin Help', serialize($screen));
     }
     
-    /**
-     * Test that the mystyle_help_dispatch function properly dispatches help for
-     * the options widgets page.
-     */    
-    public function test_help_dispatch_for_widgets_page() {
-        //set up the variables
-        $contextual_help = "";
-        $screen_id = 'widgets';
-        $screen = WP_Screen::get($screen_id);
-        
-        //Assert that the MyStyle help is not in the screen.
-        $this->assertNotContains('MyStyle Widget Help', serialize($screen));
-        
-        //run the function
-        mystyle_help_dispatch($contextual_help, $screen_id, $screen);
-        
-        //Asset that the MyStyle help is now in the screen.
-        $this->assertContains('MyStyle Widget Help', serialize($screen));
-    }
-    
 }
 

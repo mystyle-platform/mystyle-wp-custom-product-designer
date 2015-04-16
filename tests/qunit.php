@@ -11,7 +11,7 @@
  * @param string $test_suite (optional) The test suite that you want to load.
  */
 function mystyle_load_qunit($test_suite) {
-    $supported_screens = array("settings_page_mystyle", "widgets");
+    $supported_screens = array("settings_page_mystyle");
     
     if($test_suite == null) {
         $screen = get_current_screen();

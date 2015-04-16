@@ -45,14 +45,10 @@ if(!defined('MYSTYLE_VERSION')) { define('MYSTYLE_VERSION', '0.1.0'); }
 
 define('MYSTYLE_OPTIONS_NAME', 'mystyle_options');
 define('MYSTYLE_NOTICES_NAME', 'mystyle_notices');
-define('MYSTYLE_WIDGET_OPTIONS_NAME', 'widget_mystyle');
 
 //includes
 require_once(MYSTYLE_PATH . 'functions.php');
 require_once(MYSTYLE_PATH . 'tests/qunit.php');
-
-// Register the MyStyle Widget
-add_action('widgets_init', create_function('', 'return register_widget("MyStyle_Widget");'));
 
 if(is_admin()) {
     //---- ADMIN ----//

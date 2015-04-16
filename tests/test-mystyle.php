@@ -19,7 +19,6 @@ class MyStyleTest extends WP_UnitTestCase {
         $this->assertNotEmpty(MYSTYLE_VERSION);
         $this->assertNotEmpty(MYSTYLE_OPTIONS_NAME);
         $this->assertNotEmpty(MYSTYLE_NOTICES_NAME);
-        $this->assertNotEmpty(MYSTYLE_WIDGET_OPTIONS_NAME);
     }
     
 }

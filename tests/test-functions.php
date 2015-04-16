@@ -48,26 +48,5 @@ class FunctionsTest extends WP_UnitTestCase {
         }
     }
     
-    /**
-     * Assert that mystyle_is_widget_active() correctly returns whether or not
-     * the mystyle widget is active.
-     */    
-    function test_mystyle_is_widget_active() {
-        //Clear out any options
-        $options = array();
-        update_option(MYSTYLE_WIDGET_OPTIONS_NAME, $options);
-        
-        //Assert function correctly determines widget is not active
-        $this->assertFalse( mystyle_is_widget_active() );
-
-        //Activate the widget
-        $options[2]['zone'] = '';
-        $options['_multiwidget'] = 1;
-        update_option(MYSTYLE_WIDGET_OPTIONS_NAME, $options);
-
-        //Assert function correctly determines widget is active
-        $this->assertTrue( mystyle_is_widget_active() );
-    }
-    
 }
 
