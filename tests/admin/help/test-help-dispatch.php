@@ -7,7 +7,7 @@ require_once(MYSTYLE_PATH . 'admin/help/help-dispatch.php');
  * help-dispatch.php file.
  *
  * @package MyStyle
- * @since 1.1.29
+ * @since 0.1.0
  */
 class HelpDispatchTest extends WP_UnitTestCase {
     

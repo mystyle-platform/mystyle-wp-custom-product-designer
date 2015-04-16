@@ -2,7 +2,7 @@
 /**
  * Functions for adding the API to the WordPress front end.
  * @package MyStyle
- * @since 1.0
+ * @since 0.1.0
  */
 
 /**

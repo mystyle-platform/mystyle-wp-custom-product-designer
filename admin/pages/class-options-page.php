@@ -4,7 +4,7 @@
  * Class for rendering the MyStyle Options/Settings page within the WordPress
  * Administrator.
  * @package MyStyle
- * @since 1.0
+ * @since 0.1.0
  */
 class MyStyle_Options_Page {
     

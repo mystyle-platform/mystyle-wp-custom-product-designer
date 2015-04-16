@@ -6,7 +6,7 @@ require_once(MYSTYLE_PATH . 'admin/admin-class.php');
  * The AdminTest class includes tests for testing the MyStyle_Admin class.
  *
  * @package MyStyle
- * @since 1.1.16
+ * @since 0.1.0
  */
 class AdminTest extends WP_UnitTestCase {
     

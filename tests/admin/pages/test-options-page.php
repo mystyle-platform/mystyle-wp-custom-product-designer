@@ -7,7 +7,7 @@ require_once(MYSTYLE_PATH . 'admin/pages/class-options-page.php');
  * class
  *
  * @package MyStyle
- * @since 1.1.16
+ * @since 0.1.0
  */
 class OptionsPageTest extends WP_UnitTestCase {
     

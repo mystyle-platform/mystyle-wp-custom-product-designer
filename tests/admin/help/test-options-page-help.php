@@ -7,7 +7,7 @@ require_once(MYSTYLE_PATH . 'admin/help/options-page-help.php');
  * options-page-help.php file.
  *
  * @package MyStyle
- * @since 1.1.16
+ * @since 0.1.0
  */
 class OptionsPageHelpTest extends WP_UnitTestCase {
     

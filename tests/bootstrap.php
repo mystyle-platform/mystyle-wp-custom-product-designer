@@ -2,7 +2,7 @@
 /**
  * Bootstrap file for testing the plugin
  * @package MyStyle
- * @since 1.1.16
+ * @since 0.1.0
  */
 
 $_tests_dir = getenv('WP_TESTS_DIR');
