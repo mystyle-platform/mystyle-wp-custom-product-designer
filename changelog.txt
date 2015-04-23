@@ -1,3 +1,7 @@
+= 0.2.1 =
+
+* Added Secret field.
+
 = 0.2.0 =
 
 * Now tested with PHPUnit and QUnit and fully compatible with WP 4.2
