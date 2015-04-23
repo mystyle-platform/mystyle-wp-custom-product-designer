@@ -13,11 +13,11 @@ class ApiTest extends WP_UnitTestCase {
     
     /**
      * Test that the mystyle_add_api function doesn't output anything if the
-     * api_key is not set. Note that if the override is set, the API will
-     * be output.
+     * api_key and secret are not set. Note that if the override is set, the 
+     * API will be output.
      * TODO: Figure out a way to disable the override for this test.
      */    
-    public function test_mystyle_add_api_doesnt_serve_without_api_key() {
+    public function test_mystyle_add_api_doesnt_serve_without_keys() {
         
         //Assert that nothing was output
         ob_start();
@@ -25,8 +25,10 @@ class ApiTest extends WP_UnitTestCase {
         $outbound = ob_get_contents();
         ob_end_clean();
         
-        if(defined('MYSTYLE_OVERRIDE_API_KEY')) {
+        if( (defined('MYSTYLE_OVERRIDE_API_KEY')) || (defined('MYSTYLE_OVERRIDE_API_KEY')) ) {
+            //For now assert that the override keys are rendered (see todo note above)
             $this->assertContains(MYSTYLE_OVERRIDE_API_KEY, $outbound);
+            $this->assertContains(MYSTYLE_OVERRIDE_SECRET, $outbound);
         } else {
             $this->assertEquals('', $outbound);
         }
@@ -34,13 +36,14 @@ class ApiTest extends WP_UnitTestCase {
     
     /**
      * Test that the mystyle_add_api function outputs the api when the 
-     * api_key is set.
+     * api_key and secret are set.
      */    
     public function test_mystyle_add_api_outputs_api() {
         
-        //Set the api_key
+        //Set the api_key and secret
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
         $options['api_key'] = 'A0000';
+        $options['secret'] = 'B0000';
         update_option(MYSTYLE_OPTIONS_NAME, $options);
         
         //Output the API
@@ -62,9 +65,10 @@ class ApiTest extends WP_UnitTestCase {
         //Set the MYSTYLE_LOAD_QUNIT constant
         if(!defined('MYSTYLE_LOAD_QUNIT')) { define('MYSTYLE_LOAD_QUNIT', true); }
         
-        //Set the api_key (API won't render without it)
+        //Set the api_key and secret (API won't render without them)
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
         $options['api_key'] = 'A0000';
+        $options['secret'] = 'A0000';
         update_option(MYSTYLE_OPTIONS_NAME, $options);
         
         //Assert that the QUnit interface is output.

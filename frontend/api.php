@@ -10,12 +10,13 @@
  */
 function mystyle_add_api() {
     $api_key = mystyle_get_active_api_key();
+    $secret = mystyle_get_active_secret();
     
-    //Load the api (if there is an api_key)
-    if(!empty($api_key)) {
+    //Load the api (if there is an api_key and secret)
+    if( (!empty($api_key)) && (!empty($secret)) ) {
  ?>
 <!-- MyStyle Start -->
-<div id="mystyle" data-mystyle-api-key="<?php echo $api_key ?>" style="display:none;"></div>
+<div id="mystyle" data-mystyle-api-key="<?php echo $api_key ?>" data-mystyle-secret="<?php echo $secret ?>" style="display:none;"></div>
 <!-- MyStyle End -->
 <?php
         //Optionally load the QUnit tests.
@@ -24,6 +25,6 @@ function mystyle_add_api() {
             mystyle_load_qunit('frontend-api');
         }
         
-    } //end if api_key
+    } //end if api_key and secret
     
 } //end mystyle_add_api

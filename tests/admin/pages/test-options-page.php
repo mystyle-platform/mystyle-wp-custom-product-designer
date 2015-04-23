@@ -60,7 +60,7 @@ class OptionsPageTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the mystyle_options_render_api_key function.
+     * Test the mystyle_options_render_access_section_text function.
      */    
     public function test_options_render_access_section_text() {
         $mystyle_options_page = new MyStyle_Options_Page();
@@ -79,12 +79,26 @@ class OptionsPageTest extends WP_UnitTestCase {
     public function test_options_render_api_key() {
         $mystyle_options_page = new MyStyle_Options_Page();
         
-        //Assert that the access section was rendered
+        //Assert that the API Key field was rendered
         ob_start();
         $mystyle_options_page->mystyle_options_render_api_key();
         $outbound = ob_get_contents();
         ob_end_clean();
         $this->assertContains('MyStyle API Key', $outbound);
+    }
+    
+    /**
+     * Test the mystyle_options_render_secret function.
+     */    
+    public function test_options_render_secret() {
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        //Assert that the Secret field was rendered
+        ob_start();
+        $mystyle_options_page->mystyle_options_render_secret();
+        $outbound = ob_get_contents();
+        ob_end_clean();
+        $this->assertContains('MyStyle Secret', $outbound);
     }
     
     /**
@@ -96,9 +110,9 @@ class OptionsPageTest extends WP_UnitTestCase {
     
     /**
      * Test that the mystyle_options_validate function returns an error
-     * when the input is invalid.
+     * when the api_key input is invalid.
      */
-    public function test_mystyle_options_validate_invalid() {
+    public function test_mystyle_options_validate_invalid_api_key() {
         //Clear out any previous settings errors.
         global $wp_settings_errors;
         $wp_settings_errors = null;
@@ -107,6 +121,7 @@ class OptionsPageTest extends WP_UnitTestCase {
         
         $input = array();
         $input['api_key'] = 'not valid';
+        $input['secret'] = 'validsecret';
         
         //Run the function.
         $new_options = $mystyle_options_page->mystyle_options_validate($input);
@@ -123,9 +138,9 @@ class OptionsPageTest extends WP_UnitTestCase {
     
     /**
      * Test that the mystyle_options_validate function returns an error
-     * when the input contains html and javascript.
+     * when the api_key input contains html and javascript.
      */
-    public function test_mystyle_options_validate_attack() {
+    public function test_mystyle_options_validate_attack_on_api_key() {
         //Clear out any previous settings errors.
         global $wp_settings_errors;
         $wp_settings_errors = null;
@@ -134,6 +149,7 @@ class OptionsPageTest extends WP_UnitTestCase {
         
         $input = array();
         $input['api_key'] = '"><script>alert(document.cookie)</script>';
+        $input['secret'] = 'validsecret';
         
         //Run the function.
         $new_options = $mystyle_options_page->mystyle_options_validate($input);
@@ -150,9 +166,9 @@ class OptionsPageTest extends WP_UnitTestCase {
     
     /**
      * Test the mystyle_options_validate function doesn't throw any errors when
-     * the input is valid.
+     * the api_key input is valid.
      */
-    public function test_mystyle_options_validate_valid() {
+    public function test_mystyle_options_validate_valid_api_key() {
         //Clear out any previous settings errors.
         global $wp_settings_errors;
         $wp_settings_errors = null;
@@ -161,6 +177,7 @@ class OptionsPageTest extends WP_UnitTestCase {
         
         $input = array();
         $input['api_key'] = 'A0000';
+        $input['secret'] = 'validsecret';
         
         //Run the function.
         $new_options = $mystyle_options_page->mystyle_options_validate($input);
@@ -179,6 +196,96 @@ class OptionsPageTest extends WP_UnitTestCase {
         
         //Assert that the settings were stored.
         $this->assertFalse(empty($new_options['api_key']));
+    }
+    
+    /**
+     * Test that the mystyle_options_validate function returns an error
+     * when the secret input is invalid.
+     */
+    public function test_mystyle_options_validate_invalid_secret() {
+        //Clear out any previous settings errors.
+        global $wp_settings_errors;
+        $wp_settings_errors = null;
+        
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        $input = array();
+        $input['api_key'] = 'validapikey';
+        $input['secret'] = 'not valid';
+        
+        //Run the function.
+        $new_options = $mystyle_options_page->mystyle_options_validate($input);
+        
+        //Get the messages
+        $settings_errors = get_settings_errors();
+        
+        //Assert that an error was thrown
+        $this->assertEquals("error", $settings_errors[0]["type"]);
+        
+        //Assert that the settings were not stored.
+        $this->assertTrue(empty($new_options['secret']));
+    }
+    
+    /**
+     * Test that the mystyle_options_validate function returns an error
+     * when the secret input contains html and javascript.
+     */
+    public function test_mystyle_options_validate_attack_on_secret() {
+        //Clear out any previous settings errors.
+        global $wp_settings_errors;
+        $wp_settings_errors = null;
+        
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        $input = array();
+        $input['api_key'] = 'validapikey';
+        $input['secret'] = '"><script>alert(document.cookie)</script>';
+        
+        //Run the function.
+        $new_options = $mystyle_options_page->mystyle_options_validate($input);
+        
+        //Get the messages
+        $settings_errors = get_settings_errors();
+        
+        //Assert that an error was thrown
+        $this->assertEquals("error", $settings_errors[0]["type"]);
+        
+        //Assert that the settings were not stored.
+        $this->assertTrue(empty($new_options['secret']));
+    }
+    
+    /**
+     * Test the mystyle_options_validate function doesn't throw any errors when
+     * the secret input is valid.
+     */
+    public function test_mystyle_options_validate_valid_secret() {
+        //Clear out any previous settings errors.
+        global $wp_settings_errors;
+        $wp_settings_errors = null;
+        
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        $input = array();
+        $input['api_key'] = 'validapikey';
+        $input['secret'] = 'A0000';
+        
+        //Run the function.
+        $new_options = $mystyle_options_page->mystyle_options_validate($input);
+        
+        //Get the messages
+        $settings_errors = get_settings_errors();
+        $type = $settings_errors[0]["type"];
+        
+        //Assert that no errors were thrown.
+        foreach ( $settings_errors as $key => $details ) {
+            $this->assertNotEquals("error", $details['type']);
+        }
+        
+        //Assert that the settings were saved.
+        $this->assertEquals("updated", $settings_errors[0]["type"]);
+        
+        //Assert that the settings were stored.
+        $this->assertFalse(empty($new_options['secret']));
     }
 }
 

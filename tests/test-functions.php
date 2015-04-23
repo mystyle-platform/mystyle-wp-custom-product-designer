@@ -9,28 +9,28 @@
 class FunctionsTest extends WP_UnitTestCase {
 
     /**
-     * Assert that mystyle_is_api_key_installed() correctly returns whether
-     * or not an MyStyle api key has been installed.
+     * Assert that mystyle_are_keys_installed() correctly returns whether
+     * or not a MyStyle API Key and Secret have been installed.
      */    
-    function test_mystyle_is_api_key_installed() {
+    function test_mystyle_are_keys_installed() {
         //Clear out any options
         $options = array();
         update_option(MYSTYLE_OPTIONS_NAME, $options);
         
-        //Assert function correctly determines api_key not installed
-        $this->assertFalse( mystyle_is_api_key_installed() );
+        //Assert function correctly determines api_key and secret are not installed
+        $this->assertFalse( mystyle_are_keys_installed() );
 
-        //Install the api_key
-        $options['api_key'] = 'test';
+        //Install the api_key and secret
+        $options['api_key'] = 'test_key';
+        $options['secret'] = 'test_secret';
         update_option(MYSTYLE_OPTIONS_NAME, $options);
 
-        //Assert function correctly determines api_key installed
-        $this->assertTrue( mystyle_is_api_key_installed() );
+        //Assert function correctly determines that keys are installed
+        $this->assertTrue( mystyle_are_keys_installed() );
     }
     
     /**
-     * Assert that mystyle_get_active_api_key() returns the expected access
-     * code.
+     * Assert that mystyle_get_active_api_key() returns the expected API Key.
      */    
     function test_mystyle_get_active_api_key() {
         //Install the api_key
@@ -45,6 +45,25 @@ class FunctionsTest extends WP_UnitTestCase {
             $this->assertContains(MYSTYLE_OVERRIDE_API_KEY, $api_key);
         } else {
             $this->assertEquals('test', $api_key);
+        }
+    }
+    
+    /**
+     * Assert that mystyle_get_active_secret() returns the expected secret.
+     */    
+    function test_mystyle_get_active_secret() {
+        //Install the secret
+        $options = array();
+        update_option(MYSTYLE_OPTIONS_NAME, $options);
+        $options['secret'] = 'test';
+        update_option(MYSTYLE_OPTIONS_NAME, $options);
+        
+        $secret = mystyle_get_active_secret();
+
+        if(defined('MYSTYLE_OVERRIDE_API_KEY')) {
+            $this->assertContains(MYSTYLE_OVERRIDE_SECRET, $secret);
+        } else {
+            $this->assertEquals('test', $secret);
         }
     }
     

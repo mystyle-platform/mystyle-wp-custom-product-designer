@@ -33,7 +33,7 @@ class MyStyle_Options_Page {
                     <input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e('Save Changes'); ?>" />
                 </p>
             </form>
-            <?php if(mystyle_is_api_key_installed()) { ?>
+            <?php if(mystyle_are_keys_installed()) { ?>
                 <br/>
                 <ul>
                     <li>Go to <a href="https://www.mystyleplatform.com" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.</li>
@@ -57,15 +57,15 @@ class MyStyle_Options_Page {
     function mystyle_options_render_access_section_text() {
     ?>
         <p>
-            To use MyStyle, you will need an MyStyle API Key.  To get
-            your MyStyle API Key, log in or register at 
+            To use MyStyle, you will need a MyStyle API Key and Secret.  To get
+            your MyStyle API Key and Secret, log in or register at 
             <a href="http://www.mystyleplatform.com" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.
         </p>
     <?php
     }
 
     /**
-     * Function to render the api key field and description
+     * Function to render the API Key field and description
      */
     function mystyle_options_render_api_key() {
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
@@ -75,6 +75,22 @@ class MyStyle_Options_Page {
         <p class="description">
             You must enter a valid MyStyle API Key here. If you need an
             API Key, you can create one
+            <a href="https://www.mystyleplatform.com" target="_blank" title="MyStyle Signup">here</a>.
+        </p>
+    <?php
+    }
+
+    /**
+     * Function to render the Secret field and description
+     */
+    function mystyle_options_render_secret() {
+        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        $secret = (array_key_exists('secret', $options)) ? $options['secret'] : "";
+     ?>
+        <input id="mystyle_secret" name="mystyle_options[secret]" size="5" type="text" value="<?php echo $secret ?>" />
+        <p class="description">
+            You must enter a valid MyStyle Secret here. If you need a MyStyle 
+            Secret, you can create one
             <a href="https://www.mystyleplatform.com" target="_blank" title="MyStyle Signup">here</a>.
         </p>
     <?php
@@ -98,6 +114,13 @@ class MyStyle_Options_Page {
                 'mystyle', 
                 'mystyle_options_access_section'
         );
+        add_settings_field(
+                'secret', 
+                'Secret', 
+                array(&$this, 'mystyle_options_render_secret'),
+                'mystyle', 
+                'mystyle_options_access_section'
+        );
     }
 
     /**
@@ -113,16 +136,31 @@ class MyStyle_Options_Page {
         $old_options = get_option(MYSTYLE_OPTIONS_NAME);
         $new_options = $old_options;  //start with the old options.
         
+        $has_errors = false;
         $msg_type = null;
         $msg_message = null;
         
-        //process the new values
+        //------------ process the new values ------------
+        
+        //API Key
         $new_options['api_key'] = trim($input['api_key']);
         if(!preg_match('/^[a-z0-9]*$/i', $new_options['api_key'])) {
+            $has_errors = true;
             $msg_type = 'error';
             $msg_message = 'Please enter a valid API Key.';
             $new_options['api_key'] = '';
-        } else {
+        }
+        
+        //Secret
+        $new_options['secret'] = trim($input['secret']);
+        if(!preg_match('/^[a-z0-9]*$/i', $new_options['secret'])) {
+            $has_errors = true;
+            $msg_type = 'error';
+            $msg_message = 'Please enter a valid Secret.';
+            $new_options['secret'] = '';
+        }
+        
+        if(!$has_errors) {
             $msg_type = 'updated';
             $msg_message = 'Settings saved.';
         }

@@ -32,7 +32,7 @@ function mystyle_options_page_help($contextual_help, $screen_id, $screen) {
         <li>Install the plugin.</li>
         <li>Activate the plugin.</li>
         <li>Create an account at <a href="http://www.mystyleplatform.com" target="_blank" title="mystyle.com">mystyle.com</a></li>
-        <li>Get your MyStyle API Key and add it to the API Key field on this page.</li>
+        <li>Get your MyStyle API Key and Secret and add them to the fields on this page.</li>
         <li>The customizer should now be viewable from your store.</li>
     </ol>
     ';
