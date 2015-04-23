@@ -1,4 +1,8 @@
+= 0.2.0 =
+
+* Now tested with PHPUnit and QUnit and fully compatible with WP 4.2
+
 = 0.1.0 =
 
-* Initial Beta release.
+* Initial Alpha version.
 
