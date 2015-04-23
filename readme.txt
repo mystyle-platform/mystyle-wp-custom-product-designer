@@ -4,7 +4,7 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: woocommerce, customization 
 Requires at least: 3.3
-Tested up to: 4.1.1
+Tested up to: 4.2
 Stable tag: 0.1.0
 
 The MyStyle WordPress Plugin is a simple plugin that allows your customers to
