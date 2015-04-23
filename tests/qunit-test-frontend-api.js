@@ -9,7 +9,11 @@
  */
 
 /**
-* Qunit tests go here
+* Assert that mystyle was rendered.
 */
+QUnit.test( "Test mystyle rendered", function( assert ) {
+    var mystyleTags = $("#mystyle");
+    assert.equal(mystyleTags.length, 1, "Mystyle was rendered");
+});
 
 

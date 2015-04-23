@@ -25,7 +25,7 @@ function mystyle_load_qunit($test_suite) {
         ?>
             <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.15.0.css">
 
-            <div id="qunit" style="margin-left: 160px"></div>
+            <div id="qunit"></div>
             <div id="qunit-fixture"></div>
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
             <script src="//code.jquery.com/qunit/qunit-1.15.0.js"></script>
@@ -33,8 +33,16 @@ function mystyle_load_qunit($test_suite) {
             
             <?php if(is_admin()) { ?>
                 <style>
-                    #wpfooter {position: relative};
-                    #qunit {margin-left: 160px};
+                    #wpfooter {position: relative;}
+                    #qunit {margin-left: 160px;}
+                </style>
+            <?php } else { ?>
+                <style>
+                    #qunit {
+                        position:fixed;
+                        bottom:0px;
+                        width: 100%;
+                    };
                 </style>
             <?php } ?>
             

@@ -15,6 +15,7 @@ function mystyle_add_api() {
     if(!empty($api_key)) {
  ?>
 <!-- MyStyle Start -->
+<div id="mystyle" style="display:none;"></div>
 <!-- MyStyle End -->
 <?php
         //Optionally load the QUnit tests.
