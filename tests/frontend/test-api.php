@@ -50,7 +50,7 @@ class ApiTest extends WP_UnitTestCase {
         ob_end_clean();
         
         //Assert that the API is output.
-        $this->assertContains('<script', $outbound);
+        $this->assertContains('<!-- MyStyle Start -->', $outbound);
         
     }
     
