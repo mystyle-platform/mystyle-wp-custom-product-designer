@@ -74,8 +74,6 @@ if(is_admin()) {
 
 } else {
     //---- FRONT END ----//
-    //add the API
-    require_once(MYSTYLE_PATH . 'frontend/api.php');
-    add_action('wp_footer', 'mystyle_add_api');
-
+    require_once(MYSTYLE_PATH . 'frontend/frontend-class.php');
+    $mystyle_frontend = new MyStyle_FrontEnd();
 }

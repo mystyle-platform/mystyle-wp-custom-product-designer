@@ -48,10 +48,6 @@ class MyStyle_Admin {
                 update_option(MYSTYLE_NOTICES_NAME, $notices);
             }
         }
-        
-        //Add the MyStyle admin stylesheet to the WP admin head
-        wp_register_style('myStyleAdminStylesheet', plugins_url('../css/admin.css', __FILE__) );
-        wp_enqueue_style('myStyleAdminStylesheet');
     }
 
     /**

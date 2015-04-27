@@ -68,10 +68,6 @@ class AdminTest extends WP_UnitTestCase {
         $outbound = ob_get_contents();
         ob_end_clean();
         $this->assertContains("Upgraded version from", $outbound);
-        
-        //Assert that the admin stylesheet is registered
-        global $wp_styles;
-        $this->assertContains('myStyleAdminStylesheet', serialize($wp_styles));
     }
     
     /**

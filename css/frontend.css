@@ -1,0 +1,6 @@
+button.single_add_to_cart_button {
+    display:none !important;
+}
+form.cart div.quantity {
+    display: none !important;
+}
