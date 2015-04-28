@@ -22,12 +22,21 @@ class MyStyle_Handoff {
         $url = $_SERVER['REQUEST_URI'];
         //echo $url;
         if(strpos($url, self::$SLUG) !== FALSE) {
-            ob_start(array('MyStyle_Handoff', 'render'));
+            ob_start(array('MyStyle_Handoff', 'handle'));
         }
     }
     
-    public static function render() {
-        $html = "<!DOCTYPE html><html><head></head><body><h1>MyStyle!</h1></body></head>";
+    public static function handle() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $html = "<!DOCTYPE html><html><head></head><body>";
+            foreach($_POST as $key => $value) {
+                $html .= "<strong>" . $key . ":</strong>" . $value. "<br/>";
+            }
+            $html .= "</body></head>";
+        }
+        else {
+            $html = "<!DOCTYPE html><html><head></head><body><h1>MyStyle!</h1></body></head>";
+        }
         
         return $html;
     }
