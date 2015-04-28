@@ -1,6 +1,16 @@
+/* Hide the add to cart button and quantity field. */
 button.single_add_to_cart_button {
     display:none !important;
 }
 form.cart div.quantity {
     display: none !important;
+}
+
+/* Overwrite some of the styles so that the customizer fits. */
+#content {
+    width: 950px;
+}
+#content .page, #content .page .entry-content {
+    margin: 0;
+    padding: 0;
 }
