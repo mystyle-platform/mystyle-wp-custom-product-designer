@@ -31,7 +31,7 @@ class MyStyle_FrontEnd {
      * Add Customize button after the add to cart button.
      */
     function mystyle_woocommerce_after_add_to_cart_button() {
-        echo '<button class="mystyle_customize_button button alt" type="submit">Customize</button>';
+        echo '<button class="mystyle_customize_button button alt" type="button" onclick="alert(\'it works!\'); return false;">Customize</button>';
     }
 
 }

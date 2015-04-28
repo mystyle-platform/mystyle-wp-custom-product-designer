@@ -45,6 +45,7 @@ if(!defined('MYSTYLE_VERSION')) { define('MYSTYLE_VERSION', '0.2.1'); }
 
 define('MYSTYLE_OPTIONS_NAME', 'mystyle_options');
 define('MYSTYLE_NOTICES_NAME', 'mystyle_notices');
+define('MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id');
 
 //includes
 require_once(MYSTYLE_PATH . 'functions.php');
@@ -56,6 +57,7 @@ if(is_admin()) {
     require_once(MYSTYLE_PATH . 'admin/admin-class.php');
     require_once(MYSTYLE_PATH . 'admin/pages/class-options-page.php');
     require_once(MYSTYLE_PATH . 'admin/help/help-dispatch.php');
+    require_once(MYSTYLE_PATH . 'admin/pages/class-customize-page.php');
     
     //Plugin setup and registrations
     $mystyle_admin = new MyStyle_Admin();

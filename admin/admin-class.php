@@ -11,7 +11,7 @@
 class MyStyle_Admin {
     
     /**
-     * Constructor, constructs the options page and adds it to the Settings
+     * Constructor, constructs the admin class and registers hooks.
      * menu.
      */
     function __construct() {
@@ -85,14 +85,14 @@ class MyStyle_Admin {
      * Called when the plugin is activated.
      */
     static function mystyle_activation() {
-        //
+        MyStyle_Customize_Page::create();
     }
 
     /**
      * Called when the plugin is deactivated.
      */
     static function mystyle_deactivation() {
-        //
+        MyStyle_Customize_Page::delete();
     }
     
     /**
