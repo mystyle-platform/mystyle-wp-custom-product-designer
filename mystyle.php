@@ -78,7 +78,10 @@ if(is_admin()) {
 } else {
     //---- FRONT END ----//
     require_once(MYSTYLE_PATH . 'frontend/class-frontend.php');
+    require_once(MYSTYLE_PATH . 'frontend/endpoints/class-handoff.php');
+    
     $mystyle_frontend = new MyStyle_FrontEnd();
+    $mystyle_handoff = new MyStyle_Handoff();
 }
 
 //Register shortcodes
