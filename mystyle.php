@@ -55,7 +55,7 @@ require_once(MYSTYLE_PATH . 'pages/class-customize-page.php');
 if(is_admin()) {
     //---- ADMIN ----//
     //includes
-    require_once(MYSTYLE_PATH . 'admin/admin-class.php');
+    require_once(MYSTYLE_PATH . 'admin/class-admin.php');
     require_once(MYSTYLE_PATH . 'admin/pages/class-options-page.php');
     require_once(MYSTYLE_PATH . 'admin/help/help-dispatch.php');
     
@@ -76,6 +76,6 @@ if(is_admin()) {
 
 } else {
     //---- FRONT END ----//
-    require_once(MYSTYLE_PATH . 'frontend/frontend-class.php');
+    require_once(MYSTYLE_PATH . 'frontend/class-frontend.php');
     $mystyle_frontend = new MyStyle_FrontEnd();
 }

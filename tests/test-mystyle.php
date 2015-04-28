@@ -2,7 +2,7 @@
 
 /**
  * The MyStyleTest class includes tests for testing the main MyStyle_Admin
- * class (in the admin-class.php file).
+ * class (in the class-admin.php file).
  *
  * @package MyStyle
  * @since 0.1.0
