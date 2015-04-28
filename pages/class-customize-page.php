@@ -31,6 +31,18 @@ abstract class MyStyle_Customize_Page {
     }
     
     /**
+     * Function to get the id of the customize page.
+     * @return number Returns the page id of the Customize page.
+     */
+    public static function get_id() {
+        //Get the page id of the Customize page
+        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        $page_id = $options[MYSTYLE_CUSTOMIZE_PAGEID_NAME];
+        
+        return $page_id;
+    }
+    
+    /**
      * Function to delete the Customize page.
      */
     public static function delete() {
