@@ -51,6 +51,7 @@ define('MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id');
 require_once(MYSTYLE_PATH . 'functions.php');
 require_once(MYSTYLE_PATH . 'tests/qunit.php');
 require_once(MYSTYLE_PATH . 'pages/class-customize-page.php');
+require_once(MYSTYLE_PATH . 'shortcodes/class-customizer-shortcode.php');
 
 if(is_admin()) {
     //---- ADMIN ----//
@@ -79,3 +80,6 @@ if(is_admin()) {
     require_once(MYSTYLE_PATH . 'frontend/class-frontend.php');
     $mystyle_frontend = new MyStyle_FrontEnd();
 }
+
+//Register shortcodes
+add_shortcode( 'mystyle_customizer', array('MyStyle_Customizer_Shortcode', 'output')); 
