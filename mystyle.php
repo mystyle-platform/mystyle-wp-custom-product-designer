@@ -50,8 +50,11 @@ define('MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id');
 //includes
 require_once(MYSTYLE_PATH . 'functions.php');
 require_once(MYSTYLE_PATH . 'tests/qunit.php');
+require_once(MYSTYLE_PATH . 'includes/class-mystyle.php');
 require_once(MYSTYLE_PATH . 'pages/class-customize-page.php');
 require_once(MYSTYLE_PATH . 'shortcodes/class-customizer-shortcode.php');
+
+$mystyle = new MyStyle();
 
 if(is_admin()) {
     //---- ADMIN ----//
@@ -82,6 +85,14 @@ if(is_admin()) {
     
     $mystyle_frontend = new MyStyle_FrontEnd();
     $mystyle_handoff = new MyStyle_Handoff();
+    
+    
+    /**
+     * Add the order item meta from the cart.
+     * @param number $item_id The item_id of the item being added.
+     * @param array $values The values from the cart.
+     */
+    
 }
 
 //Register shortcodes

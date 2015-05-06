@@ -32,7 +32,9 @@ class MyStyle_FrontEnd {
      */
     function mystyle_woocommerce_after_add_to_cart_button() {
         $customize_page_id = MyStyle_Customize_Page::get_id();
-        echo '<button class="mystyle_customize_button button alt" type="button" onclick="location.href = \'' . get_permalink($customize_page_id). '\'; return false;">Customize</button>';
+        $current_product_id = get_the_ID();
+        $customizer_url = add_query_arg('product_id', $current_product_id, get_permalink($customize_page_id));
+        echo '<button class="mystyle_customize_button button alt" type="button" onclick="location.href = \'' . $customizer_url . '\'; return false;">Customize</button>';
     }
 
 }

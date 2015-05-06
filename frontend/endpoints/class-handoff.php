@@ -17,6 +17,11 @@ class MyStyle_Handoff {
         add_action('wp_loaded', array(&$this, 'override'));
     }
     
+    /**
+     * Scan the url and catch any requests that match the handoff slug.
+     * 
+     * Needs to be public and static because it is registered as an a WP action.
+     */
     public static function override() {
         //$url = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
         $url = $_SERVER['REQUEST_URI'];
@@ -26,16 +31,49 @@ class MyStyle_Handoff {
         }
     }
     
+    /**
+     * Called by the override function above.  Handles requests for the handoff
+     * page.  Only supports POST requests, GET requests are given an Access
+     * DENIED message.
+     * 
+     * Needs to be public and static because it is registered as an a WP action.
+     * 
+     * @return string Returns the html to output to the browser.
+     */
     public static function handle() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //- Add the product to the cart along with the mystyle variables -//
+            global $post, $wpdb, $product, $woocommerce;
+            
+            //Get the product id from the post
+            $product_id = htmlspecialchars($_POST["product_id"]) ;
+            
+            //Get the woocommerce cart
+            $cart = $woocommerce->cart;
+            
+            //Add the mystyle meta data
+            $cart_item_data = array();
+            $cart_item_data['mystyle_data'] = array();
+            $cart_item_data['mystyle_data']['design_id'] = htmlspecialchars($_POST['design_id']);
+            
+            
+            
+            //Add the product and meta data to the cart
+            //$cart_item_key = $cart->add_to_cart($product_id);
+            $cart_item_key = $cart->add_to_cart($product_id, 1, '', array(), $cart_item_data);
+            
+            //------ Output the POST variables to the screen --------//
             $html = "<!DOCTYPE html><html><head></head><body>";
             foreach($_POST as $key => $value) {
                 $html .= "<strong>" . $key . ":</strong>" . $value. "<br/>";
             }
+            $html .= "<hr/>";
+            $html .= "<string>design id:</strong>" . $cart_item_data['mystyle_data']['design_id'];
+                
             $html .= "</body></head>";
         }
-        else {
-            $html = "<!DOCTYPE html><html><head></head><body><h1>MyStyle!</h1></body></head>";
+        else { // GET Request
+            $html = "<!DOCTYPE html><html><head></head><body><h1>MyStyle</h1><h2>Access Denied</h2></body></head>";
         }
         
         return $html;
