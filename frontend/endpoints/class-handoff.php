@@ -43,26 +43,39 @@ class MyStyle_Handoff {
     public static function handle() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //- Add the product to the cart along with the mystyle variables -//
-            global $post, $wpdb, $product, $woocommerce;
+            global $woocommerce;
             
-            //Get the product id from the post
-            $product_id = htmlspecialchars($_POST["product_id"]) ;
+            //Create a Design from the post
+            $design = MyStyle_Design::createFromPost($_POST);
             
             //Get the woocommerce cart
             $cart = $woocommerce->cart;
             
             //Add the mystyle meta data
             $cart_item_data = array();
-            $cart_item_data['mystyle_data'] = array();
-            $cart_item_data['mystyle_data']['design_id'] = htmlspecialchars($_POST['design_id']);
-            
-            
+            $cart_item_data['mystyle_data'] = $design->get_meta();
             
             //Add the product and meta data to the cart
-            //$cart_item_key = $cart->add_to_cart($product_id);
-            $cart_item_key = $cart->add_to_cart($product_id, 1, '', array(), $cart_item_data);
+            $cart_item_key = $cart->add_to_cart(
+                                        $design->get_product_id(),
+                                        1,
+                                        '',
+                                        array(),
+                                        $cart_item_data
+                                );
             
-            //------ Output the POST variables to the screen --------//
+            //Redirect the user to the cart
+            $html = '<!DOCTYPE html><html>' .
+                    '<head>' .
+                      '<style>h1 {color: rgba(51, 51, 51, 0.7); font-family: "Noto Sans",sans-serif;}</style>' .
+                      '<title>Adding Product to Cart...</title>' . 
+                      '<META http-equiv="refresh" content="1;URL=' . $cart->get_cart_url() . '">' .
+                    '</head>' . 
+                    '<body><h1>Adding product to cart...</h1></body>'.
+                    '</html>';
+            
+            //------ Output the POST variables to the screen (for debugging) --------//
+            /*
             $html = "<!DOCTYPE html><html><head></head><body>";
             foreach($_POST as $key => $value) {
                 $html .= "<strong>" . $key . ":</strong>" . $value. "<br/>";
@@ -71,6 +84,7 @@ class MyStyle_Handoff {
             $html .= "<string>design id:</strong>" . $cart_item_data['mystyle_data']['design_id'];
                 
             $html .= "</body></head>";
+            */
         }
         else { // GET Request
             $html = "<!DOCTYPE html><html><head></head><body><h1>MyStyle</h1><h2>Access Denied</h2></body></head>";

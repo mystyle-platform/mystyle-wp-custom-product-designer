@@ -2,6 +2,7 @@
 
 /**
  * MyStyle Main class. 
+ * 
  * The MyStyle class sets up and controls the MyStyle plugin for features used
  * by both the frontend and the admin.
  *
