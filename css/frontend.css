@@ -11,6 +11,8 @@ form.cart div.quantity {
     width: 950px;
 }
 #content .page, #content .page .entry-content {
+    /* Need to be more specific (was breaking the homepage)
     margin: 0;
     padding: 0;
+    */
 }
