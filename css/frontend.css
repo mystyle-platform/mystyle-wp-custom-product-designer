@@ -8,7 +8,9 @@ form.cart div.quantity {
 
 /* Overwrite some of the styles so that the customizer fits. */
 #content {
+    /* Need to be more specific (was breaking the homepage)
     width: 950px;
+    */
 }
 #content .page, #content .page .entry-content {
     /* Need to be more specific (was breaking the homepage)
