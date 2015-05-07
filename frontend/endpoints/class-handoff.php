@@ -42,16 +42,31 @@ class MyStyle_Handoff {
      */
     public static function handle() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            /*
+            //------ Output the POST variables to the screen (for debugging) --------//
+            $html = "<!DOCTYPE html><html><head></head><body>";
+            foreach($_POST as $key => $value) {
+                $html .= "<strong>" . $key . ":</strong>" . $value. "<br/>";
+            }
+            $html .= "<hr/>";
+            $html .= "<string>design id:</strong>" . $cart_item_data['mystyle_data']['design_id'];
+            $html .= "</body></head>";
+            */
+            
             //- Add the product to the cart along with the mystyle variables -//
             global $woocommerce;
             
             //Create a Design from the post
-            $design = MyStyle_Design::createFromPost($_POST);
+            $design = MyStyle_Design::create_from_post($_POST);
+            
+            //Add data from api call
+            $design = MyStyle_Handoff::add_api_data_to_design($design);
             
             //Get the woocommerce cart
             $cart = $woocommerce->cart;
             
-            //Add the mystyle meta data
+            //Add the mystyle meta data to the cart item
             $cart_item_data = array();
             $cart_item_data['mystyle_data'] = $design->get_meta();
             
@@ -73,24 +88,63 @@ class MyStyle_Handoff {
                     '</head>' . 
                     '<body><h1>Adding product to cart...</h1></body>'.
                     '</html>';
-            
-            //------ Output the POST variables to the screen (for debugging) --------//
-            /*
-            $html = "<!DOCTYPE html><html><head></head><body>";
-            foreach($_POST as $key => $value) {
-                $html .= "<strong>" . $key . ":</strong>" . $value. "<br/>";
-            }
-            $html .= "<hr/>";
-            $html .= "<string>design id:</strong>" . $cart_item_data['mystyle_data']['design_id'];
-                
-            $html .= "</body></head>";
-            */
         }
         else { // GET Request
             $html = "<!DOCTYPE html><html><head></head><body><h1>MyStyle</h1><h2>Access Denied</h2></body></head>";
         }
         
         return $html;
+    }
+    
+    
+    public function add_api_data_to_design(MyStyle_Design $design) {
+            
+        $api_endpoint_url = "http://api.ogmystyle.com/";
+        $api_key = 72;
+        $secret = "SqXHiNTaD5TC0Y908tC9nEqP6";
+        $action = "design";
+        $method = "get";
+        $data = '{"design_id":[' . $design->get_design_id() . ']}';
+        $ts = time();
+
+        $toHash = $action . $method . $api_key . $data . $ts;
+        $sig = base64_encode(hash_hmac('sha1', $toHash, $secret, true));
+
+        $post_data = array();
+        $post_data['action'] = $action;
+        $post_data['method'] = $method;
+        $post_data['app_id'] = $api_key;
+        $post_data['data'] = $data;
+        $post_data['sig'] = $sig;
+        $post_data['ts'] = $ts;
+        //$post_data['session'] = //not currently being used
+        //$post_data['user_id'] = //not currently being used
+
+        $response = wp_remote_post( $api_endpoint_url, array(
+                'method' => 'POST',
+                'timeout' => 45,
+                'redirection' => 5,
+                'httpversion' => '1.0',
+                'blocking' => true,
+                'headers' => array(),
+                'body' => $post_data,
+                'cookies' => array()
+            )
+        );
+
+        if ( is_wp_error( $response ) ) {
+            //TODO: Handle this error
+            $error_message = $response->get_error_message();
+            //$body = "Something went wrong: $error_message";
+        } else {
+            $response_data = json_decode($response['body'], true); //['data'][$design_id]);
+            $design_data = $response_data['data'][$design->get_design_id()];            
+            //var_dump($design_data);
+
+            $design->add_api_data($design_data);
+        }
+        
+        return $design;
     }
     
 }

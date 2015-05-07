@@ -16,8 +16,10 @@ class MyStyle_Design {
     private $print_url;
     private $web_url;
     private $thumb_url;
+    private $design_url;
     private $design_id;
-    private $product_id;
+    private $template_id; //this is the MyStyle product id
+    private $product_id; //this is the local product id
     private $user_id;
     private $price;
     
@@ -31,19 +33,17 @@ class MyStyle_Design {
     
     /**
      * Static function to create a new Design from POST data. Call using 
-     * MyStyle_Design::createFromPost($post_data);
+     * MyStyle_Design::create_from_post($post_data);
      * @param array $post_data POST data to be used to construct the Design.
      * @return \self Works like a constructor.
      */
-    public static function createFromPost($post_data) {
+    public static function create_from_post($post_data) {
         $instance = new self();
         
         $instance->description = htmlspecialchars($post_data["description"]);
-        $instance->print_url = htmlspecialchars($post_data["print_url"]);
-        $instance->web_url = htmlspecialchars($post_data["web_url"]);
-        $instance->thumb_url = htmlspecialchars($post_data["thumb_url"]);
         $instance->design_id = htmlspecialchars($post_data["design_id"]);
-        $instance->product_id = htmlspecialchars($post_data["product_id"]);
+        $instance->template_id = htmlspecialchars($post_data["product_id"]); //mapping product_id to template_id
+        $instance->product_id = htmlspecialchars($post_data["local_product_id"]); //mapping local_product_id to product_id
         $instance->user_id = htmlspecialchars($post_data["user_id"]);
         $instance->price = htmlspecialchars($post_data["price"]);
         
@@ -52,24 +52,38 @@ class MyStyle_Design {
     
     /**
      * Static function to create a new Design from meta data. Call using 
-     * MyStyle_Design::createFromMeta($meta_data);
+     * MyStyle_Design::create_from_meta($meta_data);
      * @param array $meta_data Meta data to be used to construct the Design. This
      * is an array of fields values (see the get_meta() function below).
      * @return \self Works like a constructor.
      */
-    public static function createFromMeta($meta_data) {
+    public static function create_from_meta($meta_data) {
         $instance = new self();
         
         $instance->description = htmlspecialchars($meta_data["description"]);
         $instance->print_url = htmlspecialchars($meta_data["print_url"]);
         $instance->web_url = htmlspecialchars($meta_data["web_url"]);
         $instance->thumb_url = htmlspecialchars($meta_data["thumb_url"]);
+        $instance->design_url = htmlspecialchars($meta_data["design_url"]);
         $instance->design_id = htmlspecialchars($meta_data["design_id"]);
+        $instance->template_id = htmlspecialchars($meta_data["template_id"]);
         $instance->product_id = htmlspecialchars($meta_data["product_id"]);
         $instance->user_id = htmlspecialchars($meta_data["user_id"]);
         $instance->price = htmlspecialchars($meta_data["price"]);
         
         return $instance;
+    }
+    
+    /**
+     * Method to add data received from the api call to the Design.
+     * @param array $api_data API data to be used to add more data to the 
+     * Design. This is an array of fields values (see the API docs for details).
+     */
+    public function add_api_data($api_data) {
+        $this->print_url = htmlspecialchars($api_data["print_url"]);
+        $this->web_url = htmlspecialchars($api_data["web_url"]);
+        $this->thumb_url = htmlspecialchars($api_data["thumb_url"]);
+        $this->design_url = htmlspecialchars($api_data["design_url"]);
     }
     
     /**
@@ -121,7 +135,7 @@ class MyStyle_Design {
     }
     
     /**
-     * Sets the value of description.
+     * Sets the value of thumb_url.
      * @param string $thumb_url The new value for thumb_url.
      */
     public function set_thumb_url($thumb_url) {
@@ -134,6 +148,22 @@ class MyStyle_Design {
      */
     public function get_thumb_url() {
         return $this->thumb_url;
+    }
+    
+    /**
+     * Sets the value of design.
+     * @param string $design_url The new value for design_url.
+     */
+    public function set_design_url($design_url) {
+        $this->design_url = $design_url;
+    }
+    
+    /**
+     * Gets the value of design_url.
+     * @return string Returns the value of design_url.
+     */
+    public function get_design_url() {
+        return $this->design_url;
     }
     
     /**
@@ -150,6 +180,22 @@ class MyStyle_Design {
      */
     public function get_design_id() {
         return $this->design_id;
+    }
+    
+    /**
+     * Sets the value of template_id.
+     * @param number $template_id The new value for template_id.
+     */
+    public function set_template_id($template_id) {
+        $this->template_id = $template_id;
+    }
+    
+    /**
+     * Gets the value of template_id.
+     * @return number Returns the value of template_id.
+     */
+    public function get_template_id() {
+        return $this->template_id;
     }
     
     /**
@@ -212,7 +258,9 @@ class MyStyle_Design {
         $meta['print_url'] = $this->print_url;
         $meta['web_url'] = $this->web_url;
         $meta['thumb_url'] = $this->thumb_url;
+        $meta['design_url'] = $this->design_url;
         $meta['design_id'] = $this->design_id;
+        $meta['template_id'] = $this->template_id;
         $meta['product_id'] = $this->product_id;
         $meta['user_id'] = $this->user_id;
         $meta['price'] = $this->price;
