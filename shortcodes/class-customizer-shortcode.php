@@ -13,6 +13,7 @@ abstract class MyStyle_Customizer_Shortcode {
      */
     public static function output() {
         
+        //TODO: remove hard coded values.
         $mystyle_app_id = 72;
         $mystyle_template_id = 970;
         $product_id = htmlspecialchars($_GET["product_id"]) ;
