@@ -86,14 +86,6 @@ if(is_admin()) {
     
     $mystyle_frontend = new MyStyle_FrontEnd();
     $mystyle_handoff = new MyStyle_Handoff();
-    
-    
-    /**
-     * Add the order item meta from the cart.
-     * @param number $item_id The item_id of the item being added.
-     * @param array $values The values from the cart.
-     */
-    
 }
 
 //Register shortcodes

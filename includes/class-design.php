@@ -31,21 +31,43 @@ class MyStyle_Design {
     
     /**
      * Static function to create a new Design from POST data. Call using 
-     * MyStyle_Design::create($post_data);
+     * MyStyle_Design::createFromPost($post_data);
      * @param array $post_data POST data to be used to construct the Design.
      * @return \self Works like a constructor.
      */
     public static function createFromPost($post_data) {
         $instance = new self();
         
-        $instance->description = htmlspecialchars($_POST["description"]);
-        $instance->print_url = htmlspecialchars($_POST["print_url"]);
-        $instance->web_url = htmlspecialchars($_POST["web_url"]);
-        $instance->thumb_url = htmlspecialchars($_POST["thumb_url"]);
-        $instance->design_id = htmlspecialchars($_POST["design_id"]);
-        $instance->product_id = htmlspecialchars($_POST["product_id"]);
-        $instance->user_id = htmlspecialchars($_POST["user_id"]);
-        $instance->price = htmlspecialchars($_POST["price"]);
+        $instance->description = htmlspecialchars($post_data["description"]);
+        $instance->print_url = htmlspecialchars($post_data["print_url"]);
+        $instance->web_url = htmlspecialchars($post_data["web_url"]);
+        $instance->thumb_url = htmlspecialchars($post_data["thumb_url"]);
+        $instance->design_id = htmlspecialchars($post_data["design_id"]);
+        $instance->product_id = htmlspecialchars($post_data["product_id"]);
+        $instance->user_id = htmlspecialchars($post_data["user_id"]);
+        $instance->price = htmlspecialchars($post_data["price"]);
+        
+        return $instance;
+    }
+    
+    /**
+     * Static function to create a new Design from meta data. Call using 
+     * MyStyle_Design::createFromMeta($meta_data);
+     * @param array $meta_data Meta data to be used to construct the Design. This
+     * is an array of fields values (see the get_meta() function below).
+     * @return \self Works like a constructor.
+     */
+    public static function createFromMeta($meta_data) {
+        $instance = new self();
+        
+        $instance->description = htmlspecialchars($meta_data["description"]);
+        $instance->print_url = htmlspecialchars($meta_data["print_url"]);
+        $instance->web_url = htmlspecialchars($meta_data["web_url"]);
+        $instance->thumb_url = htmlspecialchars($meta_data["thumb_url"]);
+        $instance->design_id = htmlspecialchars($meta_data["design_id"]);
+        $instance->product_id = htmlspecialchars($meta_data["product_id"]);
+        $instance->user_id = htmlspecialchars($meta_data["user_id"]);
+        $instance->price = htmlspecialchars($meta_data["price"]);
         
         return $instance;
     }
