@@ -1,7 +1,7 @@
 /* Hide the add to cart button and quantity field. */
-button.single_add_to_cart_button {
+.mystyle-customizable-product button.single_add_to_cart_button {
     display:none !important;
 }
-form.cart div.quantity {
+.mystyle-customizable-product form.cart div.quantity {
     display: none !important;
 }
