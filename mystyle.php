@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //define constants
 define('MYSTYLE_PATH', plugin_dir_path( __FILE__ ));
+define('MYSTYLE_INCLUDES', plugin_dir_path( __FILE__ ) . "/includes/");
 define('MYSTYLE_BASENAME', plugin_basename(__FILE__));
 
 // Include the optional config.php file
@@ -48,22 +49,22 @@ define('MYSTYLE_NOTICES_NAME', 'mystyle_notices');
 define('MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id');
 
 //includes
-require_once(MYSTYLE_PATH . 'functions.php');
 require_once(MYSTYLE_PATH . 'tests/qunit.php');
-require_once(MYSTYLE_PATH . 'includes/class-mystyle.php');
-require_once(MYSTYLE_PATH . 'includes/class-design.php');
-require_once(MYSTYLE_PATH . 'includes/class-api.php');
-require_once(MYSTYLE_PATH . 'pages/class-customize-page.php');
-require_once(MYSTYLE_PATH . 'shortcodes/class-customizer-shortcode.php');
+require_once(MYSTYLE_INCLUDES . 'class-mystyle.php');
+require_once(MYSTYLE_INCLUDES . 'class-options.php');
+require_once(MYSTYLE_INCLUDES . 'class-design.php');
+require_once(MYSTYLE_INCLUDES . 'class-api.php');
+require_once(MYSTYLE_INCLUDES . 'pages/class-customize-page.php');
+require_once(MYSTYLE_INCLUDES . 'shortcodes/class-customizer-shortcode.php');
 
 $mystyle = new MyStyle();
 
 if(is_admin()) {
     //---- ADMIN ----//
     //includes
-    require_once(MYSTYLE_PATH . 'admin/class-admin.php');
-    require_once(MYSTYLE_PATH . 'admin/pages/class-options-page.php');
-    require_once(MYSTYLE_PATH . 'admin/help/help-dispatch.php');
+    require_once(MYSTYLE_INCLUDES . 'admin/class-admin.php');
+    require_once(MYSTYLE_INCLUDES . 'admin/pages/class-options-page.php');
+    require_once(MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php');
     
     //Plugin setup and registrations
     $mystyle_admin = new MyStyle_Admin();
@@ -82,8 +83,8 @@ if(is_admin()) {
 
 } else {
     //---- FRONT END ----//
-    require_once(MYSTYLE_PATH . 'frontend/class-frontend.php');
-    require_once(MYSTYLE_PATH . 'frontend/endpoints/class-handoff.php');
+    require_once(MYSTYLE_INCLUDES . 'frontend/class-frontend.php');
+    require_once(MYSTYLE_INCLUDES . 'frontend/endpoints/class-handoff.php');
     
     $mystyle_frontend = new MyStyle_FrontEnd();
     $mystyle_handoff = new MyStyle_Handoff();

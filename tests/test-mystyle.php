@@ -14,6 +14,7 @@ class MyStyleTest extends WP_UnitTestCase {
      */    
     function testConstants() {
         $this->assertNotEmpty(MYSTYLE_PATH);
+        $this->assertNotEmpty(MYSTYLE_INCLUDES);
         $this->assertNotEmpty(MYSTYLE_BASENAME);
         $this->assertNotEmpty(MYSTYLE_SERVER);
         $this->assertNotEmpty(MYSTYLE_VERSION);

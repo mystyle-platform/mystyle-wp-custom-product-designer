@@ -10,6 +10,7 @@
  */
 abstract class MyStyle_API {
     
+    private static $api_endpoint_url = "http://api.ogmystyle.com/";
     
     /**
      * Retrieves design data from the API and adds it to the passed design
@@ -19,10 +20,9 @@ abstract class MyStyle_API {
      */
     public static function add_api_data_to_design(MyStyle_Design $design) {
             
-        //TODO: Get rid of all of these constants.
-        $api_endpoint_url = "http://api.ogmystyle.com/";
-        $api_key = 72;
-        $secret = "SqXHiNTaD5TC0Y908tC9nEqP6";
+        //Set up the api call variables.
+        $api_key = MyStyle_Options::get_api_key();
+        $secret = MyStyle_Options::get_secret();
         $action = "design";
         $method = "get";
         $data = '{"design_id":[' . $design->get_design_id() . ']}';
@@ -41,7 +41,7 @@ abstract class MyStyle_API {
         //$post_data['session'] = //not currently being used
         //$post_data['user_id'] = //not currently being used
 
-        $response = wp_remote_post( $api_endpoint_url, array(
+        $response = wp_remote_post( self::$api_endpoint_url, array(
                 'method' => 'POST',
                 'timeout' => 45,
                 'redirection' => 5,

@@ -1,6 +1,6 @@
 <?php
 
-require_once(MYSTYLE_PATH . 'admin/help/help-dispatch.php');
+require_once(MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php');
 
 /**
  * The HelpDispatchTest class includes tests for testing the functions in the

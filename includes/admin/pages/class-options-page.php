@@ -33,7 +33,7 @@ class MyStyle_Options_Page {
                     <input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e('Save Changes'); ?>" />
                 </p>
             </form>
-            <?php if(mystyle_are_keys_installed()) { ?>
+            <?php if(MyStyle_Options::are_keys_installed()) { ?>
                 <br/>
                 <ul>
                     <li>Go to <a href="https://www.mystyleplatform.com" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.</li>

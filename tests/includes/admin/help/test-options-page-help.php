@@ -1,6 +1,6 @@
 <?php
 
-require_once(MYSTYLE_PATH . 'admin/help/options-page-help.php');
+require_once(MYSTYLE_INCLUDES . 'admin/help/options-page-help.php');
 
 /**
  * The OptionsPageHelpTest class includes tests for testing the functions in the

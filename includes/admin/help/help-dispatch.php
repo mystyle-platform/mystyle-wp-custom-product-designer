@@ -6,7 +6,7 @@
  * @since 0.1.0
  */
 
-require_once(MYSTYLE_PATH . 'admin/help/options-page-help.php');
+require_once(MYSTYLE_INCLUDES . 'admin/help/options-page-help.php');
     
 /**
  * Add help for the MyStyle plugin to the WordPress admin help system.

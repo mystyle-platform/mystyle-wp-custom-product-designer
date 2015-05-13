@@ -13,8 +13,8 @@ abstract class MyStyle_Customizer_Shortcode {
      */
     public static function output() {
         
-        //TODO: remove hard coded values.
-        $mystyle_app_id = 72;
+        $mystyle_app_id = MyStyle_Options::get_api_key();
+        //TODO: get rid of hardcoded value.
         $mystyle_template_id = 970;
         $product_id = htmlspecialchars($_GET["product_id"]) ;
         
@@ -38,7 +38,7 @@ abstract class MyStyle_Customizer_Shortcode {
         $out .= '<form action="/wordpress/?mystyle-handoff" method="POST">' .
                     '<input type="hidden" name="description" value="Fulfillment Instructions...">' .
                     '<input type="hidden" name="design_id" value="78580">' .
-                    '<input type="hidden" name="product_id" value="970">' .
+                    '<input type="hidden" name="product_id" value="' . $mystyle_app_id . '">' .
                     '<input type="hidden" name="local_product_id" value="' . $product_id . '">' .
                     '<input type="hidden" name="user_id" value="29057">' .
                     '<input type="hidden" name="price" value="$0.01">' .

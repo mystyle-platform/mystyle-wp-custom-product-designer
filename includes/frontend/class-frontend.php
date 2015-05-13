@@ -23,7 +23,7 @@ class MyStyle_FrontEnd {
      */
     function mystyle_frontend_init() {
         //Add the MyStyle admin stylesheet to the WP admin head
-        wp_register_style('myStyleFrontEndStylesheet', plugins_url('../css/frontend.css', __FILE__) );
+        wp_register_style('myStyleFrontEndStylesheet', plugins_url('../../css/frontend.css', __FILE__) );
         wp_enqueue_style('myStyleFrontEndStylesheet');
     }
     

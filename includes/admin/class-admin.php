@@ -69,7 +69,7 @@ class MyStyle_Admin {
             delete_option(MYSTYLE_NOTICES_NAME);
         }
         
-        if(!mystyle_are_keys_installed()) {
+        if(!MyStyle_Options::are_keys_installed()) {
             if($screen_id != "settings_page_mystyle") {
                 $notices[]= 'You\'ve activated the MyStyle Plugin! Now let\'s <a href="options-general.php?page=mystyle">configure</a> it!';
             }

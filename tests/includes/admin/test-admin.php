@@ -1,6 +1,6 @@
 <?php
 
-require_once(MYSTYLE_PATH . 'admin/class-admin.php');
+require_once(MYSTYLE_INCLUDES . 'admin/class-admin.php');
 
 /**
  * The AdminTest class includes tests for testing the MyStyle_Admin class.
