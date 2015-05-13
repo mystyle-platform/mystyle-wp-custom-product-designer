@@ -14,9 +14,9 @@ abstract class MyStyle_Customizer_Shortcode {
     public static function output() {
         
         $mystyle_app_id = MyStyle_Options::get_api_key();
-        //TODO: get rid of hardcoded value.
-        $mystyle_template_id = 970;
+        
         $product_id = htmlspecialchars($_GET["product_id"]) ;
+        $mystyle_template_id = get_post_meta($product_id, "_mystyle_template_id", true);
         
         $mystyle_url = "http://customizer.ogmystyle.com/" .
                         "?app_id=$mystyle_app_id" . 
