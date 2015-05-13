@@ -52,6 +52,7 @@ require_once(MYSTYLE_PATH . 'functions.php');
 require_once(MYSTYLE_PATH . 'tests/qunit.php');
 require_once(MYSTYLE_PATH . 'includes/class-mystyle.php');
 require_once(MYSTYLE_PATH . 'includes/class-design.php');
+require_once(MYSTYLE_PATH . 'includes/class-api.php');
 require_once(MYSTYLE_PATH . 'pages/class-customize-page.php');
 require_once(MYSTYLE_PATH . 'shortcodes/class-customizer-shortcode.php');
 
