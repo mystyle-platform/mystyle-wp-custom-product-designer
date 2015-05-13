@@ -40,8 +40,8 @@ class MyStyle_WooCommerce_Admin {
     public function add_mystyle_data_panel() {
         global $post;
         
-        $mystyle_enabled = get_post_meta($post->ID, 'mystyle_enabled', true);
-        $template_id = get_post_meta($post->ID, 'mystyle_template_id', true)
+        $mystyle_enabled = get_post_meta($post->ID, '_mystyle_enabled', true);
+        $template_id = get_post_meta($post->ID, '_mystyle_template_id', true)
         
         ?>
             <div id="mystyle_product_data" class="panel woocommerce_options_panel">
@@ -49,7 +49,7 @@ class MyStyle_WooCommerce_Admin {
                     <?php 
                         woocommerce_wp_checkbox( 
                             array( 
-                                'id' => 'mystyle_enabled',
+                                'id' => '_mystyle_enabled',
                                 'label' => __('Make Customizable?', 'woothemes'),
                                 'desc_tip'    => 'true',
                                 'description' => __('Enable this option to make the product customizable.', 'woothemes'),
@@ -58,7 +58,7 @@ class MyStyle_WooCommerce_Admin {
                         );
                         woocommerce_wp_text_input( 
                             array( 
-                                'id'          => 'mystyle_template_id', 
+                                'id'          => '_mystyle_template_id', 
                                 'label'       => __('Template Id', 'woocommerce'), 
                                 'placeholder' => '',
                                 'desc_tip'    => 'true',
@@ -77,8 +77,8 @@ class MyStyle_WooCommerce_Admin {
      * @param integer $post_id The id of the post that is being saved.
      */
     function process_mystyle_data_panel($post_id) {
-        update_post_meta($post_id, 'mystyle_enabled', ( isset($_POST['mystyle_enabled']) && $_POST['mystyle_enabled'] ) ? 'yes' : 'no' );
-        update_post_meta($post_id, 'mystyle_template_id', $_POST['mystyle_template_id']);
+        update_post_meta($post_id, '_mystyle_enabled', ( isset($_POST['_mystyle_enabled']) && $_POST['_mystyle_enabled'] ) ? 'yes' : 'no' );
+        update_post_meta($post_id, '_mystyle_template_id', $_POST['_mystyle_template_id']);
     }
  
 
