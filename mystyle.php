@@ -33,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //define constants
 define('MYSTYLE_PATH', plugin_dir_path( __FILE__ ));
-define('MYSTYLE_INCLUDES', plugin_dir_path( __FILE__ ) . "/includes/");
+define('MYSTYLE_INCLUDES', plugin_dir_path( __FILE__ ) . "includes/");
 define('MYSTYLE_BASENAME', plugin_basename(__FILE__));
 
 // Include the optional config.php file
@@ -65,6 +65,7 @@ if(is_admin()) {
     require_once(MYSTYLE_INCLUDES . 'admin/class-admin.php');
     require_once(MYSTYLE_INCLUDES . 'admin/pages/class-options-page.php');
     require_once(MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php');
+    require_once(MYSTYLE_INCLUDES . 'admin/class-woocommerce-admin.php');
     
     //Plugin setup and registrations
     $mystyle_admin = new MyStyle_Admin();
@@ -75,6 +76,9 @@ if(is_admin()) {
     //set up the options page 
     $mystyle_options_page = new MyStyle_Options_Page();
     add_filter('contextual_help', 'mystyle_help_dispatch', 10, 3);
+    
+    //hook into the WooCommerce admin
+    $mystyle_woocommerce_admin = new MyStyle_WooCommerce_Admin();
     
     //load qunit
     if( (defined('MYSTYLE_LOAD_QUNIT')) && (MYSTYLE_LOAD_QUNIT == true) ) {
