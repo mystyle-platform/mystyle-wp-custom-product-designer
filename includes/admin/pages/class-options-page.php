@@ -87,7 +87,7 @@ class MyStyle_Options_Page {
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
         $secret = (array_key_exists('secret', $options)) ? $options['secret'] : "";
      ?>
-        <input id="mystyle_secret" name="mystyle_options[secret]" size="5" type="text" value="<?php echo $secret ?>" />
+        <input id="mystyle_secret" name="mystyle_options[secret]" size="27" type="text" value="<?php echo $secret ?>" />
         <p class="description">
             You must enter a valid MyStyle Secret here. If you need a MyStyle 
             Secret, you can create one
