@@ -34,16 +34,18 @@ abstract class MyStyle_Customizer_Shortcode {
                     'height="550" ' .
                 '></iframe>';
                     
-        //Add the mock form (for testing)
-        $out .= '<form action="/wordpress/?mystyle-handoff" method="POST">' .
-                    '<input type="hidden" name="description" value="Fulfillment Instructions...">' .
-                    '<input type="hidden" name="design_id" value="78580">' .
-                    '<input type="hidden" name="product_id" value="' . $mystyle_app_id . '">' .
-                    '<input type="hidden" name="local_product_id" value="' . $product_id . '">' .
-                    '<input type="hidden" name="user_id" value="29057">' .
-                    '<input type="hidden" name="price" value="$0.01">' .
-                    '<input type="submit" value="Submit Mock">' .
-                '</form>';
+        if( (defined('MYSTYLE_ENABLE_MOCK_SUBMIT_BUTTON')) && (MYSTYLE_ENABLE_MOCK_SUBMIT_BUTTON == true) ) {
+            //Add the mock form (for testing)
+            $out .= '<form action="/wordpress/?mystyle-handoff" method="POST">' .
+                        '<input type="hidden" name="description" value="Fulfillment Instructions...">' .
+                        '<input type="hidden" name="design_id" value="78580">' .
+                        '<input type="hidden" name="product_id" value="' . $mystyle_app_id . '">' .
+                        '<input type="hidden" name="local_product_id" value="' . $product_id . '">' .
+                        '<input type="hidden" name="user_id" value="29057">' .
+                        '<input type="hidden" name="price" value="$0.01">' .
+                        '<input type="submit" value="Submit Mock">' .
+                    '</form>';
+        }
         
         return $out;
     }
