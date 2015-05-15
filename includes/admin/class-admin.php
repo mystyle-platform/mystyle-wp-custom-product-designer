@@ -36,6 +36,14 @@ class MyStyle_Admin {
      * Init the mystyle admin
      */
     function mystyle_admin_init() {
+        //Add the MyStyle admin stylesheet to the WP admin head
+        wp_register_style('myStyleAdminStylesheet', plugins_url('../../css/admin.css', __FILE__) );
+        wp_enqueue_style('myStyleAdminStylesheet');
+        
+        //Add the MyStyle admin js file to the WP admin head
+        wp_register_script('myStyleAdminJavaScript', plugins_url('../../js/admin.js', __FILE__) );
+        wp_enqueue_script('myStyleAdminJavaScript');
+        
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
         $data_version = (array_key_exists('version', $options)) ? $options['version'] : null;
         if($data_version != MYSTYLE_VERSION) {

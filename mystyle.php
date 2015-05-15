@@ -41,7 +41,7 @@ if(file_exists(MYSTYLE_PATH . 'config.php')) {
     include_once(MYSTYLE_PATH . 'config.php');
 }
 
-if(!defined('MYSTYLE_ADSERVER')) { define('MYSTYLE_SERVER', 'www.mystyleplatform.com/api'); }
+if(!defined('MYSTYLE_SERVER')) { define('MYSTYLE_SERVER', 'www.mystyleplatform.com/api'); }
 if(!defined('MYSTYLE_VERSION')) { define('MYSTYLE_VERSION', '0.2.1'); }
 
 define('MYSTYLE_OPTIONS_NAME', 'mystyle_options');
@@ -65,7 +65,8 @@ if(is_admin()) {
     require_once(MYSTYLE_INCLUDES . 'admin/class-admin.php');
     require_once(MYSTYLE_INCLUDES . 'admin/pages/class-options-page.php');
     require_once(MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php');
-    require_once(MYSTYLE_INCLUDES . 'admin/class-woocommerce-admin.php');
+    require_once(MYSTYLE_INCLUDES . 'admin/class-woocommerce-admin-product.php');
+    require_once(MYSTYLE_INCLUDES . 'admin/class-woocommerce-admin-order.php');
     
     //Plugin setup and registrations
     $mystyle_admin = new MyStyle_Admin();
@@ -78,7 +79,8 @@ if(is_admin()) {
     add_filter('contextual_help', 'mystyle_help_dispatch', 10, 3);
     
     //hook into the WooCommerce admin
-    $mystyle_woocommerce_admin = new MyStyle_WooCommerce_Admin();
+    $mystyle_woocommerce_admin_product = new MyStyle_WooCommerce_Admin_Product();
+    $mystyle_woocommerce_admin_order = new MyStyle_WooCommerce_Admin_Order();
     
     //load qunit
     if( (defined('MYSTYLE_LOAD_QUNIT')) && (MYSTYLE_LOAD_QUNIT == true) ) {

@@ -1,26 +1,27 @@
 <?php
 
 /**
- * MyStyle WooCommerce Admin class.
- * The MyStyle WooCommerce Admin class hooks MyStyle into the WooCommerce admin
- * interace.
+ * MyStyle WooCommerce Admin Product class.
+ * 
+ * The MyStyle WooCommerce Admin Product class hooks MyStyle into the 
+ * WooCommerce Product admin interace.
  *
  * @package MyStyle
  * @since 0.2.1
  */
-class MyStyle_WooCommerce_Admin {
+class MyStyle_WooCommerce_Admin_Product {
     
     /**
      * Constructor, constructs the class and registers hooks.
      */
     function __construct() {
-        add_action('admin_init', array(&$this, 'mystyle_woocommerce_admin_init'));
+        add_action('admin_init', array(&$this, 'admin_init'));
     }
     
     /**
      * Init the mystyle woocommerce admin
      */
-    function mystyle_woocommerce_admin_init() {
+    function admin_init() {
         add_action('woocommerce_product_write_panel_tabs', array(&$this, 'add_product_data_tab'));
         add_action('woocommerce_product_write_panels', array(&$this, 'add_mystyle_data_panel'));
         add_action('woocommerce_process_product_meta', array(&$this, 'process_mystyle_data_panel'));
