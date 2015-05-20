@@ -12,16 +12,50 @@ class MyStyle_Options_Page {
      * Constructor, constructs the options page and adds it to the Settings
      * menu.
      */
-    function __construct() {
-        add_action( 'admin_menu', array( &$this, 'mystyle_add_options_page_to_menu' ) );
-        add_action( 'admin_init', array( &$this, 'mystyle_options_init' ) );
+    public function __construct() {
+        add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ) );
+        add_action( 'admin_init', array( &$this, 'admin_init' ) );
     }
     
+    /**
+     * Function to initialize the MyStyle options page.
+     */
+    public function admin_init() {
+        register_setting( 'mystyle_options', MYSTYLE_OPTIONS_NAME, array( &$this, 'validate' ) );
+        add_settings_section(
+                'mystyle_options_access_section',
+                'Access Settings',
+                array( &$this,'render_access_section_text' ),
+                'mystyle'
+        );
+        add_settings_field(
+                'api_key', 
+                'API Key', 
+                array( &$this, 'render_api_key' ),
+                'mystyle', 
+                'mystyle_options_access_section'
+        );
+        add_settings_field(
+                'secret', 
+                'Secret', 
+                array( &$this, 'render_secret' ),
+                'mystyle', 
+                'mystyle_options_access_section'
+        );
+    }
+    
+    /**
+     * Function to add the options page to the settings menu.
+     */
+    public function add_page_to_menu() {
+        global $mystyle_hook;
+        $mystyle_hook = add_options_page( 'MyStyle Settings', 'MyStyle', 'manage_options', 'mystyle', array( &$this, 'render_page' ) );
+    }
     
     /**
      * Function to render the MyStyle options page.
      */
-    function mystyle_options_render_page() {
+    public static function render_page() {
     ?>
         <div class="wrap">
             <div id="icon-options-general" class="icon32"><br /></div><h2>MyStyle Settings</h2>
@@ -44,17 +78,9 @@ class MyStyle_Options_Page {
     }
 
     /**
-     * Function to add the options page to the settings menu.
-     */
-    function mystyle_add_options_page_to_menu() {
-        global $mystyle_hook;
-        $mystyle_hook = add_options_page( 'MyStyle Settings', 'MyStyle', 'manage_options', 'mystyle', array( &$this, 'mystyle_options_render_page' ) );
-    }
-
-    /**
      * Function to render the text for the access section.
      */
-    function mystyle_options_render_access_section_text() {
+    public static function render_access_section_text() {
     ?>
         <p>
             To use MyStyle, you will need a MyStyle API Key and Secret.  To get
@@ -67,7 +93,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the API Key field and description
      */
-    function mystyle_options_render_api_key() {
+    public static function render_api_key() {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $api_key = ( array_key_exists('api_key', $options) ) ? $options['api_key'] : '';
      ?>
@@ -83,7 +109,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the Secret field and description
      */
-    function mystyle_options_render_secret() {
+    public static function render_secret() {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $secret = ( array_key_exists( 'secret', $options ) ) ? $options['secret'] : '';
      ?>
@@ -95,33 +121,6 @@ class MyStyle_Options_Page {
         </p>
     <?php
     }
-    
-    /**
-     * Function to initialize the MyStyle options page.
-     */
-    function mystyle_options_init() {
-        register_setting( 'mystyle_options', MYSTYLE_OPTIONS_NAME, array( &$this, 'mystyle_options_validate' ) );
-        add_settings_section(
-                'mystyle_options_access_section',
-                'Access Settings',
-                array( &$this,'mystyle_options_render_access_section_text' ),
-                'mystyle'
-        );
-        add_settings_field(
-                'api_key', 
-                'API Key', 
-                array( &$this, 'mystyle_options_render_api_key' ),
-                'mystyle', 
-                'mystyle_options_access_section'
-        );
-        add_settings_field(
-                'secret', 
-                'Secret', 
-                array( &$this, 'mystyle_options_render_secret' ),
-                'mystyle', 
-                'mystyle_options_access_section'
-        );
-    }
 
     /**
      * Function to validate the submitted MyStyle options field values. 
@@ -132,7 +131,7 @@ class MyStyle_Options_Page {
      * @param array $input The submitted values
      * @return array Returns the new options to be stored in the database.
      */
-    function mystyle_options_validate( $input ) {
+    public static function validate( $input ) {
         $old_options = get_option( MYSTYLE_OPTIONS_NAME );
         $new_options = $old_options;  //start with the old options.
         

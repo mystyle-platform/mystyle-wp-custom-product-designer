@@ -13,16 +13,16 @@ class MyStyle_FrontEnd {
     /**
      * Constructor, constructs the class and sets up the hooks.
      */
-    function __construct() {
-        add_action( 'init', array( &$this, 'mystyle_frontend_init' ) );
-        add_action( 'woocommerce_before_add_to_cart_button', array( &$this, 'mystyle_woocommerce_before_add_to_cart_button' ), 10, 0 );
-        add_action( 'woocommerce_after_add_to_cart_button', array( &$this, 'mystyle_woocommerce_after_add_to_cart_button' ), 10, 0 );
+    public function __construct() {
+        add_action( 'init', array( &$this, 'init' ) );
+        add_action( 'woocommerce_before_add_to_cart_button', array( &$this, 'before_add_to_cart_button' ), 10, 0 );
+        add_action( 'woocommerce_after_add_to_cart_button', array( &$this, 'after_add_to_cart_button' ), 10, 0 );
     }
     
     /**
      * Init the MyStyle front end.
      */
-    function mystyle_frontend_init() {
+    public static function init() {
         //Add the MyStyle frontend stylesheet to the WP frontend head
         wp_register_style( 'myStyleFrontEndStylesheet', plugins_url('../../css/frontend.css', __FILE__ ) );
         wp_enqueue_style( 'myStyleFrontEndStylesheet' );
@@ -31,7 +31,7 @@ class MyStyle_FrontEnd {
     /**
      * Wrap the section with a mystyle-customizable-product class
      */
-    function mystyle_woocommerce_before_add_to_cart_button() {
+    public static function before_add_to_cart_button() {
         $current_product_id = get_the_ID();
         $mystyle_enabled = get_post_meta( $current_product_id, '_mystyle_enabled', true );
         
@@ -43,7 +43,7 @@ class MyStyle_FrontEnd {
     /**
      * Add Customize button after the add to cart button.
      */
-    function mystyle_woocommerce_after_add_to_cart_button() {
+    public static function after_add_to_cart_button() {
         $customize_page_id = MyStyle_Customize_Page::get_id();
         $current_product_id = get_the_ID();
         $mystyle_enabled = get_post_meta( $current_product_id, '_mystyle_enabled', true );

@@ -21,7 +21,7 @@ class FrontEndTest extends WP_UnitTestCase {
         
         //Assert that the init function is registered.
         $function_names = get_function_names( $wp_filter['init'] );
-        $this->assertContains( 'mystyle_frontend_init', $function_names );  
+        $this->assertContains( 'init', $function_names );  
     }
     
     /**

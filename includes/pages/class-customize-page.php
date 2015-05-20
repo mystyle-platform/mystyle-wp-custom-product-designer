@@ -15,10 +15,10 @@ abstract class MyStyle_Customize_Page {
     public static function create() {
         //Create the Customize page
         $customize_page = array(
-            'post_title' => 'Customize',
+            'post_title'   => 'Customize',
             'post_content' => '[mystyle_customizer]',
-            'post_status' => 'publish',
-            'post_type' => 'page',
+            'post_status'  => 'publish',
+            'post_type'    => 'page',
         );
         $page_id = wp_insert_post( $customize_page );
         

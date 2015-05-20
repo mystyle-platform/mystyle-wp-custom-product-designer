@@ -70,9 +70,9 @@ if( is_admin() ) {
     
     //Plugin setup and registrations
     $mystyle_admin = new MyStyle_Admin();
-    register_activation_hook( __FILE__, array( 'MyStyle_Admin', 'mystyle_activation' ) );
-    register_deactivation_hook( __FILE__, array( 'MyStyle_Admin', 'mystyle_deactivation' ) );
-    register_uninstall_hook( __FILE__, array( 'MyStyle_Admin', 'mystyle_uninstall' ) );
+    register_activation_hook( __FILE__, array( 'MyStyle_Admin', 'activate' ) );
+    register_deactivation_hook( __FILE__, array( 'MyStyle_Admin', 'deactivate' ) );
+    register_uninstall_hook( __FILE__, array( 'MyStyle_Admin', 'uninstall' ) );
     
     //set up the options page 
     $mystyle_options_page = new MyStyle_Options_Page();

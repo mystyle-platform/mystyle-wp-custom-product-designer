@@ -14,14 +14,14 @@ class MyStyle_WooCommerce_Admin_Order {
     /**
      * Constructor, constructs the class and registers hooks.
      */
-    function __construct() {
+    public function __construct() {
         add_action( 'admin_init', array( &$this, 'admin_init' ) );
     }
     
     /**
      * Init the mystyle woocommerce admin
      */
-    function admin_init() {
+    public static function admin_init() {
         add_action( 'woocommerce_admin_order_item_headers', array( &$this, 'add_order_item_header' ) );
         add_action( 'woocommerce_admin_order_item_values', array( &$this, 'admin_order_item_values' ), 10, 3 );        
     }
@@ -29,7 +29,7 @@ class MyStyle_WooCommerce_Admin_Order {
     /**
      * Add the mystyle column header to the order items table.
      */
-    public function add_order_item_header() {
+    public static function add_order_item_header() {
         ?>
             <th class="item-mystyle"><?php _e( 'MyStyle', 'woocommerce' ); ?></th>
         <?php
@@ -38,7 +38,7 @@ class MyStyle_WooCommerce_Admin_Order {
     /**
      * Add the mystyle column body to the order items table.
      */
-    public function admin_order_item_values( $_product, $item, $item_id ) {
+    public static function admin_order_item_values( $_product, $item, $item_id ) {
 
         $mystyle_data = null;
         if( isset( $item['mystyle_data'] ) ) {            

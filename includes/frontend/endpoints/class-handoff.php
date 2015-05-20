@@ -13,7 +13,7 @@ class MyStyle_Handoff {
     /**
      * Constructor, constructs the class and sets up the hooks.
      */
-    function __construct() {
+    public function __construct() {
         add_action( 'wp_loaded', array( &$this, 'override' ) );
     }
     

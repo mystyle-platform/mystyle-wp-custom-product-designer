@@ -14,14 +14,14 @@ class MyStyle_WooCommerce_Admin_Product {
     /**
      * Constructor, constructs the class and registers hooks.
      */
-    function __construct() {
+    public function __construct() {
         add_action( 'admin_init', array( &$this, 'admin_init' ) );
     }
     
     /**
      * Init the mystyle woocommerce admin
      */
-    function admin_init() {
+    public static function admin_init() {
         add_action( 'woocommerce_product_write_panel_tabs', array( &$this, 'add_product_data_tab' ) );
         add_action( 'woocommerce_product_write_panels', array( &$this, 'add_mystyle_data_panel' ) );
         add_action( 'woocommerce_process_product_meta', array( &$this, 'process_mystyle_data_panel' ) );
@@ -30,7 +30,7 @@ class MyStyle_WooCommerce_Admin_Product {
     /**
      * Add a MyStyle tab to the product options tab set.
      */
-    public function add_product_data_tab() {
+    public static function add_product_data_tab() {
         echo '<li class="mystyle_product_tab mystyle_product_options"><a href="#mystyle_product_data">MyStyle</a></li>';
     }
     
@@ -38,7 +38,7 @@ class MyStyle_WooCommerce_Admin_Product {
      * Create the content of the MyStyle product options tab.
      * @global WP_Post $post The post that is currently being edited
      */
-    public function add_mystyle_data_panel() {
+    public static function add_mystyle_data_panel() {
         global $post;
         
         $mystyle_enabled = get_post_meta( $post->ID, '_mystyle_enabled', true );
@@ -77,7 +77,7 @@ class MyStyle_WooCommerce_Admin_Product {
      * Process the mystyle tab options when a post is saved
      * @param integer $post_id The id of the post that is being saved.
      */
-    function process_mystyle_data_panel( $post_id ) {
+    public static function process_mystyle_data_panel( $post_id ) {
         update_post_meta( $post_id, '_mystyle_enabled', ( isset( $_POST['_mystyle_enabled'] ) && $_POST['_mystyle_enabled'] ) ? 'yes' : 'no' );
         update_post_meta( $post_id, '_mystyle_template_id', $_POST['_mystyle_template_id'] );
     }

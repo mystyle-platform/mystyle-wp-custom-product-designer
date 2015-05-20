@@ -14,16 +14,16 @@ class MyStyle {
     /**
      * Constructor, constructs the class and sets up the hooks.
      */
-    function __construct() {
-        add_action( 'init', array( &$this, 'mystyle_init' ) );
-        add_action( 'woocommerce_add_order_item_meta', array( &$this, 'mystyle_woocommerce_add_order_item_meta' ), 10, 2 );
+    public function __construct() {
+        add_action( 'init', array( &$this, 'init' ) );
+        add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_mystyle_order_item_meta' ), 10, 2 );
     }
     
     /**
      * Init the MyStyle interface.
      */
-    function mystyle_init() {
-        add_filter( 'woocommerce_cart_item_thumbnail', array( &$this, 'mystyle_woocommerce_cart_item_thumbnail' ), 10, 3 );
+    public function init() {
+        add_filter( 'woocommerce_cart_item_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
     }
     
     /**
@@ -31,8 +31,8 @@ class MyStyle {
      * @param number $item_id The item_id of the item being added.
      * @param array $values The values from the cart.
      */
-    public function mystyle_woocommerce_add_order_item_meta( $item_id, $values ) {
-        if( isset( $values['mystyle_data']) ) {
+    public static function add_mystyle_order_item_meta( $item_id, $values ) {
+        if( isset( $values['mystyle_data'] ) ) {
             woocommerce_add_order_item_meta( $item_id, 'mystyle_data', $values['mystyle_data'] );
         }
     }
@@ -44,7 +44,7 @@ class MyStyle {
      * @param string $cart_item_key The current cart_item_key.
      * @return string Returns the updated cart image tag.
      */
-    function mystyle_woocommerce_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key ) {
+    public static function modify_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key ) {
         
         $new_image_tag = $get_image;
         
