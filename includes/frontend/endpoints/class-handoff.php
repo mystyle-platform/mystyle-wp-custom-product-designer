@@ -14,7 +14,7 @@ class MyStyle_Handoff {
      * Constructor, constructs the class and sets up the hooks.
      */
     function __construct() {
-        add_action('wp_loaded', array(&$this, 'override'));
+        add_action( 'wp_loaded', array( &$this, 'override' ) );
     }
     
     /**
@@ -26,14 +26,14 @@ class MyStyle_Handoff {
         //$url = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
         $url = $_SERVER['REQUEST_URI'];
         //echo $url;
-        if(strpos($url, self::$SLUG) !== FALSE) {
-            ob_start(array('MyStyle_Handoff', 'handle'));
+        if( strpos( $url, self::$SLUG ) !== FALSE ) {
+            ob_start( array( 'MyStyle_Handoff', 'handle' ) );
         }
     }
     
     /**
-     * Called by the override function above.  Handles requests for the handoff
-     * page.  Only supports POST requests, GET requests are given an Access
+     * Called by the override function above. Handles requests for the handoff
+     * page. Only supports POST requests, GET requests are given an Access
      * DENIED message.
      * 
      * Needs to be public and static because it is registered as an a WP action.
@@ -41,7 +41,7 @@ class MyStyle_Handoff {
      * @return string Returns the html to output to the browser.
      */
     public static function handle() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
             
             /*
             //------ Output the POST variables to the screen (for debugging) --------//
@@ -58,10 +58,10 @@ class MyStyle_Handoff {
             global $woocommerce;
             
             //Create a Design from the post
-            $design = MyStyle_Design::create_from_post($_POST);
+            $design = MyStyle_Design::create_from_post( $_POST );
             
             //Add data from api call
-            $design = MyStyle_Api::add_api_data_to_design($design);
+            $design = MyStyle_Api::add_api_data_to_design( $design );
             
             //Get the woocommerce cart
             $cart = $woocommerce->cart;
@@ -90,7 +90,7 @@ class MyStyle_Handoff {
                     '</html>';
         }
         else { // GET Request
-            $html = "<!DOCTYPE html><html><head></head><body><h1>MyStyle</h1><h2>Access Denied</h2></body></head>";
+            $html = '<!DOCTYPE html><html><head></head><body><h1>MyStyle</h1><h2>Access Denied</h2></body></head>';
         }
         
         return $html;

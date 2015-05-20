@@ -10,18 +10,18 @@
  * passed, loads tests if the current screen has tests (based on the screen_id).
  * @param string $test_suite (optional) The test suite that you want to load.
  */
-function mystyle_load_qunit($test_suite) {
-    $supported_screens = array("settings_page_mystyle");
+function mystyle_load_qunit( $test_suite ) {
+    $supported_screens = array( 'settings_page_mystyle' );
     
     if($test_suite == null) {
         $screen = get_current_screen();
-        $screen_id = (!empty($screen) ? $screen->id : null);
-        if(in_array($screen_id, $supported_screens)) {
+        $screen_id = ( ! empty( $screen ) ? $screen->id : null );
+        if( in_array( $screen_id, $supported_screens ) ) {
             $test_suite = $screen_id;
         }
     }
     
-    if($test_suite != null) {
+    if( $test_suite != null ) {
         ?>
             <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.15.0.css">
 
@@ -29,9 +29,9 @@ function mystyle_load_qunit($test_suite) {
             <div id="qunit-fixture"></div>
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
             <script src="//code.jquery.com/qunit/qunit-1.15.0.js"></script>
-            <script src="<?php echo plugins_url('qunit-test-' . $test_suite . '.js', __FILE__); ?>"></script>
+            <script src="<?php echo plugins_url( 'qunit-test-' . $test_suite . '.js', __FILE__ ); ?>"></script>
             
-            <?php if(is_admin()) { ?>
+            <?php if( is_admin() ) { ?>
                 <style>
                     #wpfooter {position: relative;}
                     #qunit {margin-left: 160px;}

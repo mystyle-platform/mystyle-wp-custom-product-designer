@@ -15,13 +15,13 @@ abstract class MyStyle_Customizer_Shortcode {
         
         $mystyle_app_id = MyStyle_Options::get_api_key();
         
-        $product_id = htmlspecialchars($_GET["product_id"]) ;
-        $mystyle_template_id = get_post_meta($product_id, "_mystyle_template_id", true);
+        $product_id = htmlspecialchars( $_GET['product_id'] ) ;
+        $mystyle_template_id = get_post_meta( $product_id, '_mystyle_template_id', true );
         
-        $mystyle_url = "http://customizer.ogmystyle.com/" .
-                        "?app_id=$mystyle_app_id" . 
-                        "&amp;product_id=$mystyle_template_id" . 
-                        "&amp;passthru=local_product_id,$product_id";
+        $mystyle_url = 'http://customizer.ogmystyle.com/' .
+                        '?app_id=$mystyle_app_id' . 
+                        '&amp;product_id=$mystyle_template_id' . 
+                        '&amp;passthru=local_product_id,$product_id';
         
         $out = '<iframe ' .
                     'id="customizer-iframe" ' .
@@ -34,7 +34,7 @@ abstract class MyStyle_Customizer_Shortcode {
                     'height="550" ' .
                 '></iframe>';
                     
-        if( (defined('MYSTYLE_ENABLE_MOCK_SUBMIT_BUTTON')) && (MYSTYLE_ENABLE_MOCK_SUBMIT_BUTTON == true) ) {
+        if( ( defined( 'MYSTYLE_ENABLE_MOCK_SUBMIT_BUTTON' ) ) && ( MYSTYLE_ENABLE_MOCK_SUBMIT_BUTTON == true ) ) {
             //Add the mock form (for testing)
             $out .= '<form action="/wordpress/?mystyle-handoff" method="POST">' .
                         '<input type="hidden" name="description" value="Fulfillment Instructions...">' .

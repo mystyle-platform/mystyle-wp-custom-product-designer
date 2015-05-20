@@ -15,7 +15,7 @@
  * @param string $screen Used to access the elements of the current page.
  * @return string The new contextual help.
  */
-function mystyle_options_page_help($contextual_help, $screen_id, $screen) {
+function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
     $overview_content = '
     <h1>MyStyle Plugin Help</h1>
     <p>Need help using the mystyle plugin? Use the tabs to the left
@@ -59,31 +59,31 @@ function mystyle_options_page_help($contextual_help, $screen_id, $screen) {
     ';
 
     //overview tab
-    $screen->add_help_tab(array(
+    $screen->add_help_tab( array(
         'id' => 'mystyle_overview',
         'title' => 'Overview',
         'content' => $overview_content
-    ));
+    ) );
     //installation tab
-    $screen->add_help_tab(array(
+    $screen->add_help_tab( array(
         'id' => 'mystyle_installation',
         'title' => 'Installation',
         'content' => $installation_content
-    ));
+    ) );
     //use tab
-    $screen->add_help_tab(array(
+    $screen->add_help_tab( array(
         'id' => 'mystyle_use',
         'title' => 'Using MyStyle',
         'content' => $use_content
     ));
     //installation tab
-    $screen->add_help_tab(array(
+    $screen->add_help_tab( array(
         'id' => 'mystyle_troubleshooting',
         'title' => 'Troubleshooting',
         'content' => $troubleshooting_content
-    ));
+    ) );
 
-    $screen->set_help_sidebar($sidebar_content);
+    $screen->set_help_sidebar( $sidebar_content );
 
     return $contextual_help;
 }

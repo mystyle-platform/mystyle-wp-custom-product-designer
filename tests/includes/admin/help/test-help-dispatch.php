@@ -17,20 +17,20 @@ class HelpDispatchTest extends WP_UnitTestCase {
      */    
     public function test_help_dispatch_for_options_page() {
         //set up the variables
-        $contextual_help = "";
+        $contextual_help = '';
         global $mystyle_hook;
         $mystyle_hook = 'mock-hook';
         $screen_id = $mystyle_hook;
-        $screen = WP_Screen::get($mystyle_hook);
+        $screen = WP_Screen::get( $mystyle_hook );
         
         //Assert that the MyStyle help is not in the screen.
-        $this->assertNotContains('MyStyle Plugin Help', serialize($screen));
+        $this->assertNotContains( 'MyStyle Plugin Help', serialize( $screen ) );
         
         //run the function
-        mystyle_help_dispatch($contextual_help, $screen_id, $screen);
+        mystyle_help_dispatch( $contextual_help, $screen_id, $screen );
         
         //Asset that the MyStyle help is now in the screen.
-        $this->assertContains('MyStyle Plugin Help', serialize($screen));
+        $this->assertContains( 'MyStyle Plugin Help', serialize( $screen ) );
     }
     
 }

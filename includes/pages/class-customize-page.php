@@ -20,12 +20,12 @@ abstract class MyStyle_Customize_Page {
             'post_status' => 'publish',
             'post_type' => 'page',
         );
-        $page_id = wp_insert_post($customize_page);
+        $page_id = wp_insert_post( $customize_page );
         
         //Store the customize page's id in the database
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        $options[MYSTYLE_CUSTOMIZE_PAGEID_NAME] = $page_id;
-        update_option(MYSTYLE_OPTIONS_NAME, $options);
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ] = $page_id;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
         
         return $page_id;
     }
@@ -36,8 +36,8 @@ abstract class MyStyle_Customize_Page {
      */
     public static function get_id() {
         //Get the page id of the Customize page
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        $page_id = $options[MYSTYLE_CUSTOMIZE_PAGEID_NAME];
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $page_id = $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ];
         
         return $page_id;
     }
@@ -47,16 +47,15 @@ abstract class MyStyle_Customize_Page {
      */
     public static function delete() {
         //Get the page id of the Customize page
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        $page_id = $options[MYSTYLE_CUSTOMIZE_PAGEID_NAME];
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $page_id = $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ];
         
         //Remove the page id from the datababase.
-        unset($options[MYSTYLE_CUSTOMIZE_PAGEID_NAME]);
-        update_option(MYSTYLE_OPTIONS_NAME, $options);
+        unset( $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ] );
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
         
         //Delete the page from WordPress
-        wp_delete_post($page_id);
+        wp_delete_post( $page_id );
     }
 
-    
 }

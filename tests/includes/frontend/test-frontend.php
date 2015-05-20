@@ -20,8 +20,8 @@ class FrontEndTest extends WP_UnitTestCase {
         global $wp_filter;
         
         //Assert that the init function is registered.
-        $function_names = get_function_names($wp_filter['init']);
-        $this->assertContains('mystyle_frontend_init', $function_names);  
+        $function_names = get_function_names( $wp_filter['init'] );
+        $this->assertContains( 'mystyle_frontend_init', $function_names );  
     }
     
     /**
@@ -32,9 +32,7 @@ class FrontEndTest extends WP_UnitTestCase {
         
         //Assert that the frontend stylesheet is registered
         global $wp_styles;
-        $this->assertContains('myStyleFrontEndStylesheet', serialize($wp_styles));
+        $this->assertContains( 'myStyleFrontEndStylesheet', serialize( $wp_styles ) );
     }
     
-    
 }
-

@@ -18,9 +18,9 @@ abstract class MyStyle_Options {
     * otherwise returns false.
     */
     static function are_keys_installed() {
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array() );
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 
-        if( (!empty($options['api_key'])) && (!empty($options['secret'])) ) {
+        if( ( ! empty( $options['api_key'] ) ) && ( ! empty( $options['secret'] ) ) ) {
             return true;
         } else {
             return false;
@@ -33,11 +33,11 @@ abstract class MyStyle_Options {
      */
     static function get_api_key() {
         $api_key = null;
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array() );
-        if(!empty($options['api_key'])) {
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if( ! empty( $options['api_key'] ) ) {
             $api_key = $options['api_key'];
         }
-        if(defined('MYSTYLE_OVERRIDE_API_KEY')) {
+        if( defined( 'MYSTYLE_OVERRIDE_API_KEY' ) ) {
             $api_key = MYSTYLE_OVERRIDE_API_KEY;
         }
 
@@ -50,11 +50,11 @@ abstract class MyStyle_Options {
      */
     static function get_secret() {
         $secret = null;
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array() );
-        if(!empty($options['secret'])) {
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if( ! empty( $options['secret'] ) ) {
             $secret = $options['secret'];
         }
-        if(defined('MYSTYLE_OVERRIDE_SECRET')) {
+        if( defined( 'MYSTYLE_OVERRIDE_SECRET' ) ) {
             $secret = MYSTYLE_OVERRIDE_SECRET;
         }
 
@@ -62,5 +62,3 @@ abstract class MyStyle_Options {
     }
 
 }
-
-

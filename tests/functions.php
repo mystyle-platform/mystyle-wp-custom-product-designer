@@ -12,13 +12,12 @@
  * through
  * @return array An array of the function names that were found.
  */
-function get_function_names($regArray1) {
+function get_function_names( $regArray1 ) {
    $function_names = array();
-   foreach($regArray1 as $regArray2) {
-       foreach($regArray2 as $regArray3) {
-           $function_names[] = $regArray3["function"][1];
+   foreach( $regArray1 as $regArray2 ) {
+       foreach( $regArray2 as $regArray3 ) {
+           $function_names[] = $regArray3['function'][1];
        }
    }
    return $function_names;
 }
-

@@ -15,7 +15,7 @@ class OptionsTest extends WP_UnitTestCase {
     function test_options_are_keys_installed() {
         //Clear out any options
         $options = array();
-        update_option(MYSTYLE_OPTIONS_NAME, $options);
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
         
         //Assert function correctly determines api_key and secret are not installed
         $this->assertFalse( MyStyle_Options::are_keys_installed() );
@@ -23,7 +23,7 @@ class OptionsTest extends WP_UnitTestCase {
         //Install the api_key and secret
         $options['api_key'] = 'test_key';
         $options['secret'] = 'test_secret';
-        update_option(MYSTYLE_OPTIONS_NAME, $options);
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
 
         //Assert function correctly determines that keys are installed
         $this->assertTrue( MyStyle_Options::are_keys_installed() );
@@ -35,16 +35,16 @@ class OptionsTest extends WP_UnitTestCase {
     function test_options_get_api_key() {
         //Install the api_key
         $options = array();
-        update_option(MYSTYLE_OPTIONS_NAME, $options);
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
         $options['api_key'] = 'test';
-        update_option(MYSTYLE_OPTIONS_NAME, $options);
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
         
         $api_key = MyStyle_Options::get_api_key();
 
-        if(defined('MYSTYLE_OVERRIDE_API_KEY')) {
-            $this->assertContains(MYSTYLE_OVERRIDE_API_KEY, $api_key);
+        if( defined( 'MYSTYLE_OVERRIDE_API_KEY' ) ) {
+            $this->assertContains( MYSTYLE_OVERRIDE_API_KEY, $api_key );
         } else {
-            $this->assertEquals('test', $api_key);
+            $this->assertEquals( 'test', $api_key );
         }
     }
     
@@ -54,18 +54,17 @@ class OptionsTest extends WP_UnitTestCase {
     function test_options_get_secret() {
         //Install the secret
         $options = array();
-        update_option(MYSTYLE_OPTIONS_NAME, $options);
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
         $options['secret'] = 'test';
-        update_option(MYSTYLE_OPTIONS_NAME, $options);
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
         
         $secret = MyStyle_Options::get_secret();
 
-        if(defined('MYSTYLE_OVERRIDE_API_KEY')) {
-            $this->assertContains(MYSTYLE_OVERRIDE_SECRET, $secret);
+        if( defined( 'MYSTYLE_OVERRIDE_API_KEY' ) ) {
+            $this->assertContains( MYSTYLE_OVERRIDE_SECRET, $secret );
         } else {
-            $this->assertEquals('test', $secret);
+            $this->assertEquals( 'test', $secret );
         }
     }
-    
-}
 
+}

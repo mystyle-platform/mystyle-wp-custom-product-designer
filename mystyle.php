@@ -32,69 +32,69 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 //define constants
-define('MYSTYLE_PATH', plugin_dir_path( __FILE__ ));
-define('MYSTYLE_INCLUDES', plugin_dir_path( __FILE__ ) . "includes/");
-define('MYSTYLE_BASENAME', plugin_basename(__FILE__));
+define( 'MYSTYLE_PATH', plugin_dir_path( __FILE__ ) );
+define( 'MYSTYLE_INCLUDES', plugin_dir_path( __FILE__ ) . 'includes/' );
+define( 'MYSTYLE_BASENAME', plugin_basename(__FILE__) );
 
 // Include the optional config.php file
-if(file_exists(MYSTYLE_PATH . 'config.php')) {
-    include_once(MYSTYLE_PATH . 'config.php');
+if( file_exists( MYSTYLE_PATH . 'config.php' ) ) {
+    include_once( MYSTYLE_PATH . 'config.php');
 }
 
-if(!defined('MYSTYLE_SERVER')) { define('MYSTYLE_SERVER', 'http://api.ogmystyle.com/'); }
-if(!defined('MYSTYLE_VERSION')) { define('MYSTYLE_VERSION', '0.2.1'); }
+if( ! defined('MYSTYLE_SERVER') ) { define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' ); }
+if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '0.2.1' ); }
 
-define('MYSTYLE_OPTIONS_NAME', 'mystyle_options');
-define('MYSTYLE_NOTICES_NAME', 'mystyle_notices');
-define('MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id');
+define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
+define( 'MYSTYLE_NOTICES_NAME', 'mystyle_notices' );
+define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
 
 //includes
-require_once(MYSTYLE_PATH . 'tests/qunit.php');
-require_once(MYSTYLE_INCLUDES . 'class-mystyle.php');
-require_once(MYSTYLE_INCLUDES . 'class-options.php');
-require_once(MYSTYLE_INCLUDES . 'class-design.php');
-require_once(MYSTYLE_INCLUDES . 'class-api.php');
-require_once(MYSTYLE_INCLUDES . 'pages/class-customize-page.php');
-require_once(MYSTYLE_INCLUDES . 'shortcodes/class-customizer-shortcode.php');
+require_once( MYSTYLE_PATH . 'tests/qunit.php' );
+require_once( MYSTYLE_INCLUDES . 'class-mystyle.php' );
+require_once( MYSTYLE_INCLUDES . 'class-options.php' );
+require_once( MYSTYLE_INCLUDES . 'class-design.php' );
+require_once( MYSTYLE_INCLUDES . 'class-api.php' );
+require_once( MYSTYLE_INCLUDES . 'pages/class-customize-page.php' );
+require_once( MYSTYLE_INCLUDES . 'shortcodes/class-customizer-shortcode.php' );
 
 $mystyle = new MyStyle();
 
-if(is_admin()) {
+if( is_admin() ) {
     //---- ADMIN ----//
     //includes
-    require_once(MYSTYLE_INCLUDES . 'admin/class-admin.php');
-    require_once(MYSTYLE_INCLUDES . 'admin/pages/class-options-page.php');
-    require_once(MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php');
-    require_once(MYSTYLE_INCLUDES . 'admin/class-woocommerce-admin-product.php');
-    require_once(MYSTYLE_INCLUDES . 'admin/class-woocommerce-admin-order.php');
+    require_once( MYSTYLE_INCLUDES . 'admin/class-admin.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/pages/class-options-page.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/class-woocommerce-admin-product.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/class-woocommerce-admin-order.php' );
     
     //Plugin setup and registrations
     $mystyle_admin = new MyStyle_Admin();
-    register_activation_hook(__FILE__, array('MyStyle_Admin', 'mystyle_activation'));
-    register_deactivation_hook(__FILE__, array('MyStyle_Admin', 'mystyle_deactivation'));
-    register_uninstall_hook(__FILE__, array('MyStyle_Admin', 'mystyle_uninstall'));
+    register_activation_hook( __FILE__, array( 'MyStyle_Admin', 'mystyle_activation' ) );
+    register_deactivation_hook( __FILE__, array( 'MyStyle_Admin', 'mystyle_deactivation' ) );
+    register_uninstall_hook( __FILE__, array( 'MyStyle_Admin', 'mystyle_uninstall' ) );
     
     //set up the options page 
     $mystyle_options_page = new MyStyle_Options_Page();
-    add_filter('contextual_help', 'mystyle_help_dispatch', 10, 3);
+    add_filter( 'contextual_help', 'mystyle_help_dispatch', 10, 3 );
     
     //hook into the WooCommerce admin
     $mystyle_woocommerce_admin_product = new MyStyle_WooCommerce_Admin_Product();
     $mystyle_woocommerce_admin_order = new MyStyle_WooCommerce_Admin_Order();
     
     //load qunit
-    if( (defined('MYSTYLE_LOAD_QUNIT')) && (MYSTYLE_LOAD_QUNIT == true) ) {
-        add_action('admin_footer', 'mystyle_load_qunit');
+    if( ( defined('MYSTYLE_LOAD_QUNIT') ) && ( MYSTYLE_LOAD_QUNIT == true ) ) {
+        add_action( 'admin_footer', 'mystyle_load_qunit' );
     }
 
 } else {
     //---- FRONT END ----//
-    require_once(MYSTYLE_INCLUDES . 'frontend/class-frontend.php');
-    require_once(MYSTYLE_INCLUDES . 'frontend/endpoints/class-handoff.php');
+    require_once( MYSTYLE_INCLUDES . 'frontend/class-frontend.php' );
+    require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-handoff.php' );
     
     $mystyle_frontend = new MyStyle_FrontEnd();
     $mystyle_handoff = new MyStyle_Handoff();
 }
 
 //Register shortcodes
-add_shortcode('mystyle_customizer', array('MyStyle_Customizer_Shortcode', 'output')); 
+add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) ); 

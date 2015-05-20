@@ -13,8 +13,8 @@ class MyStyle_Options_Page {
      * menu.
      */
     function __construct() {
-        add_action('admin_menu', array( &$this, 'mystyle_add_options_page_to_menu' ));
-        add_action('admin_init', array( &$this, 'mystyle_options_init' ));
+        add_action( 'admin_menu', array( &$this, 'mystyle_add_options_page_to_menu' ) );
+        add_action( 'admin_init', array( &$this, 'mystyle_options_init' ) );
     }
     
     
@@ -26,14 +26,14 @@ class MyStyle_Options_Page {
         <div class="wrap">
             <div id="icon-options-general" class="icon32"><br /></div><h2>MyStyle Settings</h2>
             <form action="options.php" method="post">
-                <?php settings_fields('mystyle_options'); ?>
-                <?php do_settings_sections('mystyle'); ?>
+                <?php settings_fields( 'mystyle_options' ); ?>
+                <?php do_settings_sections( 'mystyle' ); ?>
 
                 <p class="submit">
                     <input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e('Save Changes'); ?>" />
                 </p>
             </form>
-            <?php if(MyStyle_Options::are_keys_installed()) { ?>
+            <?php if( MyStyle_Options::are_keys_installed() ) { ?>
                 <br/>
                 <ul>
                     <li>Go to <a href="https://www.mystyleplatform.com" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.</li>
@@ -48,7 +48,7 @@ class MyStyle_Options_Page {
      */
     function mystyle_add_options_page_to_menu() {
         global $mystyle_hook;
-        $mystyle_hook = add_options_page('MyStyle Settings', 'MyStyle', 'manage_options', 'mystyle', array( &$this, 'mystyle_options_render_page') );
+        $mystyle_hook = add_options_page( 'MyStyle Settings', 'MyStyle', 'manage_options', 'mystyle', array( &$this, 'mystyle_options_render_page' ) );
     }
 
     /**
@@ -68,8 +68,8 @@ class MyStyle_Options_Page {
      * Function to render the API Key field and description
      */
     function mystyle_options_render_api_key() {
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        $api_key = (array_key_exists('api_key', $options)) ? $options['api_key'] : "";
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $api_key = ( array_key_exists('api_key', $options) ) ? $options['api_key'] : '';
      ?>
         <input id="mystyle_api_key" name="mystyle_options[api_key]" size="5" type="text" value="<?php echo $api_key ?>" />
         <p class="description">
@@ -84,8 +84,8 @@ class MyStyle_Options_Page {
      * Function to render the Secret field and description
      */
     function mystyle_options_render_secret() {
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        $secret = (array_key_exists('secret', $options)) ? $options['secret'] : "";
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $secret = ( array_key_exists( 'secret', $options ) ) ? $options['secret'] : '';
      ?>
         <input id="mystyle_secret" name="mystyle_options[secret]" size="27" type="text" value="<?php echo $secret ?>" />
         <p class="description">
@@ -100,24 +100,24 @@ class MyStyle_Options_Page {
      * Function to initialize the MyStyle options page.
      */
     function mystyle_options_init() {
-        register_setting('mystyle_options', MYSTYLE_OPTIONS_NAME, array( &$this, 'mystyle_options_validate' ) );
+        register_setting( 'mystyle_options', MYSTYLE_OPTIONS_NAME, array( &$this, 'mystyle_options_validate' ) );
         add_settings_section(
                 'mystyle_options_access_section',
                 'Access Settings',
-                array( &$this,'mystyle_options_render_access_section_text'),
+                array( &$this,'mystyle_options_render_access_section_text' ),
                 'mystyle'
         );
         add_settings_field(
                 'api_key', 
                 'API Key', 
-                array(&$this, 'mystyle_options_render_api_key'),
+                array( &$this, 'mystyle_options_render_api_key' ),
                 'mystyle', 
                 'mystyle_options_access_section'
         );
         add_settings_field(
                 'secret', 
                 'Secret', 
-                array(&$this, 'mystyle_options_render_secret'),
+                array( &$this, 'mystyle_options_render_secret' ),
                 'mystyle', 
                 'mystyle_options_access_section'
         );
@@ -132,8 +132,8 @@ class MyStyle_Options_Page {
      * @param array $input The submitted values
      * @return array Returns the new options to be stored in the database.
      */
-    function mystyle_options_validate($input) {
-        $old_options = get_option(MYSTYLE_OPTIONS_NAME);
+    function mystyle_options_validate( $input ) {
+        $old_options = get_option( MYSTYLE_OPTIONS_NAME );
         $new_options = $old_options;  //start with the old options.
         
         $has_errors = false;
@@ -143,8 +143,8 @@ class MyStyle_Options_Page {
         //------------ process the new values ------------
         
         //API Key
-        $new_options['api_key'] = trim($input['api_key']);
-        if(!preg_match('/^[a-z0-9]*$/i', $new_options['api_key'])) {
+        $new_options['api_key'] = trim( $input['api_key'] );
+        if(!preg_match( '/^[a-z0-9]*$/i', $new_options['api_key'] ) ) {
             $has_errors = true;
             $msg_type = 'error';
             $msg_message = 'Please enter a valid API Key.';
@@ -152,8 +152,8 @@ class MyStyle_Options_Page {
         }
         
         //Secret
-        $new_options['secret'] = trim($input['secret']);
-        if(!preg_match('/^[a-z0-9]*$/i', $new_options['secret'])) {
+        $new_options['secret'] = trim( $input['secret'] );
+        if( ! preg_match('/^[a-z0-9]*$/i', $new_options['secret'] ) ) {
             $has_errors = true;
             $msg_type = 'error';
             $msg_message = 'Please enter a valid Secret.';

@@ -18,18 +18,18 @@ abstract class MyStyle_API {
      * @param MyStyle_Design $design
      * @return \MyStyle_Design
      */
-    public static function add_api_data_to_design(MyStyle_Design $design) {
+    public static function add_api_data_to_design( MyStyle_Design $design ) {
             
         //Set up the api call variables.
         $api_key = MyStyle_Options::get_api_key();
         $secret = MyStyle_Options::get_secret();
-        $action = "design";
-        $method = "get";
+        $action = 'design';
+        $method = 'get';
         $data = '{"design_id":[' . $design->get_design_id() . ']}';
         $ts = time();
 
         $toHash = $action . $method . $api_key . $data . $ts;
-        $sig = base64_encode(hash_hmac('sha1', $toHash, $secret, true));
+        $sig = base64_encode( hash_hmac( 'sha1', $toHash, $secret, true ) );
 
         $post_data = array();
         $post_data['action'] = $action;
@@ -49,7 +49,7 @@ abstract class MyStyle_API {
                 'blocking' => true,
                 'headers' => array(),
                 'body' => $post_data,
-                'cookies' => array()
+                'cookies' => array(),
             )
         );
 
@@ -58,11 +58,11 @@ abstract class MyStyle_API {
             $error_message = $response->get_error_message();
             //$body = "Something went wrong: $error_message";
         } else {
-            $response_data = json_decode($response['body'], true); //['data'][$design_id]);
-            $design_data = $response_data['data'][$design->get_design_id()];            
+            $response_data = json_decode( $response['body'], true ); //['data'][$design_id]);
+            $design_data = $response_data['data'][ $design->get_design_id() ];            
             //var_dump($design_data);
 
-            $design->add_api_data($design_data);
+            $design->add_api_data( $design_data );
         }
         
         return $design;

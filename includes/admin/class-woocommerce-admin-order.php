@@ -15,15 +15,15 @@ class MyStyle_WooCommerce_Admin_Order {
      * Constructor, constructs the class and registers hooks.
      */
     function __construct() {
-        add_action('admin_init', array(&$this, 'admin_init'));
+        add_action( 'admin_init', array( &$this, 'admin_init' ) );
     }
     
     /**
      * Init the mystyle woocommerce admin
      */
     function admin_init() {
-        add_action('woocommerce_admin_order_item_headers', array(&$this, 'add_order_item_header'));
-        add_action('woocommerce_admin_order_item_values', array(&$this, 'admin_order_item_values'), 10, 3);        
+        add_action( 'woocommerce_admin_order_item_headers', array( &$this, 'add_order_item_header' ) );
+        add_action( 'woocommerce_admin_order_item_values', array( &$this, 'admin_order_item_values' ), 10, 3 );        
     }
     
     /**
@@ -38,10 +38,10 @@ class MyStyle_WooCommerce_Admin_Order {
     /**
      * Add the mystyle column body to the order items table.
      */
-    public function admin_order_item_values($_product, $item, $item_id) {
+    public function admin_order_item_values( $_product, $item, $item_id ) {
 
         $mystyle_data = null;
-        if(isset($item['mystyle_data'])) {            
+        if( isset( $item['mystyle_data'] ) ) {            
             /**
              * NOTE: We aught to be able to get the data by unserializing
              * $item['mystyle_data'], this however fails because the data comes
@@ -49,12 +49,12 @@ class MyStyle_WooCommerce_Admin_Order {
              * string counts off.  To work around this, we just get the data
              * directly using a database call.
              */
-            $mystyle_data = wc_get_order_item_meta($item_id, 'mystyle_data');
+            $mystyle_data = wc_get_order_item_meta( $item_id, 'mystyle_data' );
         }
     
         ?>
         <td class="item-mystyle">
-            <?php if($mystyle_data != null) : ?>
+            <?php if( $mystyle_data != null ) : ?>
                 <div class="mystyle-item-toggle">
                     <a class="mystyle-item-link" title="Click to toggle" onclick="mystyleOrderItemDataToggleVis(<?php echo $item_id; ?>)">MyStyle Data</a>
                     <a id="mystyle-item-handle-<?php echo $item_id; ?>" class="mystyle-item-handle" title="Click to toggle" onclick="mystyleOrderItemDataToggleVis(<?php echo $item_id; ?>)"></a>
@@ -74,5 +74,3 @@ class MyStyle_WooCommerce_Admin_Order {
     }
 
 }
-
-

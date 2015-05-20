@@ -17,12 +17,12 @@ require_once(MYSTYLE_INCLUDES . 'admin/help/options-page-help.php');
  * @param string $screen Used to access the elements of the current page.
  * @return string The new contextual help.
  */
-function mystyle_help_dispatch($contextual_help, $screen_id, $screen) {
+function mystyle_help_dispatch( $contextual_help, $screen_id, $screen ) {
     global $mystyle_hook;
     
-    switch ($screen_id) {
+    switch( $screen_id ) {
         case $mystyle_hook:
-            $contextual_help = mystyle_options_page_help($contextual_help, $screen_id, $screen);
+            $contextual_help = mystyle_options_page_help( $contextual_help, $screen_id, $screen );
             break;
         //add additional hooks here as required
     }

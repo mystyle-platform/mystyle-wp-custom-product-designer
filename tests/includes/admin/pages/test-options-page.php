@@ -20,12 +20,12 @@ class OptionsPageTest extends WP_UnitTestCase {
         global $wp_filter;
         
         //Assert that the init function is registered.
-        $function_names = get_function_names($wp_filter['admin_menu']);
-        $this->assertContains('mystyle_add_options_page_to_menu', $function_names);
+        $function_names = get_function_names( $wp_filter['admin_menu'] );
+        $this->assertContains( 'mystyle_add_options_page_to_menu', $function_names );
                
         //Assert that the init function is registered.
-        $function_names = get_function_names($wp_filter['admin_init']);
-        $this->assertContains('mystyle_options_init', $function_names);
+        $function_names = get_function_names( $wp_filter['admin_init'] );
+        $this->assertContains( 'mystyle_options_init', $function_names );
     }
     
     /**
@@ -39,24 +39,24 @@ class OptionsPageTest extends WP_UnitTestCase {
         $mystyle_options_page->mystyle_options_render_page();
         $outbound = ob_get_contents();
         ob_end_clean();
-        $this->assertContains('MyStyle Settings', $outbound);
+        $this->assertContains( 'MyStyle Settings', $outbound );
     }
     
     /**
      * Test the mystyle_add_options_page_to_menu function.
      */    
     public function test_mystyle_add_options_page_to_menu() {
-        wp_set_current_user($this->factory->user->create(array( 'role' => 'administrator')));
+        wp_set_current_user($this->factory->user->create( array( 'role' => 'administrator' ) ) );
         
         //Assert that the menu page doesn't yet exist
-        $this->assertEquals("", menu_page_url('mystyle', false));
+        $this->assertEquals( '', menu_page_url( 'mystyle', false ) );
         
         $mystyle_options_page = new MyStyle_Options_Page();
         $mystyle_options_page->mystyle_add_options_page_to_menu();
         
         //Assert that the menu page was added
         $expected = 'http://example.org/wp-admin/options-general.php?page=mystyle';
-        $this->assertEquals($expected, menu_page_url('mystyle', false));
+        $this->assertEquals($expected, menu_page_url( 'mystyle', false ) );
     }
     
     /**
@@ -70,7 +70,7 @@ class OptionsPageTest extends WP_UnitTestCase {
         $mystyle_options_page->mystyle_options_render_access_section_text();
         $outbound = ob_get_contents();
         ob_end_clean();
-        $this->assertContains('To use MyStyle', $outbound);
+        $this->assertContains( 'To use MyStyle', $outbound );
     }
     
     /**
@@ -84,7 +84,7 @@ class OptionsPageTest extends WP_UnitTestCase {
         $mystyle_options_page->mystyle_options_render_api_key();
         $outbound = ob_get_contents();
         ob_end_clean();
-        $this->assertContains('MyStyle API Key', $outbound);
+        $this->assertContains( 'MyStyle API Key', $outbound );
     }
     
     /**
@@ -98,7 +98,7 @@ class OptionsPageTest extends WP_UnitTestCase {
         $mystyle_options_page->mystyle_options_render_secret();
         $outbound = ob_get_contents();
         ob_end_clean();
-        $this->assertContains('MyStyle Secret', $outbound);
+        $this->assertContains( 'MyStyle Secret', $outbound );
     }
     
     /**
@@ -121,7 +121,7 @@ class OptionsPageTest extends WP_UnitTestCase {
         
         $input = array();
         $input['api_key'] = 'not valid';
-        $input['secret'] = 'validsecret';
+        $input['secret']  = 'validsecret';
         
         //Run the function.
         $new_options = $mystyle_options_page->mystyle_options_validate($input);
@@ -130,10 +130,10 @@ class OptionsPageTest extends WP_UnitTestCase {
         $settings_errors = get_settings_errors();
         
         //Assert that an error was thrown
-        $this->assertEquals("error", $settings_errors[0]["type"]);
+        $this->assertEquals( 'error', $settings_errors[0]['type'] );
         
         //Assert that the settings were not stored.
-        $this->assertTrue(empty($new_options['api_key']));
+        $this->assertTrue( empty( $new_options['api_key'] ) );
     }
     
     /**
@@ -158,10 +158,10 @@ class OptionsPageTest extends WP_UnitTestCase {
         $settings_errors = get_settings_errors();
         
         //Assert that an error was thrown
-        $this->assertEquals("error", $settings_errors[0]["type"]);
+        $this->assertEquals( 'error', $settings_errors[0]['type'] );
         
         //Assert that the settings were not stored.
-        $this->assertTrue(empty($new_options['api_key']));
+        $this->assertTrue( empty( $new_options['api_key'] ) );
     }
     
     /**
@@ -184,18 +184,18 @@ class OptionsPageTest extends WP_UnitTestCase {
         
         //Get the messages
         $settings_errors = get_settings_errors();
-        $type = $settings_errors[0]["type"];
+        $type = $settings_errors[0]['type'];
         
         //Assert that no errors were thrown.
         foreach ( $settings_errors as $key => $details ) {
-            $this->assertNotEquals("error", $details['type']);
+            $this->assertNotEquals( 'error', $details['type'] );
         }
         
         //Assert that the settings were saved.
-        $this->assertEquals("updated", $settings_errors[0]["type"]);
+        $this->assertEquals( 'updated', $settings_errors[0]['type'] );
         
         //Assert that the settings were stored.
-        $this->assertFalse(empty($new_options['api_key']));
+        $this->assertFalse( empty( $new_options['api_key'] ) );
     }
     
     /**
@@ -211,7 +211,7 @@ class OptionsPageTest extends WP_UnitTestCase {
         
         $input = array();
         $input['api_key'] = 'validapikey';
-        $input['secret'] = 'not valid';
+        $input['secret']  = 'not valid';
         
         //Run the function.
         $new_options = $mystyle_options_page->mystyle_options_validate($input);
@@ -220,10 +220,10 @@ class OptionsPageTest extends WP_UnitTestCase {
         $settings_errors = get_settings_errors();
         
         //Assert that an error was thrown
-        $this->assertEquals("error", $settings_errors[0]["type"]);
+        $this->assertEquals( 'error', $settings_errors[0]['type'] );
         
         //Assert that the settings were not stored.
-        $this->assertTrue(empty($new_options['secret']));
+        $this->assertTrue( empty( $new_options['secret'] ) );
     }
     
     /**
@@ -239,19 +239,19 @@ class OptionsPageTest extends WP_UnitTestCase {
         
         $input = array();
         $input['api_key'] = 'validapikey';
-        $input['secret'] = '"><script>alert(document.cookie)</script>';
+        $input['secret']  = '"><script>alert(document.cookie)</script>';
         
         //Run the function.
-        $new_options = $mystyle_options_page->mystyle_options_validate($input);
+        $new_options = $mystyle_options_page->mystyle_options_validate( $input );
         
         //Get the messages
         $settings_errors = get_settings_errors();
         
         //Assert that an error was thrown
-        $this->assertEquals("error", $settings_errors[0]["type"]);
+        $this->assertEquals( 'error', $settings_errors[0]['type'] );
         
         //Assert that the settings were not stored.
-        $this->assertTrue(empty($new_options['secret']));
+        $this->assertTrue( empty( $new_options['secret'] ) );
     }
     
     /**
@@ -267,25 +267,24 @@ class OptionsPageTest extends WP_UnitTestCase {
         
         $input = array();
         $input['api_key'] = 'validapikey';
-        $input['secret'] = 'A0000';
+        $input['secret']  = 'A0000';
         
         //Run the function.
         $new_options = $mystyle_options_page->mystyle_options_validate($input);
         
         //Get the messages
         $settings_errors = get_settings_errors();
-        $type = $settings_errors[0]["type"];
+        $type = $settings_errors[0]['type'];
         
         //Assert that no errors were thrown.
         foreach ( $settings_errors as $key => $details ) {
-            $this->assertNotEquals("error", $details['type']);
+            $this->assertNotEquals( 'error', $details['type'] );
         }
         
         //Assert that the settings were saved.
-        $this->assertEquals("updated", $settings_errors[0]["type"]);
+        $this->assertEquals( 'updated', $settings_errors[0]['type']);
         
         //Assert that the settings were stored.
-        $this->assertFalse(empty($new_options['secret']));
+        $this->assertFalse( empty( $new_options['secret'] ) );
     }
 }
-
