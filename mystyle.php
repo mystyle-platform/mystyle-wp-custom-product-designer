@@ -50,6 +50,7 @@ define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
 
 //includes
 require_once( MYSTYLE_PATH . 'tests/qunit.php' );
+require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-options.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-design.php' );

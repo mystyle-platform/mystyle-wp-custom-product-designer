@@ -33,10 +33,14 @@ abstract class MyStyle_Customize_Page {
     /**
      * Function to get the id of the customize page.
      * @return number Returns the page id of the Customize page.
+     * @throws MyStyle_Exception
      */
     public static function get_id() {
         //Get the page id of the Customize page
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if( ! isset( $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ] ) ) {
+            throw new MyStyle_Exception( __( 'Customize Page is Missing', 'mystyle' ), 404 );
+        }
         $page_id = $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ];
         
         return $page_id;

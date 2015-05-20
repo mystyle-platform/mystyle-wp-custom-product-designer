@@ -1,6 +1,7 @@
 <?php
 
 require_once(MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php');
+require_once(MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php');
 
 /**
  * The AdminTest class includes tests for testing the MyStyle_Admin class.
@@ -84,6 +85,37 @@ class AdminTest extends WP_UnitTestCase {
         $this->assertContains( 'MyStyle', $outbound );
     }
     
+     /**
+     * Test the activate function.
+     */    
+    public function test_activate() {
+        $mystyle_admin = new MyStyle_Admin();
+        
+        $mystyle_admin->activate();
+        
+        $customize_page_id = MyStyle_Customize_Page::get_id();
+        
+        //assert that the customize page was created
+        $this->assertNotNull($customize_page_id);
+    }
+    
+    /**
+     * Test the deactivate function.
+     */    
+    public function test_deactivate() {
+        $this->setExpectedException('MyStyle_Exception');
+        
+        $mystyle_admin = new MyStyle_Admin();
+        
+        //activate the plugin so that we can then deactivate it
+        $mystyle_admin->activate();
+        
+        $mystyle_admin->deactivate();
+        
+        //Exception expected (see above)
+        $customize_page_id = MyStyle_Customize_Page::get_id();
+    }
+        
      /**
      * Test the uninstall function.
      */    
