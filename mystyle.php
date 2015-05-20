@@ -97,4 +97,4 @@ if(is_admin()) {
 }
 
 //Register shortcodes
-add_shortcode( 'mystyle_customizer', array('MyStyle_Customizer_Shortcode', 'output')); 
+add_shortcode('mystyle_customizer', array('MyStyle_Customizer_Shortcode', 'output')); 
