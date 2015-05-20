@@ -1,6 +1,6 @@
 <?php
 
-require_once(MYSTYLE_INCLUDES . 'admin/pages/class-options-page.php');
+require_once(MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php');
 
 /**
  * The OptionsPageTest class includes tests for testing the MyStyle_Options_Page

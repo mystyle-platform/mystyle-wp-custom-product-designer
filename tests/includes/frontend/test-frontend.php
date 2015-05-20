@@ -1,6 +1,6 @@
 <?php
 
-require_once(MYSTYLE_INCLUDES . 'frontend/class-frontend.php');
+require_once(MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php');
 
 /**
  * The FrontEndTest class includes tests for testing the MyStyle_FrontEnd class.
