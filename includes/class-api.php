@@ -10,7 +10,7 @@
  */
 abstract class MyStyle_API {
     
-    private static $api_endpoint_url = "http://api.ogmystyle.com/";
+    private static $api_endpoint_url = MYSTYLE_SERVER;
     
     /**
      * Retrieves design data from the API and adds it to the passed design

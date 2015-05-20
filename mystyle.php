@@ -41,7 +41,7 @@ if(file_exists(MYSTYLE_PATH . 'config.php')) {
     include_once(MYSTYLE_PATH . 'config.php');
 }
 
-if(!defined('MYSTYLE_SERVER')) { define('MYSTYLE_SERVER', 'www.mystyleplatform.com/api'); }
+if(!defined('MYSTYLE_SERVER')) { define('MYSTYLE_SERVER', 'http://api.ogmystyle.com/'); }
 if(!defined('MYSTYLE_VERSION')) { define('MYSTYLE_VERSION', '0.2.1'); }
 
 define('MYSTYLE_OPTIONS_NAME', 'mystyle_options');
