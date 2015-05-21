@@ -8,7 +8,7 @@
  */
 class MyStyle_Handoff {
     
-    private static $SLUG = "mystyle-handoff";
+    private static $SLUG = 'mystyle-handoff';
     
     /**
      * Constructor, constructs the class and sets up the hooks.
@@ -23,7 +23,6 @@ class MyStyle_Handoff {
      * Needs to be public and static because it is registered as an a WP action.
      */
     public static function override() {
-        //$url = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
         $url = $_SERVER['REQUEST_URI'];
         //echo $url;
         if( strpos( $url, self::$SLUG ) !== FALSE ) {
