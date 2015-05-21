@@ -9,7 +9,7 @@ require_once(MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php');
  * @since 0.2.1
  * @todo Add the tests for the rest of the class functions/methods.
  */
-class FrontEndTest extends WP_UnitTestCase {
+class MyStyleFrontEndTest extends WP_UnitTestCase {
     
     /**
      * Test the constructor

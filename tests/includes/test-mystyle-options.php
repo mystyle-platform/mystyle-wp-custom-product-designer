@@ -1,12 +1,13 @@
 <?php
 
 /**
- * The OptionsTest class includes tests for testing the MyStyle_Options class.
+ * The MyStyleOptionsTest class includes tests for testing the MyStyle_Options
+ * class.
  *
  * @package MyStyle
  * @since 0.1.0
  */
-class OptionsTest extends WP_UnitTestCase {
+class MyStyleOptionsTest extends WP_UnitTestCase {
 
     /**
      * Assert that are_keys_installed() correctly returns whether

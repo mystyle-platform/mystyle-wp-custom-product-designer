@@ -3,13 +3,13 @@
 require_once(MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php');
 
 /**
- * The OptionsPageTest class includes tests for testing the MyStyle_Options_Page
+ * The MyStyleOptionsPageTest class includes tests for testing the MyStyle_Options_Page
  * class
  *
  * @package MyStyle
  * @since 0.1.0
  */
-class OptionsPageTest extends WP_UnitTestCase {
+class MyStyleOptionsPageTest extends WP_UnitTestCase {
     
     /**
      * Test the constructor

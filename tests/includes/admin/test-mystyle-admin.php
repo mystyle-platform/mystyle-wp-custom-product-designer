@@ -4,12 +4,13 @@ require_once(MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php');
 require_once(MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php');
 
 /**
- * The AdminTest class includes tests for testing the MyStyle_Admin class.
+ * The MystyleAdminTest class includes tests for testing the MyStyle_Admin 
+ * class.
  *
  * @package MyStyle
  * @since 0.1.0
  */
-class AdminTest extends WP_UnitTestCase {
+class MyStyleAdminTest extends WP_UnitTestCase {
     
     /**
      * Test the constructor
