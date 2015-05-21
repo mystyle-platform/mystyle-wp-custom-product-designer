@@ -2,7 +2,6 @@
 
 /**
  * Class for working with the MyStyle Customize page.
- * @todo Create unit tests
  * @package MyStyle
  * @since 0.2.1
  */
