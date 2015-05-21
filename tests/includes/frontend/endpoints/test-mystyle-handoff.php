@@ -42,23 +42,13 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
     
     /**
      * Test the override function for a matching uri
-     * TODO: Get this working
      */    
     public function test_override_overrides_matching_uri() {
-        /*
-        $mystyle_handoff = new MyStyle_Handoff();
+        $url = 'http://localhost/wordpress/?mystyle-handoff';
+ 
+        $response = wp_remote_get( $url );
         
-        $_SERVER['REQUEST_URI'] = 'mystyle-handoff';
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-        
-        //Assert that override overrides the output
-        ob_start();
-        $mystyle_handoff->override();
-        ob_flush();
-        $outbound = ob_get_contents();
-        ob_end_clean();
-        $this->assertContains( '<h2>Access Denied</h2>', $outbound );
-         */
+        $this->assertContains( '<h2>Access Denied</h2>', $response['body'] );
     }
     
     /**

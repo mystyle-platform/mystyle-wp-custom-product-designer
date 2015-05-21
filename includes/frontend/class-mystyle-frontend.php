@@ -32,7 +32,9 @@ class MyStyle_FrontEnd {
      * Wrap the section with a mystyle-customizable-product class
      */
     public static function before_add_to_cart_button() {
-        $current_product_id = get_the_ID();
+        global $post;
+        
+        $current_product_id = $post->ID;
         $mystyle_enabled = get_post_meta( $current_product_id, '_mystyle_enabled', true );
         
         if( $mystyle_enabled == 'yes' ) {
@@ -44,8 +46,10 @@ class MyStyle_FrontEnd {
      * Add Customize button after the add to cart button.
      */
     public static function after_add_to_cart_button() {
+        global $post;
+        
         $customize_page_id = MyStyle_Customize_Page::get_id();
-        $current_product_id = get_the_ID();
+        $current_product_id = $post->ID;
         $mystyle_enabled = get_post_meta( $current_product_id, '_mystyle_enabled', true );
         
         if( $mystyle_enabled == 'yes' ) {
