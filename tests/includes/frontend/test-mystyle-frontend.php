@@ -50,7 +50,7 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
      * @param type $single
      * @return string
      */
-    function mock_mystyle_metadata($metadata, $object_id, $meta_key, $single){
+    function mock_mystyle_metadata( $metadata, $object_id, $meta_key, $single ){
         return 'yes';
     }
     

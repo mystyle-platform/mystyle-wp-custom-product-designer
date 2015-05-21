@@ -2,7 +2,7 @@
 
 /**
  * The MyStyleCustomizePageTest class includes tests for testing the 
- * MyStyle_CustomizePage class.
+ * MyStyle_Customize_Page class.
  *
  * @package MyStyle
  * @since 0.2.1
@@ -19,7 +19,7 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
         $page = get_post($page_id); 
         
         //assert that the page was created and has the expected title
-        $this->assertEquals($page->post_title, "Customize");
+        $this->assertEquals( $page->post_title, 'Customize' );
     }
     
     /**
@@ -32,7 +32,7 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
         $page_id2 = MyStyle_Customize_Page::get_id();
         
         //assert that the page id was successfully retrieved
-        $this->assertEquals($page_id2, $page_id1);
+        $this->assertEquals( $page_id2, $page_id1 );
     }
     
     /**
@@ -49,7 +49,7 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
         $page = get_post($page_id);
         
         //assert that the page was deleted
-        $this->assertEquals($page->post_status, 'trash');
+        $this->assertEquals( $page->post_status, 'trash' );
     }
     
 }
