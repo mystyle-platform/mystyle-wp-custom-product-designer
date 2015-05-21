@@ -17,7 +17,7 @@ class MyStyleWooCommerceAdminOrderTest extends WP_UnitTestCase {
     public function test_constructor() {
         global $wp_filter;
         
-        $mystyle_wc_admin_order = new MyStyle_WooCommerce_Admin_Order;
+        $mystyle_wc_admin_order = new MyStyle_WooCommerce_Admin_Order();
         
         //Assert that the init function is registered.
         $function_names = get_function_names( $wp_filter['admin_init'] );
@@ -30,7 +30,7 @@ class MyStyleWooCommerceAdminOrderTest extends WP_UnitTestCase {
     public function test_admin_init() {
         global $wp_filter;
         
-        $mystyle_wc_admin_order = new MyStyle_WooCommerce_Admin_Order;
+        $mystyle_wc_admin_order = new MyStyle_WooCommerce_Admin_Order();
         $mystyle_wc_admin_order->admin_init();
         
         //Assert that the add_order_item_header function is registered.
@@ -46,7 +46,7 @@ class MyStyleWooCommerceAdminOrderTest extends WP_UnitTestCase {
      * Test the add_order_item_header function
      */    
     public function test_add_order_item_header() {
-        $mystyle_wc_admin_order = new MyStyle_WooCommerce_Admin_Order;
+        $mystyle_wc_admin_order = new MyStyle_WooCommerce_Admin_Order();
         
         //Assert that the header was rendered
         ob_start();
@@ -60,7 +60,7 @@ class MyStyleWooCommerceAdminOrderTest extends WP_UnitTestCase {
      * Test the admin_order_item_values function
      */    
     public function test_admin_order_item_values() {
-        $mystyle_wc_admin_order = new MyStyle_WooCommerce_Admin_Order;
+        $mystyle_wc_admin_order = new MyStyle_WooCommerce_Admin_Order();
         
         //Assert that the header was rendered
         ob_start();
