@@ -4,8 +4,6 @@
  * MyStyle Design class. 
  * 
  * The MyStyle Design class represents a design in the MyStyle system.
- * 
- * TODO: Write tests for this class.
  *
  * @package MyStyle
  * @since 0.2.1

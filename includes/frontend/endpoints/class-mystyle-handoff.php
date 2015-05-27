@@ -2,7 +2,6 @@
 
 /**
  * Class for creating an endpoint the mystyle handoff.
- * @todo Create unit tests
  * @package MyStyle
  * @since 0.2.1
  */

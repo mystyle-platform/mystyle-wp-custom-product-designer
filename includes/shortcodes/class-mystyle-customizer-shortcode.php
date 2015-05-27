@@ -2,7 +2,6 @@
 
 /**
  * Class for the MyStyle Customizer Shortcode.
- * @todo Create unit tests
  * @package MyStyle
  * @since 0.2.1
  */
