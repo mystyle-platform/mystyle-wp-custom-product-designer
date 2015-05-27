@@ -41,11 +41,11 @@ class MyStyle_Design {
         $instance = new self();
         
         $instance->description = htmlspecialchars( $post_data['description'] );
-        $instance->design_id = htmlspecialchars( $post_data['design_id'] );
-        $instance->template_id = htmlspecialchars( $post_data['product_id'] ); //mapping product_id to template_id
-        $instance->product_id = htmlspecialchars( $post_data['local_product_id'] ); //mapping local_product_id to product_id
-        $instance->user_id = htmlspecialchars( $post_data['user_id'] );
-        $instance->price = htmlspecialchars( $post_data['price'] );
+        $instance->design_id = (int) htmlspecialchars( $post_data['design_id'] );
+        $instance->template_id = (int) htmlspecialchars( $post_data['product_id'] ); //mapping product_id to template_id
+        $instance->product_id = (int) htmlspecialchars( $post_data['local_product_id'] ); //mapping local_product_id to product_id
+        $instance->user_id = (int) htmlspecialchars( $post_data['user_id'] );
+        $instance->price = (int) htmlspecialchars( $post_data['price'] );
         
         return $instance;
     }
@@ -65,11 +65,11 @@ class MyStyle_Design {
         $instance->web_url = htmlspecialchars( $meta_data['web_url'] );
         $instance->thumb_url = htmlspecialchars( $meta_data['thumb_url'] );
         $instance->design_url = htmlspecialchars( $meta_data['design_url'] );
-        $instance->design_id = htmlspecialchars( $meta_data['design_id'] );
-        $instance->template_id = htmlspecialchars( $meta_data['template_id'] );
-        $instance->product_id = htmlspecialchars( $meta_data['product_id'] );
-        $instance->user_id = htmlspecialchars( $meta_data['user_id'] );
-        $instance->price = htmlspecialchars( $meta_data['price'] );
+        $instance->design_id = (int) htmlspecialchars( $meta_data['design_id'] );
+        $instance->template_id = (int) htmlspecialchars( $meta_data['template_id'] );
+        $instance->product_id = (int) htmlspecialchars( $meta_data['product_id'] );
+        $instance->user_id = (int) htmlspecialchars( $meta_data['user_id'] );
+        $instance->price = (int) htmlspecialchars( $meta_data['price'] );
         
         return $instance;
     }
