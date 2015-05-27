@@ -33,7 +33,7 @@ class MyStyle {
      */
     public static function add_mystyle_order_item_meta( $item_id, $values ) {
         if( isset( $values['mystyle_data'] ) ) {
-            woocommerce_add_order_item_meta( $item_id, 'mystyle_data', $values['mystyle_data'] );
+            wc_add_order_item_meta( $item_id, 'mystyle_data', $values['mystyle_data'] );
         }
     }
     
