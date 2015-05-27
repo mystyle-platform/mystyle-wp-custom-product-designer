@@ -33,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //define constants
 define( 'MYSTYLE_PATH', plugin_dir_path( __FILE__ ) );
-define( 'MYSTYLE_INCLUDES', plugin_dir_path( __FILE__ ) . 'includes/' );
+define( 'MYSTYLE_INCLUDES', MYSTYLE_PATH . 'includes/' );
 define( 'MYSTYLE_BASENAME', plugin_basename(__FILE__) );
 
 // Include the optional config.php file
