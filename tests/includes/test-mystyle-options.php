@@ -13,7 +13,7 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
      * Assert that are_keys_installed() correctly returns whether
      * or not a MyStyle API Key and Secret have been installed.
      */    
-    function test_options_are_keys_installed() {
+    function test_are_keys_installed() {
         //Clear out any options
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
@@ -33,7 +33,7 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
     /**
      * Assert that get_api_key() returns the expected API Key.
      */    
-    function test_options_get_api_key() {
+    function test_get_api_key() {
         //Install the api_key
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
@@ -52,7 +52,7 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
     /**
      * Assert that get_secret() returns the expected secret.
      */    
-    function test_options_get_secret() {
+    function test_get_secret() {
         //Install the secret
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
