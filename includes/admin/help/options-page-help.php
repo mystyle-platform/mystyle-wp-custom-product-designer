@@ -2,7 +2,6 @@
 /**
  * Functions for rendering the MyStyle contextual help for the options page 
  * within the WordPress Administrator.
- * TODO: finish this help
  * @package MyStyle
  * @since 0.1.0
  */
@@ -31,9 +30,16 @@ function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
     <ol>
         <li>Install the plugin.</li>
         <li>Activate the plugin.</li>
-        <li>Create an account at <a href="http://www.mystyleplatform.com" target="_blank" title="mystyle.com">mystyle.com</a></li>
+        <li>Create an account at <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.</li>
         <li>Get your MyStyle API Key and Secret and add them to the fields on this page.</li>
-        <li>The customizer should now be viewable from your store.</li>
+        <li>Install the WooCommerce Plugin (if not already installed).</li>
+        <li>Create a new WooCommerce product or edit an existing one.</li>
+        <li>In the product options, click on the MyStyle tab.</li>
+        <li>Enable Customization for the product and enter the product\'s
+            MyStyle Template Id.
+        </li>
+        <li>The product should now have a "Customize" button that takes the 
+        user to the Customize page.</li>
     </ol>
     ';
 
@@ -45,17 +51,22 @@ function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
     <h2>Troubleshooting</h2>
     <p>If the plugin isn\'t working, please check the following:</p>
     <ul>
-      <li>TODO 1</li>
-      <li>TODO 2</li>
+        <li>Make sure that the MyStyle plugin is installed and activated.</li>
+        <li>Make sure that you have entered your MyStyle API Key and Secret
+        on the MyStyle settings page.</li>
+        <li>Make sure that WooCommerce is installed.</li>
+        <li>Make sure that you have enabled customization on at least one of
+        your WooCommerce products and that you have set the product\'s template
+        id.</li>
     </ul>
     <p>
-    Please <a href="http://www.mystyleplatform.com/contact" target="_blank" title="contact us">contact us</a> for additional support.
+    Please <a href="http://www.mystyleplatform.com/contact/" target="_blank" title="contact us">contact us</a> for additional support.
     </p>
     ';
 
     $sidebar_content = '
     <h5>For more Information:</strong></h5>
-    <a href="http://www.mystyleplatform.com" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a><br/>
+    <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a><br/>
     ';
 
     //overview tab
