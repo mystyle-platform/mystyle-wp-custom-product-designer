@@ -21,7 +21,7 @@ class MyStyle_WooCommerce_Admin_Order {
     /**
      * Init the mystyle woocommerce admin
      */
-    public static function admin_init() {
+    function admin_init() {
         add_action( 'woocommerce_admin_order_item_headers', array( &$this, 'add_order_item_header' ) );
         add_action( 'woocommerce_admin_order_item_values', array( &$this, 'admin_order_item_values' ), 10, 3 );        
     }
