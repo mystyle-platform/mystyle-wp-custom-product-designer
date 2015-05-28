@@ -70,7 +70,7 @@ class MyStyle_Options_Page {
             <?php if( MyStyle_Options::are_keys_installed() ) { ?>
                 <br/>
                 <ul>
-                    <li>Go to <a href="https://www.mystyleplatform.com" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.</li>
+                    <li>Go to <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.</li>
                 </ul>
             <?php } //end if ?>
         </div>
@@ -85,7 +85,7 @@ class MyStyle_Options_Page {
         <p>
             To use MyStyle, you will need a MyStyle API Key and Secret.  To get
             your MyStyle API Key and Secret, log in or register at 
-            <a href="http://www.mystyleplatform.com" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.
+            <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.
         </p>
     <?php
     }
@@ -101,7 +101,7 @@ class MyStyle_Options_Page {
         <p class="description">
             You must enter a valid MyStyle API Key here. If you need an
             API Key, you can create one
-            <a href="https://www.mystyleplatform.com" target="_blank" title="MyStyle Signup">here</a>.
+            <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="MyStyle Signup">here</a>.
         </p>
     <?php
     }
@@ -117,7 +117,7 @@ class MyStyle_Options_Page {
         <p class="description">
             You must enter a valid MyStyle Secret here. If you need a MyStyle 
             Secret, you can create one
-            <a href="https://www.mystyleplatform.com" target="_blank" title="MyStyle Signup">here</a>.
+            <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="MyStyle Signup">here</a>.
         </p>
     <?php
     }
