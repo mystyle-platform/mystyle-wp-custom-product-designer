@@ -1,3 +1,7 @@
+= 0.3.0 =
+
+* Added basic customizer functionality.
+
 = 0.2.1 =
 
 * Added Secret field.
