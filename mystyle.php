@@ -4,7 +4,7 @@
 Plugin Name: MyStyle
 Plugin URI: http://www.mystyleplatform.com
 Description: The MyStyle WordPress Plugin is a simple plugin that allows your customers to customize products in WooCommerce.
-Version: 0.3.0
+Version: 0.4.0
 Author: MyStyle
 Author URI: www.mystyleplatform.com
 License: GPL v3
@@ -42,7 +42,7 @@ if( file_exists( MYSTYLE_PATH . 'config.php' ) ) {
 }
 
 if( ! defined('MYSTYLE_SERVER') ) { define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' ); }
-if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '0.3.0' ); }
+if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '0.4.0' ); }
 
 define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
 define( 'MYSTYLE_NOTICES_NAME', 'mystyle_notices' );

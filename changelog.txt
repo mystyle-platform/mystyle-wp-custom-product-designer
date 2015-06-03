@@ -1,3 +1,10 @@
+= 0.4.0 =
+
+* Added customize button to product listing.
+* Fixed bug with extra closing div on the front end product page.
+* Added help link to options page.
+* Now handling no param scenario for Customize page.
+
 = 0.3.0 =
 
 * Added basic customizer functionality.
