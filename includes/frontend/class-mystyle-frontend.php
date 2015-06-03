@@ -39,7 +39,7 @@ class MyStyle_FrontEnd {
         $mystyle_enabled = get_post_meta( $current_product_id, '_mystyle_enabled', true );
         
         if( $mystyle_enabled == 'yes' ) {
-            echo '<div class="mystyle-customizable-product">';
+            echo '<div class="mystyle-customizable-product">'; //open the mystyle_customizable wrapper div
         }
     }
     
@@ -57,7 +57,7 @@ class MyStyle_FrontEnd {
             $customizer_url = add_query_arg( 'product_id', $current_product_id, get_permalink( $customize_page_id ) );
             
             //TODO: Add multilingual support
-            $out  = '</div><button class="mystyle_customize_button button alt" type="button" onclick="location.href = \'' . $customizer_url . '\'; return false;">Customize</button>';
+            $out  =     '<button class="mystyle_customize_button button alt" type="button" onclick="location.href = \'' . $customizer_url . '\'; return false;">Customize</button>';
             $out .= '</div>'; //close the mystyle_customizable wrapper div
             echo $out;
         }
