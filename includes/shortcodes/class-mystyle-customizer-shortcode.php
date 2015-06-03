@@ -14,6 +14,12 @@ abstract class MyStyle_Customizer_Shortcode {
         
         $mystyle_app_id = MyStyle_Options::get_api_key();
         
+        if( ! isset( $_GET['product_id'] ) ) {
+            $out = '<h2>You\'ll need to select a product to customize first!</h2>';
+            $out .= '<p><a href="' . get_home_url() . '">Home</a>';
+            return $out;
+        }
+        
         $product_id = htmlspecialchars( $_GET['product_id'] ) ;
         $mystyle_template_id = get_post_meta( $product_id, '_mystyle_template_id', true );
         
