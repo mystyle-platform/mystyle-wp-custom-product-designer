@@ -29,6 +29,10 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         //Assert that the before_add_to_cart_button function is registered.
         $function_names = get_function_names( $wp_filter['woocommerce_after_add_to_cart_button'] );
         $this->assertContains( 'after_add_to_cart_button', $function_names );
+        
+        //Assert that the loop_add_to_cart_link function is registered.
+        $function_names = get_function_names( $wp_filter['woocommerce_loop_add_to_cart_link'] );
+        $this->assertContains( 'loop_add_to_cart_link', $function_names );
     }
     
     /**
@@ -101,6 +105,62 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         $outbound = ob_get_contents();
         ob_end_clean();
         $this->assertContains( '<button class="mystyle_customize_button', $outbound );
+    }
+    
+    /**
+     * Test the loop_add_to_cart_link function for a regular (uncustomizable) 
+     * product.
+     */    
+    public function test_loop_add_to_cart_link_for_uncustomizable_product() {
+        $mystyle_frontend = new MyStyle_FrontEnd();
+        
+        //Create a mock link
+        $link = '<a href="">link</a>';
+        
+         //Mock the global $post variable
+        $post_vars = new stdClass();
+        $post_vars->ID = 1;
+        $GLOBALS['post'] = new WP_Post( $post_vars );
+        
+        //Create a mock product using the mock Post
+        $product = new WC_Product_Simple($GLOBALS['post']);
+        
+        $html = $mystyle_frontend->loop_add_to_cart_link( $link, $product );
+        
+        $this->assertContains( $link, $html );
+    }
+    
+    /**
+     * Test the loop_add_to_cart_link function for a customizable product.
+     */    
+    public function test_loop_add_to_cart_link_for_customizable_product() {
+        $mystyle_frontend = new MyStyle_FrontEnd();
+        
+        //Create a mock link
+        $link = '<a href="">link</a>';
+        
+        //Mock the global $post variable
+        $post_vars = new stdClass();
+        $post_vars->ID = 1;
+        $GLOBALS['post'] = new WP_Post( $post_vars );
+        
+        //Create a mock product using the mock Post
+        $product = new WC_Product_Simple($GLOBALS['post']);
+        
+        //Mock the mystyle_metadata
+        add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
+        
+        //Create the MyStyle Customize page (needed by the function)
+        MyStyle_Customize_Page::create();
+        
+        //Run the function
+        $html = $mystyle_frontend->loop_add_to_cart_link( $link, $product );
+        
+        //var_dump($html);
+        
+        $expected = '<a href="http://example.org/?page_id=7&#038;product_id=1" rel="nofollow" class="button  product_type_simple" >Customize</a>';
+        
+        $this->assertContains( $expected, $html );
     }
     
 }
