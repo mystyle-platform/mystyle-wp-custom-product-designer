@@ -16,18 +16,18 @@ Stable tag: 0.4.1
 
 The MyStyle WordPress Plugin is a simple plugin that allows your customers to design, 
 customize, and personalize the products you can control in WooCommerce.
-  Users have a live product preview throughout the design experience.
-  Popular products include custom phone cases, t-shirts, skateboards, canvas prints, etc.  Custom products are added directly to the Woo Commerce shopping cart.
+  Customized products are added directly to the Woo Commerce shopping cart.
 
 == Description ==
 
 
 
-You can enable any product in Woo Commerce for personalization / customization using MyStyle.  This allows any user to design their own graphics with a photo-realistic live product preview, and can generate the print file for the order to exact high-res specs (full-mode only).  All Customizers, images, uploaded images, and high-res print images are hosted remotely in the cloud by the MyStyle Platform and Amazon s3.
+You can enable any product in Woo Commerce for personalization / customization using MyStyle.  This allows any user to design their own graphics with a photo-realistic live product preview, and can generate the print file for the order to exact high-res specs (full-mode only).  All Customizers, images, uploaded images, and high-res print images are hosted remotely in the cloud by the MyStyle Platform and Amazon s3.  Users have a live product preview throughout the design experience.
+  Popular products include custom phone cases, t-shirts, skateboards, canvas prints, etc.  
 
 = Requirements =
 
-Please note the MyStyle WordPress Woo Commerce Plugin is a serviceware plugin, and currently free for demo trial use only (no print files) and requires an active MyStyle Developer account to use in Full Mode and have access to the high-res, cloud-hosted print files.  The MyStyle Woo Commerce plugin works in conjunction with the 
+Please note the MyStyle WordPress Woo Commerce Plugin is a serviceware plugin, and currently free for demo use only (no print files) and requires an active MyStyle Developer account to use in Full Mode and have access to the high-res, cloud-hosted print files.  The MyStyle Woo Commerce plugin works in conjunction with the 
 [mystyleplatform.com](http://www.mystyleplatform.com/?ref=wprm) customization service.
 
 
