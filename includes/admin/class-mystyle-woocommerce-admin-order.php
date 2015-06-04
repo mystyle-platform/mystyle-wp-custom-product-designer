@@ -61,7 +61,9 @@ class MyStyle_WooCommerce_Admin_Order {
                 </div>
                 <div class="mystyle-item-data" id="mystyle-item-data-<?php echo $item_id; ?>" style="display:none;">
                     <div>
-                        <a href="<?php echo $mystyle_data['print_url']; ?>" target="_blank">Print Image</a>&nbsp;&nbsp;
+                        <?php if( ! MyStyle_Options::is_demo_mode() ) { ?>
+                            <a href="<?php echo $mystyle_data['print_url']; ?>" target="_blank">Print Image</a>&nbsp;&nbsp;
+                        <?php } ?>
                         <a href="<?php echo $mystyle_data['web_url']; ?>" target="_blank">Web Preview</a>
                     </div>
                     <img src="<?php echo $mystyle_data['thumb_url']; ?>"/>

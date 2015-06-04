@@ -67,5 +67,47 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
             $this->assertEquals( 'test', $secret );
         }
     }
+    
+    /**
+     * Assert that is_demo_mode() returns true if api key is a demo key.
+     */    
+    function test_is_demo_mode_for_demo_key() {
+        $demo_key = 74;
+
+        //Install the api_key
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['api_key'] = $demo_key;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $api_key = MyStyle_Options::get_api_key();
+
+        if( defined( 'MYSTYLE_OVERRIDE_API_KEY' ) ) {
+            echo 'Error, can\'t test.';
+        } else {
+            $this->assertTrue( MyStyle_Options::is_demo_mode() );
+        }
+    }
+    
+    /**
+     * Assert that is_demo_mode() returns false if api key is a not a demo key.
+     */    
+    function test_is_demo_mode_for_non_demo_key() {
+        $demo_key = 72;
+
+        //Install the api_key
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['api_key'] = $demo_key;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $api_key = MyStyle_Options::get_api_key();
+
+        if( defined( 'MYSTYLE_OVERRIDE_API_KEY' ) ) {
+            echo 'Error, can\'t test.';
+        } else {
+            $this->assertFalse( MyStyle_Options::is_demo_mode() );
+        }
+    }
 
 }

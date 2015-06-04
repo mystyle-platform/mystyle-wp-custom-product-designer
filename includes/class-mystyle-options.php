@@ -60,5 +60,18 @@ abstract class MyStyle_Options {
 
         return $secret;
     }
+    
+    /**
+     * Function that determines if the plugin is in demo mode.
+     * @return string Returns the active secret.
+     */
+    static function is_demo_mode() {
+        $api_key = self::get_api_key();
+        $demo_key = 74;
+        
+        $ret = ($api_key == $demo_key);
+
+        return $ret;
+    }
 
 }
