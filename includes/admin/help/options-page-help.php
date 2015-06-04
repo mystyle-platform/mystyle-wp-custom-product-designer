@@ -30,7 +30,7 @@ function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
     <ol>
         <li>Install the plugin.</li>
         <li>Activate the plugin.</li>
-        <li>Create an account at <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.</li>
+        <li>Create an account at <a href="http://www.mystyleplatform.com/apply-mystyle-license-developer-account-api-key-secret/?ref=wp_plugin_4" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.</li>
         <li>Get your MyStyle API Key and Secret and add them to the fields on this page.</li>
         <li>Install the WooCommerce Plugin (if not already installed).</li>
         <li>Create a new WooCommerce product or edit an existing one.</li>

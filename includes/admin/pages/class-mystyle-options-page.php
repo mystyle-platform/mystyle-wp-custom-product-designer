@@ -84,7 +84,7 @@ class MyStyle_Options_Page {
         <p>
             To use MyStyle, you will need a MyStyle API Key and Secret.  To get
             your MyStyle API Key and Secret, log in or register at 
-            <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.
+            <a href="http://www.mystyleplatform.com/apply-mystyle-license-developer-account-api-key-secret/?ref=wp_plugin_1" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.
         </p>
     <?php
     }
@@ -100,7 +100,7 @@ class MyStyle_Options_Page {
         <p class="description">
             You must enter a valid MyStyle API Key here. If you need an
             API Key, you can create one
-            <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="MyStyle Signup">here</a>.
+            <a href="http://www.mystyleplatform.com/apply-mystyle-license-developer-account-api-key-secret/?ref=wp_plugin_2" target="_blank" title="MyStyle Signup">here</a>.
         </p>
     <?php
     }
@@ -116,7 +116,7 @@ class MyStyle_Options_Page {
         <p class="description">
             You must enter a valid MyStyle Secret here. If you need a MyStyle 
             Secret, you can create one
-            <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="MyStyle Signup">here</a>.
+            <a href="http://www.mystyleplatform.com/apply-mystyle-license-developer-account-api-key-secret/?ref=wp_plugin_3" target="_blank" title="MyStyle Signup">here</a>.
         </p>
     <?php
     }
