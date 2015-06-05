@@ -34,7 +34,7 @@ class MyStyle_Handoff {
      * page. Only supports POST requests, GET requests are given an Access
      * DENIED message.
      * 
-     * Needs to be public and static because it is registered as an a WP action.
+     * Needs to be public and static because it is registered as a WP action.
      * 
      * @return string Returns the html to output to the browser.
      */
@@ -77,19 +77,60 @@ class MyStyle_Handoff {
                                         $cart_item_data
                                 );
             
-            //Redirect the user to the cart
-            $html = '<!DOCTYPE html><html>' .
-                    '<head>' .
-                      '<style>h1 {color: rgba(51, 51, 51, 0.7); font-family: "Noto Sans",sans-serif;}</style>' .
-                      '<title>Adding Product to Cart...</title>' . 
-                      '<META http-equiv="refresh" content="1;URL=' . $cart->get_cart_url() . '">' .
-                    '</head>' . 
-                    '<body><h1>Adding product to cart...</h1></body>'.
-                    '</html>';
+            if(MyStyle_Options::is_demo_mode()) {
+                //Send to Demo Mode Message
+                $html = self::buildView('MyStyle Demo', $cart->get_cart_url(), false);
+            } else {
+                //Redirect the user to the cart
+                $html = self::buildView('Adding Product to Cart...', $cart->get_cart_url(), true);
+            }
+            
         }
         else { // GET Request
             $html = '<!DOCTYPE html><html><head></head><body><h1>MyStyle</h1><h2>Access Denied</h2></body></head>';
         }
+        
+        return $html;
+    }
+    
+    /**
+     * Builds a view to display to the user after the handoff.
+     * @param string $title The title to be used in the view.
+     * @param string $link The link to be used in the view.
+     * @param string $enable_redirect Whether or not to redirect.
+     * @return string Returns a string of html.
+     */
+    public static function buildView( $title, $link, $enable_redirect ) {
+        
+        $redirect = ( $enable_redirect ) 
+                        ? '<META http-equiv="refresh" content="0;URL=' . $link . '">' 
+                        : '';
+        
+        $format = '
+            <!DOCTYPE html><html>
+                <head>
+                    <style>
+                        h1, h2, p {color: #515151; font-family: "Noto Sans",sans-serif;}
+                        h1 {font-size: 3em}
+                        body {background-color: #E6E6E6;} 
+                        div.container {width: 600px; background: white; box-shadow: 0 2px 6px rgba(100, 100, 100, 0.3); margin: 30px auto 0px auto;} 
+                        section {padding: 10px 30px 30px 30px; text-align: center;}
+                    </style>
+                    %s
+                    <title>%s</title>
+                </head>
+                <body>
+                    <div class="container">
+                        <section>
+                            <h1>%s</h1>
+                            <h2>Product added to cart</h2>
+                            <p>The customized product has been added to your cart.</p>
+                            <p><a href="%s">Go to cart</a></p>
+                        </section>
+                    </div>
+                </body>
+            </html>';
+        $html = sprintf($format, $redirect, $title, $title, $link);
         
         return $html;
     }
