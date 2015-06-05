@@ -63,7 +63,7 @@ class MyStyle_WooCommerce_Admin_Product {
                                 'label'       => __( 'Template Id', 'mystyle' ), 
                                 'placeholder' => '',
                                 'desc_tip'    => 'true',
-                                'description' => __( 'Enter the MyStyle Template Id for the product.', 'woocommerce' ),
+                                'description' => __( 'Enter the MyStyle Template Id for the product. For an example template, you can use Template Id 70.', 'woocommerce' ),
                                 'value'       => $template_id,
                             )
 			);

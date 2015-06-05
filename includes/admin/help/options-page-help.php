@@ -16,16 +16,17 @@
  */
 function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
     $overview_content = '
-    <h1>MyStyle Plugin Help</h1>
-    <p>Need help using the mystyle plugin? Use the tabs to the left
-       to find instructions for installation, use and troubleshooting.
+    <h1>MyStyle Custom Product Designer Help</h1>
+    <p>Need help using the MyStyle Custom Product Designer plugin? Use the tabs
+       to the left to find instructions for installation, use and 
+       troubleshooting.
     </p>';
 
     $installation_content = '
     <h2>Installation/Configuration</h2>
     <p>
-        The MyStyle WordPress Plugin is a simple plugin that allows your customers to
-        customize products in WooCommerce.
+        The MyStyle Custom Product Designer is a simple plugin that allows your
+        customers to customize your WooCommerce products.
     </p>
     <ol>
         <li>Install the plugin.</li>
@@ -42,10 +43,11 @@ function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
         user to the Customize page.</li>
     </ol>
     ';
-
+    /*
     $use_content = '
     <h2>Using MyStyle</h2>
     <p>Once you have MyStyle set up and working...';
+     */
 
     $troubleshooting_content = '
     <h2>Troubleshooting</h2>
@@ -82,11 +84,13 @@ function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
         'content' => $installation_content
     ) );
     //use tab
+    /*
     $screen->add_help_tab( array(
         'id' => 'mystyle_use',
         'title' => 'Using MyStyle',
         'content' => $use_content
     ));
+     */
     //installation tab
     $screen->add_help_tab( array(
         'id' => 'mystyle_troubleshooting',

@@ -19,7 +19,7 @@ QUnit.test( "Test that the page was rendered", function( assert ) {
 */
 QUnit.test( "Test that the help was rendered", function( assert ) {
     var header = $("#tab-panel-mystyle_overview h1").html();
-    assert.equal(header, "MyStyle Plugin Help", "Help rendered");
+    assert.equal(header, "MyStyle Custom Product Designer Help", "Help rendered");
 });
 
 
