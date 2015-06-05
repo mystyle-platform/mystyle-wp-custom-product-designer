@@ -1,3 +1,8 @@
+= 0.4.2 =
+
+* Updated the readme.txt
+* Updated the help
+
 = 0.4.1 =
 
 * Fixed the help link.
