@@ -24,13 +24,13 @@ class HelpDispatchTest extends WP_UnitTestCase {
         $screen = WP_Screen::get( $mystyle_hook );
         
         //Assert that the MyStyle help is not in the screen.
-        $this->assertNotContains( 'MyStyle Plugin Help', serialize( $screen ) );
+        $this->assertNotContains( 'MyStyle Custom Product Designer Help', serialize( $screen ) );
         
         //run the function
         mystyle_help_dispatch( $contextual_help, $screen_id, $screen );
         
         //Asset that the MyStyle help is now in the screen.
-        $this->assertContains( 'MyStyle Plugin Help', serialize( $screen ) );
+        $this->assertContains( 'MyStyle Custom Product Designer Help', serialize( $screen ) );
     }
     
 }

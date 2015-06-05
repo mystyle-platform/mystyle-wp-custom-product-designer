@@ -25,7 +25,7 @@ class OptionsPageHelpTest extends WP_UnitTestCase {
         mystyle_options_page_help( $contextual_help, $screen_id, $screen );
         
         //Asset that the MyStyle help is now in the screen.
-        $this->assertContains( 'MyStyle Plugin Help', serialize( $screen ) );
+        $this->assertContains( 'MyStyle Custom Product Designer Help', serialize( $screen ) );
     }
     
 }
