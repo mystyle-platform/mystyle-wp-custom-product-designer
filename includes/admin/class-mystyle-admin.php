@@ -100,14 +100,13 @@ class MyStyle_Admin {
      * Called when the plugin is deactivated.
      */
     static function deactivate() {
-        MyStyle_Customize_Page::delete();
+        //
     }
     
     /**
      * Function called when MyStyle is uninstalled
      */
     static function uninstall() {
-        delete_option( MYSTYLE_OPTIONS_NAME );
         delete_option( MYSTYLE_NOTICES_NAME );
     }
 
