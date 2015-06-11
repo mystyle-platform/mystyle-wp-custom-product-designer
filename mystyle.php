@@ -35,6 +35,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 define( 'MYSTYLE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'MYSTYLE_INCLUDES', MYSTYLE_PATH . 'includes/' );
 define( 'MYSTYLE_BASENAME', plugin_basename(__FILE__) );
+define( 'MYSTYLE_URL', plugins_url( '/', __FILE__ ) );
+define( 'MYSTYLE_ASSETS_URL', MYSTYLE_URL . 'assets/' );
 
 // Include the optional config.php file
 if( file_exists( MYSTYLE_PATH . 'config.php' ) ) {

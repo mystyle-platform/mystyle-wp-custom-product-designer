@@ -26,11 +26,11 @@ class MyStyle_Admin {
      */
     function admin_init() {
         //Add the MyStyle admin stylesheet to the WP admin head
-        wp_register_style( 'myStyleAdminStylesheet', plugins_url( '../../css/admin.css', __FILE__ ) );
+        wp_register_style( 'myStyleAdminStylesheet', MYSTYLE_ASSETS_URL . 'css/admin.css' );
         wp_enqueue_style( 'myStyleAdminStylesheet' );
         
         //Add the MyStyle admin js file to the WP admin head
-        wp_register_script( 'myStyleAdminJavaScript', plugins_url( '../../js/admin.js', __FILE__ ) );
+        wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js' );
         wp_enqueue_script( 'myStyleAdminJavaScript' );
         
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());

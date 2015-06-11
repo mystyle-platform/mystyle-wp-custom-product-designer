@@ -25,7 +25,7 @@ class MyStyle_FrontEnd {
      */
     public static function init() {
         //Add the MyStyle frontend stylesheet to the WP frontend head
-        wp_register_style( 'myStyleFrontEndStylesheet', plugins_url('../../css/frontend.css', __FILE__ ) );
+        wp_register_style( 'myStyleFrontEndStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css' );
         wp_enqueue_style( 'myStyleFrontEndStylesheet' );
     }
     
