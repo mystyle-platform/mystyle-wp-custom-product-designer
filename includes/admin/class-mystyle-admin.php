@@ -94,6 +94,7 @@ class MyStyle_Admin {
      */
     static function activate() {
         MyStyle_Customize_Page::create();
+        MyStyle_Install::create_tables();
     }
 
     /**

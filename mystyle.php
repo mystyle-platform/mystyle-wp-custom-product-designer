@@ -65,6 +65,7 @@ $mystyle = new MyStyle();
 if( is_admin() ) {
     //---- ADMIN ----//
     //includes
+    require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php' );
