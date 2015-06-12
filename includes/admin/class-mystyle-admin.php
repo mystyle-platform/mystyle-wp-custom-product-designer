@@ -93,7 +93,9 @@ class MyStyle_Admin {
      * Called when the plugin is activated.
      */
     static function activate() {
-        MyStyle_Customize_Page::create();
+        if( ! MyStyle_Customize_Page::exists() ) {
+            MyStyle_Customize_Page::create();
+        }
         MyStyle_Install::create_tables();
     }
 

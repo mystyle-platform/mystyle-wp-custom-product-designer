@@ -46,6 +46,24 @@ abstract class MyStyle_Customize_Page {
     }
     
     /**
+     * Function to determine if the page exists.
+     * @return boolean Returns true if the page exists, otherwise false.
+     * @throws MyStyle_Exception
+     * @todo Add unit testing for this function
+     */
+    public static function exists() {
+        $exists = false;
+        
+        //Get the page id of the Customize page
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if( isset( $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ] ) ) {
+            $exists = true;
+        }
+        
+        return $exists;
+    }
+    
+    /**
      * Function to delete the Customize page.
      */
     public static function delete() {
