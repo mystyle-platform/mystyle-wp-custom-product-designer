@@ -1,4 +1,4 @@
-MyStyle WordPress Plugin
+MyStyle Custom Product Designer
 ========================
-The MyStyle WordPress Plugin is a simple plugin that allows your customers to
-customize products in WooCommerce.
+The MyStyle Custom Product Designer is a simple plugin that allows your 
+customers to customize your WooCommerce products

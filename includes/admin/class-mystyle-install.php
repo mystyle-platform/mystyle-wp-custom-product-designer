@@ -6,7 +6,7 @@
  * The MyStyle_Install class has functions for activating/installing the plugin.
  *
  * @package MyStyle
- * @since 0.4.2
+ * @since 0.5
  * @todo Add unit testing for this class.
  */
 class MyStyle_Install {
@@ -35,28 +35,15 @@ class MyStyle_Install {
 
         if ( $wpdb->has_cap( 'collation' ) ) {
             if ( ! empty( $wpdb->charset ) ) {
-                $collate .= "DEFAULT CHARACTER SET $wpdb->charset";
+                $collate .= " DEFAULT CHARACTER SET $wpdb->charset";
             }
             if ( ! empty( $wpdb->collate ) ) {
                 $collate .= " COLLATE $wpdb->collate";
             }
         }
 
-        return "
-            CREATE TABLE {$wpdb->prefix}mystyle_designs (
-                ms_design_id bigint(32) NOT NULL,
-                ms_product_id bigint(20) NOT NULL,
-                ms_user_id bigint(20) NULL,
-                ms_description text NULL,
-                ms_price numeric(15,2) NULL,
-                ms_print_url varchar(255) NULL,
-                ms_web_url varchar(255) NULL,
-                ms_thumb_url varchar(255) NULL,
-                ms_design_url varchar(255) NULL,
-                product_id bigint(20) NULL
-                PRIMARY KEY  (ms_design_id)
-            ) $collate;
-            ";
+        return MyStyle_Design::getSchema() .  $collate . ';';
+            
     }
 
 }

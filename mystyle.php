@@ -3,13 +3,13 @@
 /*
 Plugin Name: MyStyle
 Plugin URI: http://www.mystyleplatform.com
-Description: The MyStyle WordPress Plugin is a simple plugin that allows your customers to customize products in WooCommerce.
+Description: The MyStyle Custom Product Designer is a simple plugin that allows your customers to customize products in WooCommerce.
 Version: 0.4.2
 Author: MyStyle
 Author URI: www.mystyleplatform.com
 License: GPL v3
 
-MyStyle WordPress Plugin
+MyStyle Custom Product Designer
 Copyright (c) 2015 MyStyle <contact@mystyleplatform.com>
 
 This program is free software: you can redistribute it and/or modify
@@ -55,6 +55,8 @@ require_once( MYSTYLE_PATH . 'tests/qunit.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-options.php' );
+require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entity.php' );
+require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-dbmanager.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-design.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-api.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );

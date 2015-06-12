@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class for creating an endpoint the mystyle handoff.
+ * Simple entity class.
  * @package MyStyle
- * @since 0.2.1
+ * @since 0.5
  */
 class MyStyle_Handoff {
     
@@ -60,6 +60,9 @@ class MyStyle_Handoff {
             
             //Add data from api call
             $design = MyStyle_Api::add_api_data_to_design( $design );
+            
+            //Persist the design to the database
+            $design = MyStyle_DBManager::persist( $design );
             
             //Get the woocommerce cart
             $cart = $woocommerce->cart;

@@ -1,5 +1,5 @@
 /**
- * QUnit tests for the MyStyle WordPress Plugin's admin options page.
+ * QUnit tests for the plugin's admin options page.
  * 
  * @package MyStyle
  * @since 0.1.0

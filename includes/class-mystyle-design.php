@@ -8,7 +8,9 @@
  * @package MyStyle
  * @since 0.2.1
  */
-class MyStyle_Design {
+class MyStyle_Design implements MyStyle_Entity {
+    
+    private static $TABLE_NAME = 'mystyle_designs'; //Note: this is without the db prefix;
     
     private $description;
     private $print_url;
@@ -264,6 +266,92 @@ class MyStyle_Design {
         $meta['price'] = $this->price;
         
         return $meta;
+    }
+    
+    /**
+     * Gets the SQL schema for creating the datbase table
+     * @global wpdb $wpdb
+     * @return string Returns a string containing SQL schema for creating the
+     * table.
+     * @todo Add unit testing
+     */
+    public static function getSchema() {
+        global $wpdb;
+        
+        $table_name = $wpdb->prefix . self::$TABLE_NAME;
+        return "
+            CREATE TABLE $table_name (
+                ms_design_id bigint(32) NOT NULL,
+                ms_product_id bigint(20) NOT NULL,
+                ms_user_id bigint(20) NULL,
+                ms_description text NULL,
+                ms_price numeric(15,2) NULL,
+                ms_print_url varchar(255) NULL,
+                ms_web_url varchar(255) NULL,
+                ms_thumb_url varchar(255) NULL,
+                ms_design_url varchar(255) NULL,
+                product_id bigint(20) NULL,
+                PRIMARY KEY  (ms_design_id)
+            )";
+    }
+    
+    /**
+     * Returns the table name for storing designs.
+     * @global type $wpdb
+     * @return string Returns the table name for storing designs.
+     * @todo Add unit testing
+     */
+    public function getTableName() {
+        global $wpdb;
+        
+        return $wpdb->prefix . self::$TABLE_NAME;
+    }
+    
+    /**
+     * Gets the entity data to insert into the table.
+     * @return array Data to insert (in column => value pairs)
+     * @todo Add unit testing
+     */
+    public function getDataArray() {
+        $data = array();
+        
+        $data['ms_design_id'] = $this->design_id;
+        $data['ms_product_id'] = $this->template_id;
+        $data['ms_user_id'] = $this->user_id;
+        $data['ms_description'] = $this->description;
+        $data['ms_price'] = $this->price;
+        $data['ms_print_url'] = $this->print_url;
+        $data['ms_web_url'] = $this->web_url;
+        $data['ms_thumb_url'] = $this->thumb_url;
+        $data['ms_design_url'] = $this->design_url;
+        $data['product_id'] = $this->product_id;
+        
+        return $data;
+    }
+    
+    /**
+     * Gets the insert format for the entity. This matches up with the 
+     * getDataArray() function.
+     * See https://codex.wordpress.org/Class_Reference/wpdb#INSERT_rows
+     * @return (array|string)
+     * @todo Add unit testing
+     */
+    public function getInsertFormat() {
+        
+        $formats_arr = array( 
+            '%d', 
+            '%d',
+            '%d',
+            '%s',
+            '%d',
+            '%s',
+            '%s',
+            '%s',
+            '%s',
+            '%d',
+	);
+                
+        return $formats_arr;  
     }
 
 }
