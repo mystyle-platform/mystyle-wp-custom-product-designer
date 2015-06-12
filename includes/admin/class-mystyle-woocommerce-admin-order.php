@@ -40,7 +40,7 @@ class MyStyle_WooCommerce_Admin_Order {
      */
     public static function admin_order_item_values( $_product, $item, $item_id ) {
 
-        $mystyle_data = null;
+        $design = null;
         if( isset( $item['mystyle_data'] ) ) {            
             /**
              * NOTE: We aught to be able to get the data by unserializing
@@ -50,11 +50,15 @@ class MyStyle_WooCommerce_Admin_Order {
              * directly using a database call.
              */
             $mystyle_data = wc_get_order_item_meta( $item_id, 'mystyle_data' );
+            
+            $design_id = $mystyle_data['design_id'];
+            
+            $design = MyStyle_DesignManager::get( $design_id );
         }
     
         ?>
         <td class="item-mystyle">
-            <?php if( $mystyle_data != null ) : ?>
+            <?php if( $design != null ) : ?>
                 <div class="mystyle-item-toggle">
                     <a class="mystyle-item-link" title="Click to toggle" onclick="mystyleOrderItemDataToggleVis(<?php echo $item_id; ?>)">MyStyle Data</a>
                     <a id="mystyle-item-handle-<?php echo $item_id; ?>" class="mystyle-item-handle" title="Click to toggle" onclick="mystyleOrderItemDataToggleVis(<?php echo $item_id; ?>)"></a>
@@ -62,11 +66,11 @@ class MyStyle_WooCommerce_Admin_Order {
                 <div class="mystyle-item-data" id="mystyle-item-data-<?php echo $item_id; ?>" style="display:none;">
                     <div>
                         <?php if( ! MyStyle_Options::is_demo_mode() ) { ?>
-                            <a href="<?php echo $mystyle_data['print_url']; ?>" target="_blank">Print Image</a>&nbsp;&nbsp;
+                            <a href="<?php echo $design->get_print_url(); ?>" target="_blank">Print Image</a>&nbsp;&nbsp;
                         <?php } ?>
-                        <a href="<?php echo $mystyle_data['web_url']; ?>" target="_blank">Web Preview</a>
+                        <a href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a>
                     </div>
-                    <img src="<?php echo $mystyle_data['thumb_url']; ?>"/>
+                    <img src="<?php echo $design->get_thumb_url(); ?>"/>
  
                 </div>
             <?php endif; ?>
