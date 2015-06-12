@@ -50,7 +50,9 @@ class MyStyle {
         
         if( isset( $cart_item['mystyle_data'] ) ) {
             
-            $design = MyStyle_Design::create_from_meta( $cart_item['mystyle_data'] );
+            $design_id = $cart_item['mystyle_data']['design_id'];
+            
+            $design = MyStyle_DesignManager::get($design_id);
 
             $new_src = 'src="' . $design->get_thumb_url() . '"';
 	

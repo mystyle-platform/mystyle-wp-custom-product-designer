@@ -1,16 +1,16 @@
 <?php
 
 /**
- * MyStyle_DBManager class. 
+ * MyStyle_EntityManager class. 
  * 
- * The MyStyle_DBManager class has functions to work with the mystyle and
+ * The MyStyle_EntityManager class has functions to work with the mystyle and
  * wordpress database tables.
  *
  * @package MyStyle
  * @since 0.5
  * @todo Add unit testing
  */
-abstract class MyStyle_DBManager {
+abstract class MyStyle_EntityManager {
     
     /**
      * Persists the passed entity to the database.
@@ -22,9 +22,9 @@ abstract class MyStyle_DBManager {
         global $wpdb;
         
         $wpdb->insert( 
-                $entity->getTableName(),
-                $entity->getDataArray(),
-                $entity->getInsertFormat() 
+                $entity->get_table_name(),
+                $entity->get_data_array(),
+                $entity->get_insert_format() 
             );
         
         return $entity;

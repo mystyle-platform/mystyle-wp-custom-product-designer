@@ -42,7 +42,7 @@ class MyStyle_Install {
             }
         }
 
-        return MyStyle_Design::getSchema() .  $collate . ';';
+        return MyStyle_Design::get_schema() .  $collate . ';';
             
     }
 

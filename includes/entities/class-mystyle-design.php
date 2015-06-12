@@ -11,6 +11,7 @@
 class MyStyle_Design implements MyStyle_Entity {
     
     private static $TABLE_NAME = 'mystyle_designs'; //Note: this is without the db prefix;
+    private static $PRIMARY_KEY = 'ms_design_id';
     
     private $description;
     private $print_url;
@@ -51,28 +52,45 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Static function to create a new Design from meta data. Call using 
-     * MyStyle_Design::create_from_meta($meta_data);
-     * @param array $meta_data Meta data to be used to construct the Design. This
-     * is an array of fields values (see the get_meta() function below).
+     * Static function to create a new Design from a WP result object. Call 
+     * using MyStyle_Design::create_from_result_object($result_object);  This
+     * function should correspond with the get_data_array() function below.
+     * @param array $result_object A WP row result object to be used to 
+     * construct the Design. This is an object with public fields that
+     * correspond to the column names from the database.
      * @return \self Works like a constructor.
      */
-    public static function create_from_meta( $meta_data ) {
+    public static function create_from_result_object( $result_object ) {
         $instance = new self();
         
-        $instance->description = htmlspecialchars( $meta_data['description'] );
-        $instance->print_url = htmlspecialchars( $meta_data['print_url'] );
-        $instance->web_url = htmlspecialchars( $meta_data['web_url'] );
-        $instance->thumb_url = htmlspecialchars( $meta_data['thumb_url'] );
-        $instance->design_url = htmlspecialchars( $meta_data['design_url'] );
-        $instance->design_id = (int) htmlspecialchars( $meta_data['design_id'] );
-        $instance->template_id = (int) htmlspecialchars( $meta_data['template_id'] );
-        $instance->product_id = (int) htmlspecialchars( $meta_data['product_id'] );
-        $instance->user_id = (int) htmlspecialchars( $meta_data['user_id'] );
-        $instance->price = (int) htmlspecialchars( $meta_data['price'] );
+        //var_dump( $result_object );
+        
+        $instance->design_id = (int) htmlspecialchars( $result_object->ms_design_id );
+        $instance->template_id = (int) htmlspecialchars( $result_object->ms_product_id );
+        $instance->user_id = (int) htmlspecialchars( $result_object->ms_user_id );
+        $instance->description = htmlspecialchars( $result_object->ms_description );
+        $instance->price = (int) htmlspecialchars( $result_object->ms_price );
+        $instance->print_url = htmlspecialchars( $result_object->ms_print_url );
+        $instance->web_url = htmlspecialchars( $result_object->ms_web_url );
+        $instance->thumb_url = htmlspecialchars( $result_object->ms_thumb_url );
+        $instance->design_url = htmlspecialchars( $result_object->ms_design_url );
+        $instance->product_id = (int) htmlspecialchars( $result_object->product_id );
         
         return $instance;
     }
+    
+    /**
+     * Method to add data received from the database to the Design.
+     * @param array $api_data API data to be used to add more data to the 
+     * Design. This is an array of fields values (see the API docs for details).
+     */
+    public function add_query_data( $query_data ) {
+        $this->print_url = htmlspecialchars( $api_data['print_url'] );
+        $this->web_url = htmlspecialchars( $api_data['web_url'] );
+        $this->thumb_url = htmlspecialchars( $api_data['thumb_url'] );
+        $this->design_url = htmlspecialchars( $api_data['design_url'] );
+    }
+    
     
     /**
      * Method to add data received from the api call to the Design.
@@ -249,21 +267,12 @@ class MyStyle_Design implements MyStyle_Entity {
     /**
      * Function for converting the object into an array for use with WP meta
      * storage.
-     * @return array Returns an array of the data from the class.
+     * @return array Returns an array for storage as WP meta data.
      */
     public function get_meta() {
         $meta = array();
         
-        $meta['description'] = $this->description;
-        $meta['print_url'] = $this->print_url;
-        $meta['web_url'] = $this->web_url;
-        $meta['thumb_url'] = $this->thumb_url;
-        $meta['design_url'] = $this->design_url;
         $meta['design_id'] = $this->design_id;
-        $meta['template_id'] = $this->template_id;
-        $meta['product_id'] = $this->product_id;
-        $meta['user_id'] = $this->user_id;
-        $meta['price'] = $this->price;
         
         return $meta;
     }
@@ -275,7 +284,7 @@ class MyStyle_Design implements MyStyle_Entity {
      * table.
      * @todo Add unit testing
      */
-    public static function getSchema() {
+    public static function get_schema() {
         global $wpdb;
         
         $table_name = $wpdb->prefix . self::$TABLE_NAME;
@@ -301,10 +310,18 @@ class MyStyle_Design implements MyStyle_Entity {
      * @return string Returns the table name for storing designs.
      * @todo Add unit testing
      */
-    public function getTableName() {
+    public static function get_table_name() {
         global $wpdb;
         
         return $wpdb->prefix . self::$TABLE_NAME;
+    }
+    
+    /**
+     * Gets the name of the primary key column.
+     * @return string Returns the name of the primary key column for the table.
+     */
+    public static function get_primary_key() {
+        return self::$PRIMARY_KEY;
     }
     
     /**
@@ -312,7 +329,7 @@ class MyStyle_Design implements MyStyle_Entity {
      * @return array Data to insert (in column => value pairs)
      * @todo Add unit testing
      */
-    public function getDataArray() {
+    public function get_data_array() {
         $data = array();
         
         $data['ms_design_id'] = $this->design_id;
@@ -331,12 +348,12 @@ class MyStyle_Design implements MyStyle_Entity {
     
     /**
      * Gets the insert format for the entity. This matches up with the 
-     * getDataArray() function.
+     * get_data_array() function.
      * See https://codex.wordpress.org/Class_Reference/wpdb#INSERT_rows
      * @return (array|string)
      * @todo Add unit testing
      */
-    public function getInsertFormat() {
+    public function get_insert_format() {
         
         $formats_arr = array( 
             '%d', 

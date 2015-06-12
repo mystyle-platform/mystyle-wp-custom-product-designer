@@ -62,7 +62,7 @@ class MyStyle_Handoff {
             $design = MyStyle_Api::add_api_data_to_design( $design );
             
             //Persist the design to the database
-            $design = MyStyle_DBManager::persist( $design );
+            $design = MyStyle_DesignManager::persist( $design );
             
             //Get the woocommerce cart
             $cart = $woocommerce->cart;
