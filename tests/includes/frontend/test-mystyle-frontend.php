@@ -158,7 +158,9 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         
         //var_dump($html);
         
-        $expected = '<a href="http://example.org/?page_id=7&#038;product_id=1" rel="nofollow" class="button  product_type_simple" >Customize</a>';
+        $cust_pid = MyStyle_Customize_Page::get_id();
+        
+        $expected = '<a href="http://example.org/?page_id=' . $cust_pid . '&#038;product_id=1" rel="nofollow" class="button  product_type_simple" >Customize</a>';
         
         $this->assertContains( $expected, $html );
     }

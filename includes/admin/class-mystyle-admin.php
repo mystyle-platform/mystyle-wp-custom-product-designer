@@ -1,5 +1,7 @@
 <?php
 
+require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php' );
+
 /**
  * MyStyle Admin class.
  * The MyStyle Admin class sets up and controls the MyStyle Plugin administrator

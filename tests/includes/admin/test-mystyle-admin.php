@@ -104,8 +104,6 @@ class MyStyleAdminTest extends WP_UnitTestCase {
      * Test the deactivate function.
      */    
     public function test_deactivate() {
-        $this->setExpectedException('MyStyle_Exception');
-        
         $mystyle_admin = new MyStyle_Admin();
         
         //activate the plugin so that we can then deactivate it
@@ -113,8 +111,8 @@ class MyStyleAdminTest extends WP_UnitTestCase {
         
         $mystyle_admin->deactivate();
         
-        //Exception expected (see above)
-        $customize_page_id = MyStyle_Customize_Page::get_id();
+        //Assert that Customize page remains.
+        $this->assertTrue(MyStyle_Customize_Page::exists());
     }
         
      /**
@@ -133,9 +131,9 @@ class MyStyleAdminTest extends WP_UnitTestCase {
         //uninstall the plugin
         $mystyle_admin->uninstall();
         
-        //assert that the options are now empty
+        //assert that the options are still there
         $options_new = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        $this->assertEmpty( $options_new );
+        $this->assertNotEmpty( $options_new );
     }
     
 }

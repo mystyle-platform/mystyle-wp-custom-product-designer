@@ -55,7 +55,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $mystyle_options_page->add_page_to_menu();
         
         //Assert that the menu page was added
-        $expected = 'http://example.org/wp-admin/options-general.php?page=mystyle';
+        $expected = 'http://example.org/wp-admin/admin.php?page=mystyle';
         $this->assertEquals($expected, menu_page_url( 'mystyle', false ) );
     }
     
