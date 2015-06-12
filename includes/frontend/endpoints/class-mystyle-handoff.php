@@ -17,6 +17,15 @@ class MyStyle_Handoff {
     }
     
     /**
+     * Gets the url for the handoff endpoint.
+     * @return string Returns the url of the handoff endpoint
+     * @todo Add unit testing for this function
+     */
+    public static function get_url() {
+        return site_url( '?' . self::$SLUG );
+    }
+    
+    /**
      * Scan the url and catch any requests that match the handoff slug.
      * 
      * Needs to be public and static because it is registered as an a WP action.

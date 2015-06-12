@@ -23,9 +23,18 @@ abstract class MyStyle_Customizer_Shortcode {
         $product_id = htmlspecialchars( $_GET['product_id'] ) ;
         $mystyle_template_id = get_post_meta( $product_id, '_mystyle_template_id', true );
         
+        $settings = array();
+        $settings['redirect_url'] = MyStyle_Handoff::get_url();
+        $settings['email_skip'] = 0;
+        //if ($CURRENT_USER) {
+            //$settings['email_skip'] = 1;
+        //}
+        $encoded_settings = base64_encode( json_encode( $settings ) );
+        
         $mystyle_url = "http://customizer.ogmystyle.com/" .
                         "?app_id=$mystyle_app_id" . 
                         "&amp;product_id=$mystyle_template_id" . 
+                        "&amp;settings=$encoded_settings" . 
                         "&amp;passthru=local_product_id,$product_id";
         
         $out = '<iframe ' .
