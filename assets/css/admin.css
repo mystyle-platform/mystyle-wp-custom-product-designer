@@ -1,0 +1,31 @@
+/* WooCommerce Order Admin Page */
+.mystyle-item-toggle {
+    white-space: nowrap;
+    min-width: 130px;
+}
+.mystyle-item-link {
+    cursor: pointer;
+    display: inline-block;
+    height: 2em;
+    float: left;
+    width: 80px;
+}
+.mystyle-item-handle {
+    font-family: inherit;
+    cursor: pointer;
+    color: red;
+    display: inline-block;
+    height: 2em;
+    float: left;
+    margin-left: 2em;
+    width: 10px;
+}
+.mystyle-item-handle:after {
+    font-family: dashicons;
+    font-weight: 400;
+    font-size: 20px;
+    color: #a0a5aa;
+    content: '\f140';
+}
+.mystyle-item-handle.mystyle-closed::after {content: '\f142';}
+.mystyle-item-data {clear: both;}
