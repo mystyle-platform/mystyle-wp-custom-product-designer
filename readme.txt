@@ -7,7 +7,7 @@ Requires at least: 3.3
 Tested up to: 4.2.2
 Stable tag: 0.5.0
 
-The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.  Print files provided.
+The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
 == Description ==
 
