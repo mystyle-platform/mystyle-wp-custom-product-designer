@@ -1,15 +1,15 @@
 <?php
 
 /**
- * MyStyle)Install class. 
+ * MyStyle_Install class. 
  * 
  * The MyStyle_Install class has functions for activating/installing the plugin.
  *
  * @package MyStyle
  * @since 0.5
- * @todo Add unit testing for this class.
  */
 class MyStyle_Install {
+    
     
     /**
      * Set up the database tables which the plugin needs to function.
