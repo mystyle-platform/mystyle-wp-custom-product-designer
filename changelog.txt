@@ -1,3 +1,7 @@
+= 0.5.3 =
+
+* Added PHPUnit tests to for the MyStyle_Install class.
+
 = 0.5.2 =
 
 * Updated the README.md file.
