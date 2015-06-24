@@ -1,14 +1,14 @@
 <?php
 
 /**
- * The MyStyleEntityManagerTest class includes tests for testing the 
- * MyStyle_EntityManager
+ * The MyStyleDesignManagerTest class includes tests for testing the 
+ * MyStyle_DesignManager
  * class.
  *
  * @package MyStyle
  * @since 0.5.4
  */
-class MyStyleEntityManagerTest extends WP_UnitTestCase {
+class MyStyleDesignManagerTest extends WP_UnitTestCase {
     
     /**
      * Overrwrite the setUp function so that our custom tables will be persisted
@@ -26,7 +26,7 @@ class MyStyleEntityManagerTest extends WP_UnitTestCase {
     }
     
     /**
-     * Overrwrite the tearDown function to remove our custom tables
+     * Overrwrite the tearDown function to remove our custom tables.
      */
     function tearDown() {
         global $wpdb;
@@ -38,10 +38,10 @@ class MyStyleEntityManagerTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the persist function. Uses a design entity to test the function.
+     * Test the get function.
      * @global wpdb $wpdb
      */    
-    function test_persist() {
+    function test_get() {
         global $wpdb;
         
         $design_id = 1;
@@ -58,17 +58,13 @@ class MyStyleEntityManagerTest extends WP_UnitTestCase {
         //Create the design
         $design = MyStyle_Design::create_from_post($post);
         
+        //Persist the design
+        MyStyle_DesignManager::persist($design);
+        
         //Call the function
-        MyStyle_EntityManager::persist($design);
+        $design_from_db = MyStyle_DesignManager::get( $design_id );
         
-        $query = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ' . 
-                 'WHERE ' . MyStyle_Design::get_primary_key() . ' = ' . $design_id;
-        
-        $result_object = $wpdb->get_row($query);
-
-        $design_from_db = MyStyle_Design::create_from_result_object( $result_object );
-        
-        //Assert that the entity was persisted
+        //Assert that the design_id is set
         $this->assertEquals( $design_id, $design_from_db->get_design_id() );
     }
 

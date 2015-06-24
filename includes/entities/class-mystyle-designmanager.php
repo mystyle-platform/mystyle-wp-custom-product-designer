@@ -8,7 +8,6 @@
  *
  * @package MyStyle
  * @since 0.5
- * @todo Add unit testing
  */
 abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
     
