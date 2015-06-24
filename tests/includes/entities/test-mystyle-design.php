@@ -25,7 +25,34 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         $post['user_id'] = 0;
         $post['price'] = 0;
         
-        $design = MyStyle_Design::create_from_post($post);
+        $design = MyStyle_Design::create_from_post( $post );
+        
+        //Assert that the design_id is set
+        $this->assertEquals( $design_id, $design->get_design_id() );
+    }
+    
+    /**
+     * Test the create_from_result_object function
+     */    
+    function test_create_from_result_object() {
+        
+        $design_id = 1;
+        
+        //Mock the result object
+        $result_object = new stdClass();
+        
+        $result_object->ms_design_id = $design_id;
+        $result_object->ms_product_id = 0;
+        $result_object->ms_user_id = 0;
+        $result_object->ms_description = 'test description';
+        $result_object->ms_price = 0;
+        $result_object->ms_print_url = 'http://www.example.com/example.jpg';
+        $result_object->ms_web_url = 'http://www.example.com/example.jpg';
+        $result_object->ms_thumb_url = 'http://www.example.com/example.jpg';
+        $result_object->ms_design_url = 'http://www.example.com/example.jpg';
+        $result_object->product_id = 0;
+        
+        $design = MyStyle_Design::create_from_result_object( $result_object );
         
         //Assert that the design_id is set
         $this->assertEquals( $design_id, $design->get_design_id() );
