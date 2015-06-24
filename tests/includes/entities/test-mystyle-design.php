@@ -1,5 +1,7 @@
 <?php
 
+require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php');
+
 /**
  * The MyStyleDesignTest class includes tests for testing the MyStyle_Design
  * class.
@@ -39,18 +41,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         $design_id = 1;
         
         //Mock the result object
-        $result_object = new stdClass();
-        
-        $result_object->ms_design_id = $design_id;
-        $result_object->ms_product_id = 0;
-        $result_object->ms_user_id = 0;
-        $result_object->ms_description = 'test description';
-        $result_object->ms_price = 0;
-        $result_object->ms_print_url = 'http://www.example.com/example.jpg';
-        $result_object->ms_web_url = 'http://www.example.com/example.jpg';
-        $result_object->ms_thumb_url = 'http://www.example.com/example.jpg';
-        $result_object->ms_design_url = 'http://www.example.com/example.jpg';
-        $result_object->product_id = 0;
+        $result_object = new MyStyle_MockDesignQueryResult($design_id);
         
         $design = MyStyle_Design::create_from_result_object( $result_object );
         
@@ -89,19 +80,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         
         $design_id = 1;
         
-        //Mock the result object
-        $result_object = new stdClass();
-        
-        $result_object->ms_design_id = $design_id;
-        $result_object->ms_product_id = 0;
-        $result_object->ms_user_id = 0;
-        $result_object->ms_description = 'test description';
-        $result_object->ms_price = 0;
-        $result_object->ms_print_url = 'http://www.example.com/example.jpg';
-        $result_object->ms_web_url = 'http://www.example.com/example.jpg';
-        $result_object->ms_thumb_url = 'http://www.example.com/example.jpg';
-        $result_object->ms_design_url = 'http://www.example.com/example.jpg';
-        $result_object->product_id = 0;
+        $result_object = new MyStyle_MockDesignQueryResult($design_id);
         
         $design = MyStyle_Design::create_from_result_object( $result_object );
         
@@ -115,7 +94,33 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         
         //Assert that the expected meta is returned
         $this->assertEquals( $serialized_meta, $serialized_export );
+    }
+    
+    /**
+     * Test the get_meta function
+     * @todo Rewrite this now that create_from_meta no longer exists
+     */    
+    function test_get_schema() {
         
+        $expected_schema = '
+            CREATE TABLE wptests_mystyle_designs (
+                ms_design_id bigint(32) NOT NULL,
+                ms_product_id bigint(20) NOT NULL,
+                ms_user_id bigint(20) NULL,
+                ms_description text NULL,
+                ms_price numeric(15,2) NULL,
+                ms_print_url varchar(255) NULL,
+                ms_web_url varchar(255) NULL,
+                ms_thumb_url varchar(255) NULL,
+                ms_design_url varchar(255) NULL,
+                product_id bigint(20) NULL,
+                PRIMARY KEY  (ms_design_id)
+            )';
+        
+        $schema = MyStyle_Design::get_schema();
+        
+        //Assert that the expected schema is returned
+        $this->assertEquals( $expected_schema, $schema );
     }
 
 }
