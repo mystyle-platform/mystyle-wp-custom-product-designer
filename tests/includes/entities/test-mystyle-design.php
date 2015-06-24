@@ -59,7 +59,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the create_from_meta function
+     * Test the add_api_data function
      */    
     function test_add_api_data() {
         
@@ -87,31 +87,35 @@ class MyStyleDesignTest extends WP_UnitTestCase {
      */    
     function test_get_meta() {
         
-        //Mock the meta
-        /*
-        $meta = array();
-        $meta['description'] = 'test description';
-        $meta['print_url'] = 'http://testhost/test_print_url.jpg';
-        $meta['web_url'] = 'http://testhost/test_web_url.jpg';
-        $meta['thumb_url'] = 'http://testhost/test_thumb_url.jpg';
-        $meta['design_url'] = 'http://testhost/test_design_url.jpg';
-        $meta['design_id'] = 1;
-        $meta['template_id'] = 2;
-        $meta['product_id'] = 3;
-        $meta['user_id'] = 4;
-        $meta['price'] = 5;
+        $design_id = 1;
         
-        $serialized_meta = serialize($meta);
+        //Mock the result object
+        $result_object = new stdClass();
         
-        $design = MyStyle_Design::create_from_meta($meta);
+        $result_object->ms_design_id = $design_id;
+        $result_object->ms_product_id = 0;
+        $result_object->ms_user_id = 0;
+        $result_object->ms_description = 'test description';
+        $result_object->ms_price = 0;
+        $result_object->ms_print_url = 'http://www.example.com/example.jpg';
+        $result_object->ms_web_url = 'http://www.example.com/example.jpg';
+        $result_object->ms_thumb_url = 'http://www.example.com/example.jpg';
+        $result_object->ms_design_url = 'http://www.example.com/example.jpg';
+        $result_object->product_id = 0;
+        
+        $design = MyStyle_Design::create_from_result_object( $result_object );
         
         $export = $design->get_meta();
         
         $serialized_export = serialize($export);
         
+        $meta = array();
+        $meta['design_id'] = $design_id;
+        $serialized_meta = serialize($meta);
+        
         //Assert that the expected meta is returned
         $this->assertEquals( $serialized_meta, $serialized_export );
-         */
+        
     }
 
 }

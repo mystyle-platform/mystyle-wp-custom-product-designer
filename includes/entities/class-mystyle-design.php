@@ -80,19 +80,6 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Method to add data received from the database to the Design.
-     * @param array $api_data API data to be used to add more data to the 
-     * Design. This is an array of fields values (see the API docs for details).
-     */
-    public function add_query_data( $query_data ) {
-        $this->print_url = htmlspecialchars( $api_data['print_url'] );
-        $this->web_url = htmlspecialchars( $api_data['web_url'] );
-        $this->thumb_url = htmlspecialchars( $api_data['thumb_url'] );
-        $this->design_url = htmlspecialchars( $api_data['design_url'] );
-    }
-    
-    
-    /**
      * Method to add data received from the api call to the Design.
      * @param array $api_data API data to be used to add more data to the 
      * Design. This is an array of fields values (see the API docs for details).
