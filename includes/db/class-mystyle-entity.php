@@ -8,7 +8,6 @@
  *
  * @package MyStyle
  * @since 0.5
- * @todo Add unit testing
  */
 interface MyStyle_Entity {
     
