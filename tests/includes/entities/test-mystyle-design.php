@@ -147,4 +147,36 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         $this->assertEquals( $expected_primary_key, $primary_key );
     }
 
+    /**
+     * Test the get_data_array function
+     */    
+    function test_get_data_array() {
+        
+        $design_id = 1;
+        
+        //Set up the expected data array
+        $expected_data_array = array(
+            'ms_design_id' => 1,
+            'ms_product_id' => 0,
+            'ms_user_id' => 0,
+            'ms_description' => 'test description',
+            'ms_price' => 0,
+            'ms_print_url' => 'http://www.example.com/example.jpg',
+            'ms_web_url' => 'http://www.example.com/example.jpg',
+            'ms_thumb_url' => 'http://www.example.com/example.jpg',
+            'ms_design_url' => 'http://www.example.com/example.jpg',
+            'product_id' => 0,
+        );
+        
+        //Create a design
+        $result_object = new MyStyle_MockDesignQueryResult($design_id);
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        //Run the function
+        $data_array = $design->get_data_array();
+        
+        //Assert that the expected meta is returned
+        $this->assertEquals( $expected_data_array, $data_array );
+    }
+    
 }
