@@ -41,7 +41,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         $design_id = 1;
         
         //Mock the result object
-        $result_object = new MyStyle_MockDesignQueryResult($design_id);
+        $result_object = new MyStyle_MockDesignQueryResult( $design_id );
         
         $design = MyStyle_Design::create_from_result_object( $result_object );
         
@@ -79,7 +79,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         
         $design_id = 1;
         
-        $result_object = new MyStyle_MockDesignQueryResult($design_id);
+        $result_object = new MyStyle_MockDesignQueryResult( $design_id );
         
         $design = MyStyle_Design::create_from_result_object( $result_object );
         
@@ -169,14 +169,41 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         );
         
         //Create a design
-        $result_object = new MyStyle_MockDesignQueryResult($design_id);
+        $result_object = new MyStyle_MockDesignQueryResult( $design_id );
         $design = MyStyle_Design::create_from_result_object( $result_object );
         
         //Run the function
         $data_array = $design->get_data_array();
         
-        //Assert that the expected meta is returned
+        //Assert that the expected data array is returned
         $this->assertEquals( $expected_data_array, $data_array );
+    }
+    
+    /**
+     * Test the get_insert_format function
+     */    
+    function test_get_insert_format() {
+        
+        //Set up the expected formats array
+        $expected_formats_arr = array( 
+            '%d', 
+            '%d',
+            '%d',
+            '%s',
+            '%d',
+            '%s',
+            '%s',
+            '%s',
+            '%s',
+            '%d',
+	);
+        
+        //Create a design
+        $result_object = new MyStyle_MockDesignQueryResult( 1 );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        //Assert that the expected data array is returned
+        $this->assertEquals( $expected_formats_arr, $design->get_insert_format() );
     }
     
 }
