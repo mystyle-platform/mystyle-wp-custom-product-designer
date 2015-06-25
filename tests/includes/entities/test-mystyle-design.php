@@ -133,5 +133,18 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         //Assert that the expected table name is returned
         $this->assertEquals( $expected_table_name, $table_name );
     }
+    
+    /**
+     * Test the get_primary_key function
+     */    
+    function test_get_primary_key() {
+        
+        $expected_primary_key = 'ms_design_id';
+        
+        $primary_key = MyStyle_Design::get_primary_key();
+        
+        //Assert that the expected primary key is returned
+        $this->assertEquals( $expected_primary_key, $primary_key );
+    }
 
 }
