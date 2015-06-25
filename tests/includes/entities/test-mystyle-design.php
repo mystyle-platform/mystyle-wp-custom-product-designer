@@ -74,7 +74,6 @@ class MyStyleDesignTest extends WP_UnitTestCase {
     
     /**
      * Test the get_meta function
-     * @todo Rewrite this now that create_from_meta no longer exists
      */    
     function test_get_meta() {
         
@@ -97,8 +96,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the get_meta function
-     * @todo Rewrite this now that create_from_meta no longer exists
+     * Test the get_schema function
      */    
     function test_get_schema() {
         
@@ -121,6 +119,19 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         
         //Assert that the expected schema is returned
         $this->assertEquals( $expected_schema, $schema );
+    }
+    
+    /**
+     * Test the get_table_name function
+     */    
+    function test_get_table_name() {
+        
+        $expected_table_name = 'wptests_mystyle_designs';
+        
+        $table_name = MyStyle_Design::get_table_name();
+        
+        //Assert that the expected table name is returned
+        $this->assertEquals( $expected_table_name, $table_name );
     }
 
 }
