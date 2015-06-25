@@ -6,7 +6,7 @@
  * class.
  *
  * @package MyStyle
- * @since 0.5.4
+ * @since 1.0.0
  */
 class MyStyleEntityManagerTest extends WP_UnitTestCase {
     

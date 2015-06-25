@@ -4,7 +4,7 @@
  * Mocks woocommerce
  *
  * @package MyStyle
- * @since 0.5.4
+ * @since 1.0.0
  */
 class MyStyle_MockWooCommerce {
     

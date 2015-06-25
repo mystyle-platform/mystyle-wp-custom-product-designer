@@ -4,7 +4,7 @@
  * Mocks the woocommerce cart
  *
  * @package MyStyle
- * @since 0.5.4
+ * @since 1.0.0
  */
 class MyStyle_MockWooCommerceCart {
     

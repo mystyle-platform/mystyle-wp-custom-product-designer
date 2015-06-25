@@ -5,7 +5,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: woocommerce, customization, personalization, product-preview, designer
 Requires at least: 3.3
 Tested up to: 4.2.2
-Stable tag: 0.5.3
+Stable tag: 1.0.0
 
 The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
@@ -70,8 +70,14 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 
 == Changelog ==
 
+= 1.0.0 =
+* Added PHPUnit tests for the MyStyle_Handoff class.
+* Added PHPUnit tests for the MyStyle_Design class.
+* Added PHPUnit tests for the MyStyle_DesignManager class.
+* Added PHPUnit tests for the MyStyle_EntityManager class.
+
 = 0.5.3 =
-* Added PHPUnit tests to for the MyStyle_Install class.
+* Added PHPUnit tests for the MyStyle_Install class.
 
 = 0.5.2 =
 * Updated the README.md file.
