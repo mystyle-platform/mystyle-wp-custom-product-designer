@@ -49,7 +49,6 @@ abstract class MyStyle_Customize_Page {
      * Function to determine if the page exists.
      * @return boolean Returns true if the page exists, otherwise false.
      * @throws MyStyle_Exception
-     * @todo Add unit testing for this function
      */
     public static function exists() {
         $exists = false;

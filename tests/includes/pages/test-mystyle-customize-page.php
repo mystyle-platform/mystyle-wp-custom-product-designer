@@ -36,6 +36,21 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the exists function
+     */    
+    public function test_exists() {
+        
+        //assert that the exists function returns false before the page is created
+        $this->assertFalse( MyStyle_Customize_Page::exists() );
+        
+        //Create the MyStyle Customize page
+        MyStyle_Customize_Page::create();
+        
+        //assert that the exists function returns true after the page is created
+        $this->assertTrue( MyStyle_Customize_Page::exists() );
+    }
+    
+    /**
      * Test the delete function
      */    
     public function test_delete() {
