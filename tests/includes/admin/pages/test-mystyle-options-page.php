@@ -29,6 +29,34 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the admin_init function.
+     */    
+    public function test_admin_init() {
+        global $wp_filter;
+        
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        //Run the function
+        $mystyle_options_page->admin_init();
+        
+        //Assert that the expected settings fields were registered and rendered
+        ob_start();
+        settings_fields( 'mystyle_options' );
+        do_settings_sections( 'mystyle' );
+        $outbound = ob_get_contents();
+        ob_end_clean();
+        
+        //Assert that the mystyle_options hidden field is registered/rendered
+        $this->assertContains( "value='mystyle_options'", $outbound );
+        
+        //Assert that the api key field is registered/rendered.
+        $this->assertContains( 'name="mystyle_options[api_key]"', $outbound );
+        
+        //Assert taht the secret field is registered/rendered.
+        $this->assertContains( 'name="mystyle_options[secret]"', $outbound );
+    }
+    
+    /**
      * Test the render_page function.
      */    
     public function test_render_page() {
@@ -99,13 +127,6 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $outbound = ob_get_contents();
         ob_end_clean();
         $this->assertContains( 'MyStyle Secret', $outbound );
-    }
-    
-    /**
-     * Test the mystyle_options_init function.
-     */    
-    public function test_mystyle_options_init() {
-        //TODO
     }
     
     /**

@@ -25,7 +25,7 @@ class MyStyle_Options_Page {
         add_settings_section(
                 'mystyle_options_access_section',
                 'Access Settings',
-                array( &$this,'render_access_section_text' ),
+                array( &$this, 'render_access_section_text' ),
                 'mystyle'
         );
         add_settings_field(
