@@ -25,6 +25,18 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the get_url function
+     */    
+    public function test_get_url() {
+        $expected_url = 'http://example.org/?mystyle-handoff';
+        
+        $url = MyStyle_Handoff::get_url();
+        
+        //Assert that the expected url is returned
+        $this->assertContains( $expected_url, $url );
+    }
+    
+    /**
      * Test the override function for a non matching uri
      */    
     public function test_override_skips_non_matching_uri() {
