@@ -21,8 +21,8 @@ class MyStyleAPITest extends WP_UnitTestCase {
         //Install the api_key
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
-        $options['api_key'] = '72';
-        $options['secret'] = 'SqXHiNTaD5TC0Y908tC9nEqP6';
+        $options['api_key'] = '0';
+        $options['secret'] = 'fake-secret';
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         
         //Create a design

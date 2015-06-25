@@ -19,7 +19,6 @@ class MyStyle_Handoff {
     /**
      * Gets the url for the handoff endpoint.
      * @return string Returns the url of the handoff endpoint
-     * @todo Add unit testing for this function
      */
     public static function get_url() {
         return site_url( '?' . self::$SLUG );
