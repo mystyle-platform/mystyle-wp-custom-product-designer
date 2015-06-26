@@ -30,11 +30,21 @@ class MyStyle_Handoff {
      * Needs to be public and static because it is registered as an a WP action.
      */
     public static function override() {
+        
         $url = $_SERVER['REQUEST_URI'];
         //echo $url;
         if( strpos( $url, self::$SLUG ) !== FALSE ) {
-            ob_start( array( 'MyStyle_Handoff', 'handle' ) );
+            if(isset($GLOBALS['skip_ob_start'])) { //Used by our PHPUnit tests
+                return true;
+            } else {
+                ob_start( array( 'MyStyle_Handoff', 'handle' ) );
+            }
+        } else {
+            if(isset($GLOBALS['skip_ob_start'])) { //Used by our PHPUnit tests
+                return false;
+            }
         }
+        
     }
     
     /**

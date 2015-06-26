@@ -70,23 +70,31 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
      * Test the override function for a non matching uri
      */    
     public function test_override_skips_non_matching_uri() {
-        $mystyle_handoff = new MyStyle_Handoff();
+        $GLOBALS['skip_ob_start'] = true;
         
         $_SERVER['REQUEST_URI'] = 'non-matching-uri';
         
-        //Assert that override does nothing
-        ob_start();
-        $mystyle_handoff->override();
-        $outbound = ob_get_contents();
-        ob_end_clean();
-        $this->assertEquals( '', $outbound );
+        
+        //Call the function
+        $ret = MyStyle_Handoff::override();
+        
+        $this->assertFalse( $ret );
     }
     
     /**
      * Test the override function for a matching uri
      */    
     public function test_override_overrides_matching_uri() {
-        //TODO: come up with a better (and faster) way to do this
+        
+        $GLOBALS['skip_ob_start'] = true;
+        
+        $_SERVER['REQUEST_URI'] = 'http://localhost/wordpress/?mystyle-handoff';
+        
+        //Call the function
+        $ret = MyStyle_Handoff::override();
+        
+        $this->assertTrue( $ret );
+        
         /*
         $url = 'http://localhost/wordpress/?mystyle-handoff';
  
