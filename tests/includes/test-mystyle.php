@@ -1,6 +1,7 @@
 <?php
 
 require_once(MYSTYLE_PATH . '../woocommerce/woocommerce.php');
+require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php');
 
 /**
  * The MyStyleClassTest class includes tests for testing the MyStyle
@@ -11,6 +12,33 @@ require_once(MYSTYLE_PATH . '../woocommerce/woocommerce.php');
  */
 class MyStyleClassTest extends WP_UnitTestCase {
 
+    /**
+     * Overrwrite the setUp function so that our custom tables will be persisted
+     * to the test database.
+     */
+    function setUp() {
+        // Perform the actual task according to parent class.
+        parent::setUp();
+        // Remove filters that will create temporary tables. So that permanent tables will be created.
+        remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
+        remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
+        
+        //Create the tables
+        MyStyle_Install::create_tables();
+    }
+    
+    /**
+     * Overrwrite the tearDown function to remove our custom tables.
+     */
+    function tearDown() {
+        global $wpdb;
+        // Perform the actual task according to parent class.
+        parent::tearDown();
+        
+        //Drop the tables that we created
+        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+    }
+    
     /**
      * Test the constructor
      */    
@@ -70,6 +98,20 @@ class MyStyleClassTest extends WP_UnitTestCase {
      * Test the modify_cart_item_thumbnail function.
      */    
     public function test_modify_cart_item_thumbnail() {
-        //TODO
+        $design_id = 1;
+        $get_image = '<img src="someimage.jpg"/>';
+        $cart_item = array();
+        $cart_item['mystyle_data'] = array();
+        $cart_item['mystyle_data']['design_id'] = $design_id;
+        $cart_item_key = null;
+        
+        //Create the design (note: we should maybe mock this in the tested class)
+        $result_object = new MyStyle_MockDesignQueryResult( $design_id );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        MyStyle_DesignManager::persist( $design );
+        
+        $new_image = MyStyle::modify_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key );
+        
+        $this->assertEquals( '<img src="http://www.example.com/example.jpg"/>' , $new_image );
     }
 }
