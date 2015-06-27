@@ -30,10 +30,11 @@ class MyStyle {
      * Add the item meta from the cart to the order.
      * @param number $item_id The item_id of the item being added.
      * @param array $values The values from the cart.
+     * @return Returns false on failure. On success, returns the ID of the inserted row.
      */
     public static function add_mystyle_order_item_meta( $item_id, $values ) {
         if( isset( $values['mystyle_data'] ) ) {
-            wc_add_order_item_meta( $item_id, 'mystyle_data', $values['mystyle_data'] );
+            return wc_add_order_item_meta( $item_id, 'mystyle_data', $values['mystyle_data'] );
         }
     }
     

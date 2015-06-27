@@ -71,27 +71,10 @@ class MyStyleClassTest extends WP_UnitTestCase {
     
     /**
      * Test the add_mystyle_order_item_meta function.
-     * TODO: Get this test to work. Needs to create a woocommerce product and
-     * order in order to add the order item meta. see http://stackoverflow.com/questions/26581467/creating-woocommerce-order-with-line-item-programatically
-     */    
+     * @todo Get this test to work.  See the notes in Google Docs.
+     */
     public function test_add_mystyle_order_item_meta() {
-        /*
-        $item_id = 1;
-        $key = 'mystyle_data';
-        $data = 'test_data';
-        
-        $values = array();
-        $values[$key] = $data;
-        
-        //Add the order item meta
-        MyStyle::add_mystyle_order_item_meta($item_id, $values);
-        
-        //Retrieve the order item meta       
-        $meta = wc_get_order_item_meta($item_id, $key);
-        
-        //Assert that the expected meta is returned
-        $this->assertEquals( $data, $meta );
-         */
+         //TODO
     }
     
     /**
