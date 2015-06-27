@@ -1,3 +1,7 @@
+= 1.0.1 =
+
+* Basic PHPUnit test coverage complete.
+
 = 1.0.0 =
 
 * Added PHPUnit tests for the MyStyle_Handoff class.
