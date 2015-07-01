@@ -37,6 +37,7 @@ define( 'MYSTYLE_INCLUDES', MYSTYLE_PATH . 'includes/' );
 define( 'MYSTYLE_BASENAME', plugin_basename(__FILE__) );
 define( 'MYSTYLE_URL', plugins_url( '/', __FILE__ ) );
 define( 'MYSTYLE_ASSETS_URL', MYSTYLE_URL . 'assets/' );
+define( 'MYSTYLE_TEMPLATES', MYSTYLE_PATH . 'templates/' );
 
 // Include the optional config.php file
 if( file_exists( MYSTYLE_PATH . 'config.php' ) ) {
