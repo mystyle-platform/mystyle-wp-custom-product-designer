@@ -31,16 +31,27 @@ abstract class MyStyle_Customizer_Shortcode {
         //}
         $encoded_settings = base64_encode( json_encode( $settings ) );
         
-        $mystyle_url = "http://customizer.ogmystyle.com/" .
+        $customizer_query_string =
                         "?app_id=$mystyle_app_id" . 
                         "&amp;product_id=$mystyle_template_id" . 
                         "&amp;settings=$encoded_settings" . 
                         "&amp;passthru=local_product_id,$product_id";
         
-        //ob_start();
+        //---------- variables for use by the view layer ---------
+        $customizer_url = 'http://customizer.ogmystyle.com/' . $customizer_query_string;
+        $mobile_customizer_url = 'http://customizer-js.ogmystyle.com/' . $customizer_query_string;
+        
+        $force_mobile = 1;
+        if ( isset( $_GET['force_mobile'] ) ) {
+            $force_mobile = 1;
+        }
+        
+        // ---------- Call the view layer ------- //
+        ob_start();
         require( MYSTYLE_TEMPLATES . 'customizer.php' );
         $out = ob_get_contents();
         ob_end_clean();
+        // -------------------------------------- //
                     
         if( ( defined( 'MYSTYLE_ENABLE_MOCK_SUBMIT_BUTTON' ) ) && ( MYSTYLE_ENABLE_MOCK_SUBMIT_BUTTON == true ) ) {
             //Add the mock form (for testing)

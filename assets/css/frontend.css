@@ -5,3 +5,7 @@
 .mystyle-customizable-product form.cart div.quantity {
     display: none !important;
 }
+
+#customizer-wrapper, .customizer-wrapper {
+    height: 550px;
+}
