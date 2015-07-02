@@ -99,7 +99,9 @@ class MyStyle_Handoff {
                                 );
             // ---------------------- Fix for WC 2.2----------------------- 
             // Set a session variable with our data that can later be retrieved if necessary
-            WC()->session->set( 'mystyle_' . $cart_item_key, $cart_item_data );
+            if( isset( WC()->session ) ) {
+                WC()->session->set( 'mystyle_' . $cart_item_key, $cart_item_data );
+            }
             // ------------------------------------------------------------
             
             if(MyStyle_Options::is_demo_mode()) {
