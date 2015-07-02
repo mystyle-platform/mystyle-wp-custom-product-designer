@@ -1,3 +1,12 @@
+= 1.1.1 =
+
+* Fixed force_mobile bug.
+
+= 1.1.0 =
+
+* Added support for mobile.
+* Admin UI enhancements.
+
 = 1.0.1 =
 
 * Basic PHPUnit test coverage complete.
