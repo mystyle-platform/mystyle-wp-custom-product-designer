@@ -68,6 +68,9 @@ class MyStyle_WooCommerce_Admin_Product {
                             )
 			);
                     ?>
+                    <p class="description" style="margin-left: 2em;">
+                        Need a template? Check out our <a href="http://www.mystyleplatform.com/mystyle-product-catalog/" title="MyStyle Product Catalog" target="_blank">Product Catalog</a>.
+                    </p>
                 </div>
             </div>
         <?php
