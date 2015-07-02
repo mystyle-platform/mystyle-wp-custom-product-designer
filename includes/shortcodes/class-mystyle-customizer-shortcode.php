@@ -41,7 +41,7 @@ abstract class MyStyle_Customizer_Shortcode {
         $customizer_url = 'http://customizer.ogmystyle.com/' . $customizer_query_string;
         $mobile_customizer_url = 'http://customizer-js.ogmystyle.com/' . $customizer_query_string;
         
-        $force_mobile = 1;
+        $force_mobile = 0;
         if ( isset( $_GET['force_mobile'] ) ) {
             $force_mobile = 1;
         }
