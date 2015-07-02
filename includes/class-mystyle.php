@@ -17,6 +17,7 @@ class MyStyle {
     public function __construct() {
         add_action( 'init', array( &$this, 'init' ) );
         add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_mystyle_order_item_meta' ), 10, 2 );
+        add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'get_cart_item_from_session' ), 10, 3 );
     }
     
     /**
@@ -36,6 +37,25 @@ class MyStyle {
         if( isset( $values['mystyle_data'] ) ) {
             return wc_add_order_item_meta( $item_id, 'mystyle_data', $values['mystyle_data'] );
         }
+    }
+    
+    /**
+     * Filter the woocommerce_get_cart_item_from_session and add our session 
+     * data.
+     * @param array $session_data The current session_data.
+     * @param array $values The values that are to be stored in the session.
+     * @param string $key The key of the cart item.
+     * @return string Returns the updated cart image tag.
+     */
+    public static function get_cart_item_from_session( $session_data, $values, $key ) {
+        
+        // Fix for WC 2.2 (if our data is missing from the cart item, get it from the session variable 
+        if( ! isset($session_data['mystyle_data'] ) ) {
+            $cart_item_data = WC()->session->get( 'mystyle_' . $key );
+            $session_data['mystyle_data'] = $cart_item_data['mystyle_data'];
+        }
+	
+        return $session_data;
     }
     
     /**

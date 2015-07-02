@@ -91,12 +91,16 @@ class MyStyle_Handoff {
             
             //Add the product and meta data to the cart
             $cart_item_key = $cart->add_to_cart(
-                                        $design->get_product_id(),
-                                        1,
-                                        '',
-                                        array(),
-                                        $cart_item_data
+                                        $design->get_product_id(), //WooCommerce product id
+                                        1, //quantity
+                                        '', //variation id
+                                        array(), //variation attribute values
+                                        $cart_item_data //extra cart item data we want to pass into the item
                                 );
+            // ---------------------- Fix for WC 2.2----------------------- 
+            // Set a session variable with our data that can later be retrieved if necessary
+            WC()->session->set( 'mystyle_' . $cart_item_key, $cart_item_data );
+            // ------------------------------------------------------------
             
             if(MyStyle_Options::is_demo_mode()) {
                 //Send to Demo Mode Message
