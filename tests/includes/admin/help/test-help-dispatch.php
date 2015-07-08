@@ -20,7 +20,7 @@ class HelpDispatchTest extends WP_UnitTestCase {
         $contextual_help = '';
         global $mystyle_hook;
         $mystyle_hook = 'mock-hook';
-        $screen_id = $mystyle_hook;
+        $screen_id = 'toplevel_page_' . $mystyle_hook;
         $screen = WP_Screen::get( $mystyle_hook );
         
         //Assert that the MyStyle help is not in the screen.

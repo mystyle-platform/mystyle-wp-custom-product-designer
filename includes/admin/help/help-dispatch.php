@@ -19,9 +19,9 @@ require_once(MYSTYLE_INCLUDES . 'admin/help/options-page-help.php');
  */
 function mystyle_help_dispatch( $contextual_help, $screen_id, $screen ) {
     global $mystyle_hook;
-    
+
     switch( $screen_id ) {
-        case $mystyle_hook:
+        case 'toplevel_page_' . $mystyle_hook:
             $contextual_help = mystyle_options_page_help( $contextual_help, $screen_id, $screen );
             break;
         //add additional hooks here as required
