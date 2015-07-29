@@ -7,6 +7,24 @@
  */
 abstract class MyStyle_Customizer_Shortcode {
     
+    
+    /**
+     * Modify the WooCommerce products shortcode query to only include MyStyle
+     * enabled products.
+     * @param array $args An array of query arguments
+     * @return array Returns the array of query arguments
+     */
+    public static function modify_woocommerce_shortcode_products_query( $args ) {
+        $mystyle_filter = array();
+        $mystyle_filter['key'] = '_mystyle_enabled';
+        $mystyle_filter['value'] = 'yes';
+        $mystyle_filter['compare'] = 'IN';
+        
+        $args['meta_query'][] = $mystyle_filter;
+
+        return $args;
+    }
+    
     /**
      * Output the customizer shortcode.
      */
@@ -15,8 +33,11 @@ abstract class MyStyle_Customizer_Shortcode {
         $mystyle_app_id = MyStyle_Options::get_api_key();
         
         if( ! isset( $_GET['product_id'] ) ) {
-            $out = '<h2>You\'ll need to select a product to customize first!</h2>';
-            $out .= '<p><a href="' . get_home_url() . '">Home</a>';
+            $out = '<h2>Select a product to customize</h2>';
+
+            add_filter( 'woocommerce_shortcode_products_query', array( 'MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query' ), 10, 1 );
+            $out .= do_shortcode('[products per_page="12"]');
+            
             return $out;
         }
         
