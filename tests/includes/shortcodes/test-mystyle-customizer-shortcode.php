@@ -10,6 +10,21 @@
 class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
     
     /**
+     * Test the modify_woocommerce_shortcode_products_query function with valid parameters.
+     */    
+    public function test_modify_woocommerce_shortcode_products_query() {
+        
+        //Mock the args
+        $args = array();
+        $args['meta_query'] = array();
+        
+        $modified_args = MyStyle_Customizer_Shortcode::modify_woocommerce_shortcode_products_query( $args );
+        
+        //assert that the modified args include the mystyle_enabled meta key
+        $this->assertContains( '_mystyle_enabled', $modified_args['meta_query'][0]['key'] );
+    }
+    
+    /**
      * Test the output function with valid parameters.
      */    
     public function test_output_with_valid_params() {
