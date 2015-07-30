@@ -97,4 +97,21 @@ class MyStyleClassTest extends WP_UnitTestCase {
         
         $this->assertEquals( '<img src="http://www.example.com/example.jpg"/>' , $new_image );
     }
+    
+    /**
+     * Test the site_has_customizable_products function returns true when
+     * customizable products exist.
+    public function test_site_has_customizable_products_returns_true_when_customizable_products_exist() {
+        //TODO: Will need to mock get_posts or WP_Query
+    }
+     */
+    
+    /**
+     * Test the site_has_customizable_products function returns true when
+     * customizable products exist.
+    public function test_site_has_customizable_products_returns_false_when_customizable_products_dont_exist() {
+        //TODO: Will need to mock get_posts or WP_Query
+    }
+     */
+    
 }
