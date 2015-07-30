@@ -33,10 +33,24 @@ abstract class MyStyle_Customizer_Shortcode {
         $mystyle_app_id = MyStyle_Options::get_api_key();
         
         if( ! isset( $_GET['product_id'] ) ) {
-            $out = '<h2>Select a product to customize</h2>';
-
+            $out = '';
             add_filter( 'woocommerce_shortcode_products_query', array( 'MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query' ), 10, 1 );
-            $out .= do_shortcode('[products per_page="12"]');
+            $out = do_shortcode('[products per_page="12"]');
+            
+            if( strlen( $out ) < 50 ) {
+                $out = '<p>Sorry, no products are currently available for customization.</p>';
+                $out .= '<h2><a class="button" href="' . get_permalink( woocommerce_get_page_id( 'shop' ) ) . '">Shop</a></h2>';
+                if( is_super_admin() ) {
+                    $out .= '<div style="background-color: #fafafa; border: solid 1px #eeeeee; font-family: \'Noto Sans\', sans-serif; padding: 10px;">' .
+                                '<p><strong>MyStyle Admin Notice:</strong></p>' .
+                                '<p>You need to make at least one product customizable by enabling it in the MyStyle tab of the WooCommerce product admin.</p>' .
+                                '<p>Please note that this message will not show to customers.</p>' .
+                            '</div>';
+                }
+            } else {
+                $out = '<h2>Select a product to customize</h2>' . $out;
+            }
+            
             
             return $out;
         }
