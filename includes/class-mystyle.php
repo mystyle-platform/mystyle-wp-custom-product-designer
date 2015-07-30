@@ -82,5 +82,27 @@ class MyStyle {
 	
         return $new_image_tag;
     }
+    
+    /**
+     * Function that looks to see if any products are mystyle enabled.
+     * @return boolean Returns true if at least one product is customizable.
+     * @todo: write unit tests
+     */
+    public static function site_has_customizable_products() {
+        $args = array(
+                    'post_type'      => 'product',
+                    'numberposts' => 1,
+                    'meta_key'       => '_mystyle_enabled',
+                    'meta_value'     => 'yes',
+                );
 
+        $customizable_products = get_posts( $args );
+        
+        if( ! empty( $customizable_products ) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }

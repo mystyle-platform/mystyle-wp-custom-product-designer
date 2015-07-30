@@ -69,10 +69,18 @@ class MyStyle_Admin {
         }
         
         if( ! MyStyle_Options::are_keys_installed() ) {
-            if( $screen_id != 'settings_page_mystyle' ) {
+            if( $screen_id != 'toplevel_page_mystyle' ) {
                 $notices[]= 'You\'ve activated the MyStyle Plugin! Now let\'s <a href="options-general.php?page=mystyle">configure</a> it!';
             }
+        } else {
+            if( ! MyStyle::site_has_customizable_products() ) {
+                if( $screen_id == 'toplevel_page_mystyle' ) {
+                    $notices[]= 'You\'re configured and ready to go but you still need to add a customizable product!';
+                }
+            }
         }
+        
+        
         
         //print the notices
         foreach( $notices as $notice ) {
