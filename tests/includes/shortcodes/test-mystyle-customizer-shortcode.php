@@ -24,12 +24,12 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
     /**
      * Test the output function with invalid/no params.
      */    
-    public function test_output_with_invalid_params() {
+    public function test_output_with_no_params() {
         
         $output = MyStyle_Customizer_Shortcode::output();
         
         //assert that the output includes an iframe tag
-        $this->assertContains( 'You\'ll need to select a product to customize first!', $output );
+        $this->assertContains( 'Sorry, no products are currently available for customization.', $output );
     }
     
 }
