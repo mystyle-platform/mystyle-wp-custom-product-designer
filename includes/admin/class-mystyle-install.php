@@ -22,7 +22,16 @@ class MyStyle_Install {
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
         dbDelta( self::get_schema() );
-   }
+    }
+   
+    /**
+     * Delta/Alter any tables.  Currently this does the same thing as
+     * create_tables.
+     * @todo Add unit testing.
+     */
+    public static function delta_tables() {
+        self::create_tables();
+    }
 
    /**
     * Get Table schema

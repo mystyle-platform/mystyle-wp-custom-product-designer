@@ -41,7 +41,11 @@ class MyStyle_Admin {
             $options['version'] = MYSTYLE_VERSION;
             update_option( MYSTYLE_OPTIONS_NAME, $options );
             if( ! is_null( $data_version ) ) {  //skip if not an upgrade
-                //do any necessary version data upgrades here
+                
+                //Delta the database tables
+                MyStyle_Install::delta_tables();
+                
+                //Post Upgrade Notice
                 $notices = get_option( MYSTYLE_NOTICES_NAME );
                 $notices[] = 'Upgraded version from ' . $data_version . ' to ' . MYSTYLE_VERSION . '.';
                 update_option( MYSTYLE_NOTICES_NAME, $notices );
