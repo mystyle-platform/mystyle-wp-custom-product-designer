@@ -14,10 +14,13 @@ class MyStyle_FrontEnd {
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
+        add_filter( 'woocommerce_add_to_cart_handler', array( &$this, 'add_to_cart_handler_filter' ), 10, 2 );
+        
         add_action( 'init', array( &$this, 'init' ) );
         add_action( 'woocommerce_before_add_to_cart_button', array( &$this, 'before_add_to_cart_button' ), 10, 0 );
         add_action( 'woocommerce_after_add_to_cart_button', array( &$this, 'after_add_to_cart_button' ), 10, 0 );
         add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
+        add_action( 'woocommerce_add_to_cart_handler_mystyle_customizer', array( &$this, 'mystyle_add_to_cart_handler' ), 10, 1 );
     }
     
     /**
@@ -61,7 +64,7 @@ class MyStyle_FrontEnd {
             $customizer_url = add_query_arg( 'product_id', $current_product_id, get_permalink( $customize_page_id ) );
             
             //TODO: Add multilingual support
-            $out  =     '<button class="mystyle_customize_button button alt" type="button" onclick="location.href = \'' . $customizer_url . '\'; return false;">Customize</button>';
+            $out  =     '<button class="mystyle_customize_button button alt" type="submit">Customize</button>';
             $out .= '</div>'; //close the mystyle_customizable wrapper div
             echo $out;
         }
@@ -99,6 +102,45 @@ class MyStyle_FrontEnd {
         }
         
         return $ret;
+    }
+    
+    /**
+     * Filter to add our add_to_cart handler for customizable products.
+     * @param string $handler The current add_to_cart handler.
+     * @param type $product The current product.
+     * @return string Returns the name of the handler to use for the add_to_cart
+     * action.
+     * @todo Add unit testing
+     */
+    function add_to_cart_handler_filter( $handler, $product ) {
+        var_dump($product);
+        if($product != null) {
+            $product_id = $product->id;
+        } else {
+            $product_id = absint( $_REQUEST['add-to-cart'] );
+        }
+        $mystyle_enabled = get_post_meta( $product_id, '_mystyle_enabled', true );
+
+        if($mystyle_enabled) {
+            $handler = 'mystyle_customizer';
+        }
+    
+        return $handler;
+    }
+    
+    /**
+     * The MyStyle add_to_cart handler.  Handles the add_to_cart action for
+     * Customizable products.
+     * @param string $url The current url.
+     * @todo Add unit testing
+     */
+    function mystyle_add_to_cart_handler( $url ) {
+        $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
+
+        $customize_page_id = MyStyle_Customize_Page::get_id();
+        $customizer_url = add_query_arg( 'product_id', $product_id, get_permalink( $customize_page_id ) );
+        wp_safe_redirect( $customizer_url );
+        exit;
     }
 
 }
