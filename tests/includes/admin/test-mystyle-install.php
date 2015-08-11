@@ -62,7 +62,7 @@ class MyStyleInstallTest extends WP_UnitTestCase {
      */    
     public function test_get_schema() {
         
-        $expected_schema = '
+        $expected_schema = "
             CREATE TABLE wptests_mystyle_designs (
                 ms_design_id bigint(32) NOT NULL,
                 ms_product_id bigint(20) NOT NULL,
@@ -74,8 +74,16 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 ms_thumb_url varchar(255) NULL,
                 ms_design_url varchar(255) NULL,
                 product_id bigint(20) NULL,
+                design_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                ms_mobile int(1) NOT NULL DEFAULT '0',
+                ms_access int(1) NOT NULL DEFAULT '0',
+                design_view_count bigint(20) NULL DEFAULT '0',
+                design_purchase_count bigint(20) NULL DEFAULT '0',
                 PRIMARY KEY  (ms_design_id)
-            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;';
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
         
         $schema = MyStyle_Install::get_schema();
         

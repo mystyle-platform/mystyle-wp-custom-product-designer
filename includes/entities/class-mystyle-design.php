@@ -13,23 +13,35 @@ class MyStyle_Design implements MyStyle_Entity {
     private static $TABLE_NAME = 'mystyle_designs'; //Note: this is without the db prefix;
     private static $PRIMARY_KEY = 'ms_design_id';
     
+    private $design_id; //the primary key
+    private $created; //the date the design was created
+    private $created_gmt; //the date the design was created (adjusted to the GMT timezone).
+    private $modified; //the date the design was last modified 
+    private $modified_gmt; //the date the design was last modified (adjusted to the GMT timezone).
     private $description;
     private $print_url;
     private $web_url;
     private $thumb_url;
     private $design_url;
-    private $design_id;
     private $template_id; //this is the MyStyle product id
     private $product_id; //this is the local product id
-    private $user_id;
+    private $user_id; //the mystyle user id
     private $price;
+    private $mobile; //whether or not the mobile version of the customizer was used to create the design.
+    private $access; //0=public, 1=private, 2=restricted
+    private $view_count; //How many times the design page has been viewed.
+    private $purchase_count; //How many times the design has been purchased.
     
     /**
      * Constructor. Note: see the functions below for additional ways to create
      * a Design.
      */
     public function __construct() {
-        //
+        $date_format = 'Y-m-d H:i:s';
+        $this->created = date($date_format);
+        $this->created_gmt = gmdate($date_format);
+        $this->modified = date($date_format);
+        $this->modified_gmt = date($date_format);
     }
     
     /**
@@ -76,6 +88,15 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->design_url = htmlspecialchars( $result_object->ms_design_url );
         $instance->product_id = (int) htmlspecialchars( $result_object->product_id );
         
+        $instance->created = $this->design_created = '2015-08-06 22:35:52';
+        $this->design_created_gmt = '2015-08-06 22:35:52';
+        $this->design_modified = '2015-08-06 22:35:52';
+        $this->design_modified_gmt = '2015-08-06 22:35:52';
+        $this->ms_mobile = 0;
+        $this->ms_access = 0;
+        $this->design_view_count = 0;
+        $this->design_purchase_count = 0;
+        
         return $instance;
     }
     
@@ -89,6 +110,54 @@ class MyStyle_Design implements MyStyle_Entity {
         $this->web_url = htmlspecialchars( $api_data['web_url'] );
         $this->thumb_url = htmlspecialchars( $api_data['thumb_url'] );
         $this->design_url = htmlspecialchars( $api_data['design_url'] );
+    }
+    
+    /**
+     * Sets the value of design_id. This is used primarily by our unit tests.
+     * @param number $design_id The new value for design_id.
+     */
+    public function set_design_id( $design_id ) {
+        $this->design_id = $design_id;
+    }
+    
+    /**
+     * Gets the value of design_id.
+     * @return number Returns the value of design_id.
+     */
+    public function get_design_id() {
+        return $this->design_id;
+    }
+    
+    /**
+     * Gets the value of created.
+     * @return number Returns the value of created.
+     */
+    public function get_created() {
+        return $this->created;
+    }
+    
+    /**
+     * Gets the value of created_gmt.
+     * @return number Returns the value of created_gmt.
+     */
+    public function get_created_gmt() {
+        return $this->created_gmt;
+    }
+    
+    /**
+     * Gets the value of modified.
+     * @return number Returns the value of modified.
+     */
+    public function get_modified() {
+        return $this->modified;
+    }
+    
+    /**
+     * Gets the value of modified_gmt.
+     * @return number Returns the value of modified_gmt.
+     */
+    public function get_modified_gmt() {
+        return $this->modified_gmt;
     }
     
     /**
@@ -172,22 +241,6 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Sets the value of design_id.
-     * @param number $design_id The new value for design_id.
-     */
-    public function set_design_id( $design_id ) {
-        $this->design_id = $design_id;
-    }
-    
-    /**
-     * Gets the value of design_id.
-     * @return number Returns the value of design_id.
-     */
-    public function get_design_id() {
-        return $this->design_id;
-    }
-    
-    /**
      * Sets the value of template_id.
      * @param number $template_id The new value for template_id.
      */
@@ -250,6 +303,77 @@ class MyStyle_Design implements MyStyle_Entity {
     public function get_price() {
         return $this->price;
     }
+    
+    /**
+     * Gets the value of access.
+     * @return number Returns the value of access.
+     */
+    public function get_access() {
+        return $this->access;
+    }
+    
+    /**
+     * Sets the value of mobile.
+     * @param number $mobile The new value for mobile.
+     */
+    public function set_mobile( $mobile ) {
+        $this->mobile = $mobile;
+    }
+    
+    /**
+     * Gets the value of mobile.
+     * @return number Returns the value of mobile.
+     */
+    public function is_mobile() {
+        return $this->mobile;
+    }
+    
+    /**
+     * Sets the value of access.
+     * @param number $access The new value for access.
+     */
+    public function set_access( $access ) {
+        $this->access = $access;
+    }
+    
+    /**
+     * Sets the value of view_count.
+     * @param number $view_count The new value for view_count.
+     */
+    public function set_view_count( $view_count ) {
+        $this->view_count = $view_count;
+    }
+    
+    /**
+     * Gets the value of view_count.
+     * @return number Returns the value of view_count.
+     */
+    public function get_view_count() {
+        return $this->view_count;
+    }
+    
+    /**
+     * Sets the value of purchase_count.
+     * @param number $purchase_count The new value for purchase_count.
+     */
+    public function set_purchase_count( $purchase_count ) {
+        $this->purchase_count = $purchase_count;
+    }
+    
+    /**
+     * Gets the value of purchase_count.
+     * @return number Returns the value of purchase_count.
+     */
+    public function get_purchase_count() {
+        return $this->purchase_count;
+    }
+    
+    /*
+    private $is_mobile; //whether or not the mobile version of the customizer was used to create the design.
+    private $access; //0=public, 1=private, 2=restricted
+    private $view_count; //How many times the design page has been viewed.
+    private $purchase_count; //How many times the design has been purchased.
+     */
     
     /**
      * Function for converting the object into an array for use with WP meta
@@ -334,6 +458,14 @@ class MyStyle_Design implements MyStyle_Entity {
         $data['ms_thumb_url'] = $this->thumb_url;
         $data['ms_design_url'] = $this->design_url;
         $data['product_id'] = $this->product_id;
+        $data['design_created'] = $this->created;
+        $data['design_created_gmt'] = $this->created_gmt;
+        $data['design_modified'] = $this->modified;
+        $data['design_modified_gmt'] = $this->modified_gmt;
+        $data['ms_mobile'] = $this->mobile;
+        $data['ms_access'] = $this->access;
+        $data['design_view_count'] = $this->view_count;
+        $data['design_purchase_count'] = $this->purchase_count;
         
         return $data;
     }
@@ -347,16 +479,24 @@ class MyStyle_Design implements MyStyle_Entity {
     public function get_insert_format() {
         
         $formats_arr = array( 
-            '%d', 
-            '%d',
-            '%d',
-            '%s',
-            '%d',
-            '%s',
-            '%s',
-            '%s',
-            '%s',
-            '%d',
+            '%d', //design_id
+            '%d', //template_id
+            '%d', //user_id
+            '%s', //description
+            '%d', //price
+            '%s', //print_url
+            '%s', //web_url
+            '%s', //thumb_url
+            '%s', //design_url
+            '%d', //product_id
+            '%s', //created
+            '%s', //created_gmt
+            '%s', //modified
+            '%s', //modified_gmt
+            '%d', //mobile
+            '%d', //access
+            '%d', //view_count
+            '%d', //purchase_count
 	);
                 
         return $formats_arr;  

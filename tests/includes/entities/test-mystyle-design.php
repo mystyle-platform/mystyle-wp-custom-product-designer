@@ -100,7 +100,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
      */    
     function test_get_schema() {
         
-        $expected_schema = '
+        $expected_schema = "
             CREATE TABLE wptests_mystyle_designs (
                 ms_design_id bigint(32) NOT NULL,
                 ms_product_id bigint(20) NOT NULL,
@@ -112,8 +112,16 @@ class MyStyleDesignTest extends WP_UnitTestCase {
                 ms_thumb_url varchar(255) NULL,
                 ms_design_url varchar(255) NULL,
                 product_id bigint(20) NULL,
+                design_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                ms_mobile int(1) NOT NULL DEFAULT '0',
+                ms_access int(1) NOT NULL DEFAULT '0',
+                design_view_count bigint(20) NULL DEFAULT '0',
+                design_purchase_count bigint(20) NULL DEFAULT '0',
                 PRIMARY KEY  (ms_design_id)
-            )';
+            )";
         
         $schema = MyStyle_Design::get_schema();
         
@@ -166,6 +174,14 @@ class MyStyleDesignTest extends WP_UnitTestCase {
             'ms_thumb_url' => 'http://www.example.com/example.jpg',
             'ms_design_url' => 'http://www.example.com/example.jpg',
             'product_id' => 0,
+            'design_created' => '2015-08-06 22:35:52',
+            'design_created_gmt' => '2015-08-06 22:35:52',
+            'design_modified' => '2015-08-06 22:35:52',
+            'design_modified_gmt' => '2015-08-06 22:35:52',
+            'ms_mobile' => null,
+            'ms_access' => null,
+            'design_view_count' => null,
+            'design_purchase_count' => null,
         );
         
         //Create a design
@@ -186,16 +202,24 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         
         //Set up the expected formats array
         $expected_formats_arr = array( 
-            '%d', 
-            '%d',
-            '%d',
-            '%s',
-            '%d',
-            '%s',
-            '%s',
-            '%s',
-            '%s',
-            '%d',
+            '%d', //design_id
+            '%d', //template_id
+            '%d', //user_id
+            '%s', //description
+            '%d', //price
+            '%s', //print_url
+            '%s', //web_url
+            '%s', //thumb_url
+            '%s', //design_url
+            '%d', //product_id
+            '%s', //created
+            '%s', //created_gmt
+            '%s', //modified
+            '%s', //modified_gmt
+            '%d', //mobile
+            '%d', //access
+            '%d', //view_count
+            '%d', //purchase_count
 	);
         
         //Create a design

@@ -30,6 +30,14 @@ class MyStyle_MockDesignQueryResult {
         $this->ms_thumb_url = 'http://www.example.com/example.jpg';
         $this->ms_design_url = 'http://www.example.com/example.jpg';
         $this->product_id = 0;
+        $this->design_created = '2015-08-06 22:35:52';
+        $this->design_created_gmt = '2015-08-06 22:35:52';
+        $this->design_modified = '2015-08-06 22:35:52';
+        $this->design_modified_gmt = '2015-08-06 22:35:52';
+        $this->ms_mobile = 0;
+        $this->ms_access = 0;
+        $this->design_view_count = 0;
+        $this->design_purchase_count = 0;
     }
 
 }
