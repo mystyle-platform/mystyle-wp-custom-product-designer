@@ -54,7 +54,6 @@ class MyStyle_FrontEnd {
      * @param type $product The current product.
      * @return string Returns the name of the handler to use for the add_to_cart
      * action.
-     * @todo Add unit testing
      */
     function filter_add_to_cart_handler( $handler, $product ) {
 
