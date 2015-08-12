@@ -82,6 +82,13 @@ class MyStyle_Handoff {
             //Persist the design to the database
             $design = MyStyle_DesignManager::persist( $design );
             
+            //Get the passthru data
+            $passthru = json_decode( base64_decode( $_POST['h'] ), true );
+            $quantity = $passthru['quantity'];
+            
+            //echo $quantity;
+            //exit;
+            
             //Get the woocommerce cart
             $cart = $woocommerce->cart;
             
@@ -92,7 +99,7 @@ class MyStyle_Handoff {
             //Add the product and meta data to the cart
             $cart_item_key = $cart->add_to_cart(
                                         $design->get_product_id(), //WooCommerce product id
-                                        1, //quantity
+                                        $quantity, //quantity
                                         '', //variation id
                                         array(), //variation attribute values
                                         $cart_item_data //extra cart item data we want to pass into the item

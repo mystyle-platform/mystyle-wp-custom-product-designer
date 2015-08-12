@@ -14,57 +14,61 @@ class MyStyle_FrontEnd {
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
+        add_filter( 'woocommerce_product_single_add_to_cart_text', array( &$this, 'filter_cart_button_text' ), 10, 1 ); 
+        add_filter( 'woocommerce_add_to_cart_handler', array( &$this, 'filter_add_to_cart_handler' ), 10, 2 );
+        
         add_action( 'init', array( &$this, 'init' ) );
-        add_action( 'woocommerce_before_add_to_cart_button', array( &$this, 'before_add_to_cart_button' ), 10, 0 );
-        add_action( 'woocommerce_after_add_to_cart_button', array( &$this, 'after_add_to_cart_button' ), 10, 0 );
         add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
+        add_action( 'woocommerce_add_to_cart_handler_mystyle_customizer', array( &$this, 'mystyle_add_to_cart_handler' ), 10, 1 );
     }
     
     /**
      * Init the MyStyle front end.
      */
     public static function init() {
-        //Add the MyStyle frontend stylesheet to the WP frontend head
-        wp_register_style( 'myStyleFrontEndStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css' );
-        wp_enqueue_style( 'myStyleFrontEndStylesheet' );
-        
         //Add the swfobject.js file to the WP head
         wp_register_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js' );
         wp_enqueue_script( 'swfobject' );
     }
     
     /**
-     * Wrap the section with a mystyle-customizable-product class
+     * Filter the "Add to Cart" button text.
+     * @param string $text The current cart button text.
      */
-    public static function before_add_to_cart_button() {
-        global $post;
+    function filter_cart_button_text( $text ) {
+        global $product;
         
-        $current_product_id = $post->ID;
-        $mystyle_enabled = get_post_meta( $current_product_id, '_mystyle_enabled', true );
-        
-        if( $mystyle_enabled == 'yes' ) {
-            echo '<div class="mystyle-customizable-product">'; //open the mystyle_customizable wrapper div
+        if( $product != null ) {
+            $mystyle_enabled = get_post_meta( $product->id, '_mystyle_enabled', true );
+            if( $mystyle_enabled ) {
+                $text = "Customize";
+            }
         }
+        
+        return $text;
     }
     
     /**
-     * Add Customize button after the add to cart button.
+     * Filter to add our add_to_cart handler for customizable products.
+     * @param string $handler The current add_to_cart handler.
+     * @param type $product The current product.
+     * @return string Returns the name of the handler to use for the add_to_cart
+     * action.
      */
-    public static function after_add_to_cart_button() {
-        global $post;
-        
-        $customize_page_id = MyStyle_Customize_Page::get_id();
-        $current_product_id = $post->ID;
-        $mystyle_enabled = get_post_meta( $current_product_id, '_mystyle_enabled', true );
-        
-        if( $mystyle_enabled == 'yes' ) {
-            $customizer_url = add_query_arg( 'product_id', $current_product_id, get_permalink( $customize_page_id ) );
-            
-            //TODO: Add multilingual support
-            $out  =     '<button class="mystyle_customize_button button alt" type="button" onclick="location.href = \'' . $customizer_url . '\'; return false;">Customize</button>';
-            $out .= '</div>'; //close the mystyle_customizable wrapper div
-            echo $out;
+    function filter_add_to_cart_handler( $handler, $product ) {
+
+        if($product != null) {
+            $product_id = $product->id;
+        } else {
+            $product_id = absint( $_REQUEST['add-to-cart'] );
         }
+        $mystyle_enabled = get_post_meta( $product_id, '_mystyle_enabled', true );
+
+        if($mystyle_enabled) {
+            $handler = 'mystyle_customizer';
+        }
+    
+        return $handler;
     }
     
     /**
@@ -99,6 +103,33 @@ class MyStyle_FrontEnd {
         }
         
         return $ret;
+    }
+    
+    /**
+     * The MyStyle add_to_cart handler.  Handles the add_to_cart action for
+     * Customizable products.
+     * @param string $url The current url.
+     * @todo Add unit testing
+     */
+    function mystyle_add_to_cart_handler( $url ) {
+        $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
+        
+        $passthru = array(
+            'local_product_id' => $product_id,
+            'quantity' => $_REQUEST['quantity'],
+        );
+        
+
+        $customize_page_id = MyStyle_Customize_Page::get_id();
+        
+        $args = array(
+                    'product_id' => $product_id,
+                    'h' => base64_encode(json_encode($passthru)),
+                );
+        
+        $customizer_url = add_query_arg( $args, get_permalink( $customize_page_id ) );
+        wp_safe_redirect( $customizer_url );
+        exit;
     }
 
 }

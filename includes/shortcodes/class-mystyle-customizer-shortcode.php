@@ -57,6 +57,7 @@ abstract class MyStyle_Customizer_Shortcode {
         
         $product_id = htmlspecialchars( $_GET['product_id'] ) ;
         $mystyle_template_id = get_post_meta( $product_id, '_mystyle_template_id', true );
+        $passthru = ( isset( $_GET['h'] ) ) ? $_GET['h'] : '';
         
         $settings = array();
         $settings['redirect_url'] = MyStyle_Handoff::get_url();
@@ -70,7 +71,7 @@ abstract class MyStyle_Customizer_Shortcode {
                         "?app_id=$mystyle_app_id" . 
                         "&amp;product_id=$mystyle_template_id" . 
                         "&amp;settings=$encoded_settings" . 
-                        "&amp;passthru=local_product_id,$product_id";
+                        "&amp;passthru=h,$passthru";
         
         //---------- variables for use by the view layer ---------
         $customizer_url = 'http://customizer.ogmystyle.com/' . $customizer_query_string;
