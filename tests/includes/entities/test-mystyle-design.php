@@ -23,7 +23,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         $post['description'] = 'test description';
         $post['design_id'] = $design_id;
         $post['product_id'] = 0;
-        $post['local_product_id'] = 0;
+        $post['h'] = base64_encode( json_encode( array( 'local_product_id' => 0 ) ) );
         $post['user_id'] = 0;
         $post['price'] = 0;
         

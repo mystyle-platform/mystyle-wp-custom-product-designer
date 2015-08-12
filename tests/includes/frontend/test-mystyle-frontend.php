@@ -23,12 +23,8 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         $this->assertContains( 'init', $function_names );
         
         //Assert that the before_add_to_cart_button function is registered.
-        $function_names = get_function_names( $wp_filter['woocommerce_before_add_to_cart_button'] );
-        $this->assertContains( 'before_add_to_cart_button', $function_names );
-        
-        //Assert that the before_add_to_cart_button function is registered.
-        $function_names = get_function_names( $wp_filter['woocommerce_after_add_to_cart_button'] );
-        $this->assertContains( 'after_add_to_cart_button', $function_names );
+        $function_names = get_function_names( $wp_filter['woocommerce_add_to_cart_handler_mystyle_customizer'] );
+        $this->assertContains( 'mystyle_add_to_cart_handler', $function_names );
         
         //Assert that the loop_add_to_cart_link function is registered.
         $function_names = get_function_names( $wp_filter['woocommerce_loop_add_to_cart_link'] );
@@ -41,9 +37,9 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
     public function test_mystyle_frontend_init() {
         $mystyle_frontend = new MyStyle_Frontend();
         
-        //Assert that the frontend stylesheet is registered
-        global $wp_styles;
-        $this->assertContains( 'myStyleFrontEndStylesheet', serialize( $wp_styles ) );
+        //Assert that the swfobject script is registered
+        global $wp_scripts;
+        $this->assertContains( 'swfobject', serialize( $wp_scripts ) );
     }
     
     /**
@@ -56,55 +52,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
      */
     function mock_mystyle_metadata( $metadata, $object_id, $meta_key, $single ){
         return 'yes';
-    }
-    
-    /**
-     * Test the before_add_to_cart_button function.
-     */
-    public function test_before_add_to_cart_button() {
-        
-        //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
-        //Mock the mystyle_metadata
-        add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
-        
-        $mystyle_frontend = new MyStyle_Frontend();
-        
-        //Assert that the expected code was output
-        ob_start();
-        $mystyle_frontend->before_add_to_cart_button();
-        $outbound = ob_get_contents();
-        ob_end_clean();
-        $this->assertContains( '<div class="mystyle-customizable-product">', $outbound );
-    }
-    
-    /**
-     * Test the after_add_to_cart_button function.
-     */
-    public function test_after_add_to_cart_button() {
-         
-        //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
-        //Mock the mystyle_metadata
-        add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
-        
-        $mystyle_frontend = new MyStyle_Frontend();
-        
-        //Create the MyStyle Customize page (needed by the function)
-        MyStyle_Customize_Page::create();
-        
-        //Assert that the expected code was output
-        ob_start();
-        $mystyle_frontend->after_add_to_cart_button();
-        $outbound = ob_get_contents();
-        ob_end_clean();
-        $this->assertContains( '<button class="mystyle_customize_button', $outbound );
     }
     
     /**
