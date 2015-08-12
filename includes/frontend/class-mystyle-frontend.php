@@ -34,7 +34,6 @@ class MyStyle_FrontEnd {
     /**
      * Filter the "Add to Cart" button text.
      * @param string $text The current cart button text.
-     * @todo Add unit testing
      */
     function filter_cart_button_text( $text ) {
         global $product;
