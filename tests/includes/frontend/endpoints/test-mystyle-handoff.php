@@ -138,7 +138,14 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $post['description'] = 'test description';
         $post['design_id'] = 1;
         $post['product_id'] = 0;
-        $post['local_product_id'] = 0;
+        $post['h'] = base64_encode( 
+                        json_encode( 
+                            array( 
+                                'local_product_id' => 0, 
+                                'quantity' => 1
+                            ) 
+                        ) 
+                    );
         $post['user_id'] = 0;
         $post['price'] = 0;
         $_POST = $post;
@@ -146,7 +153,6 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $html = $mystyle_handoff->handle();
         
         $this->assertContains( 'Product added to cart', $html );
-        
     }
     
 }
