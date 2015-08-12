@@ -57,7 +57,7 @@ class MyStyle_FrontEnd {
      * @todo Add unit testing
      */
     function filter_add_to_cart_handler( $handler, $product ) {
-        var_dump($product);
+
         if($product != null) {
             $product_id = $product->id;
         } else {
