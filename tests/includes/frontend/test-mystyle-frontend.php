@@ -18,11 +18,19 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         
         global $wp_filter;
         
+        //Assert that the filter_cart_button_text function is registered.
+        $function_names = get_function_names( $wp_filter['woocommerce_product_single_add_to_cart_text'] );
+        $this->assertContains( 'filter_cart_button_text', $function_names );
+        
+        //Assert that the filter_add_to_cart_handler function is registered.
+        $function_names = get_function_names( $wp_filter['woocommerce_add_to_cart_handler'] );
+        $this->assertContains( 'filter_add_to_cart_handler', $function_names );
+        
         //Assert that the init function is registered.
         $function_names = get_function_names( $wp_filter['init'] );
         $this->assertContains( 'init', $function_names );
         
-        //Assert that the before_add_to_cart_button function is registered.
+        //Assert that the mystyle_add_to_cart_handler function is registered.
         $function_names = get_function_names( $wp_filter['woocommerce_add_to_cart_handler_mystyle_customizer'] );
         $this->assertContains( 'mystyle_add_to_cart_handler', $function_names );
         
