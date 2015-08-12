@@ -115,9 +115,21 @@ class MyStyle_FrontEnd {
      */
     function mystyle_add_to_cart_handler( $url ) {
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
+        
+        $passthru = array(
+            'local_product_id' => $product_id,
+            'quantity' => $_REQUEST['quantity'],
+        );
+        
 
         $customize_page_id = MyStyle_Customize_Page::get_id();
-        $customizer_url = add_query_arg( 'product_id', $product_id, get_permalink( $customize_page_id ) );
+        
+        $args = array(
+                    'product_id' => $product_id,
+                    'h' => base64_encode(json_encode($passthru)),
+                );
+        
+        $customizer_url = add_query_arg( $args, get_permalink( $customize_page_id ) );
         wp_safe_redirect( $customizer_url );
         exit;
     }

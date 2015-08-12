@@ -41,10 +41,12 @@ class MyStyle_Design implements MyStyle_Entity {
     public static function create_from_post( $post_data ) {
         $instance = new self();
         
+        $passthru = json_decode( base64_decode( $post_data['h'] ), true );
+        $instance->product_id = (int) htmlspecialchars( $passthru['local_product_id'] ); //mapping local_product_id to product_id
+        
         $instance->description = htmlspecialchars( $post_data['description'] );
         $instance->design_id = (int) htmlspecialchars( $post_data['design_id'] );
         $instance->template_id = (int) htmlspecialchars( $post_data['product_id'] ); //mapping product_id to template_id
-        $instance->product_id = (int) htmlspecialchars( $post_data['local_product_id'] ); //mapping local_product_id to product_id
         $instance->user_id = (int) htmlspecialchars( $post_data['user_id'] );
         $instance->price = (int) htmlspecialchars( $post_data['price'] );
         
