@@ -63,6 +63,54 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the filter_cart_button_text function when product isn't mystyle
+     * enabled.
+     */    
+    public function test_filter_cart_button_text_doesnt_modify_button_text_when_not_mystyle_enabled() {
+        global $product;
+        
+        $mystyle_frontend = new MyStyle_Frontend();
+        
+        //Mock the global $post variable
+        $post_vars = new stdClass();
+        $post_vars->ID = 1;
+        $GLOBALS['post'] = new WP_Post( $post_vars );
+        
+        //Create a mock product using the mock Post
+        $product = new WC_Product_Simple($GLOBALS['post']);
+        
+        $text = $mystyle_frontend->filter_cart_button_text( 'Add to Cart' );
+        
+        //Assert that the expected text is returned
+        $this->assertContains( 'Add to Cart', $text );
+    }
+    
+    /**
+     * Test the filter_cart_button_text function when product is mystyle enabled.
+     */    
+    public function test_filter_cart_button_text_modifies_button_text_when_mystyle_enabled() {
+        global $product;
+        
+        $mystyle_frontend = new MyStyle_Frontend();
+        
+        //Mock the global $post variable
+        $post_vars = new stdClass();
+        $post_vars->ID = 1;
+        $GLOBALS['post'] = new WP_Post( $post_vars );
+        
+        //Create a mock product using the mock Post
+        $product = new WC_Product_Simple($GLOBALS['post']);
+        
+        //Mock the mystyle_metadata
+        add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
+        
+        $text = $mystyle_frontend->filter_cart_button_text( 'Add to Cart' );
+        
+        //Assert that the expected text is returned
+        $this->assertContains( 'Customize', $text );
+    }
+    
+    /**
      * Test the loop_add_to_cart_link function for a regular (uncustomizable) 
      * product.
      */    
