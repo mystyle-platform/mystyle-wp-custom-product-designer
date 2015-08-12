@@ -109,7 +109,6 @@ class MyStyle_FrontEnd {
      * The MyStyle add_to_cart handler.  Handles the add_to_cart action for
      * Customizable products.
      * @param string $url The current url.
-     * @todo Add unit testing
      */
     function mystyle_add_to_cart_handler( $url ) {
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
@@ -128,8 +127,12 @@ class MyStyle_FrontEnd {
                 );
         
         $customizer_url = add_query_arg( $args, get_permalink( $customize_page_id ) );
-        wp_safe_redirect( $customizer_url );
-        exit;
+        $redirect = wp_safe_redirect( $customizer_url );
+        if($redirect) {
+            exit;
+        } else {
+            return false;
+        }
     }
 
 }

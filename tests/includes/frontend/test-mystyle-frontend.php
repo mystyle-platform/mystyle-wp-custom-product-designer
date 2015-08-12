@@ -216,4 +216,47 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         $this->assertContains( $expected, $html );
     }
     
+    /**
+     * Disable the wp_redirect function so that it returns false and doesn't
+     * perform the redirect.
+     * @param type $location
+     * @param type $status
+     * @return string
+     */
+    function filter_wp_redirect( $location, $status ){
+        return false;
+    }
+    
+    /**
+     * Test the mystyle_add_to_cart_handler function.
+     */    
+    public function test_mystyle_add_to_cart_handler() {
+        global $product;
+        
+        $mystyle_frontend = new MyStyle_Frontend();
+        
+        //Mock the global $post variable
+        $post_vars = new stdClass();
+        $post_vars->ID = 1;
+        $GLOBALS['post'] = new WP_Post( $post_vars );
+        
+        //Create a mock product using the mock Post
+        $product = new WC_Product_Simple($GLOBALS['post']);
+        
+        //Set the expected request variables
+        $_REQUEST['add-to-cart'] = $product->id;
+        $_REQUEST['quantity'] = 1;
+        
+        //Create the MyStyle Customize page (needed by the function)
+        MyStyle_Customize_Page::create();
+        
+        //Disable the redirect
+        add_filter('wp_redirect', array( &$this, 'filter_wp_redirect' ), 10, 2);
+        
+        $return = $mystyle_frontend->mystyle_add_to_cart_handler( '' );
+        
+        //Assert that the function returns false as expected (we disabled the redirect)
+        $this->assertFalse( $return );
+    }
+    
 }
