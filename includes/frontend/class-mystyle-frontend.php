@@ -40,7 +40,7 @@ class MyStyle_FrontEnd {
         
         if( $product != null ) {
             $mystyle_enabled = get_post_meta( $product->id, '_mystyle_enabled', true );
-            if( $mystyle_enabled ) {
+            if( $mystyle_enabled == 'yes' ) {
                 $text = "Customize";
             }
         }
