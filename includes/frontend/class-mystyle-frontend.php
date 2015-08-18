@@ -39,8 +39,8 @@ class MyStyle_FrontEnd {
         global $product;
         
         if( $product != null ) {
-            $mystyle_enabled = get_post_meta( $product->id, '_mystyle_enabled', true );
-            if( $mystyle_enabled == 'yes' ) {
+            
+            if( MyStyle::product_is_customizable( $product->id ) ) {
                 $text = "Customize";
             }
         }
@@ -62,9 +62,8 @@ class MyStyle_FrontEnd {
         } else {
             $product_id = absint( $_REQUEST['add-to-cart'] );
         }
-        $mystyle_enabled = get_post_meta( $product_id, '_mystyle_enabled', true );
-
-        if($mystyle_enabled) {
+        
+        if( MyStyle::product_is_customizable( $product_id ) ) {
             $handler = 'mystyle_customizer';
         }
     
@@ -79,9 +78,7 @@ class MyStyle_FrontEnd {
      */
     public static function loop_add_to_cart_link( $link, $product ) {
         
-        $mystyle_enabled = get_post_meta( $product->id, '_mystyle_enabled', true );
-        
-        if( $mystyle_enabled == 'yes' ) {
+        if( MyStyle::product_is_customizable( $product->id ) ) {
             $customize_page_id = MyStyle_Customize_Page::get_id();
             $customizer_url = add_query_arg( 'product_id', $product->id, get_permalink( $customize_page_id ) );
             

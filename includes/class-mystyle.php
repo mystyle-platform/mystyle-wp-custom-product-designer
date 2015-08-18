@@ -105,4 +105,20 @@ class MyStyle {
         }
     }
     
+    /**
+     * Function that looks to see if passed products is mystyle enabled.
+     * @param integer $product_id The id of the product to check.
+     * @return boolean Returns true if the product is customizable, otherwise,
+     * returns false.
+     */
+    public static function product_is_customizable( $product_id ) {
+        $mystyle_enabled = get_post_meta( $product_id, '_mystyle_enabled', true );
+        
+        if( $mystyle_enabled == 'yes' ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }
