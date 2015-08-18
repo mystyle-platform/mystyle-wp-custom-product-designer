@@ -66,7 +66,19 @@ class MyStyle_WooCommerce_Admin_Order {
                 <div class="mystyle-item-data" id="mystyle-item-data-<?php echo $item_id; ?>" style="display:none;">
                     <div>
                         <?php if( ! MyStyle_Options::is_demo_mode() ) { ?>
-                            <a href="<?php echo $design->get_print_url(); ?>" target="_blank">Print Image</a>&nbsp;&nbsp;
+                            <?php
+                                $multi_print_file = false;
+                                if( ( preg_match( "/^(.+\_)(\d+)(\..+)$/", $design->get_print_url(), $matches) ) && ( $matches[2] > 1 ) ) {
+                                    $file_name_base = $matches[1];
+                                    $print_file_count = $matches[2];
+                                    $file_name_extension = $matches[3];
+                                    for( $i = 1; $i <= $print_file_count; $i++ ) {
+                                        $curr_file_name = $file_name_base . $i . $file_name_extension;
+                                        echo '<a href="' . $curr_file_name . '" target="_blank">Print Image ' . $i . '</a>&nbsp;&nbsp;<br/>';
+                                    }
+                                } else { 
+                                    echo '<a href="' . $design->get_print_url() . '" target="_blank">Print Image</a>&nbsp;&nbsp;';
+                                } ?>
                         <?php } ?>
                         <a href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a>
                     </div>
