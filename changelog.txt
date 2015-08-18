@@ -1,3 +1,7 @@
+= 1.1.6 =
+
+* Fixed bug causing customize button to show on non-customizable products.
+
 = 1.1.5 =
 
 * Added support for quantities.
