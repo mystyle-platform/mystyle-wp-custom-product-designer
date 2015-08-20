@@ -65,6 +65,10 @@ class MyStyle_FrontEnd {
         
         if( MyStyle::product_is_customizable( $product_id ) ) {
             $handler = 'mystyle_customizer';
+            if(WC_VERSION < 2.3) {
+                //old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
+                self::mystyle_add_to_cart_handler(false);
+            }
         }
     
         return $handler;
