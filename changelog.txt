@@ -1,3 +1,8 @@
+= 1.1.8 =
+
+* Added support for product attributes/variations.
+* Fixed bug with add to cart handler on WooCommerce < 2.3.
+
 = 1.1.7 =
 
 * Added support for multiple print files.
