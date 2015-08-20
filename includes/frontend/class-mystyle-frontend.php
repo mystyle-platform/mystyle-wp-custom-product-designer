@@ -116,10 +116,8 @@ class MyStyle_FrontEnd {
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
         
         $passthru = array(
-            'local_product_id' => $product_id,
-            'quantity' => $_REQUEST['quantity'],
+            'post' => $_REQUEST,
         );
-        
 
         $customize_page_id = MyStyle_Customize_Page::get_id();
         
