@@ -21,7 +21,7 @@ class MyStyle_Options_Page {
      * Function to initialize the MyStyle options page.
      */
     public function admin_init() {
-        register_setting( 'mystyle_options', MYSTYLE_OPTIONS_NAME, array( &$this, 'validate' ) );
+        $sanitize_callback = array( &$this, 'validate' ); //A callback function that sanitizes the option's value.
         // ************** SETTINGS SECTION ******************//
         add_settings_section(
                 'mystyle_options_access_section',
@@ -51,22 +51,22 @@ class MyStyle_Options_Page {
                 array( &$this, 'render_tools_section_text' ),
                 'mystyle_tools'
         );
-        if ( ! empty( $_GET['action'] ) ) {
-            switch ( $_GET['action'] ) {
+        if ( ( ! empty( $_GET['action'] ) ) && ( $_SERVER['REQUEST_METHOD'] == 'POST' ) ) {
+            $sanitize_callback = ''; //turn off validation
+            switch ( $_GET['action'] ) {    
                 case 'fix_customize_page' :
                     
                     //Attempt the fix
-                    MyStyle_Tools::fix_customize_page();
+                    $message = MyStyle_Customize_Page::fix();
                     
                     //Post Fix Notice
-                    //TODO: Move to a notices class
                     $notices = get_option( MYSTYLE_NOTICES_NAME );
-                    $notices[] = 'Customize Page Fixed!';
+                    $notices[] = $message;
                     update_option( MYSTYLE_NOTICES_NAME, $notices );
-                    
                     break;
-    }
+            }
         }
+        register_setting( 'mystyle_options', MYSTYLE_OPTIONS_NAME, $sanitize_callback );
     }
 
     /**
@@ -100,7 +100,7 @@ class MyStyle_Options_Page {
             </div>
             <br/>
             <div class="mystyle-admin-box">
-                <form action="<?php echo $_SERVER['REQUEST_URI'] . '&action=fix_customize_page' ?>" method="post">
+                <form action="admin.php?page=mystyle&action=fix_customize_page" method="post">
                     <?php do_settings_sections( 'mystyle_tools' ); ?>
                     <p class="submit">
                         <input type="submit" name="Submit" id="submit_fix_customize_page" class="button button-primary" value="<?php esc_attr_e('Fix Customize Page'); ?>" /><br/>
