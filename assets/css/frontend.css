@@ -1,5 +1,7 @@
 #customizer-wrapper { 
-    min-width: 950px; 
+    width: 950px;
+    height: 550px;
+    padding: 0;
     text-align:center; 
     margin-left: auto;
     margin-right: auto;
