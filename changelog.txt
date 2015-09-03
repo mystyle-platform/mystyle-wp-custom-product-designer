@@ -1,3 +1,7 @@
+= 1.1.10 =
+
+* Modified the css to set the width and height of the customizer-wrapper.
+
 = 1.1.9 =
 
 * Added frontend stylesheet.
