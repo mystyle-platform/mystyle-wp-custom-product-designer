@@ -42,7 +42,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         //Assert that the expected settings fields were registered and rendered
         ob_start();
         settings_fields( 'mystyle_options' );
-        do_settings_sections( 'mystyle' );
+        do_settings_sections( 'mystyle_settings' );
         $outbound = ob_get_contents();
         ob_end_clean();
         
