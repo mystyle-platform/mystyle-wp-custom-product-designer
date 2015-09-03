@@ -87,6 +87,7 @@ abstract class MyStyle_Customize_Page {
      * Attempt to fix the Customize page. This may involve creating, re-creating
      * or repairing it.
      * @return Returns a message describing the outcome of fix operation.
+     * @todo: Add unit testing
      */
     public static function fix() {
         $message = '<br/>';
