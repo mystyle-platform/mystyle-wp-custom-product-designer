@@ -25,6 +25,7 @@ class MyStyle {
      */
     public function init() {
         add_filter( 'woocommerce_cart_item_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
+        add_filter( 'woocommerce_in_cart_product_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
     }
     
     /**
@@ -68,10 +69,19 @@ class MyStyle {
     public static function modify_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key ) {
         
         $new_image_tag = $get_image;
+        $design_id = null;
         
+        //Try to get the design id, first from the cart_item and then from the session
         if( isset( $cart_item['mystyle_data'] ) ) {
-            
             $design_id = $cart_item['mystyle_data']['design_id'];
+        } else {
+            $session_data = self::get_cart_item_from_session( array(), null, $cart_item_key );
+            if( isset( $session_data['mystyle_data']) ) {
+                $design_id = $session_data['mystyle_data']['design_id'];
+            }
+        }
+            
+        if( $design_id != null ) {
             
             $design = MyStyle_DesignManager::get( $design_id );
 
