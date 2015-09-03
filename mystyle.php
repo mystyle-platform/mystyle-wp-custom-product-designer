@@ -75,6 +75,7 @@ if( is_admin() ) {
     require_once( MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-tools.php' );
 
     //Plugin setup and registrations
     $mystyle_admin = new MyStyle_Admin();
