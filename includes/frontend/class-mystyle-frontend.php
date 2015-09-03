@@ -48,7 +48,11 @@ class MyStyle_FrontEnd {
     function filter_body_class( $classes ) {
         global $post;
         
-        if( $post->ID == MyStyle_Customize_Page::get_id() ) {
+        if( 
+            ( $post->ID == MyStyle_Customize_Page::get_id() ) &&
+            ( isset( $_GET['product_id'] ) )
+          )
+        {
             $classes[] = 'mystyle-customize';
         }
         
