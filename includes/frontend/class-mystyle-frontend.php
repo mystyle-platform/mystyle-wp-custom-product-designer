@@ -14,6 +14,7 @@ class MyStyle_FrontEnd {
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
+        add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
         add_filter( 'woocommerce_product_single_add_to_cart_text', array( &$this, 'filter_cart_button_text' ), 10, 1 ); 
         add_filter( 'woocommerce_add_to_cart_handler', array( &$this, 'filter_add_to_cart_handler' ), 10, 2 );
         
@@ -29,6 +30,24 @@ class MyStyle_FrontEnd {
         //Add the swfobject.js file to the WP head
         wp_register_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js' );
         wp_enqueue_script( 'swfobject' );
+    }
+    
+    /**
+     * Filter the body class output.  Adds a "mystyle-customize" class if the
+     * page is the Customize page.
+     * @param array $classes An array of classes that are going to be outputed
+     * to the body tag.
+     * @return array Returns the filtered classes array.
+     * @todo Add unit testing
+     */
+    function filter_body_class( $classes ) {
+        global $post;
+        
+        if( $post->ID == MyStyle_Customize_Page::get_id() ) {
+            $classes[] = 'mystyle-customize';
+        }
+        
+	return $classes;
     }
     
     /**
