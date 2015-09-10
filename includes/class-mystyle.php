@@ -11,6 +11,8 @@
  */
 class MyStyle {
     
+    public static $STANDARD_DATE_FORMAT = 'Y-m-d H:i:s';
+    
     /**
      * Constructor, constructs the class and sets up the hooks.
      */

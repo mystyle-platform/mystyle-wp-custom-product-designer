@@ -37,15 +37,14 @@ class MyStyle_Design implements MyStyle_Entity {
      * a Design.
      */
     public function __construct() {
-        $date_format = 'Y-m-d H:i:s';
-        $this->created = date($date_format);
-        $this->created_gmt = gmdate($date_format);
-        $this->modified = date($date_format);
-        $this->modified_gmt = date($date_format);
-        $instance->ms_mobile = 0;
-        $instance->ms_access = 0;
-        $instance->design_view_count = 0;
-        $instance->design_purchase_count = 0;
+        $this->created = date(MyStyle::$STANDARD_DATE_FORMAT);
+        $this->created_gmt = gmdate(MyStyle::$STANDARD_DATE_FORMAT);
+        $this->modified = date(MyStyle::$STANDARD_DATE_FORMAT);
+        $this->modified_gmt = date(MyStyle::$STANDARD_DATE_FORMAT);
+        $instance->mobile = 0;
+        $instance->access = 0;
+        $instance->view_count = 0;
+        $instance->purchase_count = 0;
     }
     
     /**
@@ -109,6 +108,14 @@ class MyStyle_Design implements MyStyle_Entity {
         $this->web_url = htmlspecialchars( $api_data['web_url'] );
         $this->thumb_url = htmlspecialchars( $api_data['thumb_url'] );
         $this->design_url = htmlspecialchars( $api_data['design_url'] );
+        $this->mobile = htmlspecialchars( $api_data['mobile'] );
+        $this->access = htmlspecialchars( $api_data['access'] );
+        if( isset( $api_data['created'] ) ) {
+            $this->created = date(MyStyle::$STANDARD_DATE_FORMAT, $api_data['created']);
+            $this->created_gmt = gmdate(MyStyle::$STANDARD_DATE_FORMAT, $api_data['created']);
+            $this->modified = date(MyStyle::$STANDARD_DATE_FORMAT, $api_data['created']);
+            $this->modified_gmt = gmdate(MyStyle::$STANDARD_DATE_FORMAT, $api_data['created']);
+        }
     }
     
     /**

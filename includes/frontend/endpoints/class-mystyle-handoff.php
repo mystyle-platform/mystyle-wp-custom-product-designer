@@ -37,6 +37,7 @@ class MyStyle_Handoff {
             if(isset($GLOBALS['skip_ob_start'])) { //Used by our PHPUnit tests
                 return true;
             } else {
+                //self::handle(); //Use this for debugging (it allows var_dump, echo, etc to be seen)
                 ob_start( array( 'MyStyle_Handoff', 'handle' ) );
             }
         } else {
