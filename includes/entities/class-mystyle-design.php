@@ -42,6 +42,10 @@ class MyStyle_Design implements MyStyle_Entity {
         $this->created_gmt = gmdate($date_format);
         $this->modified = date($date_format);
         $this->modified_gmt = date($date_format);
+        $instance->ms_mobile = 0;
+        $instance->ms_access = 0;
+        $instance->design_view_count = 0;
+        $instance->design_purchase_count = 0;
     }
     
     /**
@@ -91,15 +95,6 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->thumb_url = htmlspecialchars( $result_object->ms_thumb_url );
         $instance->design_url = htmlspecialchars( $result_object->ms_design_url );
         $instance->product_id = (int) htmlspecialchars( $result_object->product_id );
-        
-        $instance->created = $this->design_created = '2015-08-06 22:35:52';
-        $this->design_created_gmt = '2015-08-06 22:35:52';
-        $this->design_modified = '2015-08-06 22:35:52';
-        $this->design_modified_gmt = '2015-08-06 22:35:52';
-        $this->ms_mobile = 0;
-        $this->ms_access = 0;
-        $this->design_view_count = 0;
-        $this->design_purchase_count = 0;
         
         return $instance;
     }
