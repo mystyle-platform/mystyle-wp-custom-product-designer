@@ -1,3 +1,28 @@
+= 1.1.10 =
+
+* Modified the css to set the width and height of the customizer-wrapper.
+
+= 1.1.9 =
+
+* Added frontend stylesheet.
+* Added tool for fixing the Customize page.
+* Fixed a bug with the cart thumbnail.
+
+
+= 1.1.8 =
+
+* Added support for product attributes/variations.
+* Fixed bug with add to cart handler on WooCommerce < 2.3.
+
+= 1.1.7 =
+
+* Added support for multiple print files.
+* Fixed bug with add to cart hook.
+
+= 1.1.6 =
+
+* Fixed bug causing customize button to show on non-customizable products.
+
 = 1.1.5 =
 
 * Added support for quantities.

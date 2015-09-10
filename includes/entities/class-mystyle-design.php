@@ -54,8 +54,10 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance = new self();
         
         $passthru = json_decode( base64_decode( $post_data['h'] ), true );
-        $instance->product_id = (int) htmlspecialchars( $passthru['local_product_id'] ); //mapping local_product_id to product_id
+        $passthru_post = $passthru['post'];
+        $product_id = $passthru_post['add-to-cart'];
         
+        $instance->product_id = (int) htmlspecialchars( $product_id ); //mapping local_product_id to product_id
         $instance->description = htmlspecialchars( $post_data['description'] );
         $instance->design_id = (int) htmlspecialchars( $post_data['design_id'] );
         $instance->template_id = (int) htmlspecialchars( $post_data['product_id'] ); //mapping product_id to template_id

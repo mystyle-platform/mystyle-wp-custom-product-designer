@@ -140,9 +140,11 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $post['product_id'] = 0;
         $post['h'] = base64_encode( 
                         json_encode( 
-                            array( 
-                                'local_product_id' => 0, 
-                                'quantity' => 1
+                            array(
+                                'post' => array(
+                                    'add-to-cart' => 0, 
+                                    'quantity' => 1
+                                )
                             ) 
                         ) 
                     );

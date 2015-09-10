@@ -1,0 +1,31 @@
+#customizer-wrapper { 
+    width: 950px;
+    height: 550px;
+    padding: 0;
+    text-align:center; 
+    margin-left: auto;
+    margin-right: auto;
+}
+body.mystyle-customize {
+    min-width: 950px;
+}
+
+body.mystyle-customize .entry-content,
+body.mystyle-customize article {
+    max-width: none;
+    min-width: 950px;
+}
+
+body.mystyle-customize .entry-header {
+    min-width: 950px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.mystyle-customize #secondary,
+body.mystyle-customize .site::before {
+    display: none;
+}
+body.mystyle-customize .site-content {
+    margin-left: auto;
+}

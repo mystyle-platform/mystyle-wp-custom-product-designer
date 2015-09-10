@@ -40,6 +40,18 @@ class MyStyleClassTest extends WP_UnitTestCase {
     }
     
     /**
+     * Mock the mystyle_metadata
+     * @param type $metadata
+     * @param type $object_id
+     * @param type $meta_key
+     * @param type $single
+     * @return string
+     */
+    function mock_mystyle_metadata( $metadata, $object_id, $meta_key, $single ){
+        return 'yes';
+    }
+    
+    /**
      * Test the constructor
      */    
     public function test_constructor() {
@@ -112,6 +124,51 @@ class MyStyleClassTest extends WP_UnitTestCase {
     public function test_site_has_customizable_products_returns_false_when_customizable_products_dont_exist() {
         //TODO: Will need to mock get_posts or WP_Query
     }
-     */
+    */
+    
+    /**
+     * Test the product_is_customizable function when product isn't mystyle
+     * enabled.
+     */    
+    public function test_product_is_customizable_returns_false_when_product_not_mystyle_enabled() {
+        global $product;
+        
+        //Mock the global $post variable
+        $post_vars = new stdClass();
+        $post_vars->ID = 1;
+        $GLOBALS['post'] = new WP_Post( $post_vars );
+        
+        //Create a mock product using the mock Post
+        $product = new WC_Product_Simple($GLOBALS['post']);
+        
+        $is_customizable = MyStyle::product_is_customizable( $product->id );
+        
+        //Assert that is_customizable is false
+        $this->assertFalse( $is_customizable );
+    }
+    
+    /**
+     * Test the product_is_customizable function when product is mystyle
+     * enabled.
+     */    
+    public function test_product_is_customizable_returns_true_when_product_is_mystyle_enabled() {
+        global $product;
+        
+        //Mock the global $post variable
+        $post_vars = new stdClass();
+        $post_vars->ID = 1;
+        $GLOBALS['post'] = new WP_Post( $post_vars );
+        
+        //Create a mock product using the mock Post
+        $product = new WC_Product_Simple($GLOBALS['post']);
+        
+        //Mock the mystyle_metadata
+        add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
+        
+        $is_customizable = MyStyle::product_is_customizable( $product->id );
+        
+        //Assert that is_customizable is true
+        $this->assertTrue( $is_customizable );
+    }
     
 }

@@ -21,27 +21,52 @@ class MyStyle_Options_Page {
      * Function to initialize the MyStyle options page.
      */
     public function admin_init() {
-        register_setting( 'mystyle_options', MYSTYLE_OPTIONS_NAME, array( &$this, 'validate' ) );
+        $sanitize_callback = array( &$this, 'validate' ); //A callback function that sanitizes the option's value.
+        // ************** SETTINGS SECTION ******************//
         add_settings_section(
                 'mystyle_options_access_section',
                 'MyStyle Account Settings',
                 array( &$this, 'render_access_section_text' ),
-                'mystyle'
+                'mystyle_settings'
         );
         add_settings_field(
                 'api_key',
                 'API Key',
                 array( &$this, 'render_api_key' ),
-                'mystyle',
+                'mystyle_settings',
                 'mystyle_options_access_section'
         );
         add_settings_field(
                 'secret',
                 'Secret',
                 array( &$this, 'render_secret' ),
-                'mystyle',
+                'mystyle_settings',
                 'mystyle_options_access_section'
         );
+        
+        // ************** TOOLS SECTION ******************//
+        add_settings_section(
+                'mystyle_options_tools_section',
+                'MyStyle Tools',
+                array( &$this, 'render_tools_section_text' ),
+                'mystyle_tools'
+        );
+        if ( ( ! empty( $_GET['action'] ) ) && ( $_SERVER['REQUEST_METHOD'] == 'POST' ) ) {
+            $sanitize_callback = ''; //turn off validation
+            switch ( $_GET['action'] ) {    
+                case 'fix_customize_page' :
+                    
+                    //Attempt the fix
+                    $message = MyStyle_Customize_Page::fix();
+                    
+                    //Post Fix Notice
+                    $notices = get_option( MYSTYLE_NOTICES_NAME );
+                    $notices[] = $message;
+                    update_option( MYSTYLE_NOTICES_NAME, $notices );
+                    break;
+            }
+        }
+        register_setting( 'mystyle_options', MYSTYLE_OPTIONS_NAME, $sanitize_callback );
     }
 
     /**
@@ -66,12 +91,22 @@ class MyStyle_Options_Page {
             <div class="mystyle-admin-box">
             <form action="options.php" method="post">
                 <?php settings_fields( 'mystyle_options' ); ?>
-                <?php do_settings_sections( 'mystyle' ); ?>
+                <?php do_settings_sections( 'mystyle_settings' ); ?>
 
                 <p class="submit">
                     <input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e('Save Changes'); ?>" />
                 </p>
             </form>
+            </div>
+            <br/>
+            <div class="mystyle-admin-box">
+                <form action="admin.php?page=mystyle&action=fix_customize_page" method="post">
+                    <?php do_settings_sections( 'mystyle_tools' ); ?>
+                    <p class="submit">
+                        <input type="submit" name="Submit" id="submit_fix_customize_page" class="button button-primary" value="<?php esc_attr_e('Fix Customize Page'); ?>" /><br/>
+                        <small>This tool will attempt to fix the Customize page. This may involve creating, recreating, or restoring the page.</small>
+                    </p>
+                </form>
             </div>
             <br/>
             <ul>
@@ -121,6 +156,17 @@ class MyStyle_Options_Page {
             You must enter a valid MyStyle Secret here. If you need a MyStyle
             Secret, you can create one
             <a href="http://www.mystyleplatform.com/apply-mystyle-license-developer-account-api-key-secret/?ref=wp_plugin_3" target="_blank" title="MyStyle Signup">here</a>.
+        </p>
+    <?php
+    }
+
+    /**
+     * Function to render the text for the tools section.
+     */
+    public static function render_tools_section_text() {
+    ?>
+        <p>
+            The below tools are available to repair your MyStyle configuration.
         </p>
     <?php
     }

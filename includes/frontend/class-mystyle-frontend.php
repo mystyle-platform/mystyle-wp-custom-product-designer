@@ -14,6 +14,7 @@ class MyStyle_FrontEnd {
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
+        add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
         add_filter( 'woocommerce_product_single_add_to_cart_text', array( &$this, 'filter_cart_button_text' ), 10, 1 ); 
         add_filter( 'woocommerce_add_to_cart_handler', array( &$this, 'filter_add_to_cart_handler' ), 10, 2 );
         
@@ -24,11 +25,38 @@ class MyStyle_FrontEnd {
     
     /**
      * Init the MyStyle front end.
+     * @todo: Add unit testing for the frontend stylesheet inclusion
      */
     public static function init() {
+        //Add the MyStyle frontend stylesheet to the WP frontend head
+        wp_register_style( 'myStyleFrontendStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css' );
+        wp_enqueue_style( 'myStyleFrontendStylesheet' );
+        
         //Add the swfobject.js file to the WP head
         wp_register_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js' );
         wp_enqueue_script( 'swfobject' );
+    }
+    
+    /**
+     * Filter the body class output.  Adds a "mystyle-customize" class if the
+     * page is the Customize page.
+     * @param array $classes An array of classes that are going to be outputed
+     * to the body tag.
+     * @return array Returns the filtered classes array.
+     * @todo Add unit testing
+     */
+    function filter_body_class( $classes ) {
+        global $post;
+        
+        if( 
+            ( $post->ID == MyStyle_Customize_Page::get_id() ) &&
+            ( isset( $_GET['product_id'] ) )
+          )
+        {
+            $classes[] = 'mystyle-customize';
+        }
+        
+	return $classes;
     }
     
     /**
@@ -39,8 +67,8 @@ class MyStyle_FrontEnd {
         global $product;
         
         if( $product != null ) {
-            $mystyle_enabled = get_post_meta( $product->id, '_mystyle_enabled', true );
-            if( $mystyle_enabled ) {
+            
+            if( MyStyle::product_is_customizable( $product->id ) ) {
                 $text = "Customize";
             }
         }
@@ -62,10 +90,13 @@ class MyStyle_FrontEnd {
         } else {
             $product_id = absint( $_REQUEST['add-to-cart'] );
         }
-        $mystyle_enabled = get_post_meta( $product_id, '_mystyle_enabled', true );
-
-        if($mystyle_enabled) {
+        
+        if( MyStyle::product_is_customizable( $product_id ) ) {
             $handler = 'mystyle_customizer';
+            if(WC_VERSION < 2.3) {
+                //old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
+                self::mystyle_add_to_cart_handler(false);
+            }
         }
     
         return $handler;
@@ -79,9 +110,7 @@ class MyStyle_FrontEnd {
      */
     public static function loop_add_to_cart_link( $link, $product ) {
         
-        $mystyle_enabled = get_post_meta( $product->id, '_mystyle_enabled', true );
-        
-        if( $mystyle_enabled == 'yes' ) {
+        if( MyStyle::product_is_customizable( $product->id ) ) {
             $customize_page_id = MyStyle_Customize_Page::get_id();
             $customizer_url = add_query_arg( 'product_id', $product->id, get_permalink( $customize_page_id ) );
             
@@ -115,10 +144,8 @@ class MyStyle_FrontEnd {
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
         
         $passthru = array(
-            'local_product_id' => $product_id,
-            'quantity' => $_REQUEST['quantity'],
+            'post' => $_REQUEST,
         );
-        
 
         $customize_page_id = MyStyle_Customize_Page::get_id();
         

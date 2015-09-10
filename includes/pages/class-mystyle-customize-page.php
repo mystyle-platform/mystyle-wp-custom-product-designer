@@ -24,7 +24,12 @@ abstract class MyStyle_Customize_Page {
         //Store the customize page's id in the database
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ] = $page_id;
-        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $updated = update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        if( ! $updated ) {
+            wp_delete_post($page_id);
+            throw new MyStyle_Exception( __( 'Could not store page id.', 'mystyle' ), 500 );
+        }
         
         return $page_id;
     }
@@ -76,6 +81,89 @@ abstract class MyStyle_Customize_Page {
         
         //Delete the page from WordPress
         wp_delete_post( $page_id );
+    }
+    
+    /**
+     * Attempt to fix the Customize page. This may involve creating, re-creating
+     * or repairing it.
+     * @return Returns a message describing the outcome of fix operation.
+     * @todo: Add unit testing
+     */
+    public static function fix() {
+        $message = '<br/>';
+        $status = 'Customize page looks good, no action necessary.';
+        //Get the page id of the Customize page
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if( isset( $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ] ) ) {
+            $post_id = $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ];
+            $message .= 'Found the stored ID of the Customize page...<br/>';
+            
+            /* @var $post \WP_Post */
+            $post = get_post( $post_id );
+            if( $post != null ) {
+                $message .= 'Customize page exists...<br/>';
+                
+                //Check the status
+                if( $post->post_status != 'publish') {
+                    $message .= 'Status was "' . $post->post_status . '", changing to "publish"...<br/>';
+                    $post->post_status = 'publish';
+                    
+                    /* @var $error \WP_Error */ 
+                    $errors = wp_update_post( $post, true );
+                    						  
+                    if( is_wp_error( $errors ) ) {
+                        foreach( $errors as $error ) {
+                            $messages .= $error . '<br/>';
+                            $status .= 'Fix errored out :(<br/>';
+                        }
+                    } else {
+                        $message .= 'Status updated.<br/>';
+                        $status = 'Customize page fixed!<br/>';
+                    }
+                } else {
+                    $message .= 'Customize page is published...<br/>';
+                }
+                
+                //Check for the shortcode
+                if( strpos( $post->post_content, '[mystyle_customizer]' ) === false ) {
+                    $message .= 'The mystyle_customizer shortcode not found in the page content, adding...<br/>';
+                    $post->post_content .= '[mystyle_customizer]';
+                    
+                    /* @var $error \WP_Error */ 
+                    $errors = wp_update_post( $post, true );
+                    						  
+                    if( is_wp_error( $errors ) ) {
+                        foreach( $errors as $error ) {
+                            $messages .= $error . '<br/>';
+                            $status .= 'Fix errored out :(<br/>';
+                        }
+                    } else {
+                        $message .= 'Shortcode added.<br/>';
+                        $status = 'Customize page fixed!<br/>';
+                    }
+                } else {
+                    $message .= 'Customize page has mystyle_customizer shortcode...<br/>';
+                }
+                
+            } else { //Post not found, recreate
+                $message .= 'Customize page appears to have been deleted, recreating...<br/>';
+                try {
+                    $post_id = self::create();
+                    $status = 'Customize page fixed!<br/>';
+                } catch(\Exception $e) {
+                    $status = 'Error: ' . $e->getMessage();
+                }
+                
+            }
+        } else { //ID not available, create
+            $message .= 'Customize page missing, creating...<br/>';
+            self::create();
+            $status = 'Customize page fixed!<br/>';
+        }
+        
+        $message .= $status;
+
+        return $message;
     }
 
 }

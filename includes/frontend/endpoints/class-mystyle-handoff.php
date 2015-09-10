@@ -55,6 +55,7 @@ class MyStyle_Handoff {
      * Needs to be public and static because it is registered as a WP action.
      * 
      * @return string Returns the html to output to the browser.
+     * @todo Unit test the variation support
      */
     public static function handle() {
         if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
@@ -84,9 +85,19 @@ class MyStyle_Handoff {
             
             //Get the passthru data
             $passthru = json_decode( base64_decode( $_POST['h'] ), true );
-            $quantity = $passthru['quantity'];
+            $passthru_post = $passthru['post'];
+            $quantity = $passthru_post['quantity'];
+            $variation_id = ( isset( $passthru_post['variation_id'] ) ) ? $passthru_post['variation_id'] : '';
             
-            //echo $quantity;
+            //get the variations (they should all be in the passthru post and start with "attribute_")
+            $variation = array();
+            foreach( $passthru_post as $key => $value ) {
+                if( substr( $key, 0, 10 ) === "attribute_" ) {
+                    $variation[$key] = $value;
+                }
+            }
+            
+            //echo $quantity . ':' . $variation_id;
             //exit;
             
             //Get the woocommerce cart
@@ -100,8 +111,8 @@ class MyStyle_Handoff {
             $cart_item_key = $cart->add_to_cart(
                                         $design->get_product_id(), //WooCommerce product id
                                         $quantity, //quantity
-                                        '', //variation id
-                                        array(), //variation attribute values
+                                        $variation_id, //variation id
+                                        $variation, //variation attribute values
                                         $cart_item_data //extra cart item data we want to pass into the item
                                 );
             // ---------------------- Fix for WC 2.2----------------------- 
