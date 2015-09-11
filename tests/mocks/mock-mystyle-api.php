@@ -44,10 +44,13 @@ class MyStyleMockAPI {
         $design['print_url'] = 'http://testhost/test_print_url.jpg';
         $design['design_url'] = 'http://testhost/test_design_url.jpg';
         $design['access'] = 0;
+        $design['mobile'] = 0;
         $design['design_id'] = $design_id;
         $design['user_id'] = 1;
         $design['app_id'] = 0;
         $design['product_id'] = 0;
+        $design['product_id'] = 0;
+        $design['created'] = 0;
         $design['created'] = 0;
 
         $json = array();

@@ -60,6 +60,8 @@ require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entity.php' );
 require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entitymanager.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php' );
+require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designer.php' );
+require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designermanager.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-api.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
 require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );

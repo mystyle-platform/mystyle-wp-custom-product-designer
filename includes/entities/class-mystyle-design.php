@@ -94,6 +94,14 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->thumb_url = htmlspecialchars( $result_object->ms_thumb_url );
         $instance->design_url = htmlspecialchars( $result_object->ms_design_url );
         $instance->product_id = (int) htmlspecialchars( $result_object->product_id );
+        $instance->mobile = (int) htmlspecialchars( $result_object->ms_mobile );
+        $instance->access = (int) htmlspecialchars( $result_object->ms_access );
+        $instance->created = htmlspecialchars( $result_object->design_created );
+        $instance->created_gmt = htmlspecialchars( $result_object->design_created_gmt );
+        $instance->modified = htmlspecialchars( $result_object->design_modified );
+        $instance->modified_gmt = htmlspecialchars( $result_object->design_modified_gmt );
+        $instance->view_count = htmlspecialchars( $result_object->design_view_count );
+        $instance->purchase_count = htmlspecialchars( $result_object->design_purchase_count );
         
         return $instance;
     }
@@ -110,12 +118,6 @@ class MyStyle_Design implements MyStyle_Entity {
         $this->design_url = htmlspecialchars( $api_data['design_url'] );
         $this->mobile = htmlspecialchars( $api_data['mobile'] );
         $this->access = htmlspecialchars( $api_data['access'] );
-        if( isset( $api_data['created'] ) ) {
-            $this->created = date(MyStyle::$STANDARD_DATE_FORMAT, $api_data['created']);
-            $this->created_gmt = gmdate(MyStyle::$STANDARD_DATE_FORMAT, $api_data['created']);
-            $this->modified = date(MyStyle::$STANDARD_DATE_FORMAT, $api_data['created']);
-            $this->modified_gmt = gmdate(MyStyle::$STANDARD_DATE_FORMAT, $api_data['created']);
-        }
     }
     
     /**
@@ -374,13 +376,6 @@ class MyStyle_Design implements MyStyle_Entity {
         return $this->purchase_count;
     }
     
-    /*
-    private $is_mobile; //whether or not the mobile version of the customizer was used to create the design.
-    private $access; //0=public, 1=private, 2=restricted
-    private $view_count; //How many times the design page has been viewed.
-    private $purchase_count; //How many times the design has been purchased.
-     */
-    
     /**
      * Function for converting the object into an array for use with WP meta
      * storage.
@@ -485,24 +480,24 @@ class MyStyle_Design implements MyStyle_Entity {
     public function get_insert_format() {
         
         $formats_arr = array( 
-            '%d', //design_id
-            '%d', //template_id
-            '%d', //user_id
-            '%s', //description
-            '%d', //price
-            '%s', //print_url
-            '%s', //web_url
-            '%s', //thumb_url
-            '%s', //design_url
+            '%d', //ms_design_id
+            '%d', //ms_product_id
+            '%d', //ms_user_id
+            '%s', //ms_description
+            '%d', //ms_price
+            '%s', //ms_print_url
+            '%s', //ms_web_url
+            '%s', //ms_thumb_url
+            '%s', //ms_design_url
             '%d', //product_id
-            '%s', //created
-            '%s', //created_gmt
-            '%s', //modified
-            '%s', //modified_gmt
-            '%d', //mobile
-            '%d', //access
-            '%d', //view_count
-            '%d', //purchase_count
+            '%s', //design_created
+            '%s', //design_created_gmt
+            '%s', //design_modified
+            '%s', //design_modified_gmt
+            '%d', //ms_mobile
+            '%d', //ms_access
+            '%d', //design_view_count
+            '%d', //design_purchase_count
 	);
                 
         return $formats_arr;  

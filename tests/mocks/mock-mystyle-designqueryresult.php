@@ -18,6 +18,14 @@ class MyStyle_MockDesignQueryResult {
     public $ms_thumb_url;
     public $ms_design_url;
     public $product_id;
+    public $design_created;
+    public $design_created_gmt;
+    public $design_modified;
+    public $design_modified_gmt;
+    public $ms_mobile;
+    public $ms_access;
+    public $design_view_count;
+    public $design_purchase_count;
     
     public function __construct( $design_id ) {
         $this->ms_design_id = $design_id;

@@ -62,14 +62,19 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         $api_data['web_url'] = 'http://testhost/test_web_url.jpg';
         $api_data['thumb_url'] = 'http://testhost/test_thumb_url.jpg';
         $api_data['design_url'] = 'http://testhost/test_design_url.jpg';
+        $api_data['design_url'] = 'http://testhost/test_design_url.jpg';
+        $api_data['mobile'] = '1';
+        $api_data['access'] = '1';
         
-        $design->add_api_data($api_data);
+        $design->add_api_data( $api_data );
         
         //Assert that the fields were set
         $this->assertEquals( $api_data['print_url'], $design->get_print_url() );
         $this->assertEquals( $api_data['web_url'], $design->get_web_url() );
         $this->assertEquals( $api_data['thumb_url'], $design->get_thumb_url() );
         $this->assertEquals( $api_data['design_url'], $design->get_design_url() );
+        $this->assertEquals( $api_data['mobile'], $design->is_mobile() );
+        $this->assertEquals( $api_data['access'], $design->get_access() );
     }
     
     /**
@@ -178,10 +183,10 @@ class MyStyleDesignTest extends WP_UnitTestCase {
             'design_created_gmt' => '2015-08-06 22:35:52',
             'design_modified' => '2015-08-06 22:35:52',
             'design_modified_gmt' => '2015-08-06 22:35:52',
-            'ms_mobile' => null,
-            'ms_access' => null,
-            'design_view_count' => null,
-            'design_purchase_count' => null,
+            'ms_mobile' => 0,
+            'ms_access' => 0,
+            'design_view_count' => 0,
+            'design_purchase_count' => 0,
         );
         
         //Create a design
@@ -202,24 +207,24 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         
         //Set up the expected formats array
         $expected_formats_arr = array( 
-            '%d', //design_id
-            '%d', //template_id
-            '%d', //user_id
-            '%s', //description
-            '%d', //price
-            '%s', //print_url
-            '%s', //web_url
-            '%s', //thumb_url
-            '%s', //design_url
+            '%d', //ms_design_id
+            '%d', //ms_product_id
+            '%d', //ms_user_id
+            '%s', //ms_description
+            '%d', //ms_price
+            '%s', //ms_print_url
+            '%s', //ms_web_url
+            '%s', //ms_thumb_url
+            '%s', //ms_design_url
             '%d', //product_id
-            '%s', //created
-            '%s', //created_gmt
-            '%s', //modified
-            '%s', //modified_gmt
-            '%d', //mobile
-            '%d', //access
-            '%d', //view_count
-            '%d', //purchase_count
+            '%s', //design_created
+            '%s', //design_created_gmt
+            '%s', //design_modified
+            '%s', //design_modified_gmt
+            '%d', //ms_mobile
+            '%d', //ms_access
+            '%d', //design_view_count
+            '%d', //design_purchase_count
 	);
         
         //Create a design

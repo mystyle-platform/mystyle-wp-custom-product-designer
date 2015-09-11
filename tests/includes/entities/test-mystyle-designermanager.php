@@ -1,14 +1,14 @@
 <?php
 
 /**
- * The MyStyleDesignManagerTest class includes tests for testing the 
- * MyStyle_DesignManager
+ * The MyStyleDesignerManagerTest class includes tests for testing the 
+ * MyStyle_DesignerManager
  * class.
  *
  * @package MyStyle
- * @since 1.0.0
+ * @since 1.2.0
  */
-class MyStyleDesignManagerTest extends WP_UnitTestCase {
+class MyStyleDesignerManagerTest extends WP_UnitTestCase {
     
     /**
      * Overrwrite the setUp function so that our custom tables will be persisted
@@ -34,7 +34,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         parent::tearDown();
         
         //Drop the tables that we created
-        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Designer::get_table_name());
     }
     
     /**
@@ -44,28 +44,20 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
     function test_get() {
         global $wpdb;
         
-        $design_id = 1;
+        $designer_id = 1;
+        $email = 'someone@example.com';
         
-        //Mock the POST
-        $post = array();
-        $post['description'] = 'test description';
-        $post['design_id'] = $design_id;
-        $post['product_id'] = 0;
-        $post['h'] = base64_encode( json_encode( array( 'post' => array( 'add-to-cart' => 0 ) ) ) );
-        $post['user_id'] = 0;
-        $post['price'] = 0;
+        //Create the designer
+        $designer = MyStyle_Designer::create( 1, $email );
         
-        //Create the design
-        $design = MyStyle_Design::create_from_post( $post );
-        
-        //Persist the design
-        MyStyle_DesignManager::persist( $design );
+        //Persist the designer
+        MyStyle_DesignerManager::persist( $designer );
         
         //Call the function
-        $design_from_db = MyStyle_DesignManager::get( $design_id );
+        $designer_from_db = MyStyle_DesignerManager::get( $designer_id );
         
-        //Assert that the design_id is set
-        $this->assertEquals( $design_id, $design_from_db->get_design_id() );
+        //Assert that the designer_id is set
+        $this->assertEquals( $designer_id, $designer_from_db->get_designer_id() );
     }
 
 }
