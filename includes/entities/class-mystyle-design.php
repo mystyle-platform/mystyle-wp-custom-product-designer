@@ -25,7 +25,7 @@ class MyStyle_Design implements MyStyle_Entity {
     private $design_url;
     private $template_id; //this is the MyStyle product id
     private $product_id; //this is the local product id
-    private $user_id; //the mystyle user id
+    private $designer_id; //the mystyle user id
     private $price;
     private $mobile; //whether or not the mobile version of the customizer was used to create the design.
     private $access; //0=public, 1=private, 2=restricted
@@ -64,7 +64,7 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->description = htmlspecialchars( $post_data['description'] );
         $instance->design_id = (int) htmlspecialchars( $post_data['design_id'] );
         $instance->template_id = (int) htmlspecialchars( $post_data['product_id'] ); //mapping product_id to template_id
-        $instance->user_id = (int) htmlspecialchars( $post_data['user_id'] );
+        $instance->designer_id = (int) htmlspecialchars( $post_data['user_id'] );
         $instance->price = (int) htmlspecialchars( $post_data['price'] );
         
         return $instance;
@@ -86,7 +86,7 @@ class MyStyle_Design implements MyStyle_Entity {
         
         $instance->design_id = (int) htmlspecialchars( $result_object->ms_design_id );
         $instance->template_id = (int) htmlspecialchars( $result_object->ms_product_id );
-        $instance->user_id = (int) htmlspecialchars( $result_object->ms_user_id );
+        $instance->designer_id = (int) htmlspecialchars( $result_object->ms_user_id );
         $instance->description = htmlspecialchars( $result_object->ms_description );
         $instance->price = (int) htmlspecialchars( $result_object->ms_price );
         $instance->print_url = htmlspecialchars( $result_object->ms_print_url );
@@ -281,19 +281,19 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Sets the value of user_id.
-     * @param number $user_id The new value for user_id.
+     * Sets the value of designer_id.
+     * @param number $designer_id The new value for designer_id.
      */
-    public function set_user_id( $user_id ) {
-        $this->user_id = $user_id;
+    public function set_designer_id( $designer_id ) {
+        $this->designer_id = $designer_id;
     }
     
     /**
-     * Gets the value of user_id.
-     * @return number Returns the value of user_id.
+     * Gets the value of designer_id.
+     * @return number Returns the value of designer_id.
      */
-    public function get_user_id() {
-        return $this->user_id;
+    public function get_designer_id() {
+        return $this->designer_id;
     }
     
     /**
@@ -451,7 +451,7 @@ class MyStyle_Design implements MyStyle_Entity {
         
         $data['ms_design_id'] = $this->design_id;
         $data['ms_product_id'] = $this->template_id;
-        $data['ms_user_id'] = $this->user_id;
+        $data['ms_user_id'] = $this->designer_id;
         $data['ms_description'] = $this->description;
         $data['ms_price'] = $this->price;
         $data['ms_print_url'] = $this->print_url;

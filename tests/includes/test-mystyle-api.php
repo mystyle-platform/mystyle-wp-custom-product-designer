@@ -31,7 +31,7 @@ class MyStyleAPITest extends WP_UnitTestCase {
         $design->set_design_id( 1 );
         $design->set_template_id( 1 );
         $design->set_product_id( 1 );
-        $design->set_user_id( 1 );
+        $design->set_designer_id( 1 );
         $design->set_price( 1 );
         
         $design = MyStyle_API::add_api_data_to_design( $design );

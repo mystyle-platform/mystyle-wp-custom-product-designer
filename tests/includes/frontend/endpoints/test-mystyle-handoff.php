@@ -148,7 +148,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
                             ) 
                         ) 
                     );
-        $post['user_id'] = 0;
+        $post['user_id'] = 2;
         $post['price'] = 0;
         $_POST = $post;
         

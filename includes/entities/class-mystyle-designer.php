@@ -41,7 +41,7 @@ class MyStyle_Designer implements MyStyle_Entity {
      * @param array $api_data API data to be used to add more data to the 
      * Designer. This is an array of fields values (see the API docs for details).
      */
-    public function create( $designer_id, $email, $user_id = null ) {
+    public static function create( $designer_id, $email, $user_id = null ) {
         $instance = new self();
         
         $instance->designer_id = htmlspecialchars( $designer_id );

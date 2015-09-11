@@ -13,14 +13,14 @@ abstract class MyStyle_EntityManager {
     
     /**
      * Persists the passed entity to the database.
-     * @global type $wpdb
+     * @global \wpdb $wpdb
      * @param MyStyle_Entity $entity
      * @return \MyStyle_Entity Returns the persisted entity.
      */
     public static function persist( MyStyle_Entity $entity ) {
         global $wpdb;
         
-        $wpdb->insert( 
+        $wpdb->replace( 
                 $entity->get_table_name(),
                 $entity->get_data_array(),
                 $entity->get_insert_format() 

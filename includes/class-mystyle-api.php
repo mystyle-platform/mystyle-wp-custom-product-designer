@@ -67,6 +67,64 @@ abstract class MyStyle_API {
         
         return $design;
     }
+    
+    /**
+     * Creates and returns a Designer object using the passed designer_id and
+     * data retrieved from the API.
+     * @param integer $designer_id The designer_id (MyStyle user id).
+     * @return \MyStyle_Designer
+     * @todo Add unit testing
+     */
+    public static function get_designer( $designer_id ) {
+        /* @var $designer \MyStyle_Designer */
+        $designer = null;
+        
+        //Set up the api call variables.
+        $api_key = MyStyle_Options::get_api_key();
+        $secret = MyStyle_Options::get_secret();
+        $action = 'user';
+        $method = 'get';
+        $data = '{"user_id":[' . $designer_id . ']}';
+        $ts = time();
+
+        $toHash = $action . $method . $api_key . $data . $ts;
+        $sig = base64_encode( hash_hmac( 'sha256', $toHash, $secret, true ) );
+
+        $post_data = array();
+        $post_data['action'] = $action;
+        $post_data['method'] = $method;
+        $post_data['app_id'] = $api_key;
+        $post_data['data'] = $data;
+        $post_data['sig'] = $sig;
+        $post_data['ts'] = $ts;
+        //$post_data['session'] = //not currently being used
+        //$post_data['user_id'] = //not currently being used
+
+        $response = wp_remote_post( self::$api_endpoint_url, array(
+                'method' => 'POST',
+                'timeout' => 45,
+                'redirection' => 5,
+                'httpversion' => '1.0',
+                'blocking' => true,
+                'headers' => array(),
+                'body' => $post_data,
+                'cookies' => array(),
+            )
+        );
+
+        if ( is_wp_error( $response ) ) {
+            //TODO: Handle this error
+            $error_message = $response->get_error_message();
+            //$body = "Something went wrong: $error_message";
+        } else {            
+            $response_data = json_decode( $response['body'], true );
+            //var_dump($response_data);
+            $designer_data = $response_data['data'][ $designer_id ];            
+            $designer = \MyStyle_Designer::create( $designer_id, $designer_data['email'] );
+        }
+        
+        return $designer;
+    }
 
 }
 

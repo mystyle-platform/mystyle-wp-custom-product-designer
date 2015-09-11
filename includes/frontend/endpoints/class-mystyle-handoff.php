@@ -84,6 +84,19 @@ class MyStyle_Handoff {
             //Persist the design to the database
             $design = MyStyle_DesignManager::persist( $design );
             
+            //Get the designer from the API
+            /* @var $designer \MyStyle_Designer */
+            $designer = MyStyle_Api::get_designer( $design->get_designer_id() );
+            
+            //If the user is logged in to WordPress, store their user id with their designer info
+            $wp_user_id = get_current_user_id();
+            if( $wp_user_id !== 0 ) {
+                $designer->set_user_id( $wp_user_id );
+            }
+            
+            //Persist the designer to the database
+            $designer = MyStyle_DesignerManager::persist( $designer );
+            
             //Get the passthru data
             $passthru = json_decode( base64_decode( $_POST['h'] ), true );
             $passthru_post = $passthru['post'];
