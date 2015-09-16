@@ -29,6 +29,10 @@ class MyStyle_MockDesignQueryResult {
     public $design_view_count;
     public $design_purchase_count;
     
+    /**
+     * Constructor
+     * @param integer $design_id An id for the design.
+     */
     public function __construct( $design_id ) {
         $this->ms_design_id = $design_id;
         $this->ms_product_id = 0;

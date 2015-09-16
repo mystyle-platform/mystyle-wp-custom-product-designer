@@ -85,6 +85,14 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 design_view_count bigint(20) NULL DEFAULT '0',
                 design_purchase_count bigint(20) NULL DEFAULT '0',
                 PRIMARY KEY  (ms_design_id)
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+            CREATE TABLE wptests_mystyle_sessions (
+                session_id varchar(100) NOT NULL,
+                session_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                session_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                session_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                session_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                PRIMARY KEY  (session_id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
         
         $schema = MyStyle_Install::get_schema();

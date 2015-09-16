@@ -58,6 +58,8 @@ require_once( MYSTYLE_INCLUDES . 'class-mystyle.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-options.php' );
 require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entity.php' );
 require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entitymanager.php' );
+require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-session.php' );
+require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionmanager.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php' );
 require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
