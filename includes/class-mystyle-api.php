@@ -69,22 +69,22 @@ abstract class MyStyle_API {
     }
     
     /**
-     * Creates and returns a Designer object using the passed designer_id and
+     * Creates and returns a MyStyle_User object using the passed user_id and
      * data retrieved from the API.
-     * @param integer $designer_id The designer_id (MyStyle user id).
-     * @return \MyStyle_Designer
+     * @param integer $user_id The MyStyle user id.
+     * @return \MyStyle_User
      * @todo Add unit testing
      */
-    public static function get_designer( $designer_id ) {
-        /* @var $designer \MyStyle_Designer */
-        $designer = null;
+    public static function get_user( $user_id ) {
+        /* @var $user \MyStyle_User */
+        $user = null;
         
         //Set up the api call variables.
         $api_key = MyStyle_Options::get_api_key();
         $secret = MyStyle_Options::get_secret();
         $action = 'user';
         $method = 'get';
-        $data = '{"user_id":[' . $designer_id . ']}';
+        $data = '{"user_id":[' . $user_id . ']}';
         $ts = time();
 
         $toHash = $action . $method . $api_key . $data . $ts;
@@ -119,11 +119,11 @@ abstract class MyStyle_API {
         } else {            
             $response_data = json_decode( $response['body'], true );
             //var_dump($response_data);
-            $designer_data = $response_data['data'][ $designer_id ];            
-            $designer = \MyStyle_Designer::create( $designer_id, $designer_data['email'] );
+            $user_data = $response_data['data'][ $user_id ];            
+            $user = new \MyStyle_User( $user_id, $user_data['email'] );
         }
         
-        return $designer;
+        return $user;
     }
 
 }

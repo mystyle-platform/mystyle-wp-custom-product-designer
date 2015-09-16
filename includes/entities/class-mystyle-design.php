@@ -26,6 +26,7 @@ class MyStyle_Design implements MyStyle_Entity {
     private $template_id; //this is the MyStyle product id
     private $product_id; //this is the local product id
     private $designer_id; //the mystyle user id
+    private $email; //the email that was submitted with the design (if any)
     private $price;
     private $mobile; //whether or not the mobile version of the customizer was used to create the design.
     private $access; //0=public, 1=private, 2=restricted
@@ -87,6 +88,7 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->design_id = (int) htmlspecialchars( $result_object->ms_design_id );
         $instance->template_id = (int) htmlspecialchars( $result_object->ms_product_id );
         $instance->designer_id = (int) htmlspecialchars( $result_object->ms_user_id );
+        $instance->email = htmlspecialchars( $result_object->ms_email );
         $instance->description = htmlspecialchars( $result_object->ms_description );
         $instance->price = (int) htmlspecialchars( $result_object->ms_price );
         $instance->print_url = htmlspecialchars( $result_object->ms_print_url );
@@ -100,8 +102,8 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->created_gmt = htmlspecialchars( $result_object->design_created_gmt );
         $instance->modified = htmlspecialchars( $result_object->design_modified );
         $instance->modified_gmt = htmlspecialchars( $result_object->design_modified_gmt );
-        $instance->view_count = htmlspecialchars( $result_object->design_view_count );
-        $instance->purchase_count = htmlspecialchars( $result_object->design_purchase_count );
+        $instance->view_count = (int) htmlspecialchars( $result_object->design_view_count );
+        $instance->purchase_count = (int) htmlspecialchars( $result_object->design_purchase_count );
         
         return $instance;
     }
@@ -297,6 +299,22 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
+     * Sets the value of email.
+     * @param number $email The new value for email.
+     */
+    public function set_email( $email ) {
+        $this->email = $email;
+    }
+    
+    /**
+     * Gets the value of email.
+     * @return number Returns the value of email.
+     */
+    public function get_email() {
+        return $this->email;
+    }
+    
+    /**
      * Sets the value of price.
      * @param number $price The new value for price.
      */
@@ -369,6 +387,13 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
+     * Increment the purchase_count.
+     */
+    public function increment_purchase_count() {
+        $this->purchase_count++;
+    }
+    
+    /**
      * Gets the value of purchase_count.
      * @return number Returns the value of purchase_count.
      */
@@ -404,6 +429,7 @@ class MyStyle_Design implements MyStyle_Entity {
                 ms_design_id bigint(32) NOT NULL,
                 ms_product_id bigint(20) NOT NULL,
                 ms_user_id bigint(20) NULL,
+                ms_email varchar(255) NULL,
                 ms_description text NULL,
                 ms_price numeric(15,2) NULL,
                 ms_print_url varchar(255) NULL,
@@ -452,6 +478,7 @@ class MyStyle_Design implements MyStyle_Entity {
         $data['ms_design_id'] = $this->design_id;
         $data['ms_product_id'] = $this->template_id;
         $data['ms_user_id'] = $this->designer_id;
+        $data['ms_email'] = $this->email;
         $data['ms_description'] = $this->description;
         $data['ms_price'] = $this->price;
         $data['ms_print_url'] = $this->print_url;
@@ -483,6 +510,7 @@ class MyStyle_Design implements MyStyle_Entity {
             '%d', //ms_design_id
             '%d', //ms_product_id
             '%d', //ms_user_id
+            '%s', //ms_email
             '%s', //ms_description
             '%d', //ms_price
             '%s', //ms_print_url

@@ -110,6 +110,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
                 ms_design_id bigint(32) NOT NULL,
                 ms_product_id bigint(20) NOT NULL,
                 ms_user_id bigint(20) NULL,
+                ms_email varchar(255) NULL,
                 ms_description text NULL,
                 ms_price numeric(15,2) NULL,
                 ms_print_url varchar(255) NULL,
@@ -172,6 +173,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
             'ms_design_id' => 1,
             'ms_product_id' => 0,
             'ms_user_id' => 0,
+            'ms_email' => 'someone@example.com',
             'ms_description' => 'test description',
             'ms_price' => 0,
             'ms_print_url' => 'http://www.example.com/example.jpg',
@@ -210,6 +212,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
             '%d', //ms_design_id
             '%d', //ms_product_id
             '%d', //ms_user_id
+            '%s', //ms_email
             '%s', //ms_description
             '%d', //ms_price
             '%s', //ms_print_url

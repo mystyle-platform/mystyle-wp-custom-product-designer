@@ -19,6 +19,8 @@ class MyStyle {
     public function __construct() {
         add_action( 'init', array( &$this, 'init' ) );
         add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_mystyle_order_item_meta' ), 10, 2 );
+        add_action( 'woocommerce_order_status_completed', array( &$this, 'on_order_completed' ), 10, 1 );
+        
         add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'get_cart_item_from_session' ), 10, 3 );
     }
     
@@ -43,6 +45,32 @@ class MyStyle {
     }
     
     /**
+     * After the order is completed, do the following if for all mystyle enabled
+     * products:
+     *  * Increment the design purchase count.
+     * @param number $order_id The order_id of the new order.
+     */
+    function on_order_completed( $order_id ) {
+
+        // order object (optional but handy)
+        $order = new WC_Order( $order_id );
+
+        if ( count( $order->get_items() ) > 0 ) {
+            foreach( $order->get_items() as $item ) {
+                
+                if( isset( $item['mystyle_data'] ) ) {  
+                    $mystyle_data = wc_get_order_item_meta( $item->order_item_id , 'mystyle_data' );
+                    
+                    //Increment the design purchase count
+                    $design = MyStyle_DesignManager::get( $design_id );
+                    $design->increment_purchase_count();
+                    MyStyle_DesignManager::persist( $design );
+                }
+            }
+        }
+    }
+    
+    /**
      * Filter the woocommerce_get_cart_item_from_session and add our session 
      * data.
      * @param array $session_data The current session_data.
@@ -53,7 +81,7 @@ class MyStyle {
     public static function get_cart_item_from_session( $session_data, $values, $key ) {
         
         // Fix for WC 2.2 (if our data is missing from the cart item, get it from the session variable 
-        if( ! isset($session_data['mystyle_data'] ) ) {
+        if( ! isset( $session_data['mystyle_data'] ) ) {
             $cart_item_data = WC()->session->get( 'mystyle_' . $key );
             $session_data['mystyle_data'] = $cart_item_data['mystyle_data'];
         }

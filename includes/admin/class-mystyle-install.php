@@ -51,9 +51,7 @@ class MyStyle_Install {
             }
         }
 
-        $schema = '';
-        $schema .= MyStyle_Design::get_schema() .  $collate . ';';
-        $schema .= MyStyle_Designer::get_schema() .  $collate . ';';
+        $schema = MyStyle_Design::get_schema() .  $collate . ';';
         
         return $schema;
     }

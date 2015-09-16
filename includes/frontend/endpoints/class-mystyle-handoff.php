@@ -76,26 +76,27 @@ class MyStyle_Handoff {
             global $woocommerce;
             
             //Create a Design from the post
+            /* @var $design \MyStyle_Design */
             $design = MyStyle_Design::create_from_post( $_POST );
             
             //Add data from api call
             $design = MyStyle_Api::add_api_data_to_design( $design );
             
+            //Get the mystyle user from the API
+            /* @var $user \MyStyle_User */
+            $mystyle_user = MyStyle_Api::get_user( $design->get_designer_id() );
+            
+            //Add data from the user to the design
+            $design->set_email( $mystyle_user->get_email() );
+            
+            //If the user is logged in to WordPress, store their user id with their design
+            //$wp_user_id = get_current_user_id();
+            //if( $wp_user_id !== 0 ) {
+            //    $design->set_user_id( $wp_user_id );
+            //}
+            
             //Persist the design to the database
             $design = MyStyle_DesignManager::persist( $design );
-            
-            //Get the designer from the API
-            /* @var $designer \MyStyle_Designer */
-            $designer = MyStyle_Api::get_designer( $design->get_designer_id() );
-            
-            //If the user is logged in to WordPress, store their user id with their designer info
-            $wp_user_id = get_current_user_id();
-            if( $wp_user_id !== 0 ) {
-                $designer->set_user_id( $wp_user_id );
-            }
-            
-            //Persist the designer to the database
-            $designer = MyStyle_DesignerManager::persist( $designer );
             
             //Get the passthru data
             $passthru = json_decode( base64_decode( $_POST['h'] ), true );
@@ -110,9 +111,6 @@ class MyStyle_Handoff {
                     $variation[$key] = $value;
                 }
             }
-            
-            //echo $quantity . ':' . $variation_id;
-            //exit;
             
             //Get the woocommerce cart
             $cart = $woocommerce->cart;

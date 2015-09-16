@@ -1,7 +1,6 @@
 <?php
 
 require_once(MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php');
-require_once(MYSTYLE_INCLUDES . 'entities/class-mystyle-designer.php');
 require_once(MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php');
 
 /**
@@ -35,7 +34,6 @@ class MyStyleInstallTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
-        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Designer::get_table_name());
     }
     
     
@@ -69,6 +67,7 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 ms_design_id bigint(32) NOT NULL,
                 ms_product_id bigint(20) NOT NULL,
                 ms_user_id bigint(20) NULL,
+                ms_email varchar(255) NULL,
                 ms_description text NULL,
                 ms_price numeric(15,2) NULL,
                 ms_print_url varchar(255) NULL,
@@ -85,16 +84,6 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 design_view_count bigint(20) NULL DEFAULT '0',
                 design_purchase_count bigint(20) NULL DEFAULT '0',
                 PRIMARY KEY  (ms_design_id)
-            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-            CREATE TABLE wptests_mystyle_designers (
-                ms_user_id bigint(32) NOT NULL,
-                designer_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-                designer_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-                designer_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-                designer_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-                user_id bigint(20) NULL,
-                ms_email varchar(255) NULL,
-                PRIMARY KEY  (ms_user_id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
         
         $schema = MyStyle_Install::get_schema();

@@ -11,6 +11,7 @@ class MyStyle_MockDesignQueryResult {
     public $ms_design_id;
     public $ms_product_id;
     public $ms_user_id;
+    public $ms_email;
     public $ms_description;
     public $ms_price;
     public $ms_print_url;
@@ -31,6 +32,7 @@ class MyStyle_MockDesignQueryResult {
         $this->ms_design_id = $design_id;
         $this->ms_product_id = 0;
         $this->ms_user_id = 0;
+        $this->ms_email = 'someone@example.com';
         $this->ms_description = 'test description';
         $this->ms_price = 0;
         $this->ms_print_url = 'http://www.example.com/example.jpg';
