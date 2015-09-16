@@ -90,10 +90,10 @@ class MyStyle_Handoff {
             $design->set_email( $mystyle_user->get_email() );
             
             //If the user is logged in to WordPress, store their user id with their design
-            //$wp_user_id = get_current_user_id();
-            //if( $wp_user_id !== 0 ) {
-            //    $design->set_user_id( $wp_user_id );
-            //}
+            $wp_user_id = get_current_user_id();
+            if( $wp_user_id !== 0 ) {
+                $design->set_user_id( $wp_user_id );
+            }
             
             //Persist the design to the database
             $design = MyStyle_DesignManager::persist( $design );

@@ -118,6 +118,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
                 ms_thumb_url varchar(255) NULL,
                 ms_design_url varchar(255) NULL,
                 product_id bigint(20) NULL,
+                user_id bigint(20) NULL,
                 design_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 design_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 design_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -181,6 +182,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
             'ms_thumb_url' => 'http://www.example.com/example.jpg',
             'ms_design_url' => 'http://www.example.com/example.jpg',
             'product_id' => 0,
+            'user_id' => 0,
             'design_created' => '2015-08-06 22:35:52',
             'design_created_gmt' => '2015-08-06 22:35:52',
             'design_modified' => '2015-08-06 22:35:52',
@@ -220,6 +222,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
             '%s', //ms_thumb_url
             '%s', //ms_design_url
             '%d', //product_id
+            '%d', //user_id
             '%s', //design_created
             '%s', //design_created_gmt
             '%s', //design_modified

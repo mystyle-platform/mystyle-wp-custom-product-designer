@@ -25,6 +25,7 @@ class MyStyle_Design implements MyStyle_Entity {
     private $design_url;
     private $template_id; //this is the MyStyle product id
     private $product_id; //this is the local product id
+    private $user_id; //this is the local (WordPress) user id (if the user designer has one)
     private $designer_id; //the mystyle user id
     private $email; //the email that was submitted with the design (if any)
     private $price;
@@ -96,6 +97,7 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->thumb_url = htmlspecialchars( $result_object->ms_thumb_url );
         $instance->design_url = htmlspecialchars( $result_object->ms_design_url );
         $instance->product_id = (int) htmlspecialchars( $result_object->product_id );
+        $instance->user_id = (int) htmlspecialchars( $result_object->user_id );
         $instance->mobile = (int) htmlspecialchars( $result_object->ms_mobile );
         $instance->access = (int) htmlspecialchars( $result_object->ms_access );
         $instance->created = htmlspecialchars( $result_object->design_created );
@@ -283,6 +285,22 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
+     * Sets the value of user_id.
+     * @param number $user_id The new value for user_id.
+     */
+    public function set_user_id( $user_id ) {
+        $this->user_id = $user_id;
+    }
+    
+    /**
+     * Gets the value of user_id.
+     * @return number Returns the value of user_id.
+     */
+    public function get_user_id() {
+        return $this->user_id;
+    }
+    
+    /**
      * Sets the value of designer_id.
      * @param number $designer_id The new value for designer_id.
      */
@@ -437,6 +455,7 @@ class MyStyle_Design implements MyStyle_Entity {
                 ms_thumb_url varchar(255) NULL,
                 ms_design_url varchar(255) NULL,
                 product_id bigint(20) NULL,
+                user_id bigint(20) NULL,
                 design_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 design_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 design_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -486,6 +505,7 @@ class MyStyle_Design implements MyStyle_Entity {
         $data['ms_thumb_url'] = $this->thumb_url;
         $data['ms_design_url'] = $this->design_url;
         $data['product_id'] = $this->product_id;
+        $data['user_id'] = $this->user_id;
         $data['design_created'] = $this->created;
         $data['design_created_gmt'] = $this->created_gmt;
         $data['design_modified'] = $this->modified;
@@ -518,6 +538,7 @@ class MyStyle_Design implements MyStyle_Entity {
             '%s', //ms_thumb_url
             '%s', //ms_design_url
             '%d', //product_id
+            '%d', //user_id
             '%s', //design_created
             '%s', //design_created_gmt
             '%s', //design_modified
