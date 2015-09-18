@@ -109,11 +109,23 @@ class MyStyle_FrontEnd {
      * @return type Returns the html to be outputted.
      */
     public static function loop_add_to_cart_link( $link, $product ) {
+        //var_dump($product);
         
-        if( MyStyle::product_is_customizable( $product->id ) ) {
+        if( (MyStyle::product_is_customizable( $product->id )) && ( $product->product_type != 'variable') ) {
             $customize_page_id = MyStyle_Customize_Page::get_id();
+            
+            //build the url to the customizer including the poduct_id
             $customizer_url = add_query_arg( 'product_id', $product->id, get_permalink( $customize_page_id ) );
             
+            //Add the passthru data to the url
+            $passthru = array();
+            $passthru['post'] = array();
+            $passthru['post']['quantity'] = 1;
+            $passthru['post']['add-to-cart'] = $product->id;
+            $passthru_encoded = base64_encode( json_encode( $passthru ) );
+            $customizer_url = add_query_arg( 'h', $passthru_encoded, $customizer_url );
+            
+            //Build the link (a tag) to the customizer
             $customize_link = sprintf( 
                 '<a ' .
                     'href="%s" ' . 
