@@ -212,10 +212,40 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         //var_dump($html);
         
         $cust_pid = MyStyle_Customize_Page::get_id();
+        $h = base64_encode( json_encode( array( 'post' => array( 'quantity' => 1, 'add-to-cart' => 1 ) ) ) );
         
-        $expected = '<a href="http://example.org/?page_id=' . $cust_pid . '&#038;product_id=1" rel="nofollow" class="button  product_type_simple" >Customize</a>';
+        $expectedUrl = 'http://example.org/?page_id=' . $cust_pid . '&#038;product_id=1&#038;h=' . $h;
         
-        $this->assertContains( $expected, $html );
+        $expectedHtml = '<a href="'.$expectedUrl.'" rel="nofollow" class="button  product_type_simple" >Customize</a>';
+        
+        $this->assertEquals( $expectedHtml, $html );
+    }
+    
+    /**
+     * Test the loop_add_to_cart_link function for a customizable but variable
+     * product.  It should leave the button "Select Options" unchanged.
+     */    
+    public function test_loop_add_to_cart_link_for_variable_product() {
+        $mystyle_frontend = new MyStyle_FrontEnd();
+        
+        //Create a mock link
+        $link = '<a href="">link</a>';
+        
+        //Mock the global $post variable
+        $post_vars = new stdClass();
+        $post_vars->ID = 1;
+        $GLOBALS['post'] = new WP_Post( $post_vars );
+        
+        //Mock the mystyle_metadata
+        add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
+        
+        //Create a mock VARIABLE product using the mock Post
+        $product = new WC_Product_Variable($GLOBALS['post']);
+        
+        $html = $mystyle_frontend->loop_add_to_cart_link( $link, $product );
+        
+        //assert that the link is returned unmodified
+        $this->assertContains( $link, $html );
     }
     
     /**
