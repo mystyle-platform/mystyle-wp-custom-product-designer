@@ -29,6 +29,30 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
         
         return $session;
     }
+    
+    /**
+     * Updates the session in the database changing its modified date/time to
+     * the current date/time
+     * @global wpdb $wpdb
+     * @param MyStyle_Session $session The MyStyle_Session that you want to
+     * update.
+     * @return \MyStyle_Session Returns the MyStyle_Session entity.
+     * @todo Add unit testing
+     */
+    public static function update( MyStyle_Session $session) {
+        global $wpdb;
+        
+        $session->modified = date( MyStyle::$STANDARD_DATE_FORMAT );
+        $session->modified_gmt = date( MyStyle::$STANDARD_DATE_FORMAT );
+        
+        $wpdb->replace(
+                $session->get_table_name(),
+                $session->get_data_array(),
+                $session->get_insert_format() 
+            );
+        
+        return $session;
+    }
 
 }
 
