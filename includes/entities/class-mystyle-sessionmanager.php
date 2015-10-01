@@ -32,7 +32,7 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
     
     /**
      * Updates the session in the database changing its modified date/time to
-     * the current date/time
+     * the current date/time.
      * @global wpdb $wpdb
      * @param MyStyle_Session $session The MyStyle_Session that you want to
      * update.
@@ -48,7 +48,7 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
         $wpdb->replace(
                 $session->get_table_name(),
                 $session->get_data_array(),
-                $session->get_insert_format() 
+                $session->get_insert_format()
             );
         
         return $session;

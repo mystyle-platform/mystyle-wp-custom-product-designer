@@ -56,16 +56,20 @@ require_once( MYSTYLE_PATH . 'tests/qunit.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-options.php' );
+
+//Entities
 require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entity.php' );
 require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entitymanager.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-session.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionmanager.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php' );
+
 require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-api.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
 require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
+require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionhandler.php' );
 
 $mystyle = new MyStyle();
 
@@ -105,6 +109,7 @@ if( is_admin() ) {
 
     $mystyle_frontend = new MyStyle_FrontEnd();
     $mystyle_handoff = new MyStyle_Handoff();
+    $mystyle_session = MyStyle_SessionHandler::get();
 }
 
 //Register shortcodes

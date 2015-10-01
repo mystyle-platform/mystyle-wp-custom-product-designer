@@ -29,7 +29,7 @@ class MyStyle_SessionHandler {
             $session = MyStyle_Session::create();
         }
         
-        MyStyle_SessionHandler::update( $session );
+        MyStyle_SessionManager::update( $session );
         
         return $session;
     }
