@@ -22,26 +22,41 @@ class MyStyle_Options_Page {
      */
     public function admin_init() {
         $sanitize_callback = array( &$this, 'validate' ); //A callback function that sanitizes the option's value.
-        // ************** SETTINGS SECTION ******************//
+        // ************** ACCOUNT SETTINGS SECTION ******************//
         add_settings_section(
                 'mystyle_options_access_section',
                 'MyStyle Account Settings',
                 array( &$this, 'render_access_section_text' ),
-                'mystyle_settings'
+                'mystyle_account_settings'
         );
         add_settings_field(
                 'api_key',
                 'API Key',
                 array( &$this, 'render_api_key' ),
-                'mystyle_settings',
+                'mystyle_account_settings',
                 'mystyle_options_access_section'
         );
         add_settings_field(
                 'secret',
                 'Secret',
                 array( &$this, 'render_secret' ),
-                'mystyle_settings',
+                'mystyle_account_settings',
                 'mystyle_options_access_section'
+        );
+        
+        // ************** CUSTOMIZER SETTINGS SECTION ******************//
+        add_settings_section(
+                'mystyle_options_customizer_section',
+                'MyStyle Customizer Settings',
+                array( &$this, 'render_customizer_section_text' ),
+                'mystyle_customizer_settings'
+        );
+        add_settings_field(
+                'force_mobile',
+                'Always Use HTML5 Customizer',
+                array( &$this, 'render_force_mobile' ),
+                'mystyle_customizer_settings',
+                'mystyle_options_customizer_section'
         );
         
         // ************** TOOLS SECTION ******************//
@@ -88,16 +103,20 @@ class MyStyle_Options_Page {
     ?>
         <div class="wrap">
             <h2 class="mytyle-admin-title"><div id="icon-options-general" class="icon100"></div> MyStyle Settings</h2>
-            <div class="mystyle-admin-box">
+            
             <form action="options.php" method="post">
                 <?php settings_fields( 'mystyle_options' ); ?>
-                <?php do_settings_sections( 'mystyle_settings' ); ?>
-
+                <div class="mystyle-admin-box">
+                    <?php do_settings_sections( 'mystyle_account_settings' ); ?>
+                </div>
+                <br/>
+                <div class="mystyle-admin-box">
+                    <?php do_settings_sections( 'mystyle_customizer_settings' ); ?>
+                </div>
                 <p class="submit">
                     <input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e('Save Changes'); ?>" />
                 </p>
             </form>
-            </div>
             <br/>
             <div class="mystyle-admin-box">
                 <form action="admin.php?page=mystyle&action=fix_customize_page" method="post">
@@ -159,6 +178,31 @@ class MyStyle_Options_Page {
         </p>
     <?php
     }
+    
+    /**
+     * Function to render the text for the customizer section.
+     */
+    public static function render_customizer_section_text() {
+    ?>
+        <p>
+            Use the below optional settings to configure the customizer.
+        </p>
+    <?php
+    }
+    
+    /**
+     * Function to render the Force Mobile field and description
+     */
+    public static function render_force_mobile() {
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $force_mobile = ( array_key_exists( 'force_mobile', $options ) ) ? $options['force_mobile'] : 0;
+     ?>
+        <input type="checkbox" id="mystyle_force_mobile" name="mystyle_options[force_mobile]" value="1" <?php echo checked( 1, $force_mobile, false ) ?> />
+        <p class="description">
+            Enable to always use the HTML5 (rather than the Flash) version of the MyStyle customizer.
+        </p>
+    <?php
+    }
 
     /**
      * Function to render the text for the tools section.
@@ -206,6 +250,15 @@ class MyStyle_Options_Page {
             $msg_type = 'error';
             $msg_message = 'Please enter a valid Secret.';
             $new_options['secret'] = '';
+        }
+        
+        //Force Mobile
+        $new_options['force_mobile'] = intval( $input['force_mobile'] );
+        if( ! preg_match('/^[01]$/', $new_options['force_mobile'] ) ) {
+            $has_errors = true;
+            $msg_type = 'error';
+            $msg_message = 'Invalid HTML5 Customizer option';
+            $new_options['force_mobile'] = 0;
         }
 
         if(!$has_errors) {

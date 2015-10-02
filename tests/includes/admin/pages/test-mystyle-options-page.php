@@ -42,18 +42,66 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         //Assert that the expected settings fields were registered and rendered
         ob_start();
         settings_fields( 'mystyle_options' );
-        do_settings_sections( 'mystyle_settings' );
+        //do_settings_sections( 'mystyle_settings' );
         $outbound = ob_get_contents();
         ob_end_clean();
         
         //Assert that the mystyle_options hidden field is registered/rendered
         $this->assertContains( "value='mystyle_options'", $outbound );
         
+        //Assert that the action field is registered/rendered.
+        $this->assertContains( '<input type="hidden" name="action" value="update" />', $outbound );
+        
+        //Assert taht the _secret_wpnonce field is registered/rendered.
+        $this->assertContains( '<input type="hidden" id="_wpnonce" name="_wpnonce"', $outbound );
+        
+        //Assert taht the _wp_http_referer field is registered/rendered.
+        $this->assertContains( '<input type="hidden" name="_wp_http_referer"', $outbound );
+    }
+    
+    /**
+     * Test the mystyle_account_settings_section function.
+     */    
+    public function test_mystyle_account_settings_section() {
+        global $wp_filter;
+        
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        //Run the function
+        $mystyle_options_page->admin_init();
+        
+        //Assert that the expected settings fields were registered and rendered
+        ob_start();
+        do_settings_sections( 'mystyle_account_settings' );
+        $outbound = ob_get_contents();
+        ob_end_clean();
+        
         //Assert that the api key field is registered/rendered.
         $this->assertContains( 'name="mystyle_options[api_key]"', $outbound );
         
-        //Assert taht the secret field is registered/rendered.
+        //Assert that the secret field is registered/rendered.
         $this->assertContains( 'name="mystyle_options[secret]"', $outbound );
+    }
+    
+    /**
+     * Test the mystyle_account_settings_section function.
+     */    
+    public function test_mystyle_configuration_settings_section() {
+        global $wp_filter;
+        
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        //Run the function
+        $mystyle_options_page->admin_init();
+        
+        //Assert that the expected settings fields were registered and rendered
+        ob_start();
+        do_settings_sections( 'mystyle_customizer_settings' );
+        $outbound = ob_get_contents();
+        ob_end_clean();
+        
+        //Assert that the force_mobile field is registered/rendered.
+        $this->assertContains( '<input type="checkbox" id="mystyle_force_mobile" name="mystyle_options[force_mobile]" value="1"  />', $outbound );
     }
     
     /**
@@ -130,6 +178,34 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the render_configuration_section_text function.
+     */    
+    public function test_render_configuration_section_text() {
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        //Assert that the access section was rendered
+        ob_start();
+        $mystyle_options_page->render_customizer_section_text();
+        $outbound = ob_get_contents();
+        ob_end_clean();
+        $this->assertContains( ' Use the below optional settings to configure the customizer.', $outbound );
+    }
+    
+    /**
+     * Test the render_force_mobile function.
+     */    
+    public function test_render_force_mobile() {
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        //Assert that the force_mobile field was rendered
+        ob_start();
+        $mystyle_options_page->render_force_mobile();
+        $outbound = ob_get_contents();
+        ob_end_clean();
+        $this->assertContains( 'nable to always use the HTML5', $outbound );
+    }
+    
+    /**
      * Test that the validate function returns an error
      * when the api_key input is invalid.
      */
@@ -143,6 +219,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'not valid';
         $input['secret']  = 'validsecret';
+        $input['force_mobile']  = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -171,6 +248,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = '"><script>alert(document.cookie)</script>';
         $input['secret'] = 'validsecret';
+        $input['force_mobile']  = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -199,6 +277,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'A0000';
         $input['secret'] = 'validsecret';
+        $input['force_mobile']  = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -233,6 +312,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'validapikey';
         $input['secret']  = 'not valid';
+        $input['force_mobile']  = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -261,6 +341,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'validapikey';
         $input['secret']  = '"><script>alert(document.cookie)</script>';
+        $input['force_mobile']  = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate( $input );
@@ -289,6 +370,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'validapikey';
         $input['secret']  = 'A0000';
+        $input['force_mobile']  = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
