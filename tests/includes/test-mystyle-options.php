@@ -69,6 +69,21 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
     }
     
     /**
+     * Assert that get_force_mobile() returns the expected force_mobile value.
+     */    
+    function test_get_force_mobile() {
+        //Set force_mobile
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['force_mobile'] = 1;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $force_mobile = MyStyle_Options::get_force_mobile();
+
+        $this->assertEquals( 1, $force_mobile );
+    }
+    
+    /**
      * Assert that is_demo_mode() returns true if api key is a demo key.
      */    
     function test_is_demo_mode_for_demo_key() {

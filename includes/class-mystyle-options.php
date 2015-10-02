@@ -62,6 +62,21 @@ abstract class MyStyle_Options {
     }
     
     /**
+     * Function that gets the value of force_mobile setting.
+     * @return boolean Returns 1 if the force_mobile setting is enabled,
+     * otherwise returns false.
+     */
+    static function get_force_mobile() {
+        $force_mobile = 0;
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if( ! empty( $options['force_mobile'] ) ) {
+            $force_mobile = $options['force_mobile'];
+        }
+
+        return $force_mobile;
+    }
+    
+    /**
      * Function that determines if the plugin is in demo mode.
      * @return string Returns the active secret.
      */
