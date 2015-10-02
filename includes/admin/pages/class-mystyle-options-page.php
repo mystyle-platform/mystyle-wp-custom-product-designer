@@ -25,7 +25,7 @@ class MyStyle_Options_Page {
         // ************** ACCOUNT SETTINGS SECTION ******************//
         add_settings_section(
                 'mystyle_options_access_section',
-                'MyStyle Account Settings',
+                'Account Settings',
                 array( &$this, 'render_access_section_text' ),
                 'mystyle_account_settings'
         );
@@ -44,19 +44,19 @@ class MyStyle_Options_Page {
                 'mystyle_options_access_section'
         );
         
-        // ************** CUSTOMIZER SETTINGS SECTION ******************//
+        // ************** ADVANCED SETTINGS SECTION ******************//
         add_settings_section(
-                'mystyle_options_customizer_section',
-                'MyStyle Customizer Settings',
-                array( &$this, 'render_customizer_section_text' ),
-                'mystyle_customizer_settings'
+                'mystyle_options_advanced_section',
+                'Advanced Settings',
+                array( &$this, 'render_advanced_section_text' ),
+                'mystyle_advanced_settings'
         );
         add_settings_field(
                 'force_mobile',
-                'Always Use HTML5 Customizer',
+                'Disable Flash (Not Recommended)',
                 array( &$this, 'render_force_mobile' ),
-                'mystyle_customizer_settings',
-                'mystyle_options_customizer_section'
+                'mystyle_advanced_settings',
+                'mystyle_options_advanced_section'
         );
         
         // ************** TOOLS SECTION ******************//
@@ -111,7 +111,7 @@ class MyStyle_Options_Page {
                 </div>
                 <br/>
                 <div class="mystyle-admin-box">
-                    <?php do_settings_sections( 'mystyle_customizer_settings' ); ?>
+                    <?php do_settings_sections( 'mystyle_advanced_settings' ); ?>
                 </div>
                 <p class="submit">
                     <input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e('Save Changes'); ?>" />
@@ -180,12 +180,12 @@ class MyStyle_Options_Page {
     }
     
     /**
-     * Function to render the text for the customizer section.
+     * Function to render the text for the advanced section.
      */
-    public static function render_customizer_section_text() {
+    public static function render_advanced_section_text() {
     ?>
         <p>
-            Use the below optional settings to configure the customizer.
+            For advanced users only.
         </p>
     <?php
     }
@@ -199,7 +199,7 @@ class MyStyle_Options_Page {
      ?>
         <input type="checkbox" id="mystyle_force_mobile" name="mystyle_options[force_mobile]" value="1" <?php echo checked( 1, $force_mobile, false ) ?> />
         <p class="description">
-            Enable to always use the HTML5 (rather than the Flash) version of the MyStyle customizer.
+            Check to always use the HTML5 (rather than the Flash) version of the MyStyle customizer.
         </p>
     <?php
     }

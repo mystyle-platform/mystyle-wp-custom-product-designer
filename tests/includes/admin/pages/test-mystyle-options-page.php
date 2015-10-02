@@ -86,7 +86,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
     /**
      * Test the mystyle_account_settings_section function.
      */    
-    public function test_mystyle_configuration_settings_section() {
+    public function test_mystyle_advanced_settings_section() {
         global $wp_filter;
         
         $mystyle_options_page = new MyStyle_Options_Page();
@@ -96,7 +96,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         
         //Assert that the expected settings fields were registered and rendered
         ob_start();
-        do_settings_sections( 'mystyle_customizer_settings' );
+        do_settings_sections( 'mystyle_advanced_settings' );
         $outbound = ob_get_contents();
         ob_end_clean();
         
@@ -178,17 +178,17 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the render_configuration_section_text function.
+     * Test the render_advanced_section_text function.
      */    
-    public function test_render_configuration_section_text() {
+    public function test_render_advanced_section_text() {
         $mystyle_options_page = new MyStyle_Options_Page();
         
         //Assert that the access section was rendered
         ob_start();
-        $mystyle_options_page->render_customizer_section_text();
+        $mystyle_options_page->render_advanced_section_text();
         $outbound = ob_get_contents();
         ob_end_clean();
-        $this->assertContains( ' Use the below optional settings to configure the customizer.', $outbound );
+        $this->assertContains( 'For advanced users only.', $outbound );
     }
     
     /**
@@ -202,7 +202,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $mystyle_options_page->render_force_mobile();
         $outbound = ob_get_contents();
         ob_end_clean();
-        $this->assertContains( 'nable to always use the HTML5', $outbound );
+        $this->assertContains( 'Check to always use the HTML5', $outbound );
     }
     
     /**
