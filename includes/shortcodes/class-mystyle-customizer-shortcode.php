@@ -56,6 +56,7 @@ abstract class MyStyle_Customizer_Shortcode {
         }
         
         $product_id = htmlspecialchars( $_GET['product_id'] ) ;
+        $design_id = htmlspecialchars( $_GET['design_id'] ) ;
         $mystyle_template_id = get_post_meta( $product_id, '_mystyle_template_id', true );
         $passthru = ( isset( $_GET['h'] ) ) ? $_GET['h'] : '';
         
@@ -70,6 +71,7 @@ abstract class MyStyle_Customizer_Shortcode {
         $customizer_query_string =
                         "?app_id=$mystyle_app_id" . 
                         "&amp;product_id=$mystyle_template_id" . 
+                        "&amp;design_id=$design_id" . 
                         "&amp;settings=$encoded_settings" . 
                         "&amp;passthru=h,$passthru";
         
