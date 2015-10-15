@@ -1,3 +1,7 @@
+= 1.1.15 =
+
+* Fixed bug with loading front-end on non-post pages.
+
 = 1.1.14 =
 
 * Now supports reloading designs through the Design Manager add-on.
