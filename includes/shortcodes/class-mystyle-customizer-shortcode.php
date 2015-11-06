@@ -56,6 +56,7 @@ abstract class MyStyle_Customizer_Shortcode {
         }
         
         $product_id = htmlspecialchars( $_GET['product_id'] ) ;
+        $design_id = (isset($_GET['design_id'])) ? htmlspecialchars( $_GET['design_id'] ) : null;
         $mystyle_template_id = get_post_meta( $product_id, '_mystyle_template_id', true );
         $passthru = ( isset( $_GET['h'] ) ) ? $_GET['h'] : '';
         
@@ -70,6 +71,7 @@ abstract class MyStyle_Customizer_Shortcode {
         $customizer_query_string =
                         "?app_id=$mystyle_app_id" . 
                         "&amp;product_id=$mystyle_template_id" . 
+                        (($design_id != null) ? "&amp;design_id=$design_id" : "") . 
                         "&amp;settings=$encoded_settings" . 
                         "&amp;passthru=h,$passthru";
         
@@ -77,7 +79,8 @@ abstract class MyStyle_Customizer_Shortcode {
         $customizer_url = 'http://customizer.ogmystyle.com/' . $customizer_query_string;
         $mobile_customizer_url = 'http://customizer-js.ogmystyle.com/' . $customizer_query_string;
         
-        $force_mobile = 0;
+        $force_mobile = MyStyle_Options::get_force_mobile();
+
         if ( isset( $_GET['force_mobile'] ) ) {
             $force_mobile = 1;
         }
