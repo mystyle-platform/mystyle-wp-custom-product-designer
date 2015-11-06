@@ -28,7 +28,7 @@ class MyStyle_Session implements MyStyle_Entity {
         $this->created = date( MyStyle::$STANDARD_DATE_FORMAT );
         $this->created_gmt = gmdate( MyStyle::$STANDARD_DATE_FORMAT );
         $this->modified = date( MyStyle::$STANDARD_DATE_FORMAT );
-        $this->modified_gmt = date( MyStyle::$STANDARD_DATE_FORMAT );
+        $this->modified_gmt = gmdate( MyStyle::$STANDARD_DATE_FORMAT );
     }
     
     /**
@@ -66,7 +66,7 @@ class MyStyle_Session implements MyStyle_Entity {
         $instance->created = htmlspecialchars( $result_object->session_created );
         $instance->created_gmt = htmlspecialchars( $result_object->session_created_gmt );
         $instance->modified = htmlspecialchars( $result_object->session_modified );
-        $instance->modified_gmt = htmlspecialchars( $result_object->session_modified_gmt );
+        $instance->modified_gmt = htmlspecialchars( $result_object->session_modified );
         
         return $instance;
     }
@@ -96,11 +96,27 @@ class MyStyle_Session implements MyStyle_Entity {
     }
     
     /**
+     * Sets the value of modified.
+     * @param number $modified The new value for modified.
+     */
+    public function set_modified( $modified ) {
+        $this->modified = $modified;
+    }
+    
+    /**
      * Gets the value of modified.
      * @return number Returns the value of modified.
      */
     public function get_modified() {
         return $this->modified;
+    }
+    
+    /**
+     * Sets the value of modified_gmt.
+     * @param number $modified_gmt The new value for modified_gmt.
+     */
+    public function set_modified_gmt( $modified_gmt ) {
+        $this->modified_gmt = $modified_gmt;
     }
     
     /**

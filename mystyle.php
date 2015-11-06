@@ -69,7 +69,7 @@ require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-api.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
 require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
-require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionhandler.php' );
+require_once( MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php' );
 
 $mystyle = new MyStyle();
 
