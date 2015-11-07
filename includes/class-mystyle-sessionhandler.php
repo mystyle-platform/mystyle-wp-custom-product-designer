@@ -22,13 +22,15 @@ class MyStyle_SessionHandler {
      * @return \MyStyle_Session Returns the current mystyle session.
      */
     public static function get() {
-        session_start();
+        if(session_id() == '') {
+            session_start();
+        }
         
-        if( isset( $_SESSION[MyStyle_Session::SESSION_KEY] ) ) {
-            $session = $_SESSION[MyStyle_Session::SESSION_KEY];
+        if( isset( $_SESSION[MyStyle_Session::$SESSION_KEY] ) ) {
+            $session = $_SESSION[MyStyle_Session::$SESSION_KEY];
         } else {
             $session = MyStyle_Session::create();
-            $_SESSION[MyStyle_Session::SESSION_KEY] = $session;
+            $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
         }
         
         MyStyle_SessionManager::update( $session );
