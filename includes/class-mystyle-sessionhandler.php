@@ -7,7 +7,6 @@
  *
  * @package MyStyle
  * @since 1.2.0
- * @todo Add unit testing
  */
 class MyStyle_SessionHandler {
     
