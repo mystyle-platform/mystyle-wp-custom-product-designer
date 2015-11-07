@@ -24,11 +24,11 @@ class MyStyle_SessionHandler {
     public static function get() {
         session_start();
         
-        if( isset( $_SESSION['mystyle'] ) ) {
-            $session = $_SESSION['mystyle'];
+        if( isset( $_SESSION[MyStyle_Session::SESSION_KEY] ) ) {
+            $session = $_SESSION[MyStyle_Session::SESSION_KEY];
         } else {
             $session = MyStyle_Session::create();
-            $_SESSION['mystyle'] = $session;
+            $_SESSION[MyStyle_Session::SESSION_KEY] = $session;
         }
         
         MyStyle_SessionManager::update( $session );

@@ -11,6 +11,8 @@
  */
 class MyStyle_Session implements MyStyle_Entity {
     
+    public static $SESSION_KEY = 'mystyle';
+    
     private static $TABLE_NAME = 'mystyle_sessions'; //Note: this is without the db prefix;
     private static $PRIMARY_KEY = 'session_id';
     
