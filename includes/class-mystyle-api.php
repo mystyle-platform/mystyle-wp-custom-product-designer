@@ -73,7 +73,6 @@ abstract class MyStyle_API {
      * data retrieved from the API.
      * @param integer $user_id The MyStyle user id.
      * @return \MyStyle_User
-     * @todo Add unit testing
      */
     public static function get_user( $user_id ) {
         /* @var $user \MyStyle_User */

@@ -40,5 +40,29 @@ class MyStyleAPITest extends WP_UnitTestCase {
         $expected_print_url = 'http://testhost/test_print_url.jpg';
         $this->assertEquals( $expected_print_url, $design->get_print_url() );
     }
+    
+    /**
+     * Test the get_user function
+     */    
+    function test_get_user() {
+        $designer_id = 2;
+        
+        //Mock the API response
+        add_filter( 'pre_http_request', array( 'MyStyleMockAPI', 'mock_api_call' ), 10, 3 );
+        
+        //Install the api_key
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['api_key'] = '0';
+        $options['secret'] = 'fake-secret';
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        /* @var $user \MyStyle_User */
+        $user = MyStyle_API::get_user( $designer_id );
+        
+        //Assert email is set
+        $expected_email= 'someone@example.com';
+        $this->assertEquals( $expected_email, $user->get_email() );
+    }
 
 }
