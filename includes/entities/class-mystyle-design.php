@@ -27,6 +27,7 @@ class MyStyle_Design implements MyStyle_Entity {
     private $product_id; //this is the local product id
     private $user_id; //this is the local (WordPress) user id (if the user designer has one)
     private $designer_id; //the mystyle user id
+    private $session_id; //the mystyle plugin's session id
     private $email; //the email that was submitted with the design (if any)
     private $price;
     private $mobile; //whether or not the mobile version of the customizer was used to create the design.
@@ -98,6 +99,7 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->design_url = htmlspecialchars( $result_object->ms_design_url );
         $instance->product_id = (int) htmlspecialchars( $result_object->product_id );
         $instance->user_id = (int) htmlspecialchars( $result_object->user_id );
+        $instance->session_id = htmlspecialchars( $result_object->session_id );
         $instance->mobile = (int) htmlspecialchars( $result_object->ms_mobile );
         $instance->access = (int) htmlspecialchars( $result_object->ms_access );
         $instance->created = htmlspecialchars( $result_object->design_created );
@@ -317,6 +319,22 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
+     * Sets the value of session_id.
+     * @param number $session_id The new value for session_id.
+     */
+    public function set_session_id( $session_id ) {
+        $this->session_id = $session_id;
+    }
+    
+    /**
+     * Gets the value of session_id.
+     * @return number Returns the value of session_id.
+     */
+    public function get_session_id() {
+        return $this->session_id;
+    }
+    
+    /**
      * Sets the value of email.
      * @param number $email The new value for email.
      */
@@ -464,6 +482,7 @@ class MyStyle_Design implements MyStyle_Entity {
                 ms_access int(1) NOT NULL DEFAULT '0',
                 design_view_count bigint(20) NULL DEFAULT '0',
                 design_purchase_count bigint(20) NULL DEFAULT '0',
+                session_id varchar(100) NOT NULL,
                 PRIMARY KEY  (ms_design_id)
             )";
     }
@@ -514,6 +533,7 @@ class MyStyle_Design implements MyStyle_Entity {
         $data['ms_access'] = $this->access;
         $data['design_view_count'] = $this->view_count;
         $data['design_purchase_count'] = $this->purchase_count;
+        $data['session_id'] = $this->session_id;
         
         return $data;
     }
@@ -547,6 +567,7 @@ class MyStyle_Design implements MyStyle_Entity {
             '%d', //ms_access
             '%d', //design_view_count
             '%d', //design_purchase_count
+            '%s', //session_id
 	);
                 
         return $formats_arr;  

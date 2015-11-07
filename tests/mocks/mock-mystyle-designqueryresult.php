@@ -28,6 +28,7 @@ class MyStyle_MockDesignQueryResult {
     public $ms_access;
     public $design_view_count;
     public $design_purchase_count;
+    public $session_id;
     
     /**
      * Constructor
@@ -54,6 +55,7 @@ class MyStyle_MockDesignQueryResult {
         $this->ms_access = 0;
         $this->design_view_count = 0;
         $this->design_purchase_count = 0;
+        $this->session_id = 'testsessionid';
     }
 
 }
