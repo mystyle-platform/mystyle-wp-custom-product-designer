@@ -207,7 +207,6 @@ class MyStyle_Session implements MyStyle_Entity {
     /**
      * Generates a session id.
      * @return string Returns the generated session id.
-     * @todo add unit tests for this function.
      */
     public static function generate_session_id()
     {

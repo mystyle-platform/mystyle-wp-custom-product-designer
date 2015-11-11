@@ -149,4 +149,21 @@ class MyStyleSessionTest extends WP_UnitTestCase {
         $this->assertEquals( $expected_formats_arr, $session->get_insert_format() );
     }
     
+    /**
+     * Test the generate_session_id function
+     */    
+    function test_generate_session_id() {
+        //Generate a session id
+        $session_id_1 = MyStyle_Session::generate_session_id();
+        
+        //Assert that the session id is the expected length
+        $this->assertEquals( 43, strlen( $session_id_1 ) );
+        
+        //Generate another session id
+        $session_id_2 = MyStyle_Session::generate_session_id();
+        
+        //Assert that the session ids are not equal
+        $this->assertNotEquals( $session_id_1, $session_id_2 );
+    }
+    
 }
