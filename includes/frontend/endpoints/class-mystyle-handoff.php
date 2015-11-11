@@ -79,6 +79,10 @@ class MyStyle_Handoff {
             /* @var $design \MyStyle_Design */
             $design = MyStyle_Design::create_from_post( $_POST );
             
+            //Add the session id to the design
+            $session = MyStyle_SessionHandler::get();
+            $design->set_session_id( $session->get_session_id() );
+            
             //Add data from api call
             $design = MyStyle_Api::add_api_data_to_design( $design );
             
