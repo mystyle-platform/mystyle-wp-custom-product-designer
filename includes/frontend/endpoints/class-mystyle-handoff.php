@@ -93,6 +93,12 @@ class MyStyle_Handoff {
             $wp_user_id = get_current_user_id();
             if( $wp_user_id !== 0 ) {
                 $design->set_user_id( $wp_user_id );
+            } else {
+                //if the user isn't logged in, see if their email matches an existing user and store that id with the design
+                $user = get_user_by( 'email', $mystyle_user->get_email() );
+                if( $user !== false ) {
+                    $design->set_user_id( $user->get_email() );
+                }
             }
             
             //Persist the design to the database
