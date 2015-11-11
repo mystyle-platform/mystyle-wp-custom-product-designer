@@ -37,7 +37,6 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
      * @param MyStyle_Session $session The MyStyle_Session that you want to
      * update.
      * @return \MyStyle_Session Returns the MyStyle_Session entity.
-     * @todo Add unit testing
      */
     public static function update( MyStyle_Session $session ) {
         global $wpdb;
