@@ -97,7 +97,7 @@ class MyStyle_Handoff {
                 //if the user isn't logged in, see if their email matches an existing user and store that id with the design
                 $user = get_user_by( 'email', $mystyle_user->get_email() );
                 if( $user !== false ) {
-                    $design->set_user_id( $user->get_email() );
+                    $design->set_user_id( $user->ID );
                 }
             }
             
