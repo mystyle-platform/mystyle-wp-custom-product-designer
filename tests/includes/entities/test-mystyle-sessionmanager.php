@@ -59,5 +59,38 @@ class MyStyleSessionManagerTest extends WP_UnitTestCase {
         //Assert that the session_id is set
         $this->assertEquals( $session_id, $session_from_db->get_session_id() );
     }
+    
+    /**
+     * Test the update function.
+     * @global wpdb $wpdb
+     */    
+    function test_update() {
+        global $wpdb;
+        
+        $session_id = 'testsession';
+        
+        //Create the session
+        $session = MyStyle_Session::create( $session_id );
+        
+        //Persist the session
+        MyStyle_SessionManager::persist( $session );
+        
+        //Get the persisted session.
+        $session_from_db = MyStyle_SessionManager::get( $session_id );
+        
+        //Get the modified date
+        $modified_orig = $session_from_db->get_modified();
+        
+        //Wait 1.5 seconds
+        sleep(1.5);
+        
+        //Call the update function
+        $session_from_db = MyStyle_SessionManager::update( $session );
+        
+        //Get the new modified date
+        $modified_updated = $session_from_db->get_modified();
+        
+        $this->assertNotEquals( $modified_updated, $modified_orig );
+    }
 
 }
