@@ -25,14 +25,28 @@ class MyStyle_SessionHandler {
             session_start();
         }
         
-        if( isset( $_SESSION[MyStyle_Session::$SESSION_KEY] ) ) {
+        $session = null;
+        
+        //first look in the session variables
+        if( isset( $_SESSION[MyStyle_Session::$SESSION_KEY] ) ) {    
             $session = $_SESSION[MyStyle_Session::$SESSION_KEY];
         } else {
-            $session = MyStyle_Session::create();
-            $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
+            //next look in their cookies
+            if( isset( $_COOKIE[MyStyle_Session::$COOKIE_NAME] ) ) {
+                $session_id = $_COOKIE[MyStyle_Session::$COOKIE_NAME];
+                $session = MyStyle_SessionManager::get( $session_id );
+            }
         }
         
-        MyStyle_SessionManager::update( $session );
+        //If no session is found, create a new one and set the cookie.
+        if( $session == null ) {
+            $session = MyStyle_Session::create();
+            $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
+            setcookie( 
+                MyStyle_Session::$COOKIE_NAME, 
+                $session->get_session_id(), 
+                time() + (60*60*24*365*10) );
+        }
         
         return $session;
     }
