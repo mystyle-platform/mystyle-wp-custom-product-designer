@@ -47,15 +47,28 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
                  'WHERE ( ( user_id IS NULL ) OR ( user_id = 0 ) ) ';
         
         if( ! empty( $user->user_email ) ) {
+            // Where email matches and the session is empty or matches the passed session id.
             $query .=
                  'AND ( ms_email = "' . $user->user_email . '" ) ';
+            
+            $query .= 
+                 'AND ( ';
+            if( $session != null ) {
+                $query .=
+                       ' ( session_id = "' . $session->get_session_id() . '" ) OR ';
+            }
+            $query .= 
+                       ' ( session_id IS NULL ) OR ( session_id = "" ) ';
+            $query .= 
+                    ' ) ';
+            
+        } else {
+            //If there is no email, try to match based on the session id
+            if( $session != null ) {
+                $query .=
+                      'AND ( session_id = "' . $session->get_session_id() . '" ) ';
+            }
         }
-        
-        if( $session != null ) {
-            $query .=
-                  'AND ( session_id = "' . $session->get_session_id() . '" ) ';
-        }
-                 
         
         $result = $wpdb->query($query);
         
