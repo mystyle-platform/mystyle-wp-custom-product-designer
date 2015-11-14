@@ -20,6 +20,7 @@ class MyStyle {
         add_action( 'init', array( &$this, 'init' ) );
         add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_mystyle_order_item_meta' ), 10, 2 );
         add_action( 'woocommerce_order_status_completed', array( &$this, 'on_order_completed' ), 10, 1 );
+        add_action( 'wp_login', array( &$this, 'on_wp_login' ), 10, 2 );
         
         add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'get_cart_item_from_session' ), 10, 3 );
     }
@@ -121,6 +122,17 @@ class MyStyle {
         }
 	
         return $new_image_tag;
+    }
+    
+    /**
+     * Called when a user logs in.
+     * @param string $user_login
+     * @param WP_User $user
+     * @todo Add unit testing
+     */
+    public static function on_wp_login( $user_login, $user ) {
+        $session = MyStyle_SessionHandler::get();
+        MyStyle_DesignManager::set_wp_user_id_by_mystyle_session( $session, $user );
     }
     
     /**

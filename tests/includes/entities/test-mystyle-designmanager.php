@@ -1,5 +1,7 @@
 <?php
 
+require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-design.php');
+
 /**
  * The MyStyleDesignManagerTest class includes tests for testing the 
  * MyStyle_DesignManager
@@ -37,6 +39,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
     }
     
+    
     /**
      * Test the get function.
      * @global wpdb $wpdb
@@ -46,17 +49,8 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         
         $design_id = 1;
         
-        //Mock the POST
-        $post = array();
-        $post['description'] = 'test description';
-        $post['design_id'] = $design_id;
-        $post['product_id'] = 0;
-        $post['h'] = base64_encode( json_encode( array( 'post' => array( 'add-to-cart' => 0 ) ) ) );
-        $post['user_id'] = 0;
-        $post['price'] = 0;
-        
-        //Create the design
-        $design = MyStyle_Design::create_from_post( $post );
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
         
         //Persist the design
         MyStyle_DesignManager::persist( $design );
@@ -66,6 +60,46 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         
         //Assert that the design_id is set
         $this->assertEquals( $design_id, $design_from_db->get_design_id() );
+    }
+    
+    /**
+     * Test the set_wp_user_id_by_mystyle_session function.
+     * @global wpdb $wpdb
+     */
+    function test_set_wp_user_id_by_mystyle_session() {
+        global $wpdb;
+        
+        $design_id = 1;
+        $session_id = 'testsessionid';
+        
+        //Mock the user
+        $user_id = wp_create_user( 'testuser', 'testpassword', 'someone@example.com' );
+        $user = get_user_by( 'id', $user_id );
+        
+        //Mock the session
+        $session = MyStyle_Session::create( $session_id );
+        MyStyle_SessionManager::persist( $session );
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        
+        //Add a session id to the design
+        $design->set_session_id( $session_id );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Call the function
+        $result = MyStyle_DesignManager::set_wp_user_id_by_mystyle_session( $session, $user );
+        
+        //Assert that one row was modified
+        $this->assertEquals( 1, $result );
+        
+        //Get the design
+        $design_from_db = MyStyle_DesignManager::get( $design_id );
+        
+        //Assert that the user_id is set
+        $this->assertEquals( $user_id, $design_from_db->get_user_id() );
     }
 
 }
