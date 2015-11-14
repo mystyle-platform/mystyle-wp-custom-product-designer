@@ -12,6 +12,36 @@ require_once(MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php');
 class MyStyleOptionsPageTest extends WP_UnitTestCase {
     
     /**
+     * Overrwrite the setUp function so that our custom tables will be persisted
+     * to the test database.
+     * 
+     * Note: we need our tables because some of the functions here invoke hooks
+     * that need the tables.
+     */
+    function setUp() {
+        // Perform the actual task according to parent class.
+        parent::setUp();
+        // Remove filters that will create temporary tables. So that permanent tables will be created.
+        remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
+        remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
+        
+        //Create the tables
+        MyStyle_Install::create_tables();
+    }
+    
+    /**
+     * Overrwrite the tearDown function to remove our custom tables.
+     */
+    function tearDown() {
+        global $wpdb;
+        // Perform the actual task according to parent class.
+        parent::tearDown();
+        
+        //Drop the tables that we created
+        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+    }
+    
+    /**
      * Test the constructor
      */    
     public function test_constructor() {
@@ -122,6 +152,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
      * Test the add_page_to_menu function.
      */    
     public function test_add_page_to_menu() {
+        
         wp_set_current_user($this->factory->user->create( array( 'role' => 'administrator' ) ) );
         
         //Assert that the menu page doesn't yet exist

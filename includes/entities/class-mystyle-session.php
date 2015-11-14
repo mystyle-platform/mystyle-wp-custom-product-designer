@@ -63,8 +63,6 @@ class MyStyle_Session implements MyStyle_Entity {
     public static function create_from_result_object( $result_object ) {
         $instance = new self();
         
-        var_dump( $result_object );
-        
         $instance->session_id = htmlspecialchars( $result_object->session_id );
         $instance->created = htmlspecialchars( $result_object->session_created );
         $instance->created_gmt = htmlspecialchars( $result_object->session_created_gmt );

@@ -127,7 +127,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
                 ms_access int(1) NOT NULL DEFAULT '0',
                 design_view_count bigint(20) NULL DEFAULT '0',
                 design_purchase_count bigint(20) NULL DEFAULT '0',
-                session_id varchar(100) NOT NULL,
+                session_id varchar(100) NULL DEFAULT NULL,
                 PRIMARY KEY  (ms_design_id)
             )";
         
