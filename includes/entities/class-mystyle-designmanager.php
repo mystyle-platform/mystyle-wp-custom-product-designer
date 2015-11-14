@@ -45,6 +45,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         $query = 'UPDATE ' . MyStyle_Design::get_table_name() . ' ' . 
                  'SET user_id = "' . $user->ID . '" ' .
                  'WHERE session_id = "' . $session->get_session_id() . '" ' .
+                 'AND session_id IS NOT NULL ' .
+                 'AND session_id != "" ' . 
                  'AND ( ( user_id IS NULL ) OR ( user_id = 0 ) )';
         
         $result = $wpdb->query($query);
