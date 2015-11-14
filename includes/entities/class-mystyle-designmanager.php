@@ -41,14 +41,13 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
      */
     public static function set_wp_user_id_by_mystyle_session( $session, $user ) {
         global $wpdb;
+
+        $query = 'UPDATE ' . MyStyle_Design::get_table_name() . ' ' . 
+                 'SET user_id = "' . $user->ID . '" ' .
+                 'WHERE session_id = "' . $session->get_session_id() . '" ' .
+                 'AND ( ( user_id IS NULL ) OR ( user_id = 0 ) )';
         
-        $result = $wpdb->update( 
-                MyStyle_Design::get_table_name(), //table 
-                array( 'user_id' => $user->ID ), //data
-                array( 'session_id' => $session->get_session_id() ), //where
-                array( '%s' ), //format
-                array( '%s' ) //where format
-        );
+        $result = $wpdb->query($query);
         
         return $result;
     }
