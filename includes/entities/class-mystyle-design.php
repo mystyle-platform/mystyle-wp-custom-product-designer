@@ -473,7 +473,7 @@ class MyStyle_Design implements MyStyle_Entity {
                 ms_thumb_url varchar(255) NULL,
                 ms_design_url varchar(255) NULL,
                 product_id bigint(20) NULL,
-                user_id bigint(20) NULL,
+                user_id bigint(20) NULL DEFAULT NULL,
                 design_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 design_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 design_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
