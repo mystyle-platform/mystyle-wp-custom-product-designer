@@ -31,23 +31,31 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
     }
     
     /**
-     * Sets the user_id on any designs created by the session (only if
-     * the design isn't already assigned to a user).
+     * Sets the user_id on designs where it is null (or 0) using the email and
+     * the sesession.
      * @global wpdb $wpdb
-     * @param MyStyle_Session $session
      * @param WP_User $user
+     * @param MyStyle_Session (optional) $session
      * @return integer Returns the number or designs that were updated or false
      * if no rows were updated.
      */
-    public static function set_wp_user_id_by_mystyle_session( $session, $user ) {
+    public static function set_user_id( $user, $session = null) {
         global $wpdb;
 
         $query = 'UPDATE ' . MyStyle_Design::get_table_name() . ' ' . 
                  'SET user_id = "' . $user->ID . '" ' .
-                 'WHERE session_id = "' . $session->get_session_id() . '" ' .
-                 'AND session_id IS NOT NULL ' .
-                 'AND session_id != "" ' . 
-                 'AND ( ( user_id IS NULL ) OR ( user_id = 0 ) )';
+                 'WHERE ( ( user_id IS NULL ) OR ( user_id = 0 ) ) ';
+        
+        if( ! empty( $user->user_email ) ) {
+            $query .=
+                 'AND ( ms_email = "' . $user->user_email . '" ) ';
+        }
+        
+        if( $session != null ) {
+            $query .=
+                  'AND ( session_id = "' . $session->get_session_id() . '" ) ';
+        }
+                 
         
         $result = $wpdb->query($query);
         

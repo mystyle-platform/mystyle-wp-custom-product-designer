@@ -134,7 +134,7 @@ class MyStyle {
      */
     public static function on_wp_login( $user_login, $user ) {
         $session = MyStyle_SessionHandler::get();
-        MyStyle_DesignManager::set_wp_user_id_by_mystyle_session( $session, $user );
+        MyStyle_DesignManager::set_user_id( $user, $session );
     }
     
     /**
@@ -145,7 +145,7 @@ class MyStyle {
     public static function on_user_register( $user_id ) {
         $session = MyStyle_SessionHandler::get();
         $user = get_user_by( 'id', $user_id );
-        MyStyle_DesignManager::set_wp_user_id_by_mystyle_session( $session, $user );
+        MyStyle_DesignManager::set_user_id( $user, $session );
     }
     
     /**
@@ -157,7 +157,7 @@ class MyStyle {
     public static function on_woocommerce_created_customer( $customer_id, $new_customer_data, $password_generated ) {
         $session = MyStyle_SessionHandler::get();
         $user = get_user_by( 'id', $customer_id );
-        MyStyle_DesignManager::set_wp_user_id_by_mystyle_session( $session, $user );
+        MyStyle_DesignManager::set_user_id( $user, $session );
     }
     
     /**

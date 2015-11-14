@@ -63,17 +63,18 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the set_wp_user_id_by_mystyle_session function.
+     * Test the set_user_id function.
      * @global wpdb $wpdb
      */
-    function test_set_wp_user_id_by_mystyle_session() {
+    function test_set_user_id() {
         global $wpdb;
         
         $design_id = 1;
         $session_id = 'testsessionid';
+        $email = 'someone@example.com';
         
         //Mock the user
-        $user_id = wp_create_user( 'testuser', 'testpassword', 'someone@example.com' );
+        $user_id = wp_create_user( 'testuser', 'testpassword', $email );
         $user = get_user_by( 'id', $user_id );
         
         //Mock the session
@@ -83,14 +84,15 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         //Create a design
         $design = MyStyle_MockDesign::getMockDesign( $design_id );
         
-        //Add a session id to the design
+        //Add a session id and email to the design
         $design->set_session_id( $session_id );
+        $design->set_email( $email );
         
         //Persist the design
         MyStyle_DesignManager::persist( $design );
         
         //Call the function
-        $result = MyStyle_DesignManager::set_wp_user_id_by_mystyle_session( $session, $user );
+        $result = MyStyle_DesignManager::set_user_id( $user, $session );
         
         //Assert that one row was modified
         $this->assertEquals( 1, $result );
