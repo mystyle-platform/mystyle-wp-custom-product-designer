@@ -93,8 +93,9 @@ class MyStyle_Addons_Page {
                             <h3>MyStyle Design Manager</h3>
                             <img width="200" height="142" src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/design_manager.jpg'?>" alt="Design Manager" />
                             <p>
-                                View all of the Designs that have been created
-                                on your site from within the WordPress admin.
+                                The MyStyle Design Manager allows you to manage 
+                                the designs made by users from within the
+                                WordPress administrator.
                             </p>
                         </a>
                     </li>		
