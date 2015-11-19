@@ -5,7 +5,6 @@
  * Administrator.
  * @package MyStyle
  * @since 0.1.16
- * @todo Add unit testing
  */
 class MyStyle_Addons_Page {
     
