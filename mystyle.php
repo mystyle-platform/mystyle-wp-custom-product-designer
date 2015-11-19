@@ -72,6 +72,7 @@ if( is_admin() ) {
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php' );
@@ -85,7 +86,10 @@ if( is_admin() ) {
     //set up the options page
     $mystyle_options_page = new MyStyle_Options_Page();
     add_filter( 'contextual_help', 'mystyle_help_dispatch', 10, 3 );
-
+    
+    //set up the addons page
+    $mystyle_addons_page = new MyStyle_Addons_Page();
+    
     //hook into the WooCommerce admin
     $mystyle_woocommerce_admin_product = new MyStyle_WooCommerce_Admin_Product();
     $mystyle_woocommerce_admin_order = new MyStyle_WooCommerce_Admin_Order();
