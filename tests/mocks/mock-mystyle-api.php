@@ -10,7 +10,12 @@ class MyStyleMockAPI {
 
     
     /**
-     * Returns a mocked response from the MyStyle API 
+     * Returns a mocked response from the MyStyle API.
+     * 
+     * NOTE: We are returning both the design and the user in a single mocked
+     * response.  Our code will work in this scenario but this wouldn't ever
+     * actually be returned from the API.
+     * 
      * @wp-hook pre_http_request
      * @param bool $preempt Whether to preempt an HTTP request return. Default
      * false.
@@ -24,6 +29,8 @@ class MyStyleMockAPI {
         $http = _wp_http_get_object();
 
         // Mock response
+        
+        //------------- HEADER --------------
         $result = array();
         $result['headers'] = array();
         $result['headers']['server'] = 'Apache';
@@ -36,6 +43,7 @@ class MyStyleMockAPI {
         $result['headers']['x-powered-by'] = "PHP/5.5.9-1ubuntu4.9";
         $result['headers']['access-control-allow-headers'] = "Origin, X-Requested-With, Content-Type, Accept";
 
+        //------------ DESIGN --------------
         $design_id = 1;
 
         $design = array();
@@ -44,6 +52,7 @@ class MyStyleMockAPI {
         $design['print_url'] = 'http://testhost/test_print_url.jpg';
         $design['design_url'] = 'http://testhost/test_design_url.jpg';
         $design['access'] = 0;
+        $design['mobile'] = 0;
         $design['design_id'] = $design_id;
         $design['user_id'] = 1;
         $design['app_id'] = 0;
@@ -54,6 +63,16 @@ class MyStyleMockAPI {
         $json['data'] = array();
         $json['data'][ $design_id ] = $design;
 
+        //---------- DESIGNER/USER -----------
+        $designer_id = 2;
+
+        $designer = array();
+        $designer['user_id'] = $designer_id;
+        $designer['email'] = 'someone@example.com';
+                
+        $json['data'][ $designer_id ] = $designer;
+        
+        //---------- PUT IT ALL TOGETHER -------
         $result['body'] = json_encode($json);
 
         $result['headers']['content-length'] = strlen( $result['body'] );
