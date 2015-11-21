@@ -80,6 +80,28 @@ class MyStyle_Handoff {
             //Add data from api call
             $design = MyStyle_Api::add_api_data_to_design( $design );
             
+            //Get the mystyle user from the API
+            /* @var $user \MyStyle_User */
+            $mystyle_user = MyStyle_Api::get_user( $design->get_user_id() );
+            
+            //Send email to user
+            $site_title = get_bloginfo( 'name' );
+            $site_url = network_site_url( '/' );
+            $site_description = get_bloginfo( 'description' );
+            $message = 
+                    "Design Created!\n\n" .
+                    "This email is to confirm that your design was successfully " .
+                    "saved. Thanks for using " . $site_url . "!\n\n" .
+                    "You can access your design at any time from the following " .
+                    "url:\n\n" . 
+                    MyStyle_Customize_Page::get_design_url( $design ) . "\n";
+            
+            wp_mail( 
+                $mystyle_user->get_email(), 
+                'Design Created!', 
+                $message
+            );
+            
             //Persist the design to the database
             $design = MyStyle_DesignManager::persist( $design );
             
