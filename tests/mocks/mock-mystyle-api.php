@@ -68,8 +68,7 @@ class MyStyleMockAPI {
 
         $designer = array();
         $designer['user_id'] = $designer_id;
-        //$designer['email'] = 'someone@example.com';
-        $designer['email'] = 'collin@onegiantmedia.com';
+        $designer['email'] = 'someone@example.com';
                 
         $json['data'][ $designer_id ] = $designer;
         
