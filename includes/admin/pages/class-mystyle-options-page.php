@@ -102,7 +102,7 @@ class MyStyle_Options_Page {
     public static function render_page() {
     ?>
         <div class="wrap">
-            <h2 class="mytyle-admin-title"><div id="icon-options-general" class="icon100"></div> MyStyle Settings</h2>
+            <h2 class="mystyle-admin-title"><div id="icon-options-general" class="icon100"></div> MyStyle Settings</h2>
             
             <form action="options.php" method="post">
                 <?php settings_fields( 'mystyle_options' ); ?>

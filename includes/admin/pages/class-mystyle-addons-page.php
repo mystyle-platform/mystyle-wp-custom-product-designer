@@ -82,7 +82,7 @@ class MyStyle_Addons_Page {
             </style>
 
             <div class="wrap">
-                <h2 class="mytyle-admin-title">
+                <h2 class="mystyle-admin-title">
                     <div id="icon-options-general" class="icon100"></div> 
                     MyStyle Add-ons
                 </h2>

@@ -37,15 +37,17 @@
     border-top: 5px solid #2288CC;
 }
 
-h2.mytyle-admin-title {
+h2.mystyle-admin-title,
+h2.mytyle-admin-title /* typoed version (for backwards compatibilty with mystyle addons) */
+{
     background-color: #2288CC;
-    padding: 10px;
+    padding: 10px !important;
     border-left: 5px solid #12486C;
     color: white;
     box-shadow: 0 2px 6px rgba(0,0,0,.3);
-    font-weight: bold;
-    margin-top: 30px;
-    margin-bottom: 15px;
+    font-weight: bold !important;
+    margin-top: 35px !important;
+    margin-bottom: 15px !important;
 }
 
 div#icon-options-general.icon100 {
