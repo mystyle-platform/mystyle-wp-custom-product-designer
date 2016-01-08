@@ -85,9 +85,12 @@ class MyStyle {
             
             $design = MyStyle_DesignManager::get( $design_id );
 
+            //overwrite the src attribute
             $new_src = 'src="' . $design->get_thumb_url() . '"';
-	
-            $new_image_tag = preg_replace( '/src\=".*?"/', $new_src, $get_image );
+            $new_image_tag = preg_replace( '/src\=".*?"/', $new_src, $new_image_tag );
+            
+            //remove the srcset attribute
+            $new_image_tag = preg_replace( '/srcset\=".*?"/', '', $new_image_tag );
         }
 	
         return $new_image_tag;
