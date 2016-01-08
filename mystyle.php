@@ -49,6 +49,7 @@ if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '1.2.0' ); }
 
 define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
 define( 'MYSTYLE_NOTICES_NAME', 'mystyle_notices' );
+define( 'MYSTYLE_NOTICES_DISMISSED_NAME', 'mystyle_notices_dismissed' );
 define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
 
 //includes
@@ -70,6 +71,9 @@ $mystyle = new MyStyle();
 if( is_admin() ) {
     //---- ADMIN ----//
     //includes
+    require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php' );
@@ -77,6 +81,9 @@ if( is_admin() ) {
     require_once( MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php' );
+    
+    //Set up the notifications system.
+    $mystyle_notice_controller = new MyStyle_Notice_Controller();
 
     //Plugin setup and registrations
     $mystyle_admin = new MyStyle_Admin();

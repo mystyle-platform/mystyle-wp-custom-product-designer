@@ -20,7 +20,6 @@ class MyStyle_Admin {
         add_filter( 'plugin_action_links_' . MYSTYLE_BASENAME, array( &$this, 'add_settings_link' ) );
         
         add_action( 'admin_init', array( &$this, 'admin_init' ) );
-        add_action( 'admin_notices', array( &$this, 'admin_notices' ) );
     }
     
     /**
@@ -42,49 +41,9 @@ class MyStyle_Admin {
             update_option( MYSTYLE_OPTIONS_NAME, $options );
             if( ! is_null( $data_version ) ) {  //skip if not an upgrade
                 //do any necessary version data upgrades here
-                $notices = get_option( MYSTYLE_NOTICES_NAME );
-                $notices[] = 'Upgraded version from ' . $data_version . ' to ' . MYSTYLE_VERSION . '.';
-                update_option( MYSTYLE_NOTICES_NAME, $notices );
+                $upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $data_version . ' to ' . MYSTYLE_VERSION . '.' );
+                mystyle_notice_add_to_queue( $upgrade_notice );
             }
-        }
-    }
-
-    /**
-     * Add Notices in the administrator. Notices may be stored in the 
-     * mystyle_options. Once the notices have been displayed, delete them from
-     * the database.
-     */
-    public static function admin_notices() {
-        $stored_notices = get_option( MYSTYLE_NOTICES_NAME );
-        $screen = get_current_screen();
-        $screen_id = ( !empty($screen) ? $screen->id : null );
-        $notices = array();
-        
-        //stored notices
-        if( $stored_notices ) {
-            foreach( $stored_notices as $notice ) {
-                $notices[] = $notice;
-            }
-            delete_option( MYSTYLE_NOTICES_NAME );
-        }
-        
-        if( ! MyStyle_Options::are_keys_installed() ) {
-            if( $screen_id != 'toplevel_page_mystyle' ) {
-                $notices[]= 'You\'ve activated the MyStyle Plugin! Now let\'s <a href="options-general.php?page=mystyle">configure</a> it!';
-            }
-        } else {
-            if( ! MyStyle::site_has_customizable_products() ) {
-                if( $screen_id == 'toplevel_page_mystyle' ) {
-                    $notices[]= 'You\'re configured and ready to go but you still need to add a customizable product!';
-                }
-            }
-        }
-        
-        
-        
-        //print the notices
-        foreach( $notices as $notice ) {
-            echo '<div class="updated"><p><strong>MyStyle:</strong> ' . $notice . '</p></div>';
         }
     }
     

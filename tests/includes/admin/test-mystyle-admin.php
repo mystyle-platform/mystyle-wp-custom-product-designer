@@ -28,11 +28,7 @@ class MyStyleAdminTest extends WP_UnitTestCase {
         
         //Assert that the init function is registered.
         $function_names = get_function_names( $wp_filter['admin_init'] );
-        $this->assertContains( 'admin_init', $function_names );
-        
-        //Assert that the admin notices function is registered.
-        $function_names = get_function_names( $wp_filter['admin_notices'] );
-        $this->assertContains( 'admin_notices', $function_names );        
+        $this->assertContains( 'admin_init', $function_names );       
     }
     
     /**
@@ -70,20 +66,6 @@ class MyStyleAdminTest extends WP_UnitTestCase {
         $outbound = ob_get_contents();
         ob_end_clean();
         $this->assertContains( 'Upgraded version from', $outbound );
-    }
-    
-    /**
-     * Test the admin_notices function.
-     */    
-    public function test_admin_notices() {
-        $mystyle_admin = new MyStyle_Admin();
-        
-        //assert that a notice was registered
-        ob_start();
-        $mystyle_admin->admin_notices();
-        $outbound = ob_get_contents();
-        ob_end_clean();
-        $this->assertContains( 'MyStyle', $outbound );
     }
     
      /**
