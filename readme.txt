@@ -1,5 +1,5 @@
 === MyStyle Custom Product Designer ===
-Contributors: mystyle
+Contributors: mystyleplatform
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: customization, designer, personalization, product-preview, woocommerce, custom product, product designer, Post, plugin, admin, posts, shortcode, images, page, image
