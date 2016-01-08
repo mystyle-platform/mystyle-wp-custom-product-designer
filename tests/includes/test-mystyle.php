@@ -1,7 +1,7 @@
 <?php
 
-require_once(MYSTYLE_PATH . '../woocommerce/woocommerce.php');
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php');
+require_once( MYSTYLE_PATH . '../woocommerce/woocommerce.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
 
 /**
  * The MyStyleClassTest class includes tests for testing the MyStyle

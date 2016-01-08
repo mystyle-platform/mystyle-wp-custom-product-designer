@@ -1,7 +1,7 @@
 <?php
 
-require_once(MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php');
-require_once(MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php');
+require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
+require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php' );
 
 /**
  * The MystyleAdminTest class includes tests for testing the MyStyle_Admin 

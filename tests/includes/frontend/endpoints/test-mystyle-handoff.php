@@ -1,9 +1,9 @@
 <?php
 
-require_once(MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php');
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-api.php');
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce.php');
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php');
+require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-api.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php' );
 
 /**
  * The MyStyleHandoffTest class includes tests for testing the MyStyle_Handoff

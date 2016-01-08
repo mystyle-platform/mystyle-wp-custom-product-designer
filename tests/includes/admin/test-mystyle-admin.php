@@ -1,7 +1,7 @@
 <?php
 
-require_once(MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php');
-require_once(MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php');
+require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
+require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
 
 /**
  * The MystyleAdminTest class includes tests for testing the MyStyle_Admin 

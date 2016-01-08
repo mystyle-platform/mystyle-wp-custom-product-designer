@@ -1,6 +1,6 @@
 <?php
 
-require_once(MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php');
+require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php' );
 
 /**
  * The MyStyleAddonsPageTest class includes tests for testing the 

@@ -1,6 +1,6 @@
 <?php
 
-require_once(MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php');
+require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php' );
 
 /**
  * The MyStyleWooCommerceAdminProductTest class includes tests for testing the

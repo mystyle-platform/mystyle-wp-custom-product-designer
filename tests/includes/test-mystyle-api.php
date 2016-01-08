@@ -1,6 +1,6 @@
 <?php
 
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-api.php');
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-api.php' );
 
 /**
  * The MyStyleAPITest class includes tests for testing the MyStyle_API class.
