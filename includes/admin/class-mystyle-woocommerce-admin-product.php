@@ -79,10 +79,31 @@ class MyStyle_WooCommerce_Admin_Product {
     /**
      * Process the mystyle tab options when a post is saved
      * @param integer $post_id The id of the post that is being saved.
+     * @todo Unit test the validation logic
      */
     public static function process_mystyle_data_panel( $post_id ) {
-        update_post_meta( $post_id, '_mystyle_enabled', ( isset( $_POST['_mystyle_enabled'] ) && $_POST['_mystyle_enabled'] ) ? 'yes' : 'no' );
-        update_post_meta( $post_id, '_mystyle_template_id', $_POST['_mystyle_template_id'] );
+        
+        $mystyle_enabled = ( isset( $_POST['_mystyle_enabled'] ) && $_POST['_mystyle_enabled'] ) ? 'yes' : 'no' ;
+        $template_id = $_POST['_mystyle_template_id'];
+        
+        if ( $mystyle_enabled == 'yes' ) {
+            if( $template_id != '' ) { //both options are set (store them)
+                update_post_meta( $post_id, '_mystyle_enabled', 'yes' );
+                update_post_meta( $post_id, '_mystyle_template_id', $template_id );
+            } else { //enabled but no template id (store template_id, disable and notify)
+                update_post_meta( $post_id, '_mystyle_enabled', 'no' );
+                update_post_meta( $post_id, '_mystyle_template_id', $template_id );
+                $validation_notice = MyStyle_Notice::create( 
+                                        'invalid_product_options', 
+                                        'You must choose a Template Id in order to make the product customizable.',
+                                        'error'
+                                    );
+                mystyle_notice_add_to_queue( $validation_notice );
+            }
+        } else { //not enabled (store both)
+            update_post_meta( $post_id, '_mystyle_enabled', 'no' );
+            update_post_meta( $post_id, '_mystyle_template_id', $template_id );
+        }
     }
  
 }

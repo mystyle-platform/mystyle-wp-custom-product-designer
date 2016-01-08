@@ -48,7 +48,7 @@ class MyStyle_Notice_Controller {
         $out = '';
         foreach( $notices as $notice ) {
             if( ! $notice->is_dismissed() ) {
-                $out .= '<div id="' . $notice->get_notice_key() . '" class="' . $notice->get_type() . ' mystyle-notice">';
+                $out .= '<div id="' . $notice->get_notice_key() . '" class="' . $notice->get_type() . ' notice notice-success is-dismissible mystyle-notice">';
                 $out .=     '<p>' .
                                 '<strong>MyStyle:</strong> ' .
                                 $notice->get_message() . 
