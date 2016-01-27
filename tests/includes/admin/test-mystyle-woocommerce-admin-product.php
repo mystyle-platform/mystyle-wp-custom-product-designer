@@ -1,5 +1,7 @@
 <?php
 
+require_once( MYSTYLE_PATH . '../woocommerce/woocommerce.php' );
+require_once( MYSTYLE_PATH . '../woocommerce/includes/admin/wc-admin-functions.php' );
 require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php' );
 
 /**
