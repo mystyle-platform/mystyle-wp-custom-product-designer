@@ -1,5 +1,10 @@
 = 1.2.1 =
 
+* Plugin is fully tested and working with WooCommerce 2.5.1
+* Fixed an issue with the unit tests when running WooCommerce 2.5
+
+= 1.2.1 =
+
 * Changed the author from mystyle to mystyleplatform.
 * Fixed bug with the thumbnail image in latest WP (caused by srcset attribute).
 * Now validating the mystyle product options.
