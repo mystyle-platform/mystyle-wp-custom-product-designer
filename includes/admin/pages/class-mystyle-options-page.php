@@ -75,9 +75,9 @@ class MyStyle_Options_Page {
                     $message = MyStyle_Customize_Page::fix();
                     
                     //Post Fix Notice
-                    $notices = get_option( MYSTYLE_NOTICES_NAME );
-                    $notices[] = $message;
-                    update_option( MYSTYLE_NOTICES_NAME, $notices );
+                    $fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
+                    mystyle_notice_add_to_queue( $fix_notice );
+                
                     break;
             }
         }
