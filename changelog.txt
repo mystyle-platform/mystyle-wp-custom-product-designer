@@ -1,4 +1,8 @@
-= 1.2.1 =
+= 1.2.3 =
+
+* Fixed a bug with the Fix Customize Page tool.
+
+= 1.2.2 =
 
 * Plugin is fully tested and working with WooCommerce 2.5.1
 * Fixed an issue with the unit tests when running WooCommerce 2.5
