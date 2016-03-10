@@ -1,6 +1,7 @@
-= 1.2.3 =
+= 1.2.4 =
 
 * Fixed a bug with the Fix Customize Page tool.
+* Added example sites to the readme.txt file.
 
 = 1.2.2 =
 
