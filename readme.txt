@@ -51,6 +51,15 @@ Please note that the MyStyle Custom Product Designer is a serviceware plugin, an
 * New products can be added to our system upon request
 * New backgrounds, foregrounds or fonts can be added upon request
 
+= Examples =
+
+You can see some examples of the MyStyle Custom Product Designer in use (and try it out) at the following sites:
+
+* [Custom skateboards and longboards](http://www.whateverskateboards.com/?ref=wprm2) (Whatever Skateboards)
+* [Custom canvas prints](http://www.makecustomprints.com/?ref=wprm2) (Make Custom Prints)
+* [Disc golf discs and ultimate frisbee discs](http://www.flydiscs.com/?ref=wprm2) (Fly Discs)
+* [iPhone cases and phone cases](http://www.casemonkey.com/?ref=wprm2) (Case Monkey)
+
 == Installation ==
 
 The MyStyle Custom Product Designer requires that you have WordPress with the WooCommerce plugin activated. The plugin is very easy to install and can be set up in just a few minutes.  This is a serviceware plugin, meaning that once installed, it will load the Custom Product Designer app remotely from a hosted service, and it will function with all features. However, when in Demo Mode, it will function without access to Print Files. To enable Full Mode, with access to print files, you will need to obtain your MyStyle Developer API Key and Secret, and enter them in your MyStyle settings.
