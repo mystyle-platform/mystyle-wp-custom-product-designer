@@ -56,9 +56,9 @@ Please note that the MyStyle Custom Product Designer is a serviceware plugin, an
 You can see some examples of the MyStyle Custom Product Designer in use (and try it out) at the following sites:
 
 * [Custom skateboards and longboards](http://www.whateverskateboards.com/?ref=wprm2) (Whatever Skateboards)
-* [Custom canvas prints](http://www.makecustomprints.com/?ref=wprm2) (Make Custom Prints)
+* [Custom canvas prints](http://www.makecanvasprints.com/?ref=wprm2) (Make Canvas Prints)
 * [Disc golf discs and ultimate frisbee discs](http://www.flydiscs.com/?ref=wprm2) (Fly Discs)
-* [iPhone cases and phone cases](http://www.casemonkey.com/?ref=wprm2) (Case Monkey)
+* [iPhone cases and phone cases](http://www.case-monkey.com/?ref=wprm2) (Case Monkey)
 
 == Installation ==
 
