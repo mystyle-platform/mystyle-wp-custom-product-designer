@@ -48,14 +48,19 @@ class MyStyle_FrontEnd {
     function filter_body_class( $classes ) {
         global $post;
         
-        if( $post != null ) {
-            if( 
-                ( $post->ID == MyStyle_Customize_Page::get_id() ) &&
-                ( isset( $_GET['product_id'] ) )
-              )
-            {
-                $classes[] = 'mystyle-customize';
+        try {
+            if( $post != null ) {
+                if( 
+                    ( $post->ID == MyStyle_Customize_Page::get_id() ) &&
+                    ( isset( $_GET['product_id'] ) )
+                  )
+                {
+                    $classes[] = 'mystyle-customize';
+                }
             }
+        } catch( MyStyle_Exception $e ) {
+            //this exception may be thrown if the Customize Page is missing.
+            //For this function, that is okay, just continue.
         }
         
 	return $classes;
