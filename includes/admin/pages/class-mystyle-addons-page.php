@@ -7,7 +7,7 @@
  * @since 0.1.16
  */
 class MyStyle_Addons_Page {
-    
+
     // class instance
     static $instance;
 
@@ -25,16 +25,16 @@ class MyStyle_Addons_Page {
     public function add_page_to_menu() {
         $mystyle_hook = 'mystyle';
 
-        $hook = add_submenu_page( 
-                $mystyle_hook, 
-                'Add-ons', 
-                'Add-ons', 
-                'manage_options', 
+        $hook = add_submenu_page(
+                $mystyle_hook,
+                'Add-ons',
+                'Add-ons',
+                'manage_options',
                 $mystyle_hook . '_addons',
-                array( $this, 'render_page' ) 
+                array( $this, 'render_page' )
         );
     }
-    
+
     /**
      * Function to render the MyStyle Addons page.
      */
@@ -65,7 +65,7 @@ class MyStyle_Addons_Page {
                 ul.products li a:hover {
                     background: #ffffff none repeat scroll 0 0;
                 }
-                ul.products li a img, 
+                ul.products li a img,
                 ul.products li a p {
                     margin: 1em;
                 }
@@ -83,29 +83,29 @@ class MyStyle_Addons_Page {
 
             <div class="wrap">
                 <h2 class="mystyle-admin-title">
-                    <div id="icon-options-general" class="icon100"></div> 
+                    <div id="icon-options-general" class="icon100"></div>
                     MyStyle Add-ons
                 </h2>
-                
+
                 <ul class="products">
                     <li>
                         <a href="http://www.mystyleplatform.com/product/design-manager-mystyle-wordpress-plugin/" target="_blank">
                             <h3>MyStyle Design Manager</h3>
                             <img width="200" height="142" src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/design_manager.jpg'?>" alt="Design Manager" />
                             <p>
-                                The MyStyle Design Manager allows you to manage 
+                                The MyStyle Design Manager allows you to manage
                                 the designs made by users from within the
                                 WordPress administrator.
                             </p>
                         </a>
-                    </li>		
+                    </li>
                 </ul>
             </div>
         <?php
     }
-    
+
     /*
-     * Singleton instance 
+     * Singleton instance
      */
     public static function get_instance() {
         if ( ! isset( self::$instance ) ) {

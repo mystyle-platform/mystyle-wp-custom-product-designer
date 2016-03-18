@@ -1,8 +1,5 @@
 <?php
 
-require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
-require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php' );
-
 /**
  * The MystyleAdminTest class includes tests for testing the MyStyle_Admin 
  * class.
@@ -80,6 +77,52 @@ class MyStyleInstallTest extends WP_UnitTestCase {
         $schema = MyStyle_Install::get_schema();
         
         $this->assertEquals( $expected_schema, $schema );
+    }
+    
+    /**
+     * Test the activate function.
+     */    
+    public function test_activate() {
+        MyStyle_Install::activate();
+        
+        $customize_page_id = MyStyle_Customize_Page::get_id();
+        
+        //assert that the customize page was created
+        $this->assertNotNull($customize_page_id);
+    }
+    
+    /**
+     * Test the deactivate function.
+     */    
+    public function test_deactivate() {
+        //activate the plugin so that we can then deactivate it
+        MyStyle_Install::activate();
+        
+        MyStyle_Install::deactivate();
+        
+        //Assert that Customize page remains.
+        $this->assertTrue(MyStyle_Customize_Page::exists());
+    }
+        
+     /**
+     * Test the uninstall function.
+     */    
+    public function test_uninstall() {
+        $mystyle_admin = new MyStyle_Admin();
+        
+        //init the plugin so that we can then uninstall it
+        $mystyle_admin->admin_init();
+        
+        //assert that there are options
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $this->assertNotEmpty( $options );
+        
+        //uninstall the plugin
+        MyStyle_Install::uninstall();
+        
+        //assert that the options are still there
+        $options_new = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $this->assertNotEmpty( $options_new );
     }
     
 }

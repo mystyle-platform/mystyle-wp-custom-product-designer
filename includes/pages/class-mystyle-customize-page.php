@@ -43,7 +43,7 @@ abstract class MyStyle_Customize_Page {
         //Get the page id of the Customize page
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         if( ! isset( $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ] ) ) {
-            throw new MyStyle_Exception( __( 'Customize Page is Missing', 'mystyle' ), 404 );
+            throw new MyStyle_Exception( __( 'Customize Page is Missing! Please use the "Fix Customize Page Tool" on the MyStyle Settings page to fix.', 'mystyle' ), 404 );
         }
         $page_id = $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ];
         
