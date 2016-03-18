@@ -24,7 +24,6 @@ class MyStyle_Admin {
      * Init the mystyle admin
      */
     function admin_init() {
-        error_log("admin_init");
         //Add the MyStyle admin stylesheet to the WP admin head
         wp_register_style( 'myStyleAdminStylesheet', MYSTYLE_ASSETS_URL . 'css/admin.css' );
         wp_enqueue_style( 'myStyleAdminStylesheet' );
