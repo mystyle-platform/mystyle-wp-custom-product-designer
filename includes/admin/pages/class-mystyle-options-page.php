@@ -43,7 +43,7 @@ class MyStyle_Options_Page {
                 'mystyle_account_settings',
                 'mystyle_options_access_section'
         );
-        
+
         // ************** ADVANCED SETTINGS SECTION ******************//
         add_settings_section(
                 'mystyle_options_advanced_section',
@@ -51,6 +51,8 @@ class MyStyle_Options_Page {
                 array( &$this, 'render_advanced_section_text' ),
                 'mystyle_advanced_settings'
         );
+
+        /* DISABLE FLASH / FORCE MOBILE SETTING */
         add_settings_field(
                 'force_mobile',
                 'Disable Flash (Not Recommended)',
@@ -58,7 +60,19 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
-        
+
+        /* FORM INTEGRATION CONFIG */
+        add_settings_field(
+                'form_integration_config',
+                'Form Integration Config',
+                array( &$this, 'render_form_integration_config' ),
+                'mystyle_advanced_settings',
+                'mystyle_options_advanced_section'
+        );
+
+
+
+
         // ************** TOOLS SECTION ******************//
         add_settings_section(
                 'mystyle_options_tools_section',
@@ -68,16 +82,16 @@ class MyStyle_Options_Page {
         );
         if ( ( ! empty( $_GET['action'] ) ) && ( $_SERVER['REQUEST_METHOD'] == 'POST' ) ) {
             $sanitize_callback = ''; //turn off validation
-            switch ( $_GET['action'] ) {    
+            switch ( $_GET['action'] ) {
                 case 'fix_customize_page' :
-                    
+
                     //Attempt the fix
                     $message = MyStyle_Customize_Page::fix();
-                    
+
                     //Post Fix Notice
                     $fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
                     mystyle_notice_add_to_queue( $fix_notice );
-                
+
                     break;
             }
         }
@@ -103,7 +117,7 @@ class MyStyle_Options_Page {
     ?>
         <div class="wrap">
             <h2 class="mystyle-admin-title"><div id="icon-options-general" class="icon100"></div> MyStyle Settings</h2>
-            
+
             <form action="options.php" method="post">
                 <?php settings_fields( 'mystyle_options' ); ?>
                 <div class="mystyle-admin-box">
@@ -178,7 +192,7 @@ class MyStyle_Options_Page {
         </p>
     <?php
     }
-    
+
     /**
      * Function to render the text for the advanced section.
      */
@@ -189,7 +203,7 @@ class MyStyle_Options_Page {
         </p>
     <?php
     }
-    
+
     /**
      * Function to render the Force Mobile field and description
      */
@@ -201,6 +215,20 @@ class MyStyle_Options_Page {
         <p class="description">
             Check to always use the HTML5 (rather than the Flash) version of the MyStyle customizer.
         </p>
+    <?php
+
+    }
+
+    /**
+     * Function to render the form integration config field
+     */
+    public static function render_form_integration_config() {
+
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() ); // get WP Options table Key of this option
+        $currentVal = ( array_key_exists( 'mystyle_form_integration_config', $options ) ) ? $options['mystyle_form_integration_config'] : 0;
+     ?>
+        <textarea id="mystyle_form_integration_config" name="mystyle_options[mystyle_form_integration_config]" ><?php echo $currentVal; ?></textarea>
+        <p class="description">Configure advanced form integrations here (not recommended)</p>
     <?php
     }
 
@@ -251,7 +279,7 @@ class MyStyle_Options_Page {
             $msg_message = 'Please enter a valid Secret.';
             $new_options['secret'] = '';
         }
-        
+
         //Force Mobile
         $new_options['force_mobile'] = intval( $input['force_mobile'] );
         if( ! preg_match('/^[01]$/', $new_options['force_mobile'] ) ) {
@@ -260,6 +288,17 @@ class MyStyle_Options_Page {
             $msg_message = 'Invalid HTML5 Customizer option';
             $new_options['force_mobile'] = 0;
         }
+
+        // Form Integration Config
+        $new_options['mystyle_form_integration_config'] = trim( $input['mystyle_form_integration_config'] );
+        // example valdation (not needed)
+        /*if( !preg_match( '/^[a-z0-9]*$/i', $new_options['mystyle_form_integration_config'] ) ) {
+            $has_errors = true;
+            $msg_type = 'error';
+            $msg_message = 'Please enter a valid API Key.';
+            $new_options['mystyle_form_integration_config'] = '';
+        }*/
+
 
         if(!$has_errors) {
             $msg_type = 'updated';
