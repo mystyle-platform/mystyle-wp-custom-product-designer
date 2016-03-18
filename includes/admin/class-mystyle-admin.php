@@ -1,7 +1,5 @@
 <?php
 
-require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php' );
-
 /**
  * MyStyle Admin class.
  * The MyStyle Admin class sets up and controls the MyStyle Plugin administrator
@@ -26,6 +24,7 @@ class MyStyle_Admin {
      * Init the mystyle admin
      */
     function admin_init() {
+        error_log("admin_init");
         //Add the MyStyle admin stylesheet to the WP admin head
         wp_register_style( 'myStyleAdminStylesheet', MYSTYLE_ASSETS_URL . 'css/admin.css' );
         wp_enqueue_style( 'myStyleAdminStylesheet' );
@@ -56,30 +55,6 @@ class MyStyle_Admin {
         $settings_link = '<a href="options-general.php?page=mystyle">Settings</a>'; 
         array_unshift( $links, $settings_link ); 
         return $links;
-    }
-    
-    /**
-     * Called when the plugin is activated.
-     */
-    static function activate() {
-        if( ! MyStyle_Customize_Page::exists() ) {
-            MyStyle_Customize_Page::create();
-        }
-        MyStyle_Install::create_tables();
-    }
-
-    /**
-     * Called when the plugin is deactivated.
-     */
-    static function deactivate() {
-        //
-    }
-    
-    /**
-     * Function called when MyStyle is uninstalled
-     */
-    static function uninstall() {
-        delete_option( MYSTYLE_NOTICES_NAME );
     }
 
 }

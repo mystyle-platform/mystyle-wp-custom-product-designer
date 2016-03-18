@@ -65,8 +65,13 @@ require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-api.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
 require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
+require_once( MYSTYLE_INCLUDES . 'class-mystyle-install.php' );
 
+//plugin setup and registrations
 $mystyle = new MyStyle();
+register_activation_hook( __FILE__, array( 'MyStyle_Install', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'MyStyle_Install', 'deactivate' ) );
+register_uninstall_hook( __FILE__, array( 'MyStyle_Install', 'uninstall' ) );
 
 if( is_admin() ) {
     //---- ADMIN ----//
@@ -74,7 +79,6 @@ if( is_admin() ) {
     require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
-    require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php' );
@@ -82,14 +86,11 @@ if( is_admin() ) {
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php' );
     
-    //Set up the notifications system.
+    //set up the notifications system.
     $mystyle_notice_controller = new MyStyle_Notice_Controller();
 
-    //Plugin setup and registrations
+    //set up the main admin class.
     $mystyle_admin = new MyStyle_Admin();
-    register_activation_hook( __FILE__, array( 'MyStyle_Admin', 'activate' ) );
-    register_deactivation_hook( __FILE__, array( 'MyStyle_Admin', 'deactivate' ) );
-    register_uninstall_hook( __FILE__, array( 'MyStyle_Admin', 'uninstall' ) );
 
     //set up the options page
     $mystyle_options_page = new MyStyle_Options_Page();
