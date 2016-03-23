@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MyStyle Options class. 
- * 
+ * MyStyle Options class.
+ *
  * The MyStyle Options class includes functions for setting and getting MyStyle
  * Options.
  *
@@ -10,9 +10,9 @@
  * @since 0.2.1
  */
 abstract class MyStyle_Options {
-    
+
    /**
-    * Function that looks to see if an mystyle API Key and secret have been 
+    * Function that looks to see if an mystyle API Key and secret have been
     * installed.
     * @return boolean Returns true if an API Key and Secret are installed,
     * otherwise returns false.
@@ -26,7 +26,7 @@ abstract class MyStyle_Options {
             return false;
         }
     }
-    
+
     /**
      * Function that gets the active api_key
      * @return string Returns the active api key.
@@ -58,9 +58,9 @@ abstract class MyStyle_Options {
             $secret = MYSTYLE_OVERRIDE_SECRET;
         }
 
-        return $secret;
+        return $secret; 
     }
-    
+
     /**
      * Function that gets the value of force_mobile setting.
      * @return boolean Returns 1 if the force_mobile setting is enabled,
@@ -75,7 +75,7 @@ abstract class MyStyle_Options {
 
         return $force_mobile;
     }
-    
+
     /**
      * Function that determines if the plugin is in demo mode.
      * @return string Returns the active secret.
@@ -83,7 +83,7 @@ abstract class MyStyle_Options {
     static function is_demo_mode() {
         $api_key = self::get_api_key();
         $demo_key = 74;
-        
+
         $ret = ($api_key == $demo_key);
 
         return $ret;

@@ -116,7 +116,7 @@ class MyStyle_Options_Page {
     public static function render_page() {
     ?>
         <div class="wrap">
-            <h2 class="mystyle-admin-title"><div id="icon-options-general" class="icon100"></div> MyStyle Settings</h2>
+            <h2 class="mystyle-admin-title"><div id="icon-options-general" class="icon100"></div> MyStyle Settings <span class="glyphicon glyphicon-cog"></span></h2>
 
             <form action="options.php" method="post">
                 <?php settings_fields( 'mystyle_options' ); ?>
@@ -144,7 +144,8 @@ class MyStyle_Options_Page {
             <br/>
             <ul>
                 <li>Go to <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.</li>
-                <li>Get <a href="#" onclick="jQuery('a#contextual-help-link').trigger('click'); return false;" title="Get help using this plugin.">help</a> using this plugin.</li>
+                <!-- <li>Get <a href="#" onclick="jQuery('a#contextual-help-link').trigger('click'); return false;" title="Get help using this plugin.">help</a> using this plugin.</li> -->
+                <li>Get <a href="http://www.mystyleplatform.com/forums/forum/support" title="Get support for using this plugin.">free support</a> using this plugin.</li>
             </ul>
         </div>
     <?php
@@ -156,7 +157,9 @@ class MyStyle_Options_Page {
     public static function render_access_section_text() {
     ?>
         <p>
-            To use MyStyle, you will need to <a href="http://www.mystyleplatform.com/apply-mystyle-license-developer-account-api-key-secret/?ref=wp_plugin_1" target="_blank" title="mystyleplatform.com">register for a developer account</a> to get your own MyStyle API Key and Secret.
+            To use the <a href="http://www.mystyleplatform.com">MyStyle</a> customizer,
+            <a href="http://www.mystyleplatform.com/?ref=wpcpd_settings" target="_blank" title="mystyleplatform.com">sign up for MyStyle</a> and then get your own MyStyle License
+            <br/>Once you have a license, enter your API Key and Secret below.
         </p>
     <?php
     }
@@ -211,10 +214,11 @@ class MyStyle_Options_Page {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $force_mobile = ( array_key_exists( 'force_mobile', $options ) ) ? $options['force_mobile'] : 0;
      ?>
-        <input type="checkbox" id="mystyle_force_mobile" name="mystyle_options[force_mobile]" value="1" <?php echo checked( 1, $force_mobile, false ) ?> />
-        <p class="description">
-            Check to always use the HTML5 (rather than the Flash) version of the MyStyle customizer.
-        </p>
+
+        <label class="description">
+            <input type="checkbox" id="mystyle_force_mobile" name="mystyle_options[force_mobile]" value="1" <?php echo checked( 1, $force_mobile, false ) ?> />
+            &nbsp; Always use the HTML5 (never use Flash) version of the MyStyle customizer.
+        </label>
     <?php
 
     }
