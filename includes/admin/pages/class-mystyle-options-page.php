@@ -116,7 +116,9 @@ class MyStyle_Options_Page {
     public static function render_page() {
     ?>
         <div class="wrap">
-            <h2 class="mystyle-admin-title"><div id="icon-options-general" class="icon100"></div> MyStyle Settings <span class="glyphicon glyphicon-cog"></span></h2>
+            <h2 class="mystyle-admin-title">
+                <span id="mystyle-icon-general" class="icon100"></span>
+                MyStyle Settings <span class="glyphicon glyphicon-cog"></span></h2>
 
             <form action="options.php" method="post">
                 <?php settings_fields( 'mystyle_options' ); ?>
@@ -229,7 +231,7 @@ class MyStyle_Options_Page {
     public static function render_form_integration_config() {
 
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() ); // get WP Options table Key of this option
-        $currentVal = ( array_key_exists( 'mystyle_form_integration_config', $options ) ) ? $options['mystyle_form_integration_config'] : 0;
+        $currentVal = ( array_key_exists( 'mystyle_form_integration_config', $options ) ) ? $options['mystyle_form_integration_config'] : '';
      ?>
         <textarea id="mystyle_form_integration_config" name="mystyle_options[mystyle_form_integration_config]" ><?php echo $currentVal; ?></textarea>
         <p class="description">Configure advanced form integrations here (not recommended)</p>
