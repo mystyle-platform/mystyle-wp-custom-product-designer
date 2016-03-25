@@ -9,7 +9,7 @@
  * @package MyStyle
  * @since 0.2.1
  */
-class MyStyle_WooCommerce_Admin_Product {
+class MyStyle_WooCommerce_Admin_Product { 
 
     /**
      * Constructor, constructs the class and registers hooks.
@@ -46,7 +46,7 @@ class MyStyle_WooCommerce_Admin_Product {
         $template_id = get_post_meta( $post->ID, '_mystyle_template_id', true );
         $customizer_ux = get_post_meta( $post->ID, '_mystyle_customizer_ux', true );
         $mystyle_design_id = get_post_meta( $post->ID, '_mystyle_design_id', true );
-
+		$mystyle_print_type = get_post_meta( $post->ID, '_mystyle_print_type', true );
 
         ?>
             <div id="mystyle_product_data" class="panel woocommerce_options_panel">
@@ -77,7 +77,7 @@ class MyStyle_WooCommerce_Admin_Product {
                     <p class="description" style="margin-left: 2em;">
                         Need a template? Check out our <a href="http://www.mystyleplatform.com/mystyle-product-catalog/" title="MyStyle Product Catalog" target="_blank">Product Catalog</a>.
                     </p>
-                    
+
                     <br/>
                     <div class="mystyle-toggle" onclick="mystyleTogglePanelVis('advanced')">
                         <a class="mystyle-toggle-link" title="Click to toggle">Advanced</a>
@@ -110,7 +110,25 @@ class MyStyle_WooCommerce_Admin_Product {
                             );
 
                         ?>
-
+                        // print output dropdown
+                        woocommerce_wp_select(
+                            array(
+                                'id'          => '_mystyle_print_type',
+                                'label'       => __( 'Print Output Override', 'mystyle' ),
+                                'placeholder' => 'DEFAULT',
+                                'desc_tip'    => 'true',
+                                'description' => __( 'This will override the product print output type setting.', 'mystyle' ),
+                                'value'       => $mystyle_print_type,
+                                'options'     => array(
+                                                        'DEFAULT'       => 'DEFAULT',
+                                                        'FULL-COLOR'    => 'FULL-COLOR',
+                                                        'GREYSCALE'     => 'GREYSCALE',
+                                                        'BLACK-ON-WHITE' => 'BLACK-ON-WHITE',
+                                                        'WHITE-ON-BLACK' => 'WHITE-ON-BLACK',
+                                                        'NO-PRINT-FILE' => 'NO-PRINT-FILE',
+                                                ),
+                            )
+			);
                     </div> <!-- end advanced mystyle section -->
 
                 </div>
@@ -129,19 +147,19 @@ class MyStyle_WooCommerce_Admin_Product {
         $template_id = $_POST['_mystyle_template_id'];
         $customizer_ux = $_POST['_mystyle_customizer_ux'];
         $mystyle_design_id = $_POST['_mystyle_design_id'];
-
+		$mystyle_print_type = $_POST['_mystyle_print_type'];
         if ( $mystyle_enabled == 'yes' ) {
             if( $template_id != '' ) { //both options are set (store them)
                 update_post_meta( $post_id, '_mystyle_enabled', 'yes' );
                 update_post_meta( $post_id, '_mystyle_template_id', $template_id );
                 update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
                 update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
-            } else { //enabled but no template id (store template_id, disable and notify)
+                update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );            } else { //enabled but no template id (store template_id, disable and notify)
                 update_post_meta( $post_id, '_mystyle_enabled', 'no' );
                 update_post_meta( $post_id, '_mystyle_template_id', $template_id );
                 update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
                 update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
-                $validation_notice = MyStyle_Notice::create(
+                update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );                $validation_notice = MyStyle_Notice::create(
                                         'invalid_product_options',
                                         'You must choose a Template Id in order to make the product customizable.',
                                         'error'
@@ -153,7 +171,7 @@ class MyStyle_WooCommerce_Admin_Product {
             update_post_meta( $post_id, '_mystyle_template_id', $template_id );
             update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
             update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
-        }
+            update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );        }
     }
 
 }
