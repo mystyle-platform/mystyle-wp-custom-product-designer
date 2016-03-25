@@ -59,11 +59,11 @@ class MyStyle_WooCommerce_Admin_Order {
         ?>
         <td class="item-mystyle">
             <?php if( $design != null ) : ?>
-                <div class="mystyle-item-toggle">
-                    <a class="mystyle-item-link" title="Click to toggle" onclick="mystyleOrderItemDataToggleVis(<?php echo $item_id; ?>)">MyStyle Data</a>
-                    <a id="mystyle-item-handle-<?php echo $item_id; ?>" class="mystyle-item-handle" title="Click to toggle" onclick="mystyleOrderItemDataToggleVis(<?php echo $item_id; ?>)"></a>
+                <div class="mystyle-toggle" onclick="mystyleTogglePanelVis('advanced')">
+                    <a class="mystyle-toggle-link" title="Click to toggle" onclick="mystyleTogglePanelVis(<?php echo $item_id; ?>)">MyStyle Data</a>
+                    <a id="mystyle-toggle-handle-<?php echo $item_id; ?>" class="mystyle-toggle-handle" title="Click to toggle" onclick="mystyleTogglePanelVis(<?php echo $item_id; ?>)"></a>
                 </div>
-                <div class="mystyle-item-data" id="mystyle-item-data-<?php echo $item_id; ?>" style="display:none;">
+                <div class="mystyle-panel" id="mystyle-panel-<?php echo $item_id; ?>" style="display:none;">
                     <div>
                         <?php if( ! MyStyle_Options::is_demo_mode() ) { ?>
                             <?php

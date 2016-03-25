@@ -74,46 +74,44 @@ class MyStyle_WooCommerce_Admin_Product {
 			);
 
                         ?>
-
-                    <p class="description" style="margin-right: 2em; float: right;">
+                    <p class="description" style="margin-left: 2em;">
                         Need a template? Check out our <a href="http://www.mystyleplatform.com/mystyle-product-catalog/" title="MyStyle Product Catalog" target="_blank">Product Catalog</a>.
                     </p>
+                    
+                    <br/>
+                    <div class="mystyle-toggle" onclick="mystyleTogglePanelVis('advanced')">
+                        <a class="mystyle-toggle-link" title="Click to toggle">Advanced</a>
+                        <a id="mystyle-toggle-handle-advanced" class="mystyle-toggle-handle" title="Click to toggle"></a>
+                    </div>
+                    <div class="mystyle-panel" id="mystyle-panel-advanced" style="display:none;">
 
-                    <div style="clear:both;"></div>
+                        <?php
 
-                    <h2><button type="button" href="#advanced-mystyle" data-target="#advanced-mystyle" data-toggle="collapse" class="btn btn-default" >Advanced <span class="glyphicon glyphicon-menu-down"></span></button></h2>
+                            woocommerce_wp_text_input(
+                                array(
+                                    'id'          => '_mystyle_design_id',
+                                    'label'       => __( 'MyStyle Design ID', 'mystyle' ),
+                                    'placeholder' => '',
+                                    'desc_tip'    => 'true',
+                                    'description' => __( 'Enter a MyStyle Design ID for the product to always start with.  You can get a design ID for any design your site has made by using the Design Manager (add-on).', 'mystyle' ),
+                                    'value'       => $mystyle_design_id,
+                                )
+                            );
 
-                    <div id="advanced-mystyle" class="advanced-section collapse">
+                            woocommerce_wp_text_input(
+                                array(
+                                    'id'          => '_mystyle_customizer_ux',
+                                    'label'       => __( 'Alternate Customizer UX', 'mystyle' ),
+                                    'placeholder' => '',
+                                    'desc_tip'    => 'true',
+                                    'description' => __( 'Alternate UX must be set up special for your site.  Do not use this unless you have a custom UX variant developed.', 'woocommerce' ),
+                                    'value'       => $customizer_ux,
+                                )
+                            );
 
-                    <?php
+                        ?>
 
-
-                        woocommerce_wp_text_input(
-                            array(
-                                'id'          => '_mystyle_design_id',
-                                'label'       => __( 'MyStyle Design ID', 'mystyle' ),
-                                'placeholder' => '',
-                                'desc_tip'    => 'true',
-                                'description' => __( 'Enter a MyStyle Design ID for the product to always start with.  You can get a design ID for any design your site has made by using the Design Manager (add-on).', 'mystyle' ),
-                                'value'       => $mystyle_design_id,
-                            )
-			);
-
-                        woocommerce_wp_text_input(
-                            array(
-                                'id'          => '_mystyle_customizer_ux',
-                                'label'       => __( 'Alternate Customizer UX', 'mystyle' ),
-                                'placeholder' => '',
-                                'desc_tip'    => 'true',
-                                'description' => __( 'Alternate UX must be set up special for your site.  Do not use this unless you have a custom UX variant developed.', 'woocommerce' ),
-                                'value'       => $customizer_ux,
-                            )
-			);
-
-
-                    ?>
-
-                    </div>    <!-- end advanced mystyle section -->
+                    </div> <!-- end advanced mystyle section -->
 
                 </div>
             </div>
