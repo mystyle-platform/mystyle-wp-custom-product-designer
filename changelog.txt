@@ -1,3 +1,12 @@
+= 1.2.7 =
+
+* Removed some forgotten debug messages.
+
+= 1.2.6 =
+
+* Fixed an issue with the frontend when the Customize page is deleted.
+* Fixed an issue with activating the plugin from wp-cli.
+
 = 1.2.5 =
 
 * Fixed some issues with the examples in the readme.txt file.
