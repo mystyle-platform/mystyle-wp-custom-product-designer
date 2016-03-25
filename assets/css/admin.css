@@ -44,6 +44,12 @@ span#mystyle-icon-general.icon100 {
     white-space: nowrap;
     min-width: 130px;
 }
+
+.mystyle-toggle.section-title,
+#mystyle_product_data .mystyle-toggle.section-title {
+    display: block;
+}
+
 .mystyle-toggle:hover {
     white-space: nowrap;
     min-width: 130px;
@@ -73,11 +79,39 @@ span#mystyle-icon-general.icon100 {
 .mystyle-panel {clear: both;}
 
 
+.clear, #clear {
+    clear:both;
+}
+
+.spacer {
+    height: 40px;
+    display: block;
+}
+
 /* WooCommerce Product Admin Page */
+
+#mystyle_product_data h3 {
+
+    text-indent: 15px;
+}
+
+#mystyle_product_data.woocommerce_options_panel p.form-field,
+#mystyle_product_data.woocommerce_options_panel fieldset.form-field,
+#mystyle_product_data.woocommerce_options_panel p,
+#mystyle_product_data.woocommerce_options_panel fieldset {
+
+    margin-left: 20px;
+}
+
+#mystyle_product_data.woocommerce_options_panel p.description {
+    text-align: center;
+    display: block;
+}
+
 #mystyle_product_data .mystyle-toggle {
     margin: 0 1em;
     padding: 0 1em;
-    background-color: #efefef;
+    background-color: #F2F2F2;
     overflow: hidden;
     height: 2em;
 }
@@ -126,7 +160,7 @@ span#mystyle-icon-general.icon100 {
 .mystyle_page_mystyle_addons ul.products li a:hover {
     background: #ffffff none repeat scroll 0 0;
 }
-.mystyle_page_mystyle_addons ul.products li a img, 
+.mystyle_page_mystyle_addons ul.products li a img,
 .mystyle_page_mystyle_addons ul.products li a p {
     margin: 1em;
 }

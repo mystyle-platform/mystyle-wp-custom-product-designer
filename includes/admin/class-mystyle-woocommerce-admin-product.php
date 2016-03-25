@@ -9,7 +9,7 @@
  * @package MyStyle
  * @since 0.2.1
  */
-class MyStyle_WooCommerce_Admin_Product { 
+class MyStyle_WooCommerce_Admin_Product {
 
     /**
      * Constructor, constructs the class and registers hooks.
@@ -50,7 +50,11 @@ class MyStyle_WooCommerce_Admin_Product {
 
         ?>
             <div id="mystyle_product_data" class="panel woocommerce_options_panel">
+
+                <h3>MyStyle Custom Product Settings</h3>
+
                 <div class="options_group">
+
                     <?php
                         woocommerce_wp_checkbox(
                             array(
@@ -74,12 +78,15 @@ class MyStyle_WooCommerce_Admin_Product {
 			);
 
                         ?>
-                    <p class="description" style="margin-left: 2em;">
+                    <p class="description">
                         Need a template? Check out our <a href="http://www.mystyleplatform.com/mystyle-product-catalog/" title="MyStyle Product Catalog" target="_blank">Product Catalog</a>.
                     </p>
+                    <div class="clear spacer"></div>
+                </div>
+                <br/>
+                <div class="options_group">
 
-                    <br/>
-                    <div class="mystyle-toggle" onclick="mystyleTogglePanelVis('advanced')">
+                    <div class="mystyle-toggle section-title" onclick="mystyleTogglePanelVis('advanced')">
                         <a class="mystyle-toggle-link" title="Click to toggle">Advanced</a>
                         <a id="mystyle-toggle-handle-advanced" class="mystyle-toggle-handle" title="Click to toggle"></a>
                     </div>
@@ -109,7 +116,6 @@ class MyStyle_WooCommerce_Admin_Product {
                                 )
                             );
 
-                        ?>
                         // print output dropdown
                         woocommerce_wp_select(
                             array(
@@ -129,6 +135,9 @@ class MyStyle_WooCommerce_Admin_Product {
                                                 ),
                             )
 			);
+
+                        ?>
+
                     </div> <!-- end advanced mystyle section -->
 
                 </div>

@@ -9,7 +9,7 @@ function mystyleTogglePanelVis( id ) {
 
     if( panelObj.style.display == 'none' ) { //open the data
         panelObj.style.display = 'block';
-        toggleObj.className += ' mystyle-closed';
+        toggleObj.className += ' mystyle-closed'; 
     } else { //close the data
         panelObj.style.display = 'none';
         toggleObj.className = toggleObj.className.replace( /(?:^|\s)mystyle\-closed(?!\S)/g , '' );
