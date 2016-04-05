@@ -46,7 +46,7 @@ class MyStyle_WooCommerce_Admin_Product {
         $template_id = get_post_meta( $post->ID, '_mystyle_template_id', true );
         $customizer_ux = get_post_meta( $post->ID, '_mystyle_customizer_ux', true );
         $mystyle_design_id = get_post_meta( $post->ID, '_mystyle_design_id', true );
-		$mystyle_print_type = get_post_meta( $post->ID, '_mystyle_print_type', true );
+	$mystyle_print_type = get_post_meta( $post->ID, '_mystyle_print_type', true );
 
         ?>
             <div id="mystyle_product_data" class="panel woocommerce_options_panel">

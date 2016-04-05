@@ -61,6 +61,15 @@ class MyStyle_Options_Page {
                 'mystyle_options_advanced_section'
         );
 
+        /* HIDE PAGE TITLE ON CUSTOMIZER PAGE */
+        add_settings_field(
+                'customizer_page_title_hide',
+                'Hide Customizer Page Title',
+                array( &$this, 'render_hide_customizer_title' ),
+                'mystyle_advanced_settings',
+                'mystyle_options_advanced_section'
+        );
+
         /* FORM INTEGRATION CONFIG */
         add_settings_field(
                 'form_integration_config',
@@ -147,7 +156,7 @@ class MyStyle_Options_Page {
             <ul>
                 <li>Go to <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a>.</li>
                 <!-- <li>Get <a href="#" onclick="jQuery('a#contextual-help-link').trigger('click'); return false;" title="Get help using this plugin.">help</a> using this plugin.</li> -->
-                <li>Get <a href="http://www.mystyleplatform.com/forums/forum/support" title="Get support for using this plugin.">free support</a> using this plugin.</li>
+                <li>Get <a href="http://www.mystyleplatform.com/forums/forum/support" title="Get support for using our plugins.">free support</a> for our plugins in our <a href="http://www.mystyleplatform.com/forums/forum/support" title="Get support for using our plugins.">support forums</a>.</li>
             </ul>
         </div>
     <?php
@@ -225,6 +234,23 @@ class MyStyle_Options_Page {
 
     }
 
+
+    /**
+     * Function to render the Hide Page Title optiona and checkbox
+     */
+    public static function render_hide_customizer_title() {
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $customizer_page_title_hide = ( array_key_exists( 'customizer_page_title_hide', $options ) ) ? $options['customizer_page_title_hide'] : 0;
+     ?>
+
+        <label class="description">
+            <input type="checkbox" id="customizer_page_title_hide" name="mystyle_options[customizer_page_title_hide]" value="1" <?php echo checked( 1, $customizer_page_title_hide, false ) ?> />
+            &nbsp; Hide the page title on the Customizer page.
+        </label>
+    <?php
+
+    }
+
     /**
      * Function to render the form integration config field
      */
@@ -293,6 +319,15 @@ class MyStyle_Options_Page {
             $msg_type = 'error';
             $msg_message = 'Invalid HTML5 Customizer option';
             $new_options['force_mobile'] = 0;
+        }
+
+        //Hide Customizer Page Title
+        $new_options['customizer_page_title_hide'] = intval( $input['customizer_page_title_hide'] );
+        if( ! preg_match('/^[01]$/', $new_options['customizer_page_title_hide'] ) ) {
+            $has_errors = true;
+            $msg_type = 'error';
+            $msg_message = 'Invalid HTML5 Customizer option';
+            $new_options['customizer_page_title_hide'] = 0;
         }
 
         // Form Integration Config

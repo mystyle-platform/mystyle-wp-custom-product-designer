@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     var testFlash = swfobject.getFlashPlayerVersion();
     var isMobileBrowser = false;
     var forceMobile = <?php echo $force_mobile; ?>;
+    var hidePageTitle = <?php echo $customizer_page_title_hide; ?>;
+    var alternateUXVariant = "<?php echo $customizer_ux; ?>";
     if (testFlash && testFlash.hasOwnProperty('major') && testFlash.major == 0) {
         isMobileBrowser = true;
     }
@@ -23,6 +25,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
     if (!isMobileBrowser && forceMobile) {
         isMobileBrowser = true;
+    }
+
+    if(hidePageTitle){
+        var hidePageTitleCSS    = '<style>';
+            hidePageTitleCSS   += 'body.mystyle-customize h1.entry-title { display: none; }';
+            hidePageTitleCSS   += '</style>';
+        document.write(hidePageTitleCSS);
     }
 
     if (!isMobileBrowser) {

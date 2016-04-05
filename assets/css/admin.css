@@ -12,6 +12,10 @@ h2.mytyle-admin-title /* typoed version (for backwards compatibilty with mystyle
     margin-bottom: 15px !important;
 }
 
+* > img {
+    max-width: 100%;
+}
+
 div#icon-options-general.icon100, /* for backwards compatibility */
 span#mystyle-icon-general.icon100 {
     background: url( '../images/mystyle-logo-v2-100x100.png' );
@@ -149,6 +153,14 @@ span#mystyle-icon-general.icon100 {
     margin: 1em 0;
     border-bottom: 1px solid #f1f1f1;
 }
+
+.mystyle_page_mystyle_addons li a:hover,
+.mystyle_page_mystyle_addons li a:hover h3 {
+
+    color: #2288CC;
+
+}
+
 .mystyle_page_mystyle_addons ul.products li a {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     display: block;
@@ -164,6 +176,13 @@ span#mystyle-icon-general.icon100 {
 .mystyle_page_mystyle_addons ul.products li a p {
     margin: 1em;
 }
+
+.mystyle_page_mystyle_addons ul.products li a img {
+    margin: 0;
+    padding: 5%;
+    box-sizing: border-box;
+}
+
 .mystyle_page_mystyle_addons ul.products li a p {
     font-family: "Open Sans",sans-serif;
     color: #444;
@@ -173,5 +192,6 @@ span#mystyle-icon-general.icon100 {
     min-height: 8em;
 }
 .mystyle_page_mystyle_addons ul.products li img {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
 }
