@@ -182,14 +182,4 @@ class MyStyle_WooCommerce_Admin_Product {
             update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
             update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );        }
     }
-
 }
-?>
-
-<style>
-
-    .advanced-section {
-        display: none;
-    }
-
-</style>

@@ -82,7 +82,6 @@ span#mystyle-icon-general.icon100 {
 .mystyle-toggle-handle.mystyle-closed::after {content: '\f142';}
 .mystyle-panel {clear: both;}
 
-
 .clear, #clear {
     clear:both;
 }
