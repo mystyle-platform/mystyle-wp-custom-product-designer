@@ -20,7 +20,7 @@ abstract class MyStyle_Options {
     static function are_keys_installed() {
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
 
-        if ((!empty($options['api_key']) ) && (!empty($options['secret']) )) {
+        if ( ( ! empty($options['api_key'] ) ) && ( ! empty($options['secret'] ) ) ) {
             return true;
         } else {
             return false;
@@ -34,10 +34,10 @@ abstract class MyStyle_Options {
     static function get_api_key() {
         $api_key = null;
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        if (!empty($options['api_key'])) {
+        if ( ! empty($options['api_key'] ) ) {
             $api_key = $options['api_key'];
         }
-        if (defined('MYSTYLE_OVERRIDE_API_KEY')) {
+        if ( defined( 'MYSTYLE_OVERRIDE_API_KEY' ) ) {
             $api_key = MYSTYLE_OVERRIDE_API_KEY;
         }
 
@@ -51,10 +51,10 @@ abstract class MyStyle_Options {
     static function get_secret() {
         $secret = null;
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        if (!empty($options['secret'])) {
+        if ( ! empty( $options['secret'] ) ) {
             $secret = $options['secret'];
         }
-        if (defined('MYSTYLE_OVERRIDE_SECRET')) {
+        if ( defined( 'MYSTYLE_OVERRIDE_SECRET' ) ) {
             $secret = MYSTYLE_OVERRIDE_SECRET;
         }
 
@@ -69,7 +69,7 @@ abstract class MyStyle_Options {
     static function get_force_mobile() {
         $force_mobile = 0;
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        if (!empty($options['force_mobile'])) {
+        if ( ! empty( $options['force_mobile'] ) ) {
             $force_mobile = $options['force_mobile'];
         }
 
@@ -77,14 +77,15 @@ abstract class MyStyle_Options {
     }
 
     /**
-     * Function that gets the value of force_mobile setting.
-     * @return boolean Returns 1 if the force_mobile setting is enabled,
+     * Function that gets the value of the customizer_page_title_hide setting.
+     * @return boolean Returns 1 if the customizer_page_title_hide setting is enabled,
      * otherwise returns false.
+     * @todo Add unit testing
      */
     static function get_customizer_page_title_hide() {
         $customizer_page_title_hide = 0;
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        if (!empty($options['customizer_page_title_hide'])) {
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if ( ! empty( $options['customizer_page_title_hide'] ) ) {
             $customizer_page_title_hide = $options['customizer_page_title_hide'];
         }
         return $customizer_page_title_hide;
