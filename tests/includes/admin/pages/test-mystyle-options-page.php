@@ -146,7 +146,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $mystyle_options_page->render_access_section_text();
         $outbound = ob_get_contents();
         ob_end_clean();
-        $this->assertContains( 'To use MyStyle', $outbound );
+        $this->assertContains( 'MyStyle License', $outbound );
     }
     
     /**
@@ -202,7 +202,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $mystyle_options_page->render_force_mobile();
         $outbound = ob_get_contents();
         ob_end_clean();
-        $this->assertContains( 'Check to always use the HTML5', $outbound );
+        $this->assertContains( 'Always use the HTML5', $outbound );
     }
     
     /**
@@ -219,7 +219,9 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'not valid';
         $input['secret']  = 'validsecret';
-        $input['force_mobile']  = 0;
+        $input['force_mobile'] = 0;
+        $input['customizer_page_title_hide'] = 0;
+        $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -248,7 +250,9 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = '"><script>alert(document.cookie)</script>';
         $input['secret'] = 'validsecret';
-        $input['force_mobile']  = 0;
+        $input['force_mobile'] = 0;
+        $input['customizer_page_title_hide'] = 0;
+        $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -278,6 +282,8 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['api_key'] = 'A0000';
         $input['secret'] = 'validsecret';
         $input['force_mobile']  = 0;
+        $input['customizer_page_title_hide'] = 0;
+        $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -312,7 +318,9 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'validapikey';
         $input['secret']  = 'not valid';
-        $input['force_mobile']  = 0;
+        $input['force_mobile'] = 0;
+        $input['customizer_page_title_hide'] = 0;
+        $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -341,7 +349,9 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'validapikey';
         $input['secret']  = '"><script>alert(document.cookie)</script>';
-        $input['force_mobile']  = 0;
+        $input['force_mobile'] = 0;
+        $input['customizer_page_title_hide'] = 0;
+        $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate( $input );
@@ -370,7 +380,9 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'validapikey';
         $input['secret']  = 'A0000';
-        $input['force_mobile']  = 0;
+        $input['force_mobile'] = 0;
+        $input['customizer_page_title_hide'] = 0;
+        $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);

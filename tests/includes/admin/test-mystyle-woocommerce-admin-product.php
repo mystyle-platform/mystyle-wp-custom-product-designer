@@ -98,6 +98,9 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
         $_POST = array();
         $_POST['_mystyle_enabled'] = true;
         $_POST['_mystyle_template_id'] = 1;
+        $_POST['_mystyle_customizer_ux'] = 'uxtest';
+        $_POST['_mystyle_design_id'] = '2';
+        $_POST['_mystyle_print_type'] = 'FULL-COLOR';
         
         // Create post object
         $test_post = array(
@@ -118,10 +121,16 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
         //Get the post meta
         $mystyle_enabled = get_post_meta( $post->ID, '_mystyle_enabled', true );
         $template_id = get_post_meta( $post->ID, '_mystyle_template_id', true );
+        $customizer_ux = get_post_meta( $post->ID, '_mystyle_customizer_ux', true );
+        $design_id = get_post_meta( $post->ID, '_mystyle_design_id', true );
+        $print_type = get_post_meta( $post->ID, '_mystyle_print_type', true );
        
         //Assert that the post meta was set
         $this->assertEquals( 'yes', $mystyle_enabled );
         $this->assertEquals( 1, $template_id );
+        $this->assertEquals( 'uxtest', $customizer_ux );
+        $this->assertEquals( 2, $design_id );
+        $this->assertEquals( 'FULL-COLOR', $print_type );
     }
     
 }
