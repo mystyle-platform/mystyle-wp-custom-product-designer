@@ -1,3 +1,8 @@
+= 1.2.8 =
+
+* Now passing attributes through.
+* WP 4.5 fully tested and working.
+
 = 1.2.7 =
 
 * Removed some forgotten debug messages.
