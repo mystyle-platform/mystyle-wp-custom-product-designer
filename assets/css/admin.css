@@ -12,10 +12,6 @@ h2.mytyle-admin-title /* typoed version (for backwards compatibilty with mystyle
     margin-bottom: 15px !important;
 }
 
-* > img {
-    max-width: 100%;
-}
-
 div#icon-options-general.icon100, /* for backwards compatibility */
 span#mystyle-icon-general.icon100 {
     background: url( '../images/mystyle-logo-v2-100x100.png' );
@@ -82,11 +78,11 @@ span#mystyle-icon-general.icon100 {
 .mystyle-toggle-handle.mystyle-closed::after {content: '\f142';}
 .mystyle-panel {clear: both;}
 
-.clear, #clear {
+.mystyle-clear {
     clear:both;
 }
 
-.spacer {
+.mystyle-spacer {
     height: 40px;
     display: block;
 }
@@ -191,6 +187,6 @@ span#mystyle-icon-general.icon100 {
     min-height: 8em;
 }
 .mystyle_page_mystyle_addons ul.products li img {
-
     box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
 }

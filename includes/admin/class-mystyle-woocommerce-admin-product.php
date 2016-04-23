@@ -81,7 +81,7 @@ class MyStyle_WooCommerce_Admin_Product {
                     <p class="description">
                         Need a template? Check out our <a href="http://www.mystyleplatform.com/mystyle-product-catalog/" title="MyStyle Product Catalog" target="_blank">Product Catalog</a>.
                     </p>
-                    <div class="clear spacer"></div>
+                    <div class="mystyle-clear mystyle-spacer"></div>
                 </div>
                 <br/>
                 <div class="options_group">

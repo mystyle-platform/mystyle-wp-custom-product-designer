@@ -236,7 +236,8 @@ class MyStyle_Options_Page {
 
 
     /**
-     * Function to render the Hide Page Title optiona and checkbox
+     * Function to render the Hide Page Title option and checkbox.
+     * @todo Add unit testing
      */
     public static function render_hide_customizer_title() {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
@@ -305,7 +306,7 @@ class MyStyle_Options_Page {
 
         //Secret
         $new_options['secret'] = trim( $input['secret'] );
-        if( ! preg_match('/^[a-z0-9]*$/i', $new_options['secret'] ) ) {
+        if( ! preg_match( '/^[a-z0-9]*$/i', $new_options['secret'] ) ) {
             $has_errors = true;
             $msg_type = 'error';
             $msg_message = 'Please enter a valid Secret.';
@@ -314,7 +315,7 @@ class MyStyle_Options_Page {
 
         //Force Mobile
         $new_options['force_mobile'] = intval( $input['force_mobile'] );
-        if( ! preg_match('/^[01]$/', $new_options['force_mobile'] ) ) {
+        if( ! preg_match( '/^[01]$/', $new_options['force_mobile'] ) ) {
             $has_errors = true;
             $msg_type = 'error';
             $msg_message = 'Invalid HTML5 Customizer option';
@@ -323,10 +324,10 @@ class MyStyle_Options_Page {
 
         //Hide Customizer Page Title
         $new_options['customizer_page_title_hide'] = intval( $input['customizer_page_title_hide'] );
-        if( ! preg_match('/^[01]$/', $new_options['customizer_page_title_hide'] ) ) {
+        if( ! preg_match( '/^[01]$/', $new_options['customizer_page_title_hide'] ) ) {
             $has_errors = true;
             $msg_type = 'error';
-            $msg_message = 'Invalid HTML5 Customizer option';
+            $msg_message = 'Invalid Hide Customizer Page Title option';
             $new_options['customizer_page_title_hide'] = 0;
         }
 

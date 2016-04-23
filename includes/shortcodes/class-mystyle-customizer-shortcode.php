@@ -56,16 +56,16 @@ abstract class MyStyle_Customizer_Shortcode {
         }
 
         // get data
-        $product_id         = htmlspecialchars( $_GET['product_id'] ) ;
-        $design_id          = (isset($_GET['design_id'])) ? htmlspecialchars( $_GET['design_id'] ) : null; // reload design ID from URL
-        $default_design_id  = get_post_meta( $product_id, '_mystyle_design_id', true );
+        $product_id          = htmlspecialchars( $_GET['product_id'] ) ;
+        $design_id           = (isset($_GET['design_id'])) ? htmlspecialchars( $_GET['design_id'] ) : null; // reload design ID from URL
+        $default_design_id   = get_post_meta( $product_id, '_mystyle_design_id', true );
         $mystyle_template_id = get_post_meta( $product_id, '_mystyle_template_id', true );
-        $customizer_ux      = get_post_meta( $product_id, '_mystyle_customizer_ux', true );
-        $passthru           = ( isset( $_GET['h'] ) ) ? $_GET['h'] : '';
+        $customizer_ux       = get_post_meta( $product_id, '_mystyle_customizer_ux', true );
+        $passthru            = ( isset( $_GET['h'] ) ) ? $_GET['h'] : '';
 
         // Product Settings - Default Design ID
         // if no reload design id from url, use default design ID if there is one
-        if($design_id == null && $default_design_id != null && $default_design_id > 0 ){
+        if( ( $design_id == null ) && ( $default_design_id != null && $default_design_id > 0 ) ){
             $design_id = $default_design_id;
         }
 
@@ -86,8 +86,8 @@ abstract class MyStyle_Customizer_Shortcode {
         $customizer_query_string =
                         "?app_id=$mystyle_app_id" .
                         "&amp;product_id=$mystyle_template_id" .
-                        (($customizer_ux != null && $customizer_ux != '' && !empty($customizer_ux)  ) ? "&amp;ux=$customizer_ux" : "") .
-                        (($design_id != null) ? "&amp;design_id=$design_id" : "") .
+                        ( ( ! empty( $customizer_ux ) ) ? "&amp;ux=$customizer_ux" : '' ) .
+                        ( ( $design_id != null ) ? "&amp;design_id=$design_id" : '' ) .
                         "&amp;settings=$encoded_settings" .
                         "&amp;passthru=h,$passthru";
 
@@ -102,9 +102,6 @@ abstract class MyStyle_Customizer_Shortcode {
         if ( isset( $_GET['force_mobile'] ) ) {
             $force_mobile = 1;
         }
-
-        // hide page title?
-        $customizer_page_title_hide = MyStyle_Options::get_customizer_page_title_hide();
 
         // ---------- Call the view layer ------- //
         ob_start();
