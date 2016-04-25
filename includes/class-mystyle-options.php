@@ -77,18 +77,18 @@ abstract class MyStyle_Options {
     }
 
     /**
-     * Function that gets the value of the customizer_page_title_hide setting.
-     * @return boolean Returns 1 if the customizer_page_title_hide setting is enabled,
+     * Function that gets the value of the customize_page_title_hide setting.
+     * @return boolean Returns 1 if the customize_page_title_hide setting is enabled,
      * otherwise returns false.
      * @todo Add unit testing
      */
-    static function get_customizer_page_title_hide() {
-        $customizer_page_title_hide = 0;
+    static function get_customize_page_title_hide() {
+        $customize_page_title_hide = 0;
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        if ( ! empty( $options['customizer_page_title_hide'] ) ) {
-            $customizer_page_title_hide = $options['customizer_page_title_hide'];
+        if ( ! empty( $options['customize_page_title_hide'] ) ) {
+            $customize_page_title_hide = $options['customize_page_title_hide'];
         }
-        return $customizer_page_title_hide;
+        return $customize_page_title_hide;
     }
 
 

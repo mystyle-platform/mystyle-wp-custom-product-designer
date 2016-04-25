@@ -69,7 +69,7 @@ class MyStyle_FrontEnd {
     
     /**
      * Filter the post title. Hide the title if on the Customize page and the
-     * customizer_page_title_hide setting is set to true. 
+     * customize_page_title_hide setting is set to true. 
      * @param string $title The title of the post.
      * @param type $id The id of the post.
      * @return string Returns the filtered title.
@@ -81,7 +81,7 @@ class MyStyle_FrontEnd {
             if( 
                 ( ! empty( $id ) ) &&
                 ( $id == MyStyle_Customize_Page::get_id() ) &&
-                ( MyStyle_Options::get_customizer_page_title_hide() )
+                ( MyStyle_Options::get_customize_page_title_hide() )
               )
             {
                 $title = '';

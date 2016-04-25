@@ -220,7 +220,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['api_key'] = 'not valid';
         $input['secret']  = 'validsecret';
         $input['force_mobile'] = 0;
-        $input['customizer_page_title_hide'] = 0;
+        $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
@@ -251,7 +251,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['api_key'] = '"><script>alert(document.cookie)</script>';
         $input['secret'] = 'validsecret';
         $input['force_mobile'] = 0;
-        $input['customizer_page_title_hide'] = 0;
+        $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
@@ -282,7 +282,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['api_key'] = 'A0000';
         $input['secret'] = 'validsecret';
         $input['force_mobile']  = 0;
-        $input['customizer_page_title_hide'] = 0;
+        $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
@@ -319,7 +319,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['api_key'] = 'validapikey';
         $input['secret']  = 'not valid';
         $input['force_mobile'] = 0;
-        $input['customizer_page_title_hide'] = 0;
+        $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
@@ -350,7 +350,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['api_key'] = 'validapikey';
         $input['secret']  = '"><script>alert(document.cookie)</script>';
         $input['force_mobile'] = 0;
-        $input['customizer_page_title_hide'] = 0;
+        $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.
@@ -381,7 +381,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['api_key'] = 'validapikey';
         $input['secret']  = 'A0000';
         $input['force_mobile'] = 0;
-        $input['customizer_page_title_hide'] = 0;
+        $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
         //Run the function.

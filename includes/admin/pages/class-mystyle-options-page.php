@@ -61,11 +61,11 @@ class MyStyle_Options_Page {
                 'mystyle_options_advanced_section'
         );
 
-        /* HIDE PAGE TITLE ON CUSTOMIZER PAGE */
+        /* HIDE PAGE TITLE ON CUSTOMIZE PAGE */
         add_settings_field(
-                'customizer_page_title_hide',
-                'Hide Customizer Page Title',
-                array( &$this, 'render_hide_customizer_title' ),
+                'customize_page_title_hide',
+                'Hide Customize Page Title',
+                array( &$this, 'render_hide_customize_title' ),
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
@@ -236,17 +236,17 @@ class MyStyle_Options_Page {
 
 
     /**
-     * Function to render the Hide Page Title option and checkbox.
+     * Function to render the Hide Customize Page Title option and checkbox.
      * @todo Add unit testing
      */
-    public static function render_hide_customizer_title() {
+    public static function render_hide_customize_title() {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        $customizer_page_title_hide = ( array_key_exists( 'customizer_page_title_hide', $options ) ) ? $options['customizer_page_title_hide'] : 0;
+        $customize_page_title_hide = ( array_key_exists( 'customize_page_title_hide', $options ) ) ? $options['customize_page_title_hide'] : 0;
      ?>
 
         <label class="description">
-            <input type="checkbox" id="customizer_page_title_hide" name="mystyle_options[customizer_page_title_hide]" value="1" <?php echo checked( 1, $customizer_page_title_hide, false ) ?> />
-            &nbsp; Hide the page title on the Customizer page.
+            <input type="checkbox" id="customize_page_title_hide" name="mystyle_options[customize_page_title_hide]" value="1" <?php echo checked( 1, $customize_page_title_hide, false ) ?> />
+            &nbsp; Hide the page title on the Customize page.
         </label>
     <?php
 
@@ -322,13 +322,13 @@ class MyStyle_Options_Page {
             $new_options['force_mobile'] = 0;
         }
 
-        //Hide Customizer Page Title
-        $new_options['customizer_page_title_hide'] = intval( $input['customizer_page_title_hide'] );
-        if( ! preg_match( '/^[01]$/', $new_options['customizer_page_title_hide'] ) ) {
+        //Hide Customize Page Title
+        $new_options['customize_page_title_hide'] = intval( $input['customize_page_title_hide'] );
+        if( ! preg_match( '/^[01]$/', $new_options['customize_page_title_hide'] ) ) {
             $has_errors = true;
             $msg_type = 'error';
-            $msg_message = 'Invalid Hide Customizer Page Title option';
-            $new_options['customizer_page_title_hide'] = 0;
+            $msg_message = 'Invalid Hide Customize Page Title option';
+            $new_options['customize_page_title_hide'] = 0;
         }
 
         // Form Integration Config
