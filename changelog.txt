@@ -1,3 +1,10 @@
+= 1.2.9 =
+
+* Added a field to allow the admin to optionally hide the page title on the Customize page.
+* Added a Product field for optionally passing ux variables into the customizer.
+* Added a Product field for optionally passing the print type into the customizer.
+* Added a Product field for optionally passing a design id into the customizer.
+
 = 1.2.8 =
 
 * Now passing attributes through.
