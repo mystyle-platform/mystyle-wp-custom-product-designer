@@ -1,8 +1,8 @@
-#customizer-wrapper { 
+#customizer-wrapper {
     width: 950px;
     height: 550px;
     padding: 0;
-    text-align:center; 
+    text-align:center;
     margin-left: auto;
     margin-right: auto;
 }
@@ -28,4 +28,13 @@ body.mystyle-customize .site::before {
 }
 body.mystyle-customize .site-content {
     margin-left: auto;
+}
+
+/* fix for some themes making tiny thumbs in cart */
+body.woocommerce-cart table.shop_table.cart img {
+    width: auto;
+    max-width: 100%;
+    margin: auto;
+    padding: 10px;
+    display: block;
 }
