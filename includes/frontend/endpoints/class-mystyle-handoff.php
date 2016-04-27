@@ -92,6 +92,7 @@ class MyStyle_Handoff {
                     "Design Created!\n\n" .
                     "This email is to confirm that your design was successfully " .
                     "saved. Thanks for using our site!\n\n" .
+                    "Your design id is " . $design->get_design_id() . ".\n\n" .
                     "You can access your design at any time from the following " .
                     "url:\n\n" . 
                     MyStyle_Customize_Page::get_design_url( $design ) . "\n";
