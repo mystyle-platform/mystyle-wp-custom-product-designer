@@ -91,6 +91,9 @@ class MyStyle {
             
             //remove the srcset attribute
             $new_image_tag = preg_replace( '/srcset\=".*?"/', '', $new_image_tag );
+            
+            //add a figure and figcaption tag (with the design id)
+            $new_image_tag = '<figure>' . $new_image_tag . '<figcaption style="font-size: 0.5em">Design Id: ' . $design->get_design_id() . '</figcaption></figure>';
         }
 	
         return $new_image_tag;

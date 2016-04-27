@@ -66,6 +66,7 @@ class MyStyle_WooCommerce_Admin_Order {
                 <div class="mystyle-panel" id="mystyle-panel-<?php echo $item_id; ?>" style="display:none;">
                     <div>
                         <?php if( ! MyStyle_Options::is_demo_mode() ) { ?>
+                            Design Id: <a href="<?php echo $design->get_reload_url( $item ); ?>" target="_blank"><?php echo $design->get_design_id(); ?></a><br/>
                             <?php
                                 $multi_print_file = false;
                                 if( ( preg_match( "/^(.+\_)(\d+)(\..+)$/", $design->get_print_url(), $matches) ) && ( $matches[2] > 1 ) ) {
@@ -74,13 +75,13 @@ class MyStyle_WooCommerce_Admin_Order {
                                     $file_name_extension = $matches[3];
                                     for( $i = 1; $i <= $print_file_count; $i++ ) {
                                         $curr_file_name = $file_name_base . $i . $file_name_extension;
-                                        echo '<a href="' . $curr_file_name . '" target="_blank">Print Image ' . $i . '</a>&nbsp;&nbsp;<br/>';
+                                        echo '<a href="' . $curr_file_name . '" target="_blank">Print Image ' . $i . '</a><br/>';
                                     }
                                 } else { 
-                                    echo '<a href="' . $design->get_print_url() . '" target="_blank">Print Image</a>&nbsp;&nbsp;';
+                                    echo '<a href="' . $design->get_print_url() . '" target="_blank">Print Image</a><br/>';
                                 } ?>
                         <?php } ?>
-                        <a href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a>
+                        <a href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a><br/>
                     </div>
                     <img src="<?php echo $design->get_thumb_url(); ?>"/>
  
