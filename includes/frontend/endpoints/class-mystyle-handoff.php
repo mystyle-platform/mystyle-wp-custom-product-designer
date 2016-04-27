@@ -109,6 +109,10 @@ class MyStyle_Handoff {
             $passthru = json_decode( base64_decode( $_POST['h'] ), true );
             $passthru_post = $passthru['post'];
             $quantity = $passthru_post['quantity'];
+            
+            //Set the $_POST to the post data that passed through.
+            $_POST = $passthru_post;
+            
             $variation_id = ( isset( $passthru_post['variation_id'] ) ) ? $passthru_post['variation_id'] : '';
             
             //get the variations (they should all be in the passthru post and start with "attribute_")
