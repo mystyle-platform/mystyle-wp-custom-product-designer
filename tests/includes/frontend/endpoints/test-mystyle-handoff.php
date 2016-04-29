@@ -1,9 +1,9 @@
 <?php
 
-require_once(MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php');
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-api.php');
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce.php');
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php');
+require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-api.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php' );
 
 /**
  * The MyStyleHandoffTest class includes tests for testing the MyStyle_Handoff
@@ -13,6 +13,8 @@ require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php');
  * @since 0.2.1
  */
 class MyStyleHandoffTest extends WP_UnitTestCase {
+    
+    private $mail;
     
     /**
      * Overrwrite the setUp function so that our custom tables will be persisted
@@ -123,6 +125,10 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
     public function test_handle_post_request() {
         global $post;
         global $woocommerce;
+        global $mail_message;
+        
+        //Create the MyStyle Customize page (needed for the link in the email)
+        $page_id = MyStyle_Customize_Page::create();
         
         //Mock the API response
         add_filter( 'pre_http_request', array( 'MyStyleMockAPI', 'mock_api_call' ), 10, 3 );
@@ -152,9 +158,14 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $post['price'] = 0;
         $_POST = $post;
         
+        //Call the function
         $html = $mystyle_handoff->handle();
         
         $this->assertContains( 'Product added to cart', $html );
+        
+        //Assert that the email was sent
+        $this->assertEquals( 'Design Created!', $mail_message['subject'] );
+        $this->assertContains( 'http://', $mail_message['message'] );
     }
     
 }

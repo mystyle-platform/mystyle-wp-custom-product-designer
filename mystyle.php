@@ -4,8 +4,8 @@
 Plugin Name: MyStyle
 Plugin URI: http://www.mystyleplatform.com
 Description: The MyStyle Custom Product Designer is a simple plugin that allows your customers to customize products in WooCommerce.
-Version: 1.2.0
-Author: MyStyle
+Version: 1.2.10
+Author: mystyleplatform
 Author URI: www.mystyleplatform.com
 License: GPL v3
 
@@ -45,10 +45,11 @@ if( file_exists( MYSTYLE_PATH . 'config.php' ) ) {
 }
 
 if( ! defined('MYSTYLE_SERVER') ) { define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' ); }
-if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '1.2.0' ); }
+if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '1.2.10' ); }
 
 define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
 define( 'MYSTYLE_NOTICES_NAME', 'mystyle_notices' );
+define( 'MYSTYLE_NOTICES_DISMISSED_NAME', 'mystyle_notices_dismissed' );
 define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
 
 //includes
@@ -64,35 +65,45 @@ require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-session.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionmanager.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php' );
-
 require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-api.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
 require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php' );
+require_once( MYSTYLE_INCLUDES . 'class-mystyle-install.php' );
 
+//plugin setup and registrations
 $mystyle = new MyStyle();
+register_activation_hook( __FILE__, array( 'MyStyle_Install', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'MyStyle_Install', 'deactivate' ) );
+register_uninstall_hook( __FILE__, array( 'MyStyle_Install', 'uninstall' ) );
 
 if( is_admin() ) {
     //---- ADMIN ----//
     //includes
-    require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-install.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php' );
+    require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php' );
+    
+    //set up the notifications system.
+    $mystyle_notice_controller = new MyStyle_Notice_Controller();
 
-    //Plugin setup and registrations
+    //set up the main admin class.
     $mystyle_admin = new MyStyle_Admin();
-    register_activation_hook( __FILE__, array( 'MyStyle_Admin', 'activate' ) );
-    register_deactivation_hook( __FILE__, array( 'MyStyle_Admin', 'deactivate' ) );
-    register_uninstall_hook( __FILE__, array( 'MyStyle_Admin', 'uninstall' ) );
 
     //set up the options page
     $mystyle_options_page = new MyStyle_Options_Page();
     add_filter( 'contextual_help', 'mystyle_help_dispatch', 10, 3 );
-
+    
+    //set up the addons page
+    $mystyle_addons_page = new MyStyle_Addons_Page();
+    
     //hook into the WooCommerce admin
     $mystyle_woocommerce_admin_product = new MyStyle_WooCommerce_Admin_Product();
     $mystyle_woocommerce_admin_order = new MyStyle_WooCommerce_Admin_Order();

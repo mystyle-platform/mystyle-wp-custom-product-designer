@@ -105,6 +105,25 @@ class MyStyle_Handoff {
                 }
             }
             
+            //Send email to user
+            $site_title = get_bloginfo( 'name' );
+            $site_url = network_site_url( '/' );
+            $site_description = get_bloginfo( 'description' );
+            $message = 
+                    "Design Created!\n\n" .
+                    "This email is to confirm that your design was successfully " .
+                    "saved. Thanks for using our site!\n\n" .
+                    "Your design id is " . $design->get_design_id() . ".\n\n" .
+                    "You can access your design at any time from the following " .
+                    "url:\n\n" . 
+                    MyStyle_Customize_Page::get_design_url( $design ) . "\n";
+            
+            wp_mail( 
+                $mystyle_user->get_email(), 
+                'Design Created!', 
+                $message
+            );
+            
             //Persist the design to the database
             $design = MyStyle_DesignManager::persist( $design );
             
@@ -112,6 +131,10 @@ class MyStyle_Handoff {
             $passthru = json_decode( base64_decode( $_POST['h'] ), true );
             $passthru_post = $passthru['post'];
             $quantity = $passthru_post['quantity'];
+            
+            //Set the $_POST to the post data that passed through.
+            $_POST = $passthru_post;
+            
             $variation_id = ( isset( $passthru_post['variation_id'] ) ) ? $passthru_post['variation_id'] : '';
             
             //get the variations (they should all be in the passthru post and start with "attribute_")
@@ -121,6 +144,9 @@ class MyStyle_Handoff {
                     $variation[$key] = $value;
                 }
             }
+            
+            //echo $quantity . ':' . $variation_id;
+            //exit;
             
             //Get the woocommerce cart
             $cart = $woocommerce->cart;

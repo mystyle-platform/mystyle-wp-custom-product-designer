@@ -43,7 +43,7 @@ abstract class MyStyle_Customize_Page {
         //Get the page id of the Customize page
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         if( ! isset( $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ] ) ) {
-            throw new MyStyle_Exception( __( 'Customize Page is Missing', 'mystyle' ), 404 );
+            throw new MyStyle_Exception( __( 'Customize Page is Missing! Please use the "Fix Customize Page Tool" on the MyStyle Settings page to fix.', 'mystyle' ), 404 );
         }
         $page_id = $options[ MYSTYLE_CUSTOMIZE_PAGEID_NAME ];
         
@@ -81,6 +81,32 @@ abstract class MyStyle_Customize_Page {
         
         //Delete the page from WordPress
         wp_delete_post( $page_id );
+    }
+    
+    /**
+     * Builds a url to the customize page including url paramaters to load
+     * the passed design.
+     * @param integer $design
+     * @return string Returns a link that can be used to reload a design.
+     * @todo Add unit testing.
+     */
+    public static function get_design_url( MyStyle_Design $design ) {
+        $passthru = array(
+            'post' => array (
+                'quantity' => 1,
+                'add-to-cart' => $design->get_product_id()
+            )
+        );
+        $passthru_encoded = base64_encode( json_encode( $passthru ) );
+        $customize_args = array(
+            'product_id' => $design->get_product_id(),
+            'design_id' => $design->get_design_id(),
+            'h' => $passthru_encoded,
+        );
+        
+        $customizer_url = add_query_arg( $customize_args , get_permalink( self::get_id() ) );
+        
+        return $customizer_url;
     }
     
     /**

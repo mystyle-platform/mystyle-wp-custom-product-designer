@@ -1,7 +1,7 @@
 <?php
 
-require_once(MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php');
-require_once(MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php');
+require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
+require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
 
 /**
  * The MystyleAdminTest class includes tests for testing the MyStyle_Admin 
@@ -28,11 +28,7 @@ class MyStyleAdminTest extends WP_UnitTestCase {
         
         //Assert that the init function is registered.
         $function_names = get_function_names( $wp_filter['admin_init'] );
-        $this->assertContains( 'admin_init', $function_names );
-        
-        //Assert that the admin notices function is registered.
-        $function_names = get_function_names( $wp_filter['admin_notices'] );
-        $this->assertContains( 'admin_notices', $function_names );        
+        $this->assertContains( 'admin_init', $function_names );       
     }
     
     /**
@@ -70,70 +66,6 @@ class MyStyleAdminTest extends WP_UnitTestCase {
         $outbound = ob_get_contents();
         ob_end_clean();
         $this->assertContains( 'Upgraded version from', $outbound );
-    }
-    
-    /**
-     * Test the admin_notices function.
-     */    
-    public function test_admin_notices() {
-        $mystyle_admin = new MyStyle_Admin();
-        
-        //assert that a notice was registered
-        ob_start();
-        $mystyle_admin->admin_notices();
-        $outbound = ob_get_contents();
-        ob_end_clean();
-        $this->assertContains( 'MyStyle', $outbound );
-    }
-    
-     /**
-     * Test the activate function.
-     */    
-    public function test_activate() {
-        $mystyle_admin = new MyStyle_Admin();
-        
-        $mystyle_admin->activate();
-        
-        $customize_page_id = MyStyle_Customize_Page::get_id();
-        
-        //assert that the customize page was created
-        $this->assertNotNull($customize_page_id);
-    }
-    
-    /**
-     * Test the deactivate function.
-     */    
-    public function test_deactivate() {
-        $mystyle_admin = new MyStyle_Admin();
-        
-        //activate the plugin so that we can then deactivate it
-        $mystyle_admin->activate();
-        
-        $mystyle_admin->deactivate();
-        
-        //Assert that Customize page remains.
-        $this->assertTrue(MyStyle_Customize_Page::exists());
-    }
-        
-     /**
-     * Test the uninstall function.
-     */    
-    public function test_uninstall() {
-        $mystyle_admin = new MyStyle_Admin();
-        
-        //init the plugin so that we can then uninstall it
-        $mystyle_admin->admin_init();
-        
-        //assert that there are options
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        $this->assertNotEmpty( $options );
-        
-        //uninstall the plugin
-        $mystyle_admin->uninstall();
-        
-        //assert that the options are still there
-        $options_new = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        $this->assertNotEmpty( $options_new );
     }
     
 }

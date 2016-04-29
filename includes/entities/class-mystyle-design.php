@@ -572,5 +572,32 @@ class MyStyle_Design implements MyStyle_Entity {
                 
         return $formats_arr;  
     }
+    
+    /**
+     * Build the url to the customizer including the product id and design id.
+     * @param integer The order item.
+     * @return string The url to reload the design.
+     * @todo Use the passed $item to pass the quantity, attributes, addons, etc
+     * back into the customizer.
+     * @todo Add unit testing
+     */
+    public function get_reload_url( $item = null ) {
+        $customize_page_id = MyStyle_Customize_Page::get_id();
+        $passthru = array(
+            'post' => array (
+                'quantity' => 1,
+                'add-to-cart' => $this->product_id,
+            )
+        );
+        $passthru_encoded = base64_encode( json_encode( $passthru ) );
+        $customize_args = array(
+            'product_id' => $this->product_id,
+            'design_id' => $this->design_id,
+            'h' => $passthru_encoded,
+        );
+        $customizer_url = add_query_arg( $customize_args , get_permalink( $customize_page_id ) );
+        
+        return $customizer_url;
+    }
 
 }

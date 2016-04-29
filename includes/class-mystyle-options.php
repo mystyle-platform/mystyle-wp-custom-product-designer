@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MyStyle Options class. 
- * 
+ * MyStyle Options class.
+ *
  * The MyStyle Options class includes functions for setting and getting MyStyle
  * Options.
  *
@@ -10,34 +10,34 @@
  * @since 0.2.1
  */
 abstract class MyStyle_Options {
-    
-   /**
-    * Function that looks to see if an mystyle API Key and secret have been 
-    * installed.
-    * @return boolean Returns true if an API Key and Secret are installed,
-    * otherwise returns false.
-    */
-    static function are_keys_installed() {
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 
-        if( ( ! empty( $options['api_key'] ) ) && ( ! empty( $options['secret'] ) ) ) {
+    /**
+     * Function that looks to see if an mystyle API Key and secret have been
+     * installed.
+     * @return boolean Returns true if an API Key and Secret are installed,
+     * otherwise returns false.
+     */
+    static function are_keys_installed() {
+        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+
+        if ( ( ! empty($options['api_key'] ) ) && ( ! empty($options['secret'] ) ) ) {
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
      * Function that gets the active api_key
      * @return string Returns the active api key.
      */
     static function get_api_key() {
         $api_key = null;
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        if( ! empty( $options['api_key'] ) ) {
+        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        if ( ! empty($options['api_key'] ) ) {
             $api_key = $options['api_key'];
         }
-        if( defined( 'MYSTYLE_OVERRIDE_API_KEY' ) ) {
+        if ( defined( 'MYSTYLE_OVERRIDE_API_KEY' ) ) {
             $api_key = MYSTYLE_OVERRIDE_API_KEY;
         }
 
@@ -50,17 +50,17 @@ abstract class MyStyle_Options {
      */
     static function get_secret() {
         $secret = null;
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        if( ! empty( $options['secret'] ) ) {
+        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        if ( ! empty( $options['secret'] ) ) {
             $secret = $options['secret'];
         }
-        if( defined( 'MYSTYLE_OVERRIDE_SECRET' ) ) {
+        if ( defined( 'MYSTYLE_OVERRIDE_SECRET' ) ) {
             $secret = MYSTYLE_OVERRIDE_SECRET;
         }
 
         return $secret;
     }
-    
+
     /**
      * Function that gets the value of force_mobile setting.
      * @return boolean Returns 1 if the force_mobile setting is enabled,
@@ -68,14 +68,31 @@ abstract class MyStyle_Options {
      */
     static function get_force_mobile() {
         $force_mobile = 0;
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        if( ! empty( $options['force_mobile'] ) ) {
+        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        if ( ! empty( $options['force_mobile'] ) ) {
             $force_mobile = $options['force_mobile'];
         }
 
         return $force_mobile;
     }
-    
+
+    /**
+     * Function that gets the value of the customize_page_title_hide setting.
+     * @return boolean Returns 1 if the customize_page_title_hide setting is enabled,
+     * otherwise returns false.
+     * @todo Add unit testing
+     */
+    static function get_customize_page_title_hide() {
+        $customize_page_title_hide = 0;
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if ( ! empty( $options['customize_page_title_hide'] ) ) {
+            $customize_page_title_hide = $options['customize_page_title_hide'];
+        }
+        return $customize_page_title_hide;
+    }
+
+
+
     /**
      * Function that determines if the plugin is in demo mode.
      * @return string Returns the active secret.
@@ -83,7 +100,7 @@ abstract class MyStyle_Options {
     static function is_demo_mode() {
         $api_key = self::get_api_key();
         $demo_key = 74;
-        
+
         $ret = ($api_key == $demo_key);
 
         return $ret;

@@ -1,6 +1,6 @@
 <?php
 
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php');
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
 
 /**
  * The MyStyleDesignTest class includes tests for testing the MyStyle_Design

@@ -1,11 +1,11 @@
 === MyStyle Custom Product Designer ===
-Contributors: mystyle
+Contributors: mystyleplatform
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: customization, designer, personalization, product-preview, woocommerce, custom product, product designer, Post, plugin, admin, posts, shortcode, images, page, image
 Requires at least: 3.3
-Tested up to: 4.2.2
-Stable tag: 1.2.0
+Tested up to: 4.5
+Stable tag: 1.2.10
 
 The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
@@ -51,6 +51,15 @@ Please note that the MyStyle Custom Product Designer is a serviceware plugin, an
 * New products can be added to our system upon request
 * New backgrounds, foregrounds or fonts can be added upon request
 
+= Examples =
+
+You can see some examples of the MyStyle Custom Product Designer in use (and try it out) at the following sites:
+
+* [Custom skateboards and longboards](http://www.whateverskateboards.com/?ref=wprm2) (Whatever Skateboards)
+* [Custom canvas prints](http://www.makecanvasprints.com/?ref=wprm2) (Make Canvas Prints)
+* [Disc golf discs and ultimate frisbee discs](http://www.flydiscs.com/?ref=wprm2) (Fly Discs)
+* [iPhone cases and phone cases](http://www.case-monkey.com/?ref=wprm2) (Case Monkey)
+
 == Installation ==
 
 The MyStyle Custom Product Designer requires that you have WordPress with the WooCommerce plugin activated. The plugin is very easy to install and can be set up in just a few minutes.  This is a serviceware plugin, meaning that once installed, it will load the Custom Product Designer app remotely from a hosted service, and it will function with all features. However, when in Demo Mode, it will function without access to Print Files. To enable Full Mode, with access to print files, you will need to obtain your MyStyle Developer API Key and Secret, and enter them in your MyStyle settings.
@@ -69,6 +78,61 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 5. Example of a Smart Car with a background image applied
 
 == Changelog ==
+
+= 1.2.10 =
+* Now displaying the design id in the cart, orders admin and Design Created email.
+* Fixed an issue with passing product addons through the customizer into the cart.
+
+= 1.2.9 =
+* Added a field to allow the admin to optionally hide the page title on the Customize page.
+* Added a Product field for optionally passing ux variables into the customizer.
+* Added a Product field for optionally passing the print type into the customizer.
+* Added a Product field for optionally passing a design id into the customizer.
+
+= 1.2.8 =
+* Now passing attributes through.
+* WP 4.5 fully tested and working.
+
+= 1.2.7 =
+* Removed some forgotten debug messages.
+
+= 1.2.6 =
+* Fixed an issue with the frontend when the Customize page is deleted.
+* Fixed an issue with activating the plugin from wp-cli.
+
+= 1.2.5 =
+* Fixed some issues with the examples in the readme.txt file.
+* Updated the readme.txt to reflect that WP 4.4.2 is tested and working.
+
+= 1.2.4 =
+* Fixed a bug with the Fix Customize Page tool.
+* Added example sites to the readme.txt file.
+
+= 1.2.3 =
+* Fixed a bug with the Fix Customize Page tool.
+
+= 1.2.2 =
+* Plugin is fully tested and working with WooCommerce 2.5.1
+* Fixed an issue with the unit tests when running WooCommerce 2.5
+
+= 1.2.1 =
+* Changed the author from mystyle to mystyleplatform.
+* Fixed bug with the thumbnail image in latest WP (caused by srcset attribute).
+* Now validating the mystyle product options.
+* Fixed some WP Coding Standards issues with some of the test files.
+* Added more sophisticated notices system.
+* Fixed some CSS issues with the admin screens in the latest WP and fixed a typo in a CSS name.
+* Updated the readme.txt to reflect that WP 4.4.1 is fully tested and working.
+
+= 1.2.0 =
+* Add-ons directory added.
+* Now sends design-saved email to user.
+
+= 1.1.15 =
+* Fixed bug with loading front-end on non-post pages.
+
+= 1.1.14 =
+* Now supports reloading designs through the Design Manager add-on.
 
 = 1.1.13 =
 * Modified the form/field text on the settings page.

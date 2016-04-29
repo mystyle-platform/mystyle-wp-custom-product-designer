@@ -57,5 +57,29 @@ class MyStyle_Install {
         
         return $schema;
     }
+    
+    /**
+     * Called when the plugin is activated.
+     */
+    static function activate() {
+        if( ! MyStyle_Customize_Page::exists() ) {
+            MyStyle_Customize_Page::create();
+        }
+        MyStyle_Install::create_tables();
+    }
+
+    /**
+     * Called when the plugin is deactivated.
+     */
+    static function deactivate() {
+        //
+    }
+    
+    /**
+     * Function called when MyStyle is uninstalled
+     */
+    static function uninstall() {
+        delete_option( MYSTYLE_NOTICES_NAME );
+    }
 
 }

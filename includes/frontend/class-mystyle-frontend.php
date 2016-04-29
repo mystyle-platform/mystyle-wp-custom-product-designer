@@ -15,6 +15,7 @@ class MyStyle_FrontEnd {
      */
     public function __construct() {
         add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
+        add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
         add_filter( 'woocommerce_product_single_add_to_cart_text', array( &$this, 'filter_cart_button_text' ), 10, 1 ); 
         add_filter( 'woocommerce_add_to_cart_handler', array( &$this, 'filter_add_to_cart_handler' ), 10, 2 );
         
@@ -48,15 +49,49 @@ class MyStyle_FrontEnd {
     function filter_body_class( $classes ) {
         global $post;
         
-        if( 
-            ( $post->ID == MyStyle_Customize_Page::get_id() ) &&
-            ( isset( $_GET['product_id'] ) )
-          )
-        {
-            $classes[] = 'mystyle-customize';
+        try {
+            if( $post != null ) {
+                if( 
+                    ( $post->ID == MyStyle_Customize_Page::get_id() ) &&
+                    ( isset( $_GET['product_id'] ) )
+                  )
+                {
+                    $classes[] = 'mystyle-customize';
+                }
+            }
+        } catch( MyStyle_Exception $e ) {
+            //this exception may be thrown if the Customize Page is missing.
+            //For this function, that is okay, just continue.
         }
         
 	return $classes;
+    }
+    
+    /**
+     * Filter the post title. Hide the title if on the Customize page and the
+     * customize_page_title_hide setting is set to true. 
+     * @param string $title The title of the post.
+     * @param type $id The id of the post.
+     * @return string Returns the filtered title.
+     * @todo Add unit testing
+     */
+    function filter_title( $title, $id = null ) {
+        
+        try {
+            if( 
+                ( ! empty( $id ) ) &&
+                ( $id == MyStyle_Customize_Page::get_id() ) &&
+                ( MyStyle_Options::get_customize_page_title_hide() )
+              )
+            {
+                $title = '';
+            }
+        } catch( MyStyle_Exception $e ) {
+            //this exception may be thrown if the Customize Page is missing.
+            //For this function, that is okay, just continue.
+        }
+
+        return $title;
     }
     
     /**
@@ -155,9 +190,17 @@ class MyStyle_FrontEnd {
     function mystyle_add_to_cart_handler( $url ) {
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
         
+        //set up an array of data to pass to/through the customizer.
         $passthru = array(
             'post' => $_REQUEST,
         );
+
+        //add all available product attributes (if there are any) to the pass through data
+        $product = new WC_Product_Variable( $product_id );
+        $attributes = $product->get_variation_attributes();
+        if( !empty( $attributes ) ) {
+            $passthru['attributes'] = $attributes;
+        }
 
         $customize_page_id = MyStyle_Customize_Page::get_id();
         

@@ -1,6 +1,6 @@
 <?php
 
-require_once(MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php');
+require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
 
 /**
  * The MyStyleExceptionTest class includes tests for testing the

@@ -1,7 +1,7 @@
 <?php
 
-require_once(MYSTYLE_PATH . '../woocommerce/woocommerce.php');
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php');
+require_once( MYSTYLE_PATH . '../woocommerce/woocommerce.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
 
 /**
  * The MyStyleClassTest class includes tests for testing the MyStyle
@@ -107,7 +107,7 @@ class MyStyleClassTest extends WP_UnitTestCase {
         
         $new_image = MyStyle::modify_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key );
         
-        $this->assertEquals( '<img src="http://www.example.com/example.jpg"/>' , $new_image );
+        $this->assertContains( 'http://www.example.com/example.jpg' , $new_image );
     }
     
     /**
