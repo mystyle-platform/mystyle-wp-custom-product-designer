@@ -73,7 +73,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         $session_id = 'testsessionid';
         $email = 'someone@example.com';
         
-        //Mock the user
+        //Mock the user (note this will call the function since it is hooked into the register function)
         $user_id = wp_create_user( 'testuser', 'testpassword', $email );
         $user = get_user_by( 'id', $user_id );
         
@@ -114,9 +114,9 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         
         $design_id = 1;
         $session_id = 'testsessionid';
-        $email = 'someone@example.com';
+        $email = null;
         
-        //Mock the user
+        //Mock the user (note this will call the function since it is hooked into the register function)
         $user_id = wp_create_user( 'testuser', 'testpassword', $email );
         $user = get_user_by( 'id', $user_id );
         
@@ -144,6 +144,92 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         
         //Assert that the user_id is set
         $this->assertEquals( $user_id, $design_from_db->get_user_id() );
+    }
+    
+    /**
+     * Test the set_user_id function sets the user_id on a design with a session
+     * id match but no design email.
+     * @global wpdb $wpdb
+     */
+    function test_set_user_id_for_session_match_with_no_design_email() {
+        global $wpdb;
+        
+        $design_id = 1;
+        $session_id = 'testsessionid';
+        $email = 'someone@example.com';
+        
+        //Mock the user (note this will call the function since it is hooked into the register function)
+        $user_id = wp_create_user( 'testuser', 'testpassword', $email );
+        $user = get_user_by( 'id', $user_id );
+        
+        //Mock the session
+        $session = MyStyle_Session::create( $session_id );
+        MyStyle_SessionManager::persist( $session );
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        
+        //Add a session id to the design
+        $design->set_session_id( $session_id );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Call the function
+        $result = MyStyle_DesignManager::set_user_id( $user, $session );
+        
+        //Assert that one row was modified
+        $this->assertEquals( 1, $result );
+        
+        //Get the design
+        $design_from_db = MyStyle_DesignManager::get( $design_id );
+        
+        //Assert that the user_id is set
+        $this->assertEquals( $user_id, $design_from_db->get_user_id() );
+    }
+    
+    /**
+     * Test the set_user_id function sets the user_id on a design with a session
+     * id match but no design email.
+     * @global wpdb $wpdb
+     */
+    function test_set_user_id_for_failed_email_match() {
+        global $wpdb;
+        
+        $design_id = 1;
+        $session_id = 'testsessionid';
+        $email1 = 'someone@example.com';
+        $email2 = 'someoneelse@example.com';
+        
+        //Mock the user (note this will call the function since it is hooked into the register function)
+        $user_id = wp_create_user( 'testuser', 'testpassword', $email1 );
+        $user = get_user_by( 'id', $user_id );
+        
+        //Mock the session
+        $session = MyStyle_Session::create( $session_id );
+        MyStyle_SessionManager::persist( $session );
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        $design->set_email($email2);
+        
+        //Add a session id to the design
+        $design->set_session_id( $session_id );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Call the function
+        $result = MyStyle_DesignManager::set_user_id( $user, $session );
+        
+        //Assert that no rows were modified
+        $this->assertEquals( 0, $result );
+        
+        //Get the design
+        $design_from_db = MyStyle_DesignManager::get( $design_id );
+        
+        //Assert that the user_id is NOT set
+        $this->assertEquals( 0, $design_from_db->get_user_id() );
     }
 
 }
