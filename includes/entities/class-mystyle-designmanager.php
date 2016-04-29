@@ -32,7 +32,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
     
     /**
      * Sets the user_id on designs where it is null (or 0) using the email and
-     * the sesession.
+     * the session.
      * @global wpdb $wpdb
      * @param WP_User $user
      * @param MyStyle_Session (optional) $session
@@ -45,12 +45,12 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         $query = 'UPDATE ' . MyStyle_Design::get_table_name() . ' ' . 
                  'SET user_id = "' . $user->ID . '" ' .
                  'WHERE ( ( user_id IS NULL ) OR ( user_id = 0 ) ) ';
-        $query = 'AND ( ';
+        $query .='AND ( ';
         
         if( ! empty( $user->user_email ) ) {
             // Where email matches and the session is empty or matches the passed session id.
             $query .=
-                 ' ( ms_email = "' . $user->user_email . '" ) ';
+                 ' ( ms_email = "' . $user->user_email . '" )';
             $query .= 
                  'AND ( ';
             if( $session != null ) {
@@ -69,7 +69,11 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
             }
         }
         
-        $query .= ' OR ( session'
+        //if the design doesn't have an email set, try to macth just based on the session id.
+        $query .= ') OR (ms_email IS NULL AND session_id = "' . $session->get_session_id() . '" ) ';
+        
+        //echo $query;
+        
         $result = $wpdb->query($query);
         
         return $result;

@@ -45,7 +45,6 @@ class MyStyle_Admin {
                 //do any necessary version data upgrades here
                 $upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $data_version . ' to ' . MYSTYLE_VERSION . '.' );
                 mystyle_notice_add_to_queue( $upgrade_notice );
-
             }
         }
     }

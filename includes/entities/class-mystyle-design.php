@@ -44,10 +44,10 @@ class MyStyle_Design implements MyStyle_Entity {
         $this->created_gmt = gmdate( MyStyle::$STANDARD_DATE_FORMAT );
         $this->modified = date( MyStyle::$STANDARD_DATE_FORMAT );
         $this->modified_gmt = date( MyStyle::$STANDARD_DATE_FORMAT );
-        $instance->mobile = 0;
-        $instance->access = 0;
-        $instance->view_count = 0;
-        $instance->purchase_count = 0;
+        $this->mobile = 0;
+        $this->access = 0;
+        $this->view_count = 0;
+        $this->purchase_count = 0;
     }
     
     /**

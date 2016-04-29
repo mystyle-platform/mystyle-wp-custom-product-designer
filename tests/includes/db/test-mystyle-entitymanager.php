@@ -58,9 +58,12 @@ class MyStyleEntityManagerTest extends WP_UnitTestCase {
         //Create the design
         $design = MyStyle_Design::create_from_post($post);
         
+        //for debugging
+        //var_dump($design);
+        
         //Call the function
         MyStyle_EntityManager::persist($design);
-        
+
         $query = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ' . 
                  'WHERE ' . MyStyle_Design::get_primary_key() . ' = ' . $design_id;
         

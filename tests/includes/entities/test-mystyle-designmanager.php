@@ -39,7 +39,6 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
     }
     
-    
     /**
      * Test the get function.
      * @global wpdb $wpdb
