@@ -47,6 +47,7 @@ class MyStyle_SessionHandler {
                 $session->get_session_id(), 
                 time() + (60*60*24*365*10) );
         }
+        MyStyle_SessionManager::update( $session );
         
         return $session;
     }

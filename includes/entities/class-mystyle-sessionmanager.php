@@ -20,19 +20,25 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
     public static function get( $session_id ) {
         global $wpdb;
         
+        $session = null;
+        
         $query = 'SELECT * FROM ' . MyStyle_Session::get_table_name() . ' ' . 
                  'WHERE ' . MyStyle_Session::get_primary_key() . ' = "' . $session_id . '"';
         
         $result_object = $wpdb->get_row($query);
 
-        $session = MyStyle_Session::create_from_result_object( $result_object );
+        if( $result_object != null ) {
+            $session = MyStyle_Session::create_from_result_object( $result_object );
+        }
+        
         
         return $session;
     }
     
     /**
      * Updates the session in the database changing its modified date/time to
-     * the current date/time.
+     * the current date/time. Use this function for both create and update
+     * operations.
      * @global wpdb $wpdb
      * @param MyStyle_Session $session The MyStyle_Session that you want to
      * update.

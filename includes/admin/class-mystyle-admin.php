@@ -31,22 +31,6 @@ class MyStyle_Admin {
         //Add the MyStyle admin js file to the WP admin head
         wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js' );
         wp_enqueue_script( 'myStyleAdminJavaScript' );
-
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        $data_version = ( array_key_exists( 'version', $options ) ) ? $options['version'] : null;
-        if( $data_version != MYSTYLE_VERSION ) {
-            $options['version'] = MYSTYLE_VERSION;
-            update_option( MYSTYLE_OPTIONS_NAME, $options );
-            if( ! is_null( $data_version ) ) {  //skip if not an upgrade
-                
-                //Delta the database tables
-                MyStyle_Install::delta_tables();
-
-                //do any necessary version data upgrades here
-                $upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $data_version . ' to ' . MYSTYLE_VERSION . '.' );
-                mystyle_notice_add_to_queue( $upgrade_notice );
-            }
-        }
     }
 
     /**
