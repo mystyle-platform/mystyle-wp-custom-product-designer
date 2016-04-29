@@ -71,6 +71,9 @@ require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
 require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-install.php' );
+require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
+require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php' );
+require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
 
 //plugin setup and registrations
 $mystyle = new MyStyle();
@@ -81,9 +84,6 @@ register_uninstall_hook( __FILE__, array( 'MyStyle_Install', 'uninstall' ) );
 if( is_admin() ) {
     //---- ADMIN ----//
     //includes
-    require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
-    require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php' );
-    require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php' );

@@ -17,6 +17,24 @@ class MyStyle {
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
+        // Set the current version and handle any updates
+        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        $data_version = ( array_key_exists( 'version', $options ) ) ? $options['version'] : null;
+        if( $data_version != MYSTYLE_VERSION ) {
+            $options['version'] = MYSTYLE_VERSION;
+            update_option( MYSTYLE_OPTIONS_NAME, $options );
+            if( ! is_null( $data_version ) ) {  //skip if not an upgrade
+                
+                //Delta the database tables
+                MyStyle_Install::delta_tables();
+
+                //do any necessary version data upgrades here
+                $upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $data_version . ' to ' . MYSTYLE_VERSION . '.' );
+                mystyle_notice_add_to_queue( $upgrade_notice );
+            }
+        }
+        
+        // Register hooks
         add_action( 'init', array( &$this, 'init' ) );
         add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_mystyle_order_item_meta' ), 10, 2 );
         add_action( 'woocommerce_order_status_completed', array( &$this, 'on_order_completed' ), 10, 1 );
