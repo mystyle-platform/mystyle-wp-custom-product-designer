@@ -7,7 +7,7 @@ require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-sessionqueryresult.php');
  * class.
  *
  * @package MyStyle
- * @since 1.2.0
+ * @since 1.3.0
  */
 class MyStyleSessionTest extends WP_UnitTestCase {
 

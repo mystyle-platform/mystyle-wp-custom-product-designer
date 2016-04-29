@@ -4,7 +4,7 @@
  * Creates a mock MyStyle_Design
  *
  * @package MyStyle
- * @since 1.2.0
+ * @since 1.3.0
  */
 abstract class MyStyle_MockDesign {
 

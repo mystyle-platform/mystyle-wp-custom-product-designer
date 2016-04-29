@@ -7,7 +7,7 @@
  * entities.
  *
  * @package MyStyle
- * @since 1.2.0
+ * @since 1.3.0
  */
 abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
     

@@ -4,7 +4,7 @@
  * Mocks the result of a mystyle session query.
  *
  * @package MyStyle
- * @since 1.2.0
+ * @since 1.3.0
  */
 class MyStyle_MockSessionQueryResult {
 

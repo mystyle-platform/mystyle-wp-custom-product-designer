@@ -7,7 +7,7 @@
  * Customizer.
  *
  * @package MyStyle
- * @since 1.2.0
+ * @since 1.3.0
  */
 class MyStyle_Session implements MyStyle_Entity {
     
