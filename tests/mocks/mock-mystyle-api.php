@@ -57,8 +57,6 @@ class MyStyleMockAPI {
         $design['user_id'] = 1;
         $design['app_id'] = 0;
         $design['product_id'] = 0;
-        $design['product_id'] = 0;
-        $design['created'] = 0;
         $design['created'] = 0;
 
         $json = array();

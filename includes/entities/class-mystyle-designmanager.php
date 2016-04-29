@@ -45,12 +45,12 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         $query = 'UPDATE ' . MyStyle_Design::get_table_name() . ' ' . 
                  'SET user_id = "' . $user->ID . '" ' .
                  'WHERE ( ( user_id IS NULL ) OR ( user_id = 0 ) ) ';
+        $query = 'AND ( ';
         
         if( ! empty( $user->user_email ) ) {
             // Where email matches and the session is empty or matches the passed session id.
             $query .=
-                 'AND ( ms_email = "' . $user->user_email . '" ) ';
-            
+                 ' ( ms_email = "' . $user->user_email . '" ) ';
             $query .= 
                  'AND ( ';
             if( $session != null ) {
@@ -61,15 +61,15 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
                        ' ( session_id IS NULL ) OR ( session_id = "" ) ';
             $query .= 
                     ' ) ';
-            
         } else {
-            //If there is no email, try to match based on the session id
+            //If the user doesn't have an email address, try to match based on the session id
             if( $session != null ) {
                 $query .=
-                      'AND ( session_id = "' . $session->get_session_id() . '" ) ';
+                      ' ( session_id = "' . $session->get_session_id() . '" ) ';
             }
         }
         
+        $query .= ' OR ( session'
         $result = $wpdb->query($query);
         
         return $result;

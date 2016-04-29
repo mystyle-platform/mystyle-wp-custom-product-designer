@@ -63,10 +63,11 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the set_user_id function.
+     * Test the set_user_id function sets the user_id on a design that matches
+     * both the session and the user's email.
      * @global wpdb $wpdb
      */
-    function test_set_user_id() {
+    function test_set_user_id_for_email_and_session_match() {
         global $wpdb;
         
         $design_id = 1;
@@ -87,6 +88,48 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         //Add a session id and email to the design
         $design->set_session_id( $session_id );
         $design->set_email( $email );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Call the function
+        $result = MyStyle_DesignManager::set_user_id( $user, $session );
+        
+        //Assert that one row was modified
+        $this->assertEquals( 1, $result );
+        
+        //Get the design
+        $design_from_db = MyStyle_DesignManager::get( $design_id );
+        
+        //Assert that the user_id is set
+        $this->assertEquals( $user_id, $design_from_db->get_user_id() );
+    }
+    
+    /**
+     * Test the set_user_id function sets the user_id on a design with a session
+     * id match but no email.
+     * @global wpdb $wpdb
+     */
+    function test_set_user_id_for_session_match_with_no_email() {
+        global $wpdb;
+        
+        $design_id = 1;
+        $session_id = 'testsessionid';
+        $email = 'someone@example.com';
+        
+        //Mock the user
+        $user_id = wp_create_user( 'testuser', 'testpassword', $email );
+        $user = get_user_by( 'id', $user_id );
+        
+        //Mock the session
+        $session = MyStyle_Session::create( $session_id );
+        MyStyle_SessionManager::persist( $session );
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        
+        //Add a session id to the design
+        $design->set_session_id( $session_id );
         
         //Persist the design
         MyStyle_DesignManager::persist( $design );

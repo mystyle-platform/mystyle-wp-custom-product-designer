@@ -1,7 +1,5 @@
 <?php
 
-require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-sessionqueryresult.php');
-
 /**
  * The MyStyleUserTest class includes tests for testing the MyStyle_User
  * class.
