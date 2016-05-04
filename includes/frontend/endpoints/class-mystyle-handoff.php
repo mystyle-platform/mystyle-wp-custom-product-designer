@@ -117,11 +117,18 @@ class MyStyle_Handoff {
                     "You can access your design at any time from the following " .
                     "url:\n\n" . 
                     MyStyle_Customize_Page::get_design_url( $design ) . "\n";
+            $admin_email = get_option( 'admin_email' );
+            $blogname = get_option( 'blogname' );
+            $headers = '';
+            if ( $admin_email && $blogname ) {
+                $headers = array( 'From: ' . $blogname . ' <' . $admin_email . '>' );
+            }
             
             wp_mail( 
                 $mystyle_user->get_email(), 
                 'Design Created!', 
-                $message
+                $message,
+                $headers
             );
             
             //Persist the design to the database
