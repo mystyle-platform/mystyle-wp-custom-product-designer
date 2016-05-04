@@ -34,14 +34,13 @@ class MyStyle_Handoff {
         $url = $_SERVER['REQUEST_URI'];
         //echo $url;
         if( strpos( $url, self::$SLUG ) !== FALSE ) {
-            if(isset($GLOBALS['skip_ob_start'])) { //Used by our PHPUnit tests
+            if( isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
                 return true;
             } else {
-                //self::handle(); //Use this for debugging (it allows var_dump, echo, etc to be seen)
-                ob_start( array( 'MyStyle_Handoff', 'handle' ) );
+                self::handle();
             }
         } else {
-            if(isset($GLOBALS['skip_ob_start'])) { //Used by our PHPUnit tests
+            if( isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
                 return false;
             }
         }
@@ -55,7 +54,6 @@ class MyStyle_Handoff {
      * 
      * Needs to be public and static because it is registered as a WP action.
      * 
-     * @return string Returns the html to output to the browser.
      * @todo Unit test the variation support
      * @todo Break this long function up.
      */
@@ -107,9 +105,12 @@ class MyStyle_Handoff {
             }
             
             // ------------------- Send email to user ---------------
+            //$design_complete_email = new MyStyle_Email_Design_Complete( $design );
+            //$design_complete_email->send();
+            
             if ( has_action( 'mystyle_send_design_complete_email' ) ) {
                 //custom email
-                do_action( 'mystyle_send_design_complete_email' );
+                do_action( 'mystyle_send_design_complete_email', $design );
             } else {
                 //basic email
                 $site_title = get_bloginfo( 'name' );
@@ -184,6 +185,31 @@ class MyStyle_Handoff {
                 WC()->session->set( 'mystyle_' . $cart_item_key, $cart_item_data );
             }
             // ------------------------------------------------------------
+            
+        }
+        
+        if( ! isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
+            ob_start( array( 'MyStyle_Handoff', 'get_output' ) );
+        }
+    }
+    
+    /**
+     * Called by the handle function above. Returns the output for the request.
+     * Only supports POST requests, GET requests are given an Access
+     * DENIED message.
+     * 
+     * Needs to be public and static because it is called by a static function.
+     * 
+     * @return string Returns the html to output to the browser.
+     */
+    public static function get_output() {
+        if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+            //- Add the product to the cart along with the mystyle variables -//
+            global $woocommerce;
+            
+            
+            //Get the woocommerce cart
+            $cart = $woocommerce->cart;
             
             if(MyStyle_Options::is_demo_mode()) {
                 //Send to Demo Mode Message
