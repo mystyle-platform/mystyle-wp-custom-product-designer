@@ -127,7 +127,9 @@ class MyStyle_Options_Page {
         <div class="wrap">
             <h2 class="mystyle-admin-title">
                 <span id="mystyle-icon-general" class="icon100"></span>
-                MyStyle Settings <span class="glyphicon glyphicon-cog"></span></h2>
+                MyStyle Settings <span class="glyphicon glyphicon-cog"></span>
+            </h2>
+            <?php settings_errors(); ?>
 
             <form action="options.php" method="post">
                 <?php settings_fields( 'mystyle_options' ); ?>
