@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Simple entity class.
+ * Class to receive and process the handoff from the customizer.
  * @package MyStyle
  * @since 0.5
  */
@@ -57,6 +57,7 @@ class MyStyle_Handoff {
      * 
      * @return string Returns the html to output to the browser.
      * @todo Unit test the variation support
+     * @todo Break this long function up.
      */
     public static function handle() {
         if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
@@ -105,31 +106,38 @@ class MyStyle_Handoff {
                 }
             }
             
-            //Send email to user
-            $site_title = get_bloginfo( 'name' );
-            $site_url = network_site_url( '/' );
-            $site_description = get_bloginfo( 'description' );
-            $message = 
-                    "Design Created!\n\n" .
-                    "This email is to confirm that your design was successfully " .
-                    "saved. Thanks for using our site!\n\n" .
-                    "Your design id is " . $design->get_design_id() . ".\n\n" .
-                    "You can access your design at any time from the following " .
-                    "url:\n\n" . 
-                    MyStyle_Customize_Page::get_design_url( $design ) . "\n";
-            $admin_email = get_option( 'admin_email' );
-            $blogname = get_option( 'blogname' );
-            $headers = '';
-            if ( $admin_email && $blogname ) {
-                $headers = array( 'From: ' . $blogname . ' <' . $admin_email . '>' );
+            // ------------------- Send email to user ---------------
+            if ( has_action( 'mystyle_send_design_complete_email' ) ) {
+                //custom email
+                do_action( 'mystyle_send_design_complete_email' );
+            } else {
+                //basic email
+                $site_title = get_bloginfo( 'name' );
+                $site_url = network_site_url( '/' );
+                $site_description = get_bloginfo( 'description' );
+                $message = 
+                        "Design Created!\n\n" .
+                        "This email is to confirm that your design was successfully " .
+                        "saved. Thanks for using our site!\n\n" .
+                        "Your design id is " . $design->get_design_id() . ".\n\n" .
+                        "You can access your design at any time from the following " .
+                        "url:\n\n" . 
+                        MyStyle_Customize_Page::get_design_url( $design ) . "\n";
+                $admin_email = get_option( 'admin_email' );
+                $blogname = get_option( 'blogname' );
+                $headers = '';
+                if ( $admin_email && $blogname ) {
+                    $headers = array( 'From: ' . $blogname . ' <' . $admin_email . '>' );
+                }
+
+                wp_mail( 
+                    $mystyle_user->get_email(), 
+                    'Design Created!', 
+                    $message,
+                    $headers
+                );
             }
-            
-            wp_mail( 
-                $mystyle_user->get_email(), 
-                'Design Created!', 
-                $message,
-                $headers
-            );
+            // -------------------------------------------------------
             
             //Persist the design to the database
             $design = MyStyle_DesignManager::persist( $design );
