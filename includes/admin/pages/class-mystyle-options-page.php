@@ -314,7 +314,7 @@ class MyStyle_Options_Page {
         }
 
         //Force Mobile
-        $new_options['force_mobile'] = intval( $input['force_mobile'] );
+        $new_options['force_mobile'] = ( isset( $input['force_mobile'] ) ) ? intval( $input['force_mobile'] ) : 0;
         if( ! preg_match( '/^[01]$/', $new_options['force_mobile'] ) ) {
             $has_errors = true;
             $msg_type = 'error';
@@ -323,7 +323,7 @@ class MyStyle_Options_Page {
         }
 
         //Hide Customize Page Title
-        $new_options['customize_page_title_hide'] = intval( $input['customize_page_title_hide'] );
+        $new_options['customize_page_title_hide'] = ( isset( $input['customize_page_title_hide'] ) ) ? intval( $input['customize_page_title_hide'] ) : 0;
         if( ! preg_match( '/^[01]$/', $new_options['customize_page_title_hide'] ) ) {
             $has_errors = true;
             $msg_type = 'error';
