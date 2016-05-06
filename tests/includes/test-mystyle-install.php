@@ -106,8 +106,13 @@ class MyStyleInstallTest extends WP_UnitTestCase {
         
         $customize_page_id = MyStyle_Customize_Page::get_id();
         
-        //assert that the customize page was created
-        $this->assertNotNull($customize_page_id);
+        //assert that the Customize page was created
+        $this->assertNotNull( $customize_page_id );
+        
+        $design_profile_page_id = MyStyle_Design_Profile_Page::get_id();
+        
+        //assert that the Design Profile page was created
+        $this->assertNotNull( $design_profile_page_id );
     }
     
     /**

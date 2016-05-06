@@ -20,12 +20,17 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
     public static function get( $design_id ) {
         global $wpdb;
         
+        $design = null;
+        
         $query = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ' . 
                  'WHERE ' . MyStyle_Design::get_primary_key() . ' = ' . $design_id;
         
         $result_object = $wpdb->get_row($query);
-
-        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        
+        if( $result_object != null ) {
+            $design = MyStyle_Design::create_from_result_object( $result_object );
+        }
         
         return $design;
     }

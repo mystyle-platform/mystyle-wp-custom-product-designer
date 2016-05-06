@@ -146,11 +146,17 @@ class MyStyle_Options_Page {
             </form>
             <br/>
             <div class="mystyle-admin-box">
+                <?php do_settings_sections( 'mystyle_tools' ); ?>
                 <form action="admin.php?page=mystyle&action=fix_customize_page" method="post">
-                    <?php do_settings_sections( 'mystyle_tools' ); ?>
                     <p class="submit">
                         <input type="submit" name="Submit" id="submit_fix_customize_page" class="button button-primary" value="<?php esc_attr_e('Fix Customize Page'); ?>" /><br/>
                         <small>This tool will attempt to fix the Customize page. This may involve creating, recreating, or restoring the page.</small>
+                    </p>
+                </form>
+                <form action="admin.php?page=mystyle&action=fix_design_profile_page" method="post">
+                    <p class="submit">
+                        <input type="submit" name="Submit" id="submit_fix_design_profile_page" class="button button-primary" value="<?php esc_attr_e('Fix Design Profile Page'); ?>" /><br/>
+                        <small>This tool will attempt to fix the Design page. This may involve creating, recreating, or restoring the page.</small>
                     </p>
                 </form>
             </div>

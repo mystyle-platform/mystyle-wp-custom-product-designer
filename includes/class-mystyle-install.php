@@ -65,6 +65,9 @@ class MyStyle_Install {
         if( ! MyStyle_Customize_Page::exists() ) {
             MyStyle_Customize_Page::create();
         }
+        if( ! MyStyle_Design_Profile_Page::exists() ) {
+            MyStyle_Design_Profile_Page::create();
+        }
         MyStyle_Install::create_tables();
     }
 

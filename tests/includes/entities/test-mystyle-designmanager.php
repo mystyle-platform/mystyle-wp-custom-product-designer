@@ -40,11 +40,9 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the get function.
-     * @global wpdb $wpdb
+     * Test the get function with a .
      */    
-    function test_get() {
-        global $wpdb;
+    function test_get_with_a_valid_design_id() {
         
         $design_id = 1;
         
@@ -59,6 +57,20 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         
         //Assert that the design_id is set
         $this->assertEquals( $design_id, $design_from_db->get_design_id() );
+    }
+    
+    /**
+     * Test the get function with an invalid design id.
+     */    
+    function test_get_with_an_invalid_design_id() {
+        
+        $design_id = 999;
+        
+        //Call the function
+        $design = MyStyle_DesignManager::get( $design_id );
+        
+        //Assert that the function returned null.
+        $this->assertNull( $design );
     }
     
     /**

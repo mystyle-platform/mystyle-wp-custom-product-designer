@@ -45,12 +45,13 @@ if( file_exists( MYSTYLE_PATH . 'config.php' ) ) {
 }
 
 if( ! defined('MYSTYLE_SERVER') ) { define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' ); }
-if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '1.3.1' ); }
+if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '1.3.2' ); }
 
 define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
 define( 'MYSTYLE_NOTICES_NAME', 'mystyle_notices' );
 define( 'MYSTYLE_NOTICES_DISMISSED_NAME', 'mystyle_notices_dismissed' );
 define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
+define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' );
 
 //includes
 require_once( MYSTYLE_PATH . 'tests/qunit.php' );
@@ -69,6 +70,8 @@ require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-api.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
 require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
+require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-design-profile-page.php' );
+require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-install.php' );
 require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
@@ -125,3 +128,4 @@ if( is_admin() ) {
 
 //Register shortcodes
 add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
+add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );

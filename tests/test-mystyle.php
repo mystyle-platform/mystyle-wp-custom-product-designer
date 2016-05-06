@@ -20,6 +20,7 @@ class MyStyleTest extends WP_UnitTestCase {
         $this->assertNotEmpty( MYSTYLE_OPTIONS_NAME );
         $this->assertNotEmpty( MYSTYLE_NOTICES_NAME );
         $this->assertNotEmpty( MYSTYLE_CUSTOMIZE_PAGEID_NAME );
+        $this->assertNotEmpty( MYSTYLE_DESIGN_PROFILE_PAGEID_NAME );
     }
 
     /**
@@ -29,6 +30,15 @@ class MyStyleTest extends WP_UnitTestCase {
         global $shortcode_tags;
 
         $this->assertArrayHasKey( 'mystyle_customizer', $shortcode_tags );
+    }
+    
+    /**
+     * Assert that the mystyle_design_profile shortcode is registered
+     */    
+    function testDesignProfileShortcodeIsRegistered() {
+        global $shortcode_tags;
+
+        $this->assertArrayHasKey( 'mystyle_design_profile', $shortcode_tags );
     }
     
 }
