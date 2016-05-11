@@ -1,3 +1,11 @@
+= 1.3.3 =
+
+* Bumping the version to try to fix vcs merge issue.
+
+= 1.3.2 =
+
+* Removed duplicate upgrade code from the MyStyle class constructor, to try to fix upgrade issue.
+
 = 1.3.1 =
 
 * Now setting the design complete email 'from' address using the admin email and blog name.
