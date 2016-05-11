@@ -36,7 +36,7 @@ class MyStyle {
         add_filter( 'woocommerce_in_cart_product_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
         
         // Set the current version and handle any updates
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $data_version = ( array_key_exists( 'version', $options ) ) ? $options['version'] : null;
         if( $data_version != MYSTYLE_VERSION ) {
             $options['version'] = MYSTYLE_VERSION;
@@ -46,7 +46,11 @@ class MyStyle {
                 //Delta the database tables
                 MyStyle_Install::delta_tables();
 
-                //do any necessary version data upgrades here
+                //Add the Design page if upgrading from less than 1.3.4 (versions that were before this page existed)
+                if( version_compare( $data_version, '1.3.4', '<' ) ) {
+                    MyStyle_Design_Profile_Page::create();
+                }
+                
                 $upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $data_version . ' to ' . MYSTYLE_VERSION . '.' );
                 mystyle_notice_add_to_queue( $upgrade_notice );
             }
