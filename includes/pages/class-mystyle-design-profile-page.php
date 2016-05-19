@@ -15,6 +15,7 @@ abstract class MyStyle_Design_Profile_Page {
         //Create the Design Profile page
         $design_profile_page = array(
             'post_title'   => 'Design Profile',
+            'post_name'    => 'designs',
             'post_content' => '[mystyle_design_profile]',
             'post_status'  => 'publish',
             'post_type'    => 'page',
@@ -88,14 +89,19 @@ abstract class MyStyle_Design_Profile_Page {
      * the passed design.
      * @param integer $design
      * @return string Returns a link that can be used to view the design.
-     * @todo Add unit testing.
+     * @global WP_Rewrite $wp_rewrite
      */
     public static function get_design_url( MyStyle_Design $design ) {
-        $args = array(
-            'design_id' => $design->get_design_id(),
-        );
+        global $wp_rewrite;
         
-        $url = add_query_arg( $args , get_permalink( self::get_id() ) );
+        if ( isset( $wp_rewrite->page_structure ) && ( $wp_rewrite->page_structure != '' ) ) {
+            $url = get_permalink( self::get_id() ) . '/' . $design->get_design_id();    
+        } else {
+            $args = array(
+                'design_id' => $design->get_design_id(),
+            );
+            $url = add_query_arg( $args , get_permalink( self::get_id() ) );
+        }
         
         return $url;
     }
