@@ -159,6 +159,9 @@ class MyStyleSessionTest extends WP_UnitTestCase {
         //Assert that the session id is the expected length
         $this->assertEquals( 43, strlen( $session_id_1 ) );
         
+        //Assert that the session id is composed only of printable characters
+        $this->assertTrue( ctype_print( $session_id_1 ) );
+        
         //Generate another session id
         $session_id_2 = MyStyle_Session::generate_session_id();
         
