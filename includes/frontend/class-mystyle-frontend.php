@@ -18,6 +18,7 @@ class MyStyle_FrontEnd {
         add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
         add_filter( 'woocommerce_product_single_add_to_cart_text', array( &$this, 'filter_cart_button_text' ), 10, 1 ); 
         add_filter( 'woocommerce_add_to_cart_handler', array( &$this, 'filter_add_to_cart_handler' ), 10, 2 );
+        add_filter( 'query_vars', array( &$this, 'add_query_vars_filter' ), 10, 1 );
         
         add_action( 'init', array( &$this, 'init' ) );
         add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
@@ -212,6 +213,18 @@ class MyStyle_FrontEnd {
         $customizer_url = add_query_arg( $args, get_permalink( $customize_page_id ) );
         wp_safe_redirect( $customizer_url );
         exit;
+    }
+    
+    /**
+     * Add design_id as a custom query var.
+     * @param array $vars
+     * @return string
+     * @todo Add unit testing
+     */
+    function add_query_vars_filter( $vars ){
+        $vars[] = "design_id";
+        
+        return $vars;
     }
 
 }
