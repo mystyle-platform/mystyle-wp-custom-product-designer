@@ -10,7 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div id="design-profile-wrapper">
-    <img src="<?php echo $design->get_web_url(); ?>"/>
+<div id="mystyle-design-profile-wrapper" class="woocommerce">
+    <img id="mystyle-design-profile-img" src="<?php echo $design->get_web_url(); ?>"/>
+    
+    <button onclick="location.href = '<?php echo $design->get_reload_url( ); ?>';" class="button">Customize</a>
 </div>
 

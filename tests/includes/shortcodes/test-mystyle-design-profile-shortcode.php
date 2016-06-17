@@ -52,6 +52,9 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
         
         //mock the request uri
         $_SERVER["REQUEST_URI"] = 'http://localhost/designs/1';
+        
+        //Create the MyStyle Customize page
+        $page_id = MyStyle_Customize_Page::create();
 
         //call the function
         $output = MyStyle_Design_Profile_Shortcode::output();

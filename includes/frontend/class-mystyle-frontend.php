@@ -58,10 +58,14 @@ class MyStyle_FrontEnd {
                   )
                 {
                     $classes[] = 'mystyle-customize';
+                } else if($post->ID == MyStyle_Design_Profile_Page::get_id() )
+                {
+                    $classes[] = 'mystyle-design-profile';
                 }
             }
         } catch( MyStyle_Exception $e ) {
-            //this exception may be thrown if the Customize Page is missing.
+            //this exception may be thrown if the Customize Page or Design
+            //Profile Page is missing.
             //For this function, that is okay, just continue.
         }
         

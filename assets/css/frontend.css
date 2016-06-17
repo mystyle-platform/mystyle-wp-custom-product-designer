@@ -1,3 +1,4 @@
+/* MyStyle Customize Page */
 #customizer-wrapper { 
     width: 950px;
     height: 550px;
@@ -26,6 +27,9 @@ body.mystyle-customize #secondary,
 body.mystyle-customize .site::before {
     display: none;
 }
-body.mystyle-customize .site-content {
-    margin-left: auto;
+
+/* MyStyle Design Profile Page */
+body.mystyle-design-profile img#mystyle-design-profile-img {
+    display: block;
 }
+
