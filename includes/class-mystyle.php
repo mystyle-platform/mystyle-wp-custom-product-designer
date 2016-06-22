@@ -26,6 +26,7 @@ class MyStyle {
         add_action( 'woocommerce_created_customer', array( &$this, 'on_woocommerce_created_customer' ), 10, 3 );
         
         add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'get_cart_item_from_session' ), 10, 3 );
+        add_filter( 'woocommerce_order_again_cart_item_data', array( &$this, 'filter_order_again_cart_item_data' ), 10, 3 );
     }
     
     /**
@@ -182,6 +183,25 @@ class MyStyle {
         $session = MyStyle_SessionHandler::get();
         $user = get_user_by( 'id', $customer_id );
         MyStyle_DesignManager::set_user_id( $user, $session );
+    }
+    
+    /**
+     * Filter the cart item data as each item is added to the cart during the 
+     * order_again function.  Simply adds the mystyle_data from the order item
+     * to the cart item.
+     * @param array $cart_item_data The cart item data to filter.
+     * @param object $item The item being copied into the cart.
+     * @param WC_Order $order The order being copied into the cart.
+     * @return Returns the updated cart item data.
+     * @todo Add unit testing
+     */
+    public static function filter_order_again_cart_item_data( $cart_item_data, $item, $order ) {
+        if ( isset( $item['mystyle_data'] ) ) {
+            $mystyle_data = maybe_unserialize( $item['mystyle_data'] );
+            $cart_item_data['mystyle_data'] = $mystyle_data;
+        }
+        
+        return $cart_item_data;
     }
     
     /**
