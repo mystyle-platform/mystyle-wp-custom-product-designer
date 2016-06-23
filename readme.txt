@@ -5,7 +5,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: customization, designer, personalization, product-preview, woocommerce, custom product, product designer, Post, plugin, admin, posts, shortcode, images, page, image
 Requires at least: 3.3
 Tested up to: 4.5.1
-Stable tag: 1.3.3
+Stable tag: 1.3.6
 
 The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
@@ -67,7 +67,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 1. Install the Plugin:  Upload the mystyle folder to your website's `/wp-content/plugins/` directory
 2. Activate the plugin:  Find MyStyle in your 'Plugins' menu in the WordPress admin and press 'Activate'.  This will enable the plugin and also automatically create a "customize" page where the Product Designer will load when someone goes to design their own product. This new Customize page will be created complete with the Customizer Shortcode already in the content. You do not have to manually create your Customize App page or use the shortcode anywhere.  When a user clicks 'customize' on any product, they will be taken to this automatically created page.  You may change the title of this page in your page list, or add your own content to it before or after the shortcode.
 3. Follow the links in the Settings > MyStyle admin to obtain your Developer account, API Key and Secret, and enter them in the settings page.  When you register for your Developer account, you'll be given a temporary demo ID to test with until we can review your account and provide you with your own credentials.
-4. In the WooCommerce product settings, go to the MyStyle tab (beneath product data), check the box 'Make Customizable' box and enter a corresponding Template Id.  If you are using Demo mode, try just using the demo Template Id (Template Id: 70) for an example 12x16 canvas print template.  When you create a Developer account, you will be given a list of template ids.
+4. In the WooCommerce product settings, go to the MyStyle tab (beneath product data), check the box 'Make Customizable' box and enter a corresponding Template Id. Try using the Template Id 70 for a 12x16 canvas print template.  You will receive a list of template ids once you have an active license.
 
 == Screenshots ==
 
@@ -78,6 +78,16 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 5. Example of a Smart Car with a background image applied
 
 == Changelog ==
+
+= 1.3.6 =
+* Added code to recreate invalid session ids.
+
+= 1.3.5 =
+* Fixed a bug with the function that generates session ids.
+
+= 1.3.4 =
+* Updated the session id generation function to add support for servers that don't have openssl.
+* Updated the instructions in the readme.txt
 
 = 1.3.3 =
 * Bumping the version to try to fix vcs merge issue.

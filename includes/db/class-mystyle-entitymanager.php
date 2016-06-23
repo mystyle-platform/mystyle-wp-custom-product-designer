@@ -20,11 +20,20 @@ abstract class MyStyle_EntityManager {
     public static function persist( MyStyle_Entity $entity ) {
         global $wpdb;
         
-        $wpdb->replace( 
-                $entity->get_table_name(),
-                $entity->get_data_array(),
-                $entity->get_insert_format() 
-            );
+        $ret = $wpdb->replace( 
+                    $entity->get_table_name(),
+                    $entity->get_data_array(),
+                    $entity->get_insert_format() 
+                );
+        
+        if($ret == false) {
+            $msg = "Could not persist data to database.\n" .
+                    $wpdb->last_error . "\n" .
+                    $wpdb->last_query . "\n" .
+                    $entity->get_table_name() . "\n\n" .
+                    var_export( $entity->get_data_array() ) . "\n\n";
+            throw new MyStyle_Exception( $msg , 500 );
+        }
         
         return $entity;
     }

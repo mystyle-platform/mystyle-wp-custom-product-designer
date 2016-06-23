@@ -205,17 +205,42 @@ class MyStyle_Session implements MyStyle_Entity {
     
     /**
      * Generates a session id.
+     * Sources: 
+     *  * https://api.drupal.org/api/drupal/includes!bootstrap.inc/function/drupal_random_bytes/7.x
+     *  * http://stackoverflow.com/questions/48124/generating-pseudorandom-alpha-numeric-strings
      * @return string Returns the generated session id.
      */
     public static function generate_session_id()
     {
-        $bytes = openssl_random_pseudo_bytes( 55 );
-        $data = uniqid( mt_rand(), TRUE ) . $bytes;
-        $hash = base64_encode( hash( 'sha256', $data, TRUE ) );
-        $safe_hash = strtr( $hash, array('+' => '-', '/' => '_', '=' => '') );
-        $session_id = $safe_hash;
+        $bytes = '';
+        $sid = '';
         
-        return $session_id;
+        //the number of bytes that we want
+        $count = 43;
+
+        // use openssl_random_pseudo_bytes if available.
+        // Note: PHP versions prior 5.3.4 experienced openssl_random_pseudo_bytes()
+        // locking on Windows and rendered it unusable.
+        if ( version_compare( PHP_VERSION, '5.3.4', '>=' ) && function_exists( 'openssl_random_pseudo_bytes' ) ) {
+            $bytes = openssl_random_pseudo_bytes( $count );
+            $sid   = bin2hex($bytes);
+        } else {
+            // range is numbers (48) through capital and lower case letters (122)
+            $range_start = 48;
+            $range_end   = 122;
+
+            for ( $i = 0; $i < $count; $i++ ) {
+              // generate a number within the range
+              $ascii_no = round( mt_rand( $range_start , $range_end ) ); 
+              // get the char by number and add it to the session id.
+              $sid .= chr( $ascii_no );
+            }
+        }
+        
+        //ensure that the new sid is not longer than $count
+        $sid = substr( $sid, 0, $count );
+
+        return $sid;
     }
 
 }

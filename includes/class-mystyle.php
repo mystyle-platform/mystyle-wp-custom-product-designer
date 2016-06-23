@@ -70,7 +70,7 @@ class MyStyle {
     }
     
     /**
-     * After the order is completed, do the following if for all mystyle enabled
+     * After the order is completed, do the following for all mystyle enabled
      * products:
      *  * Increment the design purchase count.
      * @param number $order_id The order_id of the new order.
@@ -81,11 +81,12 @@ class MyStyle {
         $order = new WC_Order( $order_id );
 
         if ( count( $order->get_items() ) > 0 ) {
-            foreach( $order->get_items() as $item ) {
-                
-                if( isset( $item['mystyle_data'] ) ) {  
-                    $mystyle_data = wc_get_order_item_meta( $item->order_item_id , 'mystyle_data' );
-                    
+            foreach ( $order->get_items() as $item_id => $item ) {
+
+                if ( isset( $item['mystyle_data'] ) ) {  
+                    $mystyle_data = maybe_unserialize( $item['mystyle_data'] );
+                    $design_id = $mystyle_data['design_id'];
+
                     //Increment the design purchase count
                     $design = MyStyle_DesignManager::get( $design_id );
                     $design->increment_purchase_count();

@@ -38,6 +38,13 @@ class MyStyle_SessionHandler {
             }
         }
         
+        //Version 1.3.0 - 1.3.4 had an issue where it was creating binary
+        //session id's. Here we check to see if the session id is binary and if
+        //so, set the $session to null so that a new one is created.
+        if( ( $session != null ) && ( ! ctype_print( $session->get_session_id() ) ) ) {
+            $session = null;
+        }
+        
         //If no session is found, create a new one and set the cookie.
         if( $session == null ) {
             $session = MyStyle_Session::create();
