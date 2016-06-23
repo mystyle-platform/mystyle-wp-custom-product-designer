@@ -32,4 +32,6 @@ body.mystyle-customize .site::before {
 body.mystyle-design-profile img#mystyle-design-profile-img {
     display: block;
 }
+body.mystyle-design-profile ul.mystyle-button-group {list-style: none;}
+body.mystyle-design-profile ul.mystyle-button-group li {display: inline-block;}
 

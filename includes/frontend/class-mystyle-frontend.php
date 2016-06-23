@@ -22,7 +22,8 @@ class MyStyle_FrontEnd {
         
         add_action( 'init', array( &$this, 'init' ) );
         add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
-        add_action( 'woocommerce_add_to_cart_handler_mystyle_customizer', array( &$this, 'mystyle_add_to_cart_handler' ), 10, 1 );
+        add_action( 'woocommerce_add_to_cart_handler_mystyle_customizer', array( &$this, 'mystyle_add_to_cart_handler_customize' ), 10, 1 );
+        add_action( 'woocommerce_add_to_cart_handler_mystyle_add_to_cart', array( &$this, 'mystyle_add_to_cart_handler' ), 10, 1 );
     }
     
     /**
@@ -131,11 +132,20 @@ class MyStyle_FrontEnd {
             $product_id = absint( $_REQUEST['add-to-cart'] );
         }
         
-        if( MyStyle::product_is_customizable( $product_id ) ) {
-            $handler = 'mystyle_customizer';
+        if( isset( $_REQUEST['design_id'] ) ) {
+            $handler = 'mystyle_add_to_cart';
             if(WC_VERSION < 2.3) {
                 //old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
-                self::mystyle_add_to_cart_handler(false);
+                self::mystyle_add_to_cart_handler( false );
+            }
+        } else {
+        
+            if( MyStyle::product_is_customizable( $product_id ) ) {
+                $handler = 'mystyle_customizer';
+                if(WC_VERSION < 2.3) {
+                    //old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
+                    self::mystyle_add_to_cart_handler_customize( false );
+                }
             }
         }
     
@@ -187,12 +197,11 @@ class MyStyle_FrontEnd {
     }
     
     /**
-     * The MyStyle add_to_cart handler.  Handles the add_to_cart action for
-     * Customizable products.
+     * Handles the add_to_cart action for customizing customizable products.
      * @param string $url The current url.
      * @todo Add unit testing
      */
-    function mystyle_add_to_cart_handler( $url ) {
+    function mystyle_add_to_cart_handler_customize( $url ) {
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
         
         //set up an array of data to pass to/through the customizer.
@@ -217,6 +226,36 @@ class MyStyle_FrontEnd {
         $customizer_url = add_query_arg( $args, get_permalink( $customize_page_id ) );
         wp_safe_redirect( $customizer_url );
         exit;
+    }
+    
+    /**
+     * Handles the add_to_cart action for when an exising design is added to the
+     * cart.
+     * @param string $url The current url.
+     * @todo Add unit testing
+     */
+    function mystyle_add_to_cart_handler( $url ) {
+        global $woocommerce;
+        
+        $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
+        $design_id = absint( $_REQUEST['design_id'] );
+        
+        //Get the woocommerce cart
+        $cart = $woocommerce->cart;
+        
+        //Add the mystyle meta data to the cart item
+        $cart_item_data = array();
+        $cart_item_data['mystyle_data'] = array( 'design_id' => $design_id );
+        
+        //Add the product and meta data to the cart
+        $cart_item_key = $cart->add_to_cart(
+                                    $product_id, //WooCommerce product id
+                                    1, //quantity
+                                    null, //variation id
+                                    null, //variation attribute values
+                                    $cart_item_data //extra cart item data we want to pass into the item
+                            );
+        
     }
     
     /**
