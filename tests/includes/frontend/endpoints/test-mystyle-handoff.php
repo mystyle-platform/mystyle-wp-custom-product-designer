@@ -132,6 +132,9 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         global $mail_message;
         $GLOBALS['skip_ob_start'] = true;
         
+        //Create the MyStyle Customize page (needed for the link in the email)
+        MyStyle_Customize_Page::create();
+        
         //Create the MyStyle Design Profile page (needed for the link in the email)
         MyStyle_Design_Profile_Page::create();
         
