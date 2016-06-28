@@ -599,5 +599,25 @@ class MyStyle_Design implements MyStyle_Entity {
         
         return $customizer_url;
     }
+    
+    /**
+     * Get URL that will add the design to the cart and then show the cart.
+     * @return string The url to add the design to the cart and show the cart.
+     * @global type $woocommerce
+     * @todo Add unit testing
+     */
+    public function get_add_to_cart_url( ) {
+        global $woocommerce;
+            
+        //Get the woocommerce cart
+        $cart = $woocommerce->cart;
+        
+        //Build the url
+        $cart_url = $cart->get_cart_url();
+        $cart_url = add_query_arg( 'add-to-cart', $this->product_id, $cart_url );
+        $cart_url = add_query_arg( 'design_id', $this->design_id, $cart_url );
+        
+        return $cart_url;
+    }
 
 }
