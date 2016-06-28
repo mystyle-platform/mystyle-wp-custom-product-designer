@@ -148,7 +148,7 @@ abstract class MyStyle_Design_Profile_Page {
                 }
                 
                 //Check for the shortcode
-                if( strpos( $post->post_content, '[mystyle_designs]' ) === false ) {
+                if( strpos( $post->post_content, '[mystyle_design_profile]' ) === false ) {
                     $message .= 'The mystyle_designs shortcode not found in the page content, adding...<br/>';
                     $post->post_content .= '[mystyle_designs]';
                     
