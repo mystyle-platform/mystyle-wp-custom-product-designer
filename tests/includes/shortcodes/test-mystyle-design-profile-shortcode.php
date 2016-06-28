@@ -5,7 +5,7 @@
  * MyStyle_Design_Profile_Shortcode class.
  *
  * @package MyStyle
- * @since 1.3.2
+ * @since 1.4.0
  */
 class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
     

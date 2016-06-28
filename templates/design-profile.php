@@ -2,7 +2,7 @@
 /**
  * The template for displaying the MyStyle Design Profile page content.
  * @package MyStyle
- * @since 1.3.2
+ * @since 1.4.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -3,7 +3,7 @@
 /**
  * Class for the MyStyle Design Profile Shortcode.
  * @package MyStyle
- * @since 1.3.2
+ * @since 1.4.0
  */
 abstract class MyStyle_Design_Profile_Shortcode {
 

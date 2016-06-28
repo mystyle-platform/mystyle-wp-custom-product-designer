@@ -46,8 +46,8 @@ class MyStyle {
                 //Delta the database tables
                 MyStyle_Install::delta_tables();
 
-                //Add the Design page if upgrading from less than 1.3.4 (versions that were before this page existed)
-                if( version_compare( $data_version, '1.3.4', '<' ) ) {
+                //Add the Design page if upgrading from less than 1.4.0 (versions that were before this page existed)
+                if( version_compare( $data_version, '1.4.0', '<' ) ) {
                     MyStyle_Design_Profile_Page::create();
                 }
                 
