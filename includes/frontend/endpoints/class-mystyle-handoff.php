@@ -123,7 +123,9 @@ class MyStyle_Handoff {
                         "Your design id is " . $design->get_design_id() . ".\n\n" .
                         "You can access your design at any time from the following " .
                         "url:\n\n" . 
-                        MyStyle_Design_Profile_Page::get_design_url( $design ) . "\n";
+                        $design->get_add_to_cart_url() . "\n\n".
+                        "Reload and edit your design at any time here:\n\n".
+                        MyStyle_Design_Profile_Page::get_design_url( $design ) . "\n".
                 $admin_email = get_option( 'admin_email' );
                 $blogname = get_option( 'blogname' );
                 $headers = '';
