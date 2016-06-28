@@ -20,9 +20,10 @@ abstract class MyStyle_Design_Profile_Shortcode {
             if( empty( $design_id ) ) {
                 //try at /designs/10
                 $path = $_SERVER["REQUEST_URI"];
-                $design_id = substr( $path, strpos( $path, '/designs/' ) + 9 );
-                $design_id = str_replace( '/', '', $design_id );
-                if( ! preg_match( '/^[\d]+$/', $design_id ) ) {
+                $pattern = '/^.*\/designs\/([\d]+)/';
+                if( preg_match($pattern, $path, $matches) ) {
+                    $design_id = $matches[1];
+                } else {
                     throw new Exception('Design not found.');
                 }
             }
