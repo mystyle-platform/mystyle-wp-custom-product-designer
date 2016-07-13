@@ -1,3 +1,7 @@
+= 1.4.1 =
+
+* Fixed a bug where the upgrader wasn't properly creating the design profile page.
+
 = 1.4.0 =
 
 * Added design profile pages.
