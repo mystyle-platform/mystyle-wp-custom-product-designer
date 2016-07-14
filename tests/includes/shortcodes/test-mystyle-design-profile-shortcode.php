@@ -38,8 +38,14 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
     
     /**
      * Test the output function with valid design id.
-     */    
+     * @global stdClass $post
+     */
     public function test_output_with_valid_design_id() {
+        global $post;
+        
+        //reset the singleton instance of the design profile page (to clear out
+        // any previously set values)
+        MyStyle_Design_Profile_Page::reset_instance();
         
         //set up the data
         $design_id = 1;
@@ -50,11 +56,19 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
         //persist the design
         MyStyle_DesignManager::persist( $design );
         
-        //mock the request uri
-        $_SERVER["REQUEST_URI"] = 'http://localhost/designs/1';
-        
         //Create the MyStyle Customize page
-        $page_id = MyStyle_Customize_Page::create();
+        MyStyle_Customize_Page::create();
+        
+        //Create the MyStyle_Design_Profile page
+        MyStyle_Design_Profile_Page::create();
+        
+        //set the current post to the Design_Profile_Page.
+        $_SERVER["REQUEST_URI"] = 'http://localhost/designs/1';
+        $post = new stdClass();
+        $post->ID = MyStyle_Design_Profile_Page::get_id();
+        
+        //Init the MyStyle_Design_Profile_Page
+        MyStyle_Design_Profile_Page::init();
 
         //call the function
         $output = MyStyle_Design_Profile_Shortcode::output();
@@ -65,11 +79,21 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
     
     /**
      * Test the output function with no design id.
+     * @global stdClass $post
      */    
     public function test_output_with_no_design_id() {
+        global $post;
+        
+        //create the MyStyle_Design_Profile page
+        MyStyle_Design_Profile_Page::create();
         
         //mock the request uri
         $_SERVER["REQUEST_URI"] = 'http://localhost/designs/';
+        $post = new stdClass();
+        $post->ID = MyStyle_Design_Profile_Page::get_id();
+        
+        //init the MyStyle_Design_Profile_Page
+        MyStyle_Design_Profile_Page::init();
         
         //call the function
         $output = MyStyle_Design_Profile_Shortcode::output();
@@ -83,8 +107,16 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
      */    
     public function test_output_with_an_invalid_design_id() {
         
-        //mock the request uri with an invalid design id
+        //create the MyStyle_Design_Profile page
+        MyStyle_Design_Profile_Page::create();
+        
+        //mock the request uri
         $_SERVER["REQUEST_URI"] = 'http://localhost/designs/999';
+        $post = new stdClass();
+        $post->ID = MyStyle_Design_Profile_Page::get_id();
+        
+        //init the MyStyle_Design_Profile_Page
+        MyStyle_Design_Profile_Page::init();
         
         //call the function
         $output = MyStyle_Design_Profile_Shortcode::output();

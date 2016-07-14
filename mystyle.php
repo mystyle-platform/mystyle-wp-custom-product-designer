@@ -56,6 +56,9 @@ define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' )
 //includes
 require_once( MYSTYLE_PATH . 'tests/qunit.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
+require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-forbidden-exception.php' );
+require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-not-found-exception.php' );
+require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-unauthorized-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-options.php' );
 
@@ -124,6 +127,8 @@ if( is_admin() ) {
     $mystyle_frontend = new MyStyle_FrontEnd();
     $mystyle_handoff = new MyStyle_Handoff();
     $mystyle_session = MyStyle_SessionHandler::get();
+    
+    MyStyle_Design_Profile_Page::get_instance();
 }
 
 //Register shortcodes

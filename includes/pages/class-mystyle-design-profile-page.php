@@ -2,10 +2,52 @@
 
 /**
  * Class for working with the MyStyle Design Profile page.
+ * 
+ * This class has both static functions and hooks as well as the ability to be
+ * instantiated as a singleton instance with various methods.
+ * 
  * @package MyStyle
  * @since 1.4.0
  */
-abstract class MyStyle_Design_Profile_Page {
+class MyStyle_Design_Profile_Page {
+    
+    /**
+     * Singleton class instance
+     * @var MyStyle_Design_Profile_Page
+     */
+    static $instance;
+    
+    /**
+     * Stores the currently loaded design (when the class is instantiated as a
+     * singleton).
+     * @var MyStyle_Design 
+     */
+    private $design;
+    
+    /**
+     * Stores the currently thrown exception (if any) (when the class is
+     * instantiated as a singleton).
+     * @var MyStyle_Exception 
+     */
+    private $exception;
+    
+    /**
+     * Stores the current (when the class is instantiated as a singleton) status
+     * code.  We store it here since php's http_response_code() function wasn't
+     * added until php 5.4.
+     * see: http://php.net/manual/en/function.http-response-code.php
+     * @var int 
+     */
+    private $http_response_code;
+    
+    /**
+     * Constructor.
+     */
+    public function __construct() {
+        $this->http_response_code = 200;
+        
+        add_action( 'template_redirect', array( &$this, 'init' ) );
+    }
     
     /**
      * Function to create the page.
@@ -35,6 +77,72 @@ abstract class MyStyle_Design_Profile_Page {
         return $page_id;
     }
     
+    
+    /**
+     * Static function to initialize the page when it is requested from the
+     * front end.  
+     * 
+     * This function is being hooked into "template_redirect" instead of "init"
+     * because we want to wait until the current post has been loaded.
+     * 
+     * The function bails if the loaded page is not the Design Profile page.
+     * 
+     * If we are serving the Design Profile page, this function pulls the
+     * requested design and loads it into the singleton instance of this class
+     * for use by functions that occur downstream (such as the 
+     * mystyle_design_profile shortcode).  
+     * 
+     * It loads early enough to set headers and status codes.  If an exception
+     * is thrown, it catches it and attaches it to the singleton instance for
+     * for further processing downstream.
+     * 
+     * @throws MyStyle_Not_Found_Exception
+     */
+    public static function init() {
+        
+        //only run if we are currently serving the design profile page
+        if( self::is_current_post() ) { 
+            try {
+                //-------get the design id from the url and validate it ------- //
+
+                //try the query vars (ex: &design_id=10)
+                $design_id = get_query_var( 'design_id' );
+                if( empty( $design_id ) ) {
+                    //try at /designs/10
+                    $path = $_SERVER["REQUEST_URI"];
+                    $pattern = '/^.*\/designs\/([\d]+)/';
+                    if( preg_match($pattern, $path, $matches) ) {
+                        $design_id = $matches[1];
+                    } else {
+                        //note: this is caught at the bottom of this function
+                        throw new MyStyle_Not_Found_Exception( 'Design not found.' );
+                    }
+                }
+
+                $design = MyStyle_DesignManager::get( $design_id );
+
+                if( $design != null ) {
+                    //set the current design in the singleton instance
+                    MyStyle_Design_Profile_Page::get_instance()->set_design( $design );
+                } else {
+                    //note: this is caught at the bottom of this function
+                    throw new MyStyle_Not_Found_Exception( 'Design not found.' );
+                }
+
+            // When an exception is thrown, set the status code and set the
+            // exception in the singleton instance, it will later be used by
+            // the shortcode and view layer
+            } catch ( MyStyle_Not_Found_Exception $ex ) {
+                $response_code = 404;
+                status_header( $response_code );
+                
+                $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+                $design_profile_page->set_exception( $ex );
+                $design_profile_page->set_http_response_code( $response_code );
+            }
+        }
+    }
+    
     /**
      * Function to get the id of the Design Profile page.
      * @return number Returns the page id of the Design Profile page.
@@ -49,6 +157,28 @@ abstract class MyStyle_Design_Profile_Page {
         $page_id = $options[ MYSTYLE_DESIGN_PROFILE_PAGEID_NAME ];
         
         return $page_id;
+    }
+    
+    /**
+     * Determines whether or not this page is the current page/post.
+     * @return boolean Returns true if this page is the current page/post,
+     * otherwise returns false.
+     */
+    public static function is_current_post() {
+        $ret = false;
+        
+        try {
+            $current_post = get_post();
+            if( ( ! empty( $current_post) ) &&
+                ( $current_post->ID == self::get_id() ) )
+            {
+                $ret = true;
+            }
+        } catch( Exception $ex ) {
+            //do nothing (return false)
+        }
+        
+        return $ret;
     }
     
     /**
@@ -85,8 +215,8 @@ abstract class MyStyle_Design_Profile_Page {
     }
     
     /**
-     * Builds a url to the Design Profile page including url paramaters to load
-     * the passed design.
+     * Static function that builds a url to the Design Profile page including 
+     * url paramaters to load the passed design.
      * @param integer $design
      * @return string Returns a link that can be used to view the design.
      * @global WP_Rewrite $wp_rewrite
@@ -104,6 +234,64 @@ abstract class MyStyle_Design_Profile_Page {
         }
         
         return $url;
+    }
+    
+    /**
+     * Sets the current design.
+     * @param MyStyle_Design $design The design to set as the current design.
+     */
+    public function set_design( MyStyle_Design $design ) {
+        $this->design = $design;
+    }
+    
+    /**
+     * Gets the current design.
+     * @return MyStyle_Design Returns the currently loaded MyStyle_Design.
+     */
+    public function get_design() {
+        return $this->design;
+    }
+    
+    /**
+     * Sets the current exception.
+     * @param MyStyle_Exception $exception The exception to set as the currently
+     * thrown exception. This is used by the shortcode and view layer.
+     */
+    public function set_exception( MyStyle_Exception $exception ) {
+        $this->exception = $exception;
+    }
+    
+    /**
+     * Gets the current exception.
+     * @return MyStyle_Exception Returns the currently thrown MyStyle_Exception
+     * if any. This is used by the shortcode and view layer.
+     */
+    public function get_exception() {
+        return $this->exception;
+    }
+    
+    /**
+     * Sets the current http response code.
+     * @param int $http_response_code The http response code to set as the 
+     * currently set response code. This is used by the shortcode and view 
+     * layer.  We set it as a variable since it is difficult to retrieve in 
+     * php < 5.4.
+     */
+    public function set_http_response_code( $http_response_code ) {
+        $this->http_response_code = $http_response_code;
+    }
+    
+    /**
+     * Gets the current http response code.
+     * @return int Returns the current http response code. This is used by the
+     * shortcode and view layer.
+     */
+    public function get_http_response_code() {
+        if(function_exists('http_response_code')) {
+            return http_response_code();
+        } else {
+            return $this->http_response_code;
+        }
     }
     
     /**
@@ -187,6 +375,33 @@ abstract class MyStyle_Design_Profile_Page {
         $message .= $status;
 
         return $message;
+    }
+    
+    /**
+     * Resets the singleton instance. This is used during testing if we want to
+     * clear out the existing singleton instance.
+     * @return MyStyle_Design_Profile_Page Returns the singleton instance of
+     * this class.
+     */
+    public static function reset_instance() {
+        
+        self::$instance = new self();
+
+        return self::$instance;
+    }
+    
+    
+    /**
+     * Gets the singleton instance.
+     * @return MyStyle_Design_Profile_Page Returns the singleton instance of
+     * this class.
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
 }

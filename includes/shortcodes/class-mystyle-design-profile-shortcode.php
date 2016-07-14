@@ -12,44 +12,23 @@ abstract class MyStyle_Design_Profile_Shortcode {
      */
     public static function output() {
         
-        try {
-            //-------get the design id from the url and validate it ------- //
-            
-            //try the query vars (ex: &design_id=10)
-            $design_id = get_query_var( 'design_id' );
-            if( empty( $design_id ) ) {
-                //try at /designs/10
-                $path = $_SERVER["REQUEST_URI"];
-                $pattern = '/^.*\/designs\/([\d]+)/';
-                if( preg_match($pattern, $path, $matches) ) {
-                    $design_id = $matches[1];
-                } else {
-                    throw new Exception('Design not found.');
-                }
-            }
-
-            $design = MyStyle_DesignManager::get( $design_id );
-
-            if( $design == null ) {
-                throw new Exception('Design not found.');
-            }
-
+        $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+        
+        $design = $design_profile_page->get_design();
+        $ex = $design_profile_page->get_exception();
+        
+        if( $ex != null ) { //handle exceptions
+            $out = '<p>' . $ex->getMessage() . '</p>';
+        } else {
             // ---------- Call the view layer ------- //
             ob_start();
             require( MYSTYLE_TEMPLATES . 'design-profile.php' );
             $out = ob_get_contents();
             ob_end_clean();
             // -------------------------------------- //
-
-            return $out;
-            
-            
-        } catch (Exception $e) {
-            $out = '<p>' . $e->getMessage() . '</p>';
-            
-            return $out;
         }
 
+        return $out;       
     }
 
 }

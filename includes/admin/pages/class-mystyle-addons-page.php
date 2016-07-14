@@ -12,7 +12,7 @@ class MyStyle_Addons_Page {
     static $instance;
 
     /**
-     * Constructor, constructs the designs page and adds it to the Settings
+     * Constructor, constructs the addons page and adds it to the Settings
      * menu.
      */
     public function __construct() {

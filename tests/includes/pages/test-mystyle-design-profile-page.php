@@ -37,6 +37,143 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the constructor
+     * @global wp_filter
+     */    
+    public function test_constructor() {
+        global $wp_filter;
+        
+        $mystyle_design_profile_page = new MyStyle_Design_Profile_Page();
+        
+        //Assert that the init function is registered.
+        $function_names = get_function_names( $wp_filter['init'] );
+        $this->assertContains( 'init', $function_names );
+    }
+    
+    /**
+     * Test the init function with
+     * @global stdClass $post
+     */    
+    public function test_init_with_valid_design_id() {
+        global $post;
+        
+        $design_id = 1;
+        
+        //Create the Design Profile Page.
+        $design_profile_page = MyStyle_Design_Profile_Page::create();
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //mock the request uri  and post as though we were loading the design
+        //profile page for design 1
+        $_SERVER["REQUEST_URI"] = 'http://localhost/designs/' . $design_id;
+        $post = new stdClass();
+        $post->ID = MyStyle_Design_Profile_Page::get_id();
+        
+        //call the function
+        MyStyle_Design_Profile_Page::init();
+        
+        //get the Mystyle_Design_Profile page singleton
+        $mystyle_design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+        
+        //get the current design from the singleton instance
+        $current_design = $mystyle_design_profile_page->get_design();
+        
+        //assert that the page was created and has the expected title
+        $this->assertEquals( $design_id, $current_design->get_design_id() );
+        
+        //assert that the http response code is set to 200
+        $this->assertEquals( 200, $mystyle_design_profile_page->get_http_response_code() );
+        
+        //assert that the exception is null
+        $this->assertEquals( NULL, $mystyle_design_profile_page->get_exception() );
+    }
+    
+    /**
+     * Test the init function
+     * @global stdClass $post
+     */    
+    public function test_init_with_no_design_id() {
+        global $post;
+        
+        $design_id = 999;
+        
+        //Reset the singleton instance (to clear out any previously set values)
+        MyStyle_Design_Profile_Page::reset_instance();
+        
+        //Create the Design Profile Page.
+        $design_profile_page = MyStyle_Design_Profile_Page::create();
+        
+        //NOTE: we would normally create a design here but for this test,
+        //the design doesn't exist.
+        
+        //mock the request uri  and post as though we were loading the design
+        //profile page for design 1 (which doesn't exist
+        $_SERVER["REQUEST_URI"] = 'http://localhost/designs/';
+        $post = new stdClass();
+        $post->ID = MyStyle_Design_Profile_Page::get_id();
+        
+        //call the function
+        MyStyle_Design_Profile_Page::init();
+        
+        //get the Mystyle_Design_Profile page singleton
+        $mystyle_design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+        
+        //assert that no design is loaded
+        $this->assertNull( null, $mystyle_design_profile_page->get_design() );
+        
+        //assert that the http response code is set to 404
+        $this->assertEquals( 404, $mystyle_design_profile_page->get_http_response_code() );
+        
+        //assert that the exception is set.
+        $this->assertEquals( 'MyStyle_Not_Found_Exception', get_class( $mystyle_design_profile_page->get_exception() ) );
+    }
+    
+    /**
+     * Test the init function
+     * @global stdClass $post
+     */    
+    public function test_init_with_a_non_existant_design_id() {
+        global $post;
+        
+        $design_id = 999;
+        
+        //Reset the singleton instance (to clear out any previously set values)
+        MyStyle_Design_Profile_Page::reset_instance();
+        
+        //Create the Design Profile Page.
+        $design_profile_page = MyStyle_Design_Profile_Page::create();
+        
+        //NOTE: we would normally create a design here but for this test,
+        //the design doesn't exist.
+        
+        //mock the request uri  and post as though we were loading the design
+        //profile page for design 1 (which doesn't exist
+        $_SERVER["REQUEST_URI"] = 'http://localhost/designs/' . $design_id;
+        $post = new stdClass();
+        $post->ID = MyStyle_Design_Profile_Page::get_id();
+        
+        //call the function
+        MyStyle_Design_Profile_Page::init();
+        
+        //get the Mystyle_Design_Profile page singleton
+        $mystyle_design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+        
+        //assert that no design is loaded
+        $this->assertNull( null, $mystyle_design_profile_page->get_design() );
+        
+        //assert that the http response code is set to 404
+        $this->assertEquals( 404, $mystyle_design_profile_page->get_http_response_code() );
+        
+        //assert that the exception is set.
+        $this->assertEquals( 'MyStyle_Not_Found_Exception', get_class( $mystyle_design_profile_page->get_exception() ) );
+    }
+    
+    /**
      * Test the create function
      */    
     public function test_create() {
@@ -60,6 +197,37 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         
         //assert that the page id was successfully retrieved
         $this->assertEquals( $page_id2, $page_id1 );
+    }
+    
+    /**
+     * Test the is_current_post function returns true when the current post is
+     * the Design Profile Page.
+     * @global stdClass $post
+     */    
+    public function test_is_current_post_returns_true_when_current_post() {
+        global $post;
+        
+        //Create the Design Profile Page.
+        $design_profile_page = MyStyle_Design_Profile_Page::create();
+        
+        //mock the request uri
+        $_SERVER["REQUEST_URI"] = 'http://localhost/designs/';
+        $post = new stdClass();
+        $post->ID = MyStyle_Design_Profile_Page::get_id();
+        
+        $this->assertTrue( MyStyle_Design_Profile_Page::is_current_post() );
+    }
+    
+    /**
+     * Test the is_current_post function returns true when the current post is
+     * the Design Profile Page.
+     */    
+    public function test_is_current_post_returns_false_when_not_current_post() {
+        
+        //Create the Design Profile Page.
+        $design_profile_page = MyStyle_Design_Profile_Page::create();
+        
+        $this->assertFalse( MyStyle_Design_Profile_Page::is_current_post() );
     }
     
     /**
