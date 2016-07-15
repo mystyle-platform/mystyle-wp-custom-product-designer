@@ -19,13 +19,13 @@ abstract class MyStyle_Access {
     
     /**
      * Only the author can access.
-     * @var type 
+     * @var int
      */
     public static $PRIVATE = 1;
     
     /**
      * Only the admin can access.
-     * @var type 
+     * @var int
      */
     public static $RESTRICTED = 2;
 

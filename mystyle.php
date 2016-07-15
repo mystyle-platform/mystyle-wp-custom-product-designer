@@ -59,6 +59,7 @@ require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-forbidden-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-not-found-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-unauthorized-exception.php' );
+require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-access.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-options.php' );
 
