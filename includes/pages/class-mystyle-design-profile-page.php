@@ -103,11 +103,18 @@ class MyStyle_Design_Profile_Page {
         //only run if we are currently serving the design profile page
         if( self::is_current_post() ) { 
             try {
+                //get the design from the url, if it's not found, this function
+                //throws an exception.
                 $design_id = self::get_design_id_from_url();
 
                 $design = MyStyle_DesignManager::get( $design_id );
 
                 if( $design != null ) {
+                    
+                    if( $design->get_access() === MyStyle_Access::$PRIVATE ) {
+                        //TODO: confirm that the user has access here
+                    }
+                    
                     //set the current design in the singleton instance
                     MyStyle_Design_Profile_Page::get_instance()->set_design( $design );
                 } else {
