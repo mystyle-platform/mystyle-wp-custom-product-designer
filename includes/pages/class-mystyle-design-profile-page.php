@@ -103,21 +103,7 @@ class MyStyle_Design_Profile_Page {
         //only run if we are currently serving the design profile page
         if( self::is_current_post() ) { 
             try {
-                //-------get the design id from the url and validate it ------- //
-
-                //try the query vars (ex: &design_id=10)
-                $design_id = get_query_var( 'design_id' );
-                if( empty( $design_id ) ) {
-                    //try at /designs/10
-                    $path = $_SERVER["REQUEST_URI"];
-                    $pattern = '/^.*\/designs\/([\d]+)/';
-                    if( preg_match($pattern, $path, $matches) ) {
-                        $design_id = $matches[1];
-                    } else {
-                        //note: this is caught at the bottom of this function
-                        throw new MyStyle_Not_Found_Exception( 'Design not found.' );
-                    }
-                }
+                $design_id = self::get_design_id_from_url();
 
                 $design = MyStyle_DesignManager::get( $design_id );
 
@@ -234,6 +220,31 @@ class MyStyle_Design_Profile_Page {
         }
         
         return $url;
+    }
+    
+    /**
+     * Gets the design id from the url. If it can't find the design id in the
+     * url, this function throws a MyStyle_Not_Found_Exception.
+     * 
+     * @return int Returns the design id from the url
+     * @throws MyStyle_Not_Found_Exception
+     */
+    public static function get_design_id_from_url() {
+        //try the query vars (ex: &design_id=10)
+        $design_id = get_query_var( 'design_id' );
+        if( empty( $design_id ) ) {
+            //try at /designs/10
+            $path = $_SERVER["REQUEST_URI"];
+            $pattern = '/^.*\/designs\/([\d]+)/';
+            if( preg_match($pattern, $path, $matches) ) {
+                $design_id = $matches[1];
+            } else {
+                //note: this is caught at the bottom of this function
+                throw new MyStyle_Not_Found_Exception( 'Design not found.' );
+            }
+        }
+        
+        return $design_id;
     }
     
     /**

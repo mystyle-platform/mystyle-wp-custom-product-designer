@@ -323,4 +323,44 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         $this->assertEquals( $expected_url, $url );
     }
     
+    /**
+     * Test the get_design_id_url function without permalinks.
+     * @global WP_Query $wp_query
+     */    
+    public function test_get_design_id_from_url_without_permalinks() {
+        global $wp_query;
+        
+        $design_id = 1;
+        $query = 'http://localhost/index.php?page_id=1&design_id=' . $design_id;
+        
+        //init the mystyle frontend to register the design_id query var.
+        $mystyle_frontend = new MyStyle_FrontEnd();
+        
+        //mock the current query
+        $wp_query = new WP_Query( $query );
+                
+        //Call the function
+        $returned_design_id = MyStyle_Design_Profile_Page::get_design_id_from_url();
+        
+        //assert that the exepected design_id is returned
+        $this->assertEquals( $design_id, $returned_design_id );
+    }
+    
+    /**
+     * Test the get_design_id_url function with permalinks.
+     */    
+    public function test_get_design_id_from_url_with_permalinks() {
+        $design_id = 1;
+        $query = 'http://www.example.com/designs/' . $design_id;
+        
+        //mock the current query
+        $_SERVER["REQUEST_URI"] = $query;
+                
+        //Call the function
+        $returned_design_id = MyStyle_Design_Profile_Page::get_design_id_from_url();
+        
+        //assert that the exepected design_id is returned
+        $this->assertEquals( $design_id, $returned_design_id );
+    }
+    
 }

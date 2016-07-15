@@ -48,7 +48,7 @@ class MyStyle_FrontEnd {
      * @return array Returns the filtered classes array.
      * @todo Add unit testing
      */
-    function filter_body_class( $classes ) {
+    public static function filter_body_class( $classes ) {
         global $post;
         
         try {
@@ -81,7 +81,7 @@ class MyStyle_FrontEnd {
      * @return string Returns the filtered title.
      * @todo Add unit testing
      */
-    function filter_title( $title, $id = null ) {
+    public static function filter_title( $title, $id = null ) {
         
         try {
             if( 
@@ -104,7 +104,7 @@ class MyStyle_FrontEnd {
      * Filter the "Add to Cart" button text.
      * @param string $text The current cart button text.
      */
-    function filter_cart_button_text( $text ) {
+    public static function filter_cart_button_text( $text ) {
         global $product;
         
         if( $product != null ) {
@@ -124,7 +124,7 @@ class MyStyle_FrontEnd {
      * @return string Returns the name of the handler to use for the add_to_cart
      * action.
      */
-    function filter_add_to_cart_handler( $handler, $product ) {
+    public static function filter_add_to_cart_handler( $handler, $product ) {
 
         if($product != null) {
             $product_id = $product->id;
@@ -201,7 +201,7 @@ class MyStyle_FrontEnd {
      * @param string $url The current url.
      * @todo Add unit testing
      */
-    function mystyle_add_to_cart_handler_customize( $url ) {
+    public static function mystyle_add_to_cart_handler_customize( $url ) {
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
         
         //set up an array of data to pass to/through the customizer.
@@ -234,7 +234,7 @@ class MyStyle_FrontEnd {
      * @param string $url The current url.
      * @todo Add unit testing
      */
-    function mystyle_add_to_cart_handler( $url ) {
+    public static function mystyle_add_to_cart_handler( $url ) {
         global $woocommerce;
         
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
@@ -264,7 +264,7 @@ class MyStyle_FrontEnd {
      * @return string
      * @todo Add unit testing
      */
-    function add_query_vars_filter( $vars ){
+    public static function add_query_vars_filter( $vars ){
         $vars[] = "design_id";
         
         return $vars;
