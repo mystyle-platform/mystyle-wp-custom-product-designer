@@ -17,16 +17,27 @@ abstract class MyStyle_Design_Profile_Shortcode {
         $design = $design_profile_page->get_design();
         $ex = $design_profile_page->get_exception();
         
+        $template_name = 'design-profile.php';
+        
         if( $ex != null ) { //handle exceptions
-            $out = '<p>' . $ex->getMessage() . '</p>';
-        } else {
-            // ---------- Call the view layer ------- //
-            ob_start();
-            require( MYSTYLE_TEMPLATES . 'design-profile.php' );
-            $out = ob_get_contents();
-            ob_end_clean();
-            // -------------------------------------- //
+            switch( get_class( $ex ) ) {
+                case 'MyStyle_Unauthorized_Exception':
+                    $template_name = 'design-profile_error-unauthorized.php';
+                    break;
+                case 'MyStyle_Forbidden_Exception':
+                    $template_name = 'design-profile_error-forbidden.php';
+                    break;
+                default:
+                    $template_name = 'design-profile_error-general.php';
+            }
         }
+        
+        // ---------- Call the view layer ------- //
+        ob_start();
+        require( MYSTYLE_TEMPLATES . $template_name );
+        $out = ob_get_contents();
+        ob_end_clean();
+        // -------------------------------------- //
 
         return $out;       
     }

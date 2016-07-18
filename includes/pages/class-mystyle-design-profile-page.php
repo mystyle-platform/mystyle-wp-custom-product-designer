@@ -25,6 +25,12 @@ class MyStyle_Design_Profile_Page {
     private $design;
     
     /**
+     * Stores the current user (when the class is instantiated as a singleton).
+     * @var WP_User 
+     */
+    private $user;
+    
+    /**
      * Stores the currently thrown exception (if any) (when the class is
      * instantiated as a singleton).
      * @var MyStyle_Exception 
@@ -103,24 +109,27 @@ class MyStyle_Design_Profile_Page {
         //only run if we are currently serving the design profile page
         if( self::is_current_post() ) { 
             try {
+                $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+                
+                $user = wp_get_current_user();
+                $design_profile_page->set_user( $user );
+                
                 //get the design from the url, if it's not found, this function
                 //throws an exception.
                 $design_id = self::get_design_id_from_url();
 
-                $design = MyStyle_DesignManager::get( $design_id );
+                //get the design.  If the user doesn't have access, an exception
+                //is thrown.
+                $design = MyStyle_DesignManager::get( $design_id, $user );
 
-                if( $design != null ) {
-                    
-                    if( $design->get_access() === MyStyle_Access::$PRIVATE ) {
-                        //TODO: confirm that the user has access here
-                    }
-                    
-                    //set the current design in the singleton instance
-                    MyStyle_Design_Profile_Page::get_instance()->set_design( $design );
-                } else {
-                    //note: this is caught at the bottom of this function
+                //throw exception if design isn't found (it's caught at the
+                //bottom of this function.
+                if( $design == null ) {
                     throw new MyStyle_Not_Found_Exception( 'Design not found.' );
                 }
+                
+                //set the current design in the singleton instance
+                    MyStyle_Design_Profile_Page::get_instance()->set_design( $design );
 
             // When an exception is thrown, set the status code and set the
             // exception in the singleton instance, it will later be used by
@@ -129,7 +138,20 @@ class MyStyle_Design_Profile_Page {
                 $response_code = 404;
                 status_header( $response_code );
                 
-                $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+                $design_profile_page->set_exception( $ex );
+                $design_profile_page->set_http_response_code( $response_code );
+            } catch ( MyStyle_Unauthorized_Exception $ex ) { //unauthenticated
+                //$response_code = 401;
+                $response_code = 200;
+                status_header( $response_code );
+                
+                $design_profile_page->set_exception( $ex );
+                $design_profile_page->set_http_response_code( $response_code );
+            } catch ( MyStyle_Forbidden_Exception $ex ) {
+                //$response_code = 403;
+                $response_code = 200;
+                status_header( $response_code );
+                
                 $design_profile_page->set_exception( $ex );
                 $design_profile_page->set_http_response_code( $response_code );
             }
@@ -268,6 +290,22 @@ class MyStyle_Design_Profile_Page {
      */
     public function get_design() {
         return $this->design;
+    }
+    
+    /**
+     * Sets the current user.
+     * @param WP_User $user The user to set as the current user.
+     */
+    public function set_user( WP_User $user ) {
+        $this->user = $user;
+    }
+    
+    /**
+     * Gets the current user.
+     * @return WP_User Returns the currently loaded WP_User.
+     */
+    public function get_user() {
+        return $this->user;
     }
     
     /**

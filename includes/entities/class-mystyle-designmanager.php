@@ -15,9 +15,17 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
      * Get the design from the database.
      * @global wpdb $wpdb
      * @param integer $design_id The design id.
+     * @param WP_User $user (optional) The current user.
      * @return \MyStyle_Design Returns the MyStyle_Design entity.
+     * @throws MyStyle_Forbidden_Exception Throws a MyStyle_Forbidden_Exception
+     * if the requested design is marked as private and the user isn't logged
+     * in.
+     * @throws MyStyle_Unauthorized_Exception Throws a 
+     * MyStyle_Unauthorized_Exception if the design is marked as private and the
+     * the passed user is not the owner of the design and the user doesn't have
+     * 'read_private_posts' capability.
      */
-    public static function get( $design_id ) {
+    public static function get( $design_id, WP_User $user = null ) {
         global $wpdb;
         
         $design = null;
@@ -31,6 +39,21 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         if( $result_object != null ) {
             $design = MyStyle_Design::create_from_result_object( $result_object );
         }
+        
+        //-------------- SECURITY CHECK ------------//
+        if( $design != null ) {
+            if( $design->get_access() === MyStyle_Access::$PRIVATE ) {
+                if( ( $user == null ) || ( $user->ID == 0 ) ) {
+                    throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.');
+                }
+                if( $design->get_user_id() != $user->ID ) {
+                    if( ! $user->has_cap( 'read_private_posts' ) ) {
+                        throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+                    }
+                }
+            }
+        }
+        //------------ END SECURITY CHECK ------------//
         
         return $design;
     }

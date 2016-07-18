@@ -24,7 +24,7 @@ abstract class MyStyle_Access {
     public static $PRIVATE = 1;
     
     /**
-     * Only the admin can access.
+     * Only the admin can access (not yet implemented).
      * @var int
      */
     public static $RESTRICTED = 2;

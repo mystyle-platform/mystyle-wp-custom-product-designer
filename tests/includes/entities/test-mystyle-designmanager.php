@@ -74,6 +74,78 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test that the get function throws a MyStyle_Unauthorized_Exception when
+     * accessing a private design and unidentified (no user passed).
+     */    
+    function test_get_private_design_when_unauthorized() {
+        $this->setExpectedException( 'MyStyle_Unauthorized_Exception' );
+        
+        $design_id = 1;
+        
+        //Create a private design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        $design->set_access( MyStyle_Access::$PRIVATE );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Call the function
+        $design_from_db = MyStyle_DesignManager::get( $design_id );
+    }
+    
+    /**
+     * Test that the get function throws a MyStyle_Forbidden_Exception when
+     * accessing a private design that isn't the user's.
+     */    
+    function test_get_private_design_when_forbidden() {
+        $this->setExpectedException( 'MyStyle_Forbidden_Exception' );
+        
+        $design_id = 1;
+        
+        //Create a private design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        $design->set_access( MyStyle_Access::$PRIVATE );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Mock a WP_User
+        $user = new WP_User();
+        //set the user id to one greater than the designer's
+        $user->ID = $design->get_user_id()+1; 
+        
+        //Call the function
+        $design_from_db = MyStyle_DesignManager::get( $design_id, $user );
+    }
+    
+    /**
+     * Test that the get function throws a MyStyle_Forbidden_Exception when
+     * accessing a private design that isn't the user's.
+     */    
+    function test_get_private_when_admin() {
+        
+        $design_id = 1;
+        
+        //Create a private design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        $design->set_access( MyStyle_Access::$PRIVATE );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Mock a WP_User with admin privileges
+        $user = new WP_User();
+        $user->ID = 100;
+        $user->add_cap( 'read_private_posts' );
+        
+        //Call the function
+        $design_from_db = MyStyle_DesignManager::get( $design_id, $user );
+        
+        //Assert that the design is returned
+        $this->assertEquals( $design_id, $design_from_db->get_design_id() );
+    }
+    
+    /**
      * Test the set_user_id function sets the user_id on a design that matches
      * both the session and the user's email.
      * @global wpdb $wpdb
