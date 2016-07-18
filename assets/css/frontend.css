@@ -31,7 +31,18 @@ body.mystyle-customize .site::before {
 /* MyStyle Design Profile Page */
 body.mystyle-design-profile img#mystyle-design-profile-img {
     display: block;
+    max-width: 100%;
+    width: auto;
+    margin: auto;
+    margin-bottom: 1em;
 }
-body.mystyle-design-profile ul.mystyle-button-group {list-style: none;}
+body.mystyle-design-profile ul.mystyle-button-group {
+    list-style: none;
+    text-align: center;
+}
 body.mystyle-design-profile ul.mystyle-button-group li {display: inline-block;}
+
+body.mystyle-design-profile img#mystyle-design-profile-img {
+    display: block;
+}
 
