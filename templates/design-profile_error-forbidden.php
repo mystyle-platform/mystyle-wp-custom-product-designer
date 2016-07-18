@@ -13,4 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <h2>Sorry, this design is private.</h2>
+<ul class="mystyle-button-group">
+    <?php if( ! empty( $previous_design_url ) ) { ?>
+        <li><a href="<?php echo $previous_design_url; ?>">Previous</a></li>
+    <?php } ?>
+    <?php if( ! empty( $next_design_url ) ) { ?>
+        <li><a href="<?php echo $next_design_url; ?>">Next</a></li>
+    <?php } ?>
+</ul>
 

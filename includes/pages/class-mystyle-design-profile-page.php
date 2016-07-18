@@ -31,6 +31,18 @@ class MyStyle_Design_Profile_Page {
     private $user;
     
     /**
+     * The design that comes immediately before this one in the collection. 
+     * @var int
+     */
+    private $previous_design;
+    
+    /**
+     * The design that comes immediately before this one in the collection. 
+     * @var int 
+     */
+    private $next_design;
+    
+    /**
      * Stores the currently thrown exception (if any) (when the class is
      * instantiated as a singleton).
      * @var MyStyle_Exception 
@@ -118,6 +130,17 @@ class MyStyle_Design_Profile_Page {
                 //throws an exception.
                 $design_id = self::get_design_id_from_url();
 
+                //get the previous design
+                $design_profile_page->set_previous_design(
+                        MyStyle_DesignManager::get_previous_design( $design_id )
+                );
+                
+                //get the next design (note: we do this first in case getting 
+                //the design throws an exception)
+                $design_profile_page->set_next_design(
+                        MyStyle_DesignManager::get_next_design( $design_id )
+                );
+                
                 //get the design.  If the user doesn't have access, an exception
                 //is thrown.
                 $design = MyStyle_DesignManager::get( $design_id, $user );
@@ -129,7 +152,8 @@ class MyStyle_Design_Profile_Page {
                 }
                 
                 //set the current design in the singleton instance
-                    MyStyle_Design_Profile_Page::get_instance()->set_design( $design );
+                $design_profile_page->set_design( $design );
+                
 
             // When an exception is thrown, set the status code and set the
             // exception in the singleton instance, it will later be used by
@@ -306,6 +330,38 @@ class MyStyle_Design_Profile_Page {
      */
     public function get_user() {
         return $this->user;
+    }
+    
+    /**
+     * Sets the previous design.
+     * @param MyStyle_Design $design The design to set as the previous design.
+     */
+    public function set_previous_design( MyStyle_Design $design = null ) {
+        $this->previous_design = $design;
+    }
+    
+    /**
+     * Gets the previous design.
+     * @return MyStyle_Design Returns the previous MyStyle_Design.
+     */
+    public function get_previous_design() {
+        return $this->previous_design;
+    }
+    
+    /**
+     * Sets the next design.
+     * @param MyStyle_Design $design The design to set as the next design.
+     */
+    public function set_next_design( MyStyle_Design $design = null ) {
+        $this->next_design = $design;
+    }
+    
+    /**
+     * Gets the next design.
+     * @return MyStyle_Design Returns the next MyStyle_Design.
+     */
+    public function get_next_design() {
+        return $this->next_design;
     }
     
     /**

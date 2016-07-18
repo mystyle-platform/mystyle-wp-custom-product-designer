@@ -12,11 +12,24 @@ abstract class MyStyle_Design_Profile_Shortcode {
      */
     public static function output() {
         
+        // ------------- set the template variables -------------------//
         $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
         
         $design = $design_profile_page->get_design();
+        
+        $previous_design = $design_profile_page->get_previous_design();
+        if( $previous_design != null ) {
+            $previous_design_url = MyStyle_Design_Profile_Page::get_design_url( $previous_design );
+        }
+        
+        $next_design = $design_profile_page->get_next_design();
+        if( $next_design != null ) {
+            $next_design_url = MyStyle_Design_Profile_Page::get_design_url( $next_design );
+        }
+        
         $ex = $design_profile_page->get_exception();
         
+        // ----------------- choose a template ----------------------//
         $template_name = 'design-profile.php';
         
         if( $ex != null ) { //handle exceptions
@@ -32,12 +45,12 @@ abstract class MyStyle_Design_Profile_Shortcode {
             }
         }
         
-        // ---------- Call the view layer ------- //
+        // ---------- Call the view layer ------------------------ //
         ob_start();
         require( MYSTYLE_TEMPLATES . $template_name );
         $out = ob_get_contents();
         ob_end_clean();
-        // -------------------------------------- //
+        // ------------------------------------------------------ //
 
         return $out;       
     }

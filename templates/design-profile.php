@@ -11,8 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <div id="mystyle-design-profile-wrapper" class="woocommerce">
+    <ul class="mystyle-button-group">
+        <?php if( ! empty( $previous_design_url ) ) { ?>
+            <li><a href="<?php echo $previous_design_url; ?>">Previous</a></li>
+        <?php } ?>
+        <?php if( ! empty( $next_design_url ) ) { ?>
+            <li><a href="<?php echo $next_design_url; ?>">Next</a></li>
+        <?php } ?>
+    </ul>
     <img id="mystyle-design-profile-img" src="<?php echo $design->get_web_url(); ?>"/>
-    
     <ul class="mystyle-button-group">
         <li><a onclick="location.href = '<?php echo $design->get_reload_url(); ?>';" class="button">Customize</a></li>
         <li>

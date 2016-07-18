@@ -59,6 +59,98 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
     }
     
     /**
+     * Get the previous design from the database.
+     * @global wpdb $wpdb
+     * @param int $current_design_id The design_id that you want to use as
+     * the base for retrieving the previous design.
+     * @param WP_User $user (optional) The current user.
+     * @return \MyStyle_Design Returns the MyStyle_Design entity.
+     * @todo Add unit testing
+     */
+    public static function get_previous_design( 
+                                $current_design_id, 
+                                WP_User $user = null 
+                            ) 
+    {
+        global $wpdb;
+        
+        $design = null;
+        
+        $select = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ';
+        $where  = 'WHERE ' . MyStyle_Design::get_primary_key() . ' < ' . $current_design_id . ' ';
+        
+        if( ( $user == null ) || ( $user->ID == 0 ) ) {
+            //no user, get the next public design
+            $where .= 'AND ms_access = 0 '; 
+        } else {
+            if( ! $user->has_cap( 'read_private_posts' ) ) {
+                //user isn't admin, show public and their own private designs.
+                $where .= 'AND ms_access = 0 OR ( ( ms_access = 1 ) AND ( user_id = ' . $user->ID . ' ) ) ';   
+            }
+        }
+        //note: admin sees all designs.
+        
+        $order = 'ORDER BY ' . MyStyle_Design::get_primary_key() . ' DESC ';
+        
+        $limit = 'LIMIT 1 ';
+        
+        $query = $select . $where . $order . $limit;
+        
+        $result_object = $wpdb->get_row($query);
+        
+        if( $result_object != null ) {
+            $design = MyStyle_Design::create_from_result_object( $result_object );
+        }
+        
+        return $design;
+    }
+    
+    /**
+     * Get the next design from the database.
+     * @global wpdb $wpdb
+     * @param int $current_design_id The design_id that you want to use as
+     * the base for retrieving the next design.
+     * @param WP_User $user (optional) The current user.
+     * @return \MyStyle_Design Returns the MyStyle_Design entity.
+     * @todo Add unit testing
+     */
+    public static function get_next_design( 
+                                $current_design_id, 
+                                WP_User $user = null 
+                            ) 
+    {
+        global $wpdb;
+        
+        $design = null;
+        
+        $select = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ';
+        $where  = 'WHERE ' . MyStyle_Design::get_primary_key() . ' > ' . $current_design_id . ' ';
+        
+        if( ( $user == null ) || ( $user->ID == 0 ) ) {
+            //no user, get the next public design
+            $where .= 'AND ms_access = 0 '; 
+        } else {
+            if( ! $user->has_cap( 'read_private_posts' ) ) {
+                //user isn't admin, show public and their own private designs.
+                $where .= 'AND ms_access = 0 OR ( ( ms_access = 1 ) AND ( user_id = ' . $user->ID . ' ) ) ';   
+            }
+        }
+        //note: admin sees all designs.
+        
+        $limit = 'LIMIT 1 ';
+        
+        $query = $select . $where . $limit;
+        
+        $result_object = $wpdb->get_row($query);
+        
+        if( $result_object != null ) {
+            $design = MyStyle_Design::create_from_result_object( $result_object );
+        }
+        
+        return $design;
+    }
+    
+    /**
      * Sets the user_id on designs where it is null (or 0) using the email and
      * the session.
      * @global wpdb $wpdb
