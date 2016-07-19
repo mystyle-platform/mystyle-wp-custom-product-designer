@@ -59,6 +59,21 @@ body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li {
     margin: 1em;
 }
 
+body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li a {
+    display: block;
+    padding: 2em;
+    text-decoration: none;
+    box-shadow: none;
+}
+
+body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li a:hover {
+    -webkit-box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
+    -moz-box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
+    box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
+}
+
 body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li span.mystyle-design-id {
     display: block;
 }
+
+
