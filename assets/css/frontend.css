@@ -59,3 +59,6 @@ body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li {
     margin: 1em;
 }
 
+body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li span.mystyle-design-id {
+    display: block;
+}
