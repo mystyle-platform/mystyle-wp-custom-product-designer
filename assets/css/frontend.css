@@ -46,3 +46,16 @@ body.mystyle-design-profile img#mystyle-design-profile-img {
     display: block;
 }
 
+body.mystyle-design-profile ul.mystyle-design-nav li {
+    margin: 5em;
+}
+
+/* MyStyle Design Profile Index */
+body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul {
+    list-style: none;
+}
+body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li {
+    display: inline-block;
+    margin: 1em;
+}
+

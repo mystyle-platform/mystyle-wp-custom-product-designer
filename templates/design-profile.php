@@ -11,12 +11,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <div id="mystyle-design-profile-wrapper" class="woocommerce">
-    <ul class="mystyle-button-group">
+    <ul class="mystyle-button-group mystyle-design-nav">
         <?php if( ! empty( $previous_design_url ) ) { ?>
-            <li><a href="<?php echo $previous_design_url; ?>">Previous</a></li>
+                <li><a href="<?php echo $previous_design_url; ?>">&larr;</a></li>
+        <?php } else { ?>
+                <li>&nbsp;</li>
         <?php } ?>
+                <li><a href="<?php echo get_permalink( MyStyle_Design_Profile_Page::get_id() ); ?>">&uarr;</a></li>
         <?php if( ! empty( $next_design_url ) ) { ?>
-            <li><a href="<?php echo $next_design_url; ?>">Next</a></li>
+                <li><a href="<?php echo $next_design_url; ?>">&rarr;</a></li>
+        <?php } else { ?>
+                <li>&nbsp;</li>
         <?php } ?>
     </ul>
     <img id="mystyle-design-profile-img" src="<?php echo $design->get_web_url(); ?>"/>

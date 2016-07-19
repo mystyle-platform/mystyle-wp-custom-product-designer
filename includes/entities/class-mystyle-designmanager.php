@@ -198,6 +198,47 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         
         return $result;
     }
+    
+    /**
+     * Retrieve designs from the database.
+     *
+     * @param int $per_page TODO (Not yet implemented)
+     * @param int $page_number TODO (Not yet implemented)
+     *
+     * @return mixed
+     * @global $wpdb;
+     * @todo add unit testing 
+     */
+    public static function get_designs( $per_page = 5, $page_number = 1 ) {
+        global $wpdb;
+
+        $sql = 'SELECT * FROM ' . MyStyle_Design::get_table_name();
+
+        if ( ! empty( $_REQUEST['orderby'] ) ) {
+            $sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
+            $sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
+        } else {
+            $sql .= ' ORDER BY ms_design_id DESC';
+        }
+
+        //$sql .= " LIMIT $per_page";
+
+        //$sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
+
+        $results = $wpdb->get_results( $sql, 'OBJECT' );
+        
+        //transform the result objects (stdClass) into MyStyle_Designs
+        $designs = null;
+        if( $results != null ) {
+            $designs = array();
+            foreach($results as $result) {
+                $design = MyStyle_Design::create_from_result_object( $result );
+                array_push($designs, $design);
+            }
+        }
+
+        return $designs;
+    }
 
 }
 

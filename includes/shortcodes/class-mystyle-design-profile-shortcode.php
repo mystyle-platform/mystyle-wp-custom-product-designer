@@ -12,9 +12,23 @@ abstract class MyStyle_Design_Profile_Shortcode {
      */
     public static function output() {
         
-        // ------------- set the template variables -------------------//
         $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
         
+        if( $design_profile_page->get_design() != null ) {
+            return self::output_design_profile();
+        } else {
+            return self::output_design_index();
+        }
+    }
+    
+    /**
+     * Returns the output for a design profile.
+     * @return type
+     */
+    public static function output_design_profile() {
+        $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+        
+        // ------------- set the template variables -------------------//
         $design = $design_profile_page->get_design();
         
         $previous_design = $design_profile_page->get_previous_design();
@@ -53,6 +67,26 @@ abstract class MyStyle_Design_Profile_Shortcode {
         // ------------------------------------------------------ //
 
         return $out;       
+    }
+    
+    /**
+     * Returns the output for the design index.
+     * @return string Returns the output for the design index.
+     */
+    public static function output_design_index() {
+        $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+        
+        // ------------- set the template variables -------------------//
+        $designs = $design_profile_page->get_designs();
+        
+        // ---------- Call the view layer ------------------------ //
+        ob_start();
+        require( MYSTYLE_TEMPLATES . 'design-index.php' );
+        $out = ob_get_contents();
+        ob_end_clean();
+        // ------------------------------------------------------ //
+
+        return $out; 
     }
 
 }
