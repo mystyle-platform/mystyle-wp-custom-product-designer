@@ -202,14 +202,14 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
     /**
      * Retrieve designs from the database.
      *
-     * @param int $per_page TODO (Not yet implemented)
+     * @param int $per_page 
      * @param int $page_number TODO (Not yet implemented)
      *
      * @return mixed
      * @global $wpdb;
      * @todo add unit testing 
      */
-    public static function get_designs( $per_page = 5, $page_number = 1 ) {
+    public static function get_designs( $per_page = 250, $page_number = 1 ) {
         global $wpdb;
 
         $sql = 'SELECT * FROM ' . MyStyle_Design::get_table_name();
@@ -221,7 +221,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
             $sql .= ' ORDER BY ms_design_id DESC';
         }
 
-        //$sql .= " LIMIT $per_page";
+        $sql .= " LIMIT $per_page";
 
         //$sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
 
