@@ -34,6 +34,7 @@ class MyStyle_Design implements MyStyle_Entity {
     private $access; //0=public, 1=private, 2=restricted
     private $view_count; //How many times the design page has been viewed.
     private $purchase_count; //How many times the design has been purchased.
+    private $cart_data; //The data that was submitted when the Add to Cart ("Customize") button was clicked
     
     /**
      * Constructor. Note: see the functions below for additional ways to create
@@ -69,6 +70,7 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->template_id = (int) htmlspecialchars( $post_data['product_id'] ); //mapping product_id to template_id
         $instance->designer_id = (int) htmlspecialchars( $post_data['user_id'] );
         $instance->price = (int) htmlspecialchars( $post_data['price'] );
+        $instance->cart_data = json_encode( $passthru_post );
         
         return $instance;
     }
@@ -108,6 +110,7 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->modified_gmt = htmlspecialchars( $result_object->design_modified_gmt );
         $instance->view_count = (int) htmlspecialchars( $result_object->design_view_count );
         $instance->purchase_count = (int) htmlspecialchars( $result_object->design_purchase_count );
+        $instance->cart_data = $result_object->cart_data;
         
         return $instance;
     }
@@ -320,7 +323,7 @@ class MyStyle_Design implements MyStyle_Entity {
     
     /**
      * Sets the value of session_id.
-     * @param number $session_id The new value for session_id.
+     * @param string $session_id The new value for session_id.
      */
     public function set_session_id( $session_id ) {
         $this->session_id = $session_id;
@@ -328,7 +331,7 @@ class MyStyle_Design implements MyStyle_Entity {
     
     /**
      * Gets the value of session_id.
-     * @return number Returns the value of session_id.
+     * @return string Returns the value of session_id.
      */
     public function get_session_id() {
         return $this->session_id;
@@ -336,7 +339,7 @@ class MyStyle_Design implements MyStyle_Entity {
     
     /**
      * Sets the value of email.
-     * @param number $email The new value for email.
+     * @param string $email The new value for email.
      */
     public function set_email( $email ) {
         $this->email = $email;
@@ -344,7 +347,7 @@ class MyStyle_Design implements MyStyle_Entity {
     
     /**
      * Gets the value of email.
-     * @return number Returns the value of email.
+     * @return string Returns the value of email.
      */
     public function get_email() {
         return $this->email;
@@ -438,6 +441,22 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
+     * Sets the value of cart_data.
+     * @param string $cart_data The new value for cart_data.
+     */
+    public function set_cart_data( $cart_data ) {
+        $this->cart_data = $cart_data;
+    }
+    
+    /**
+     * Gets the value of cart_data.
+     * @return string Returns the value of cart_data.
+     */
+    public function get_cart_data() {
+        return $this->cart_data;
+    }
+    
+    /**
      * Function for converting the object into an array for use with WP meta
      * storage.
      * @return array Returns an array for storage as WP meta data.
@@ -483,6 +502,7 @@ class MyStyle_Design implements MyStyle_Entity {
                 design_view_count bigint(20) NULL DEFAULT '0',
                 design_purchase_count bigint(20) NULL DEFAULT '0',
                 session_id varchar(100) NULL DEFAULT NULL,
+                cart_data TEXT NULL DEFAULT NULL,
                 PRIMARY KEY  (ms_design_id)
             )";
     }
@@ -534,6 +554,7 @@ class MyStyle_Design implements MyStyle_Entity {
         $data['design_view_count'] = $this->view_count;
         $data['design_purchase_count'] = $this->purchase_count;
         $data['session_id'] = $this->session_id;
+        $data['cart_data'] = $this->cart_data;
         
         return $data;
     }
@@ -568,6 +589,7 @@ class MyStyle_Design implements MyStyle_Entity {
             '%d', //design_view_count
             '%d', //design_purchase_count
             '%s', //session_id
+            '%s', //cart_data
 	);
                 
         return $formats_arr;  
