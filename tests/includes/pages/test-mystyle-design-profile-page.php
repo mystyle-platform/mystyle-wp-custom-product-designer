@@ -94,13 +94,19 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the init function
+     * Test the init function with no design id
      * @global stdClass $post
      */    
     public function test_init_with_no_design_id() {
         global $post;
         
-        $design_id = 999;
+        $design_id = 1;
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
         
         //Reset the singleton instance (to clear out any previously set values)
         MyStyle_Design_Profile_Page::reset_instance();
@@ -112,7 +118,7 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         //the design doesn't exist.
         
         //mock the request uri  and post as though we were loading the design
-        //profile page for design 1 (which doesn't exist
+        //index.
         $_SERVER["REQUEST_URI"] = 'http://localhost/designs/';
         $post = new stdClass();
         $post->ID = MyStyle_Design_Profile_Page::get_id();
@@ -126,11 +132,12 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         //assert that no design is loaded
         $this->assertNull( null, $mystyle_design_profile_page->get_design() );
         
-        //assert that the http response code is set to 404
-        $this->assertEquals( 404, $mystyle_design_profile_page->get_http_response_code() );
+        //assert that the http response code is set to 200
+        $this->assertEquals( 200, $mystyle_design_profile_page->get_http_response_code() );
         
-        //assert that the exception is set.
-        $this->assertEquals( 'MyStyle_Not_Found_Exception', get_class( $mystyle_design_profile_page->get_exception() ) );
+        $designs = $mystyle_design_profile_page->get_designs();
+        
+        $this->assertTrue( ! empty( $designs ) );
     }
     
     /**

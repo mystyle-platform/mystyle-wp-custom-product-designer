@@ -11,23 +11,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <div id="mystyle-design-profile-index-wrapper" class="woocommerce">
-    <ul>
-        <?php 
-            foreach($designs AS $design) { 
-                $design_url = MyStyle_Design_Profile_page::get_design_url( $design );
-        ?>
-                <li>
-                    <a href="<?php echo $design_url ?>">
-                        <img src="<?php echo $design->get_thumb_url(); ?>" />
-                        <span class="mystyle-design-id">
-                            <?php echo $design->get_design_id(); ?>
-                        </span>
-                    </a>
-                </li>
-        <?php 
-        
-            } //end foreach
-        ?>
-    </ul>
+    <?php 
+        if( $designs != null ) {
+    ?>
+            <ul>
+                <?php
+                    foreach($designs AS $design) { 
+                        $design_url = MyStyle_Design_Profile_page::get_design_url( $design );
+                ?>
+                        <li>
+                            <a href="<?php echo $design_url ?>">
+                                <img src="<?php echo $design->get_thumb_url(); ?>" />
+                                <span class="mystyle-design-id">
+                                    <?php echo $design->get_design_id(); ?>
+                                </span>
+                            </a>
+                        </li>
+                <?php         
+                    } //end foreach
+                ?>
+            </ul>
+    <?php
+        } //end if designs
+    ?>
 </div>
 

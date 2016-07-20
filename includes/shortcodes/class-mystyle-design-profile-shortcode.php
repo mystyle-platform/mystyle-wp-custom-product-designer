@@ -14,11 +14,34 @@ abstract class MyStyle_Design_Profile_Shortcode {
         
         $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
         
-        if( $design_profile_page->get_design() != null ) {
-            return self::output_design_profile();
+        //-------------------- handle exceptions ----------------------//
+        $ex = $design_profile_page->get_exception();
+        if( $ex != null ) { 
+            switch( get_class( $ex ) ) {
+                case 'MyStyle_Unauthorized_Exception':
+                    $template_name = 'design-profile_error-unauthorized.php';
+                    break;
+                case 'MyStyle_Forbidden_Exception':
+                    $template_name = 'design-profile_error-forbidden.php';
+                    break;
+                default:
+                    $template_name = 'design-profile_error-general.php';
+            }
+            
+            ob_start();
+            require( MYSTYLE_TEMPLATES . $template_name );
+            $out = ob_get_contents();
+            ob_end_clean();
         } else {
-            return self::output_design_index();
+            // --------------- Valid Requests ------------------------- //
+            if( $design_profile_page->get_design() != null ) {
+                $out = self::output_design_profile();
+            } else {
+                $out = self::output_design_index();
+            }
         }
+        
+        return $out;
     }
     
     /**
@@ -41,27 +64,9 @@ abstract class MyStyle_Design_Profile_Shortcode {
             $next_design_url = MyStyle_Design_Profile_Page::get_design_url( $next_design );
         }
         
-        $ex = $design_profile_page->get_exception();
-        
-        // ----------------- choose a template ----------------------//
-        $template_name = 'design-profile.php';
-        
-        if( $ex != null ) { //handle exceptions
-            switch( get_class( $ex ) ) {
-                case 'MyStyle_Unauthorized_Exception':
-                    $template_name = 'design-profile_error-unauthorized.php';
-                    break;
-                case 'MyStyle_Forbidden_Exception':
-                    $template_name = 'design-profile_error-forbidden.php';
-                    break;
-                default:
-                    $template_name = 'design-profile_error-general.php';
-            }
-        }
-        
         // ---------- Call the view layer ------------------------ //
         ob_start();
-        require( MYSTYLE_TEMPLATES . $template_name );
+        require( MYSTYLE_TEMPLATES . 'design-profile.php' );
         $out = ob_get_contents();
         ob_end_clean();
         // ------------------------------------------------------ //

@@ -78,14 +78,26 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the output function with no design id.
+     * Test the output function with no design id.  Should load the design
+     * index.
      * @global stdClass $post
      */    
     public function test_output_with_no_design_id() {
         global $post;
         
+        $design_id = 1;
+        
         //create the MyStyle_Design_Profile page
         MyStyle_Design_Profile_Page::create();
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Reset the singleton instance (to clear out any previously set values)
+        MyStyle_Design_Profile_Page::reset_instance();
         
         //mock the request uri
         $_SERVER["REQUEST_URI"] = 'http://localhost/designs/';
@@ -98,14 +110,16 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
         //call the function
         $output = MyStyle_Design_Profile_Shortcode::output();
         
-        //assert that the output includes includes 'Design Not Found'
-        $this->assertContains( 'Design not found', $output );
+        //assert that the output includes 'mystyle-design-profile-index-wrapper'
+        $this->assertContains( 'mystyle-design-profile-index-wrapper', $output );
     }
     
     /**
      * Test the output function with an invalid design id.
+     * @global stdClass $post
      */    
     public function test_output_with_an_invalid_design_id() {
+        global $post;
         
         //create the MyStyle_Design_Profile page
         MyStyle_Design_Profile_Page::create();
@@ -114,6 +128,9 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
         $_SERVER["REQUEST_URI"] = 'http://localhost/designs/999';
         $post = new stdClass();
         $post->ID = MyStyle_Design_Profile_Page::get_id();
+        
+        //Reset the singleton instance (clear out any previously set values)
+        MyStyle_Design_Profile_Page::reset_instance();
         
         //init the MyStyle_Design_Profile_Page
         MyStyle_Design_Profile_Page::init();
