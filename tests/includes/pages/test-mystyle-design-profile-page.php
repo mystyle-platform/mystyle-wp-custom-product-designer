@@ -331,6 +331,44 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the get_design_url function when the post has a custom slug.
+     * @global WP_Rewrite $wp_rewrite
+     */    
+    public function test_get_design_url_with_custom_slug() {
+        global $wp_rewrite;
+        
+        $slug = 'widgets';
+        
+        //enable page permalinks
+        $wp_rewrite->page_structure = '%pagename%';
+        
+        $design_id = 1;
+        $expected_url = 'http://example.org/' . $slug . '/1';
+        
+        //Create the MyStyle Design Profile page
+        MyStyle_Design_Profile_Page::create();
+        
+        //Change to a custom slug
+        wp_update_post( array( 
+                            'ID' => MyStyle_Design_Profile_Page::get_id(),
+                            'post_name' => $slug,
+                        ) 
+                    );
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Call the function
+        $url = MyStyle_Design_Profile_Page::get_design_url( $design );
+        
+        //assert that the exepected $url was returned
+        $this->assertEquals( $expected_url, $url );
+    }
+    
+    /**
      * Test the get_design_id_url function without permalinks.
      * @global WP_Query $wp_query
      */    
