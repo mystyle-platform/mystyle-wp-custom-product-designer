@@ -360,6 +360,37 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         $design_id = 1;
         $query = 'http://www.example.com/designs/' . $design_id;
         
+        //Create the MyStyle Design Profile page
+        MyStyle_Design_Profile_Page::create();
+        
+        //mock the current query
+        $_SERVER["REQUEST_URI"] = $query;
+                
+        //Call the function
+        $returned_design_id = MyStyle_Design_Profile_Page::get_design_id_from_url();
+        
+        //assert that the exepected design_id is returned
+        $this->assertEquals( $design_id, $returned_design_id );
+    }
+    
+    /**
+     * Test the get_design_id_url function with a custom slug.
+     */    
+    public function test_get_design_id_from_url_with_a_custom_slug() {
+        $design_id = 1;
+        $slug = 'widgets';
+        $query = 'http://www.example.com/' . $slug . '/' . $design_id;
+        
+        //Create the MyStyle Design Profile page
+        MyStyle_Design_Profile_Page::create();
+        
+        //Change to a custom slug
+        wp_update_post( array( 
+                            'ID' => MyStyle_Design_Profile_Page::get_id(),
+                            'post_name' => $slug,
+                        ) 
+                    );
+        
         //mock the current query
         $_SERVER["REQUEST_URI"] = $query;
                 

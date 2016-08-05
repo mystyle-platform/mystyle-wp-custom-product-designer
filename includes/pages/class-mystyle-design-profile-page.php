@@ -315,14 +315,21 @@ class MyStyle_Design_Profile_Page {
         //try the query vars (ex: &design_id=10)
         $design_id = get_query_var( 'design_id' );
         if( empty( $design_id ) ) {
-            //try at /designs/10
+            //---------- try at /designs/10 --------
             $path = $_SERVER["REQUEST_URI"];
-            $pattern = '/^.*\/designs\/([\d]+)/';
+            
+            //get the design profile page's WP_Post slug
+            /** @var \WP_Post */
+            $post = get_post( self::get_id() );
+            $slug = $post->post_name;
+            
+            $pattern = '/^.*\/' . $slug . '\/([\d]+)/';
             if( preg_match($pattern, $path, $matches) ) {
                 $design_id = $matches[1];
             } else {
                 $design_id = false;
             }
+            // -------------------------------------
         }
         
         return $design_id;
