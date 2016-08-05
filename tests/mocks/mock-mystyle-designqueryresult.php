@@ -29,6 +29,7 @@ class MyStyle_MockDesignQueryResult {
     public $design_view_count;
     public $design_purchase_count;
     public $session_id;
+    public $cart_data;
     
     /**
      * Constructor
@@ -56,6 +57,7 @@ class MyStyle_MockDesignQueryResult {
         $this->design_view_count = 0;
         $this->design_purchase_count = 0;
         $this->session_id = 'testsessionid';
+        $this->cart_data = null;
     }
 
 }

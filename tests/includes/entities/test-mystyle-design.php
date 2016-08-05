@@ -128,6 +128,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
                 design_view_count bigint(20) NULL DEFAULT '0',
                 design_purchase_count bigint(20) NULL DEFAULT '0',
                 session_id varchar(100) NULL DEFAULT NULL,
+                cart_data TEXT NULL DEFAULT NULL,
                 PRIMARY KEY  (ms_design_id)
             )";
         
@@ -192,6 +193,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
             'ms_access' => 0,
             'design_view_count' => 0,
             'design_purchase_count' => 0,
+            'cart_data' => null,
             'session_id' => 'testsessionid',
         );
         
@@ -234,6 +236,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
             '%d', //design_view_count
             '%d', //design_purchase_count
             '%s', //session_id
+            '%s', //cart_data
 	);
         
         //Create a design
