@@ -1,3 +1,10 @@
+= 1.4.2 =
+
+* Added a design index where you can view and page through saved public designs.
+* Now storing cart data with the design.
+* Design profile page now supports custom slugs.
+* Fixed bug where customize page title was being hidden from menus.
+
 = 1.4.1 =
 
 * Fixed a bug where the upgrader wasn't properly creating the design profile page.
