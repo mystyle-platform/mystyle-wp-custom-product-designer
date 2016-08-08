@@ -30,8 +30,12 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         $function_names = get_function_names( $wp_filter['init'] );
         $this->assertContains( 'init', $function_names );
         
-        //Assert that the mystyle_add_to_cart_handler function is registered.
+        //Assert that the mystyle_add_to_cart_handler_customize function is registered.
         $function_names = get_function_names( $wp_filter['woocommerce_add_to_cart_handler_mystyle_customizer'] );
+        $this->assertContains( 'mystyle_add_to_cart_handler_customize', $function_names );
+        
+        //Assert that the mystyle_add_to_cart_handler function is registered.
+        $function_names = get_function_names( $wp_filter['woocommerce_add_to_cart_handler_mystyle_add_to_cart'] );
         $this->assertContains( 'mystyle_add_to_cart_handler', $function_names );
         
         //Assert that the loop_add_to_cart_link function is registered.

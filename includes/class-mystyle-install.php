@@ -22,7 +22,16 @@ class MyStyle_Install {
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
         dbDelta( self::get_schema() );
-   }
+    }
+   
+    /**
+     * Delta/Alter any tables.  Currently this does the same thing as
+     * create_tables.
+     * @todo Add unit testing.
+     */
+    public static function delta_tables() {
+        self::create_tables();
+    }
 
    /**
     * Get Table schema
@@ -42,8 +51,11 @@ class MyStyle_Install {
             }
         }
 
-        return MyStyle_Design::get_schema() .  $collate . ';';
-            
+        $schema = '';
+        $schema .= MyStyle_Design::get_schema() .  $collate . ';';
+        $schema .= MyStyle_Session::get_schema() .  $collate . ';';
+        
+        return $schema;
     }
     
     /**
@@ -52,6 +64,9 @@ class MyStyle_Install {
     static function activate() {
         if( ! MyStyle_Customize_Page::exists() ) {
             MyStyle_Customize_Page::create();
+        }
+        if( ! MyStyle_Design_Profile_Page::exists() ) {
+            MyStyle_Design_Profile_Page::create();
         }
         MyStyle_Install::create_tables();
     }

@@ -19,7 +19,7 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
         $page = get_post($page_id); 
         
         //assert that the page was created and has the expected title
-        $this->assertEquals( $page->post_title, 'Customize' );
+        $this->assertEquals( 'Customize', $page->post_title );
     }
     
     /**

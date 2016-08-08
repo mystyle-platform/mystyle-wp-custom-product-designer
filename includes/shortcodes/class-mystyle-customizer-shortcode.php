@@ -61,6 +61,7 @@ abstract class MyStyle_Customizer_Shortcode {
         $default_design_id   = get_post_meta( $product_id, '_mystyle_design_id', true );
         $mystyle_template_id = get_post_meta( $product_id, '_mystyle_template_id', true );
         $customizer_ux       = get_post_meta( $product_id, '_mystyle_customizer_ux', true );
+        $print_type          = get_post_meta( $product_id, '_mystyle_print_type', true );
         $passthru            = ( isset( $_GET['h'] ) ) ? $_GET['h'] : '';
 
         // Product Settings - Default Design ID
@@ -73,6 +74,7 @@ abstract class MyStyle_Customizer_Shortcode {
         $settings = array();
         $settings['redirect_url'] = MyStyle_Handoff::get_url();
         $settings['email_skip'] = 0;
+        $settings['print_type'] = $print_type;
 
         //TODO: skip enter email step if logged in and email can be pulled from user acct
         //if ($CURRENT_USER) {

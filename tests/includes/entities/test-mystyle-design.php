@@ -62,14 +62,19 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         $api_data['web_url'] = 'http://testhost/test_web_url.jpg';
         $api_data['thumb_url'] = 'http://testhost/test_thumb_url.jpg';
         $api_data['design_url'] = 'http://testhost/test_design_url.jpg';
+        $api_data['design_url'] = 'http://testhost/test_design_url.jpg';
+        $api_data['mobile'] = '1';
+        $api_data['access'] = '1';
         
-        $design->add_api_data($api_data);
+        $design->add_api_data( $api_data );
         
         //Assert that the fields were set
         $this->assertEquals( $api_data['print_url'], $design->get_print_url() );
         $this->assertEquals( $api_data['web_url'], $design->get_web_url() );
         $this->assertEquals( $api_data['thumb_url'], $design->get_thumb_url() );
         $this->assertEquals( $api_data['design_url'], $design->get_design_url() );
+        $this->assertEquals( $api_data['mobile'], $design->is_mobile() );
+        $this->assertEquals( $api_data['access'], $design->get_access() );
     }
     
     /**
@@ -100,11 +105,12 @@ class MyStyleDesignTest extends WP_UnitTestCase {
      */    
     function test_get_schema() {
         
-        $expected_schema = '
+        $expected_schema = "
             CREATE TABLE wptests_mystyle_designs (
                 ms_design_id bigint(32) NOT NULL,
                 ms_product_id bigint(20) NOT NULL,
                 ms_user_id bigint(20) NULL,
+                ms_email varchar(255) NULL,
                 ms_description text NULL,
                 ms_price numeric(15,2) NULL,
                 ms_print_url varchar(255) NULL,
@@ -112,8 +118,19 @@ class MyStyleDesignTest extends WP_UnitTestCase {
                 ms_thumb_url varchar(255) NULL,
                 ms_design_url varchar(255) NULL,
                 product_id bigint(20) NULL,
+                user_id bigint(20) NULL DEFAULT NULL,
+                design_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                ms_mobile int(1) NOT NULL DEFAULT '0',
+                ms_access int(1) NOT NULL DEFAULT '0',
+                design_view_count bigint(20) NULL DEFAULT '0',
+                design_purchase_count bigint(20) NULL DEFAULT '0',
+                session_id varchar(100) NULL DEFAULT NULL,
+                cart_data TEXT NULL DEFAULT NULL,
                 PRIMARY KEY  (ms_design_id)
-            )';
+            )";
         
         $schema = MyStyle_Design::get_schema();
         
@@ -159,6 +176,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
             'ms_design_id' => 1,
             'ms_product_id' => 0,
             'ms_user_id' => 0,
+            'ms_email' => 'someone@example.com',
             'ms_description' => 'test description',
             'ms_price' => 0,
             'ms_print_url' => 'http://www.example.com/example.jpg',
@@ -166,6 +184,17 @@ class MyStyleDesignTest extends WP_UnitTestCase {
             'ms_thumb_url' => 'http://www.example.com/example.jpg',
             'ms_design_url' => 'http://www.example.com/example.jpg',
             'product_id' => 0,
+            'user_id' => 0,
+            'design_created' => '2015-08-06 22:35:52',
+            'design_created_gmt' => '2015-08-06 22:35:52',
+            'design_modified' => '2015-08-06 22:35:52',
+            'design_modified_gmt' => '2015-08-06 22:35:52',
+            'ms_mobile' => 0,
+            'ms_access' => 0,
+            'design_view_count' => 0,
+            'design_purchase_count' => 0,
+            'cart_data' => null,
+            'session_id' => 'testsessionid',
         );
         
         //Create a design
@@ -186,16 +215,28 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         
         //Set up the expected formats array
         $expected_formats_arr = array( 
-            '%d', 
-            '%d',
-            '%d',
-            '%s',
-            '%d',
-            '%s',
-            '%s',
-            '%s',
-            '%s',
-            '%d',
+            '%d', //ms_design_id
+            '%d', //ms_product_id
+            '%d', //ms_user_id
+            '%s', //ms_email
+            '%s', //ms_description
+            '%d', //ms_price
+            '%s', //ms_print_url
+            '%s', //ms_web_url
+            '%s', //ms_thumb_url
+            '%s', //ms_design_url
+            '%d', //product_id
+            '%d', //user_id
+            '%s', //design_created
+            '%s', //design_created_gmt
+            '%s', //design_modified
+            '%s', //design_modified_gmt
+            '%d', //ms_mobile
+            '%d', //ms_access
+            '%d', //design_view_count
+            '%d', //design_purchase_count
+            '%s', //session_id
+            '%s', //cart_data
 	);
         
         //Create a design

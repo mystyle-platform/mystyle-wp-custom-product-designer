@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Simple entity class.
+ * Class to receive and process the handoff from the customizer.
  * @package MyStyle
  * @since 0.5
  */
@@ -34,13 +34,13 @@ class MyStyle_Handoff {
         $url = $_SERVER['REQUEST_URI'];
         //echo $url;
         if( strpos( $url, self::$SLUG ) !== FALSE ) {
-            if(isset($GLOBALS['skip_ob_start'])) { //Used by our PHPUnit tests
+            if( isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
                 return true;
             } else {
-                ob_start( array( 'MyStyle_Handoff', 'handle' ) );
+                self::handle();
             }
         } else {
-            if(isset($GLOBALS['skip_ob_start'])) { //Used by our PHPUnit tests
+            if( isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
                 return false;
             }
         }
@@ -54,8 +54,8 @@ class MyStyle_Handoff {
      * 
      * Needs to be public and static because it is registered as a WP action.
      * 
-     * @return string Returns the html to output to the browser.
      * @todo Unit test the variation support
+     * @todo Break this long function up.
      */
     public static function handle() {
         if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
@@ -75,32 +75,72 @@ class MyStyle_Handoff {
             global $woocommerce;
             
             //Create a Design from the post
+            /* @var $design \MyStyle_Design */
             $design = MyStyle_Design::create_from_post( $_POST );
+            
+            //Add the session id to the design
+            $session = MyStyle_SessionHandler::get();
+            $design->set_session_id( $session->get_session_id() );
             
             //Add data from api call
             $design = MyStyle_Api::add_api_data_to_design( $design );
             
             //Get the mystyle user from the API
             /* @var $user \MyStyle_User */
-            $mystyle_user = MyStyle_Api::get_user( $design->get_user_id() );
+            $mystyle_user = MyStyle_Api::get_user( $design->get_designer_id() );
             
-            //Send email to user
-            $site_title = get_bloginfo( 'name' );
-            $site_url = network_site_url( '/' );
-            $site_description = get_bloginfo( 'description' );
-            $message = 
-                    "Design Created!\n\n" .
-                    "This email is to confirm that your design was successfully " .
-                    "saved. Thanks for using our site!\n\n" .
-                    "You can access your design at any time from the following " .
-                    "url:\n\n" . 
-                    MyStyle_Customize_Page::get_design_url( $design ) . "\n";
+            //Add data from the user to the design
+            $design->set_email( $mystyle_user->get_email() );
             
-            wp_mail( 
-                $mystyle_user->get_email(), 
-                'Design Created!', 
-                $message
-            );
+            //If the user is logged in to WordPress, store their user id with their design
+            $wp_user_id = get_current_user_id();
+            if( $wp_user_id !== 0 ) {
+                $design->set_user_id( $wp_user_id );
+            } else {
+                //if the user isn't logged in, see if their email matches an existing user and store that id with the design
+                $user = get_user_by( 'email', $mystyle_user->get_email() );
+                if( $user !== false ) {
+                    $design->set_user_id( $user->ID );
+                }
+            }
+            
+            // ------------------- Send email to user ---------------
+            //$design_complete_email = new MyStyle_Email_Design_Complete( $design );
+            //$design_complete_email->send();
+            
+            if ( has_action( 'mystyle_send_design_complete_email' ) ) {
+                //custom email
+                do_action( 'mystyle_send_design_complete_email', $design );
+            } else {
+                //basic email
+                $site_title = get_bloginfo( 'name' );
+                $site_url = network_site_url( '/' );
+                $site_description = get_bloginfo( 'description' );
+                $message = 
+                        "Design Created!\n\n" .
+                        "This email is to confirm that your design was successfully " .
+                        "saved. Thanks for using our site!\n\n" .
+                        "Your design id is " . $design->get_design_id() . ".\n\n" .
+                        "You can access your design at any time from the following " .
+                        "url:\n\n" . 
+                        MyStyle_Design_Profile_Page::get_design_url( $design ) . "\n\n".
+                        "Reload and edit your design at any time here:\n\n".
+                        MyStyle_Customize_Page::get_design_url( $design ) . "\n".
+                $admin_email = get_option( 'admin_email' );
+                $blogname = get_option( 'blogname' );
+                $headers = '';
+                if ( $admin_email && $blogname ) {
+                    $headers = array( 'From: ' . $blogname . ' <' . $admin_email . '>' );
+                }
+
+                wp_mail( 
+                    $mystyle_user->get_email(), 
+                    'Design Created!', 
+                    $message,
+                    $headers
+                );
+            }
+            // -------------------------------------------------------
             
             //Persist the design to the database
             $design = MyStyle_DesignManager::persist( $design );
@@ -109,6 +149,10 @@ class MyStyle_Handoff {
             $passthru = json_decode( base64_decode( $_POST['h'] ), true );
             $passthru_post = $passthru['post'];
             $quantity = $passthru_post['quantity'];
+            
+            //Set the $_POST to the post data that passed through.
+            $_POST = $passthru_post;
+            
             $variation_id = ( isset( $passthru_post['variation_id'] ) ) ? $passthru_post['variation_id'] : '';
             
             //get the variations (they should all be in the passthru post and start with "attribute_")
@@ -143,6 +187,31 @@ class MyStyle_Handoff {
                 WC()->session->set( 'mystyle_' . $cart_item_key, $cart_item_data );
             }
             // ------------------------------------------------------------
+            
+        }
+        
+        if( ! isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
+            ob_start( array( 'MyStyle_Handoff', 'get_output' ) );
+        }
+    }
+    
+    /**
+     * Called by the handle function above. Returns the output for the request.
+     * Only supports POST requests, GET requests are given an Access
+     * DENIED message.
+     * 
+     * Needs to be public and static because it is called by a static function.
+     * 
+     * @return string Returns the html to output to the browser.
+     */
+    public static function get_output() {
+        if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+            //- Add the product to the cart along with the mystyle variables -//
+            global $woocommerce;
+            
+            
+            //Get the woocommerce cart
+            $cart = $woocommerce->cart;
             
             if(MyStyle_Options::is_demo_mode()) {
                 //Send to Demo Mode Message

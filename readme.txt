@@ -4,8 +4,8 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: customization, designer, personalization, product-preview, woocommerce, custom product, product designer, Post, plugin, admin, posts, shortcode, images, page, image
 Requires at least: 3.3
-Tested up to: 4.5
-Stable tag: 1.2.8
+Tested up to: 4.5.1
+Stable tag: 1.4.2
 
 The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
@@ -67,7 +67,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 1. Install the Plugin:  Upload the mystyle folder to your website's `/wp-content/plugins/` directory
 2. Activate the plugin:  Find MyStyle in your 'Plugins' menu in the WordPress admin and press 'Activate'.  This will enable the plugin and also automatically create a "customize" page where the Product Designer will load when someone goes to design their own product. This new Customize page will be created complete with the Customizer Shortcode already in the content. You do not have to manually create your Customize App page or use the shortcode anywhere.  When a user clicks 'customize' on any product, they will be taken to this automatically created page.  You may change the title of this page in your page list, or add your own content to it before or after the shortcode.
 3. Follow the links in the Settings > MyStyle admin to obtain your Developer account, API Key and Secret, and enter them in the settings page.  When you register for your Developer account, you'll be given a temporary demo ID to test with until we can review your account and provide you with your own credentials.
-4. In the WooCommerce product settings, go to the MyStyle tab (beneath product data), check the box 'Make Customizable' box and enter a corresponding Template Id.  If you are using Demo mode, try just using the demo Template Id (Template Id: 70) for an example 12x16 canvas print template.  When you create a Developer account, you will be given a list of template ids.
+4. In the WooCommerce product settings, go to the MyStyle tab (beneath product data), check the box 'Make Customizable' box and enter a corresponding Template Id. Try using the Template Id 70 for a 12x16 canvas print template.  You will receive a list of template ids once you have an active license.
 
 == Screenshots ==
 
@@ -78,6 +78,59 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 5. Example of a Smart Car with a background image applied
 
 == Changelog ==
+
+= 1.4.2 =
+* Added a design index where you can view and page through saved public designs.
+* Now storing cart data with the design.
+* Design profile page now supports custom slugs.
+* Fixed bug where customize page title was being hidden from menus.
+
+= 1.4.1 =
+* Fixed a bug where the upgrader wasn't properly creating the design profile page.
+
+= 1.4.0 =
+* Added design profile pages.
+
+= 1.3.7 =
+* Fixed a bug that occurred when an order was marked as completed.
+
+= 1.3.6 =
+* Added code to recreate invalid session ids.
+
+= 1.3.5 =
+* Fixed a bug with the function that generates session ids.
+
+= 1.3.4 =
+* Updated the session id generation function to add support for servers that don't have openssl.
+* Updated the instructions in the readme.txt
+
+= 1.3.3 =
+* Bumping the version to try to fix vcs merge issue.
+
+= 1.3.2 =
+* Removed duplicate upgrade code from the MyStyle class constructor, to try to fix upgrade issue.
+
+= 1.3.1 =
+* Now setting the design complete email 'from' address using the admin email and blog name.
+* Fixed a bug with the boolean options on the main settings page.
+* Now passing through the print_type.
+* Fixed an issue where the save/validation messages weren't showing on the main settings page.
+* Added a 'mystyle_send_design_complete_email' action hook to allow for custom design complete emails.
+
+= 1.3.0 =
+* Now storing additional data including the designer's email address.
+* Now tracking sessions.
+* Fully tested and working with WP 4.5.1.
+
+= 1.2.10 =
+* Now displaying the design id in the cart, orders admin and Design Created email.
+* Fixed an issue with passing product addons through the customizer into the cart.
+
+= 1.2.9 =
+* Added a field to allow the admin to optionally hide the page title on the Customize page.
+* Added a Product field for optionally passing ux variables into the customizer.
+* Added a Product field for optionally passing the print type into the customizer.
+* Added a Product field for optionally passing a design id into the customizer.
 
 = 1.2.8 =
 * Now passing attributes through.

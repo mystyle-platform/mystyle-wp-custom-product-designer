@@ -59,11 +59,12 @@ class MyStyleInstallTest extends WP_UnitTestCase {
      */    
     public function test_get_schema() {
         
-        $expected_schema = '
+        $expected_schema = "
             CREATE TABLE wptests_mystyle_designs (
                 ms_design_id bigint(32) NOT NULL,
                 ms_product_id bigint(20) NOT NULL,
                 ms_user_id bigint(20) NULL,
+                ms_email varchar(255) NULL,
                 ms_description text NULL,
                 ms_price numeric(15,2) NULL,
                 ms_print_url varchar(255) NULL,
@@ -71,8 +72,27 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 ms_thumb_url varchar(255) NULL,
                 ms_design_url varchar(255) NULL,
                 product_id bigint(20) NULL,
+                user_id bigint(20) NULL DEFAULT NULL,
+                design_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                design_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                ms_mobile int(1) NOT NULL DEFAULT '0',
+                ms_access int(1) NOT NULL DEFAULT '0',
+                design_view_count bigint(20) NULL DEFAULT '0',
+                design_purchase_count bigint(20) NULL DEFAULT '0',
+                session_id varchar(100) NULL DEFAULT NULL,
+                cart_data TEXT NULL DEFAULT NULL,
                 PRIMARY KEY  (ms_design_id)
-            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;';
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+            CREATE TABLE wptests_mystyle_sessions (
+                session_id varchar(100) NOT NULL,
+                session_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                session_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                session_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                session_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                PRIMARY KEY  (session_id)
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
         
         $schema = MyStyle_Install::get_schema();
         
@@ -87,8 +107,13 @@ class MyStyleInstallTest extends WP_UnitTestCase {
         
         $customize_page_id = MyStyle_Customize_Page::get_id();
         
-        //assert that the customize page was created
-        $this->assertNotNull($customize_page_id);
+        //assert that the Customize page was created
+        $this->assertNotNull( $customize_page_id );
+        
+        $design_profile_page_id = MyStyle_Design_Profile_Page::get_id();
+        
+        //assert that the Design Profile page was created
+        $this->assertNotNull( $design_profile_page_id );
     }
     
     /**

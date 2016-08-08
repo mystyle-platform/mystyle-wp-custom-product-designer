@@ -4,7 +4,7 @@
 Plugin Name: MyStyle
 Plugin URI: http://www.mystyleplatform.com
 Description: The MyStyle Custom Product Designer is a simple plugin that allows your customers to customize products in WooCommerce.
-Version: 1.2.8
+Version: 1.4.2
 Author: mystyleplatform
 Author URI: www.mystyleplatform.com
 License: GPL v3
@@ -45,27 +45,42 @@ if( file_exists( MYSTYLE_PATH . 'config.php' ) ) {
 }
 
 if( ! defined('MYSTYLE_SERVER') ) { define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' ); }
-if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '1.2.8' ); }
+if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '1.4.2' ); }
 
 define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
 define( 'MYSTYLE_NOTICES_NAME', 'mystyle_notices' );
 define( 'MYSTYLE_NOTICES_DISMISSED_NAME', 'mystyle_notices_dismissed' );
 define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
+define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' );
 
 //includes
 require_once( MYSTYLE_PATH . 'tests/qunit.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
+require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-forbidden-exception.php' );
+require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-not-found-exception.php' );
+require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-unauthorized-exception.php' );
+require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-access.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-options.php' );
+
+//Entities
 require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entity.php' );
 require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entitymanager.php' );
+require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-session.php' );
+require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionmanager.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php' );
 require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-api.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
 require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
+require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-design-profile-page.php' );
+require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php' );
+require_once( MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-install.php' );
+require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
+require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php' );
+require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
 
 //plugin setup and registrations
 $mystyle = new MyStyle();
@@ -76,9 +91,6 @@ register_uninstall_hook( __FILE__, array( 'MyStyle_Install', 'uninstall' ) );
 if( is_admin() ) {
     //---- ADMIN ----//
     //includes
-    require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
-    require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php' );
-    require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php' );
     require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php' );
@@ -115,7 +127,11 @@ if( is_admin() ) {
 
     $mystyle_frontend = new MyStyle_FrontEnd();
     $mystyle_handoff = new MyStyle_Handoff();
+    $mystyle_session = MyStyle_SessionHandler::get();
+    
+    MyStyle_Design_Profile_Page::get_instance();
 }
 
 //Register shortcodes
 add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
+add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );

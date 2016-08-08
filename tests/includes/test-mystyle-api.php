@@ -31,10 +31,10 @@ class MyStyleAPITest extends WP_UnitTestCase {
         $design->set_design_id( 1 );
         $design->set_template_id( 1 );
         $design->set_product_id( 1 );
-        $design->set_user_id( 1 );
+        $design->set_designer_id( 1 );
         $design->set_price( 1 );
         
-        $design = MyStyle_API::add_api_data_to_design($design);
+        $design = MyStyle_API::add_api_data_to_design( $design );
         
         //Assert print_url is set
         $expected_print_url = 'http://testhost/test_print_url.jpg';

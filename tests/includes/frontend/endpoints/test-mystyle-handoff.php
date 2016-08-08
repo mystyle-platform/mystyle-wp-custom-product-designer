@@ -110,11 +110,15 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
      * Test the handle function for a GET request
      */    
     public function test_handle_get_request() {
+        $GLOBALS['skip_ob_start'] = true;
+        
         $mystyle_handoff = new MyStyle_Handoff();
         
         $_SERVER['REQUEST_METHOD'] = 'GET';
         
-        $html = $mystyle_handoff->handle();
+        //Call the function
+        $mystyle_handoff->handle();
+        $html = $mystyle_handoff->get_output();
         
         $this->assertContains( '<h2>Access Denied</h2>', $html );
     }
@@ -126,9 +130,13 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         global $post;
         global $woocommerce;
         global $mail_message;
+        $GLOBALS['skip_ob_start'] = true;
         
         //Create the MyStyle Customize page (needed for the link in the email)
-        $page_id = MyStyle_Customize_Page::create();
+        MyStyle_Customize_Page::create();
+        
+        //Create the MyStyle Design Profile page (needed for the link in the email)
+        MyStyle_Design_Profile_Page::create();
         
         //Mock the API response
         add_filter( 'pre_http_request', array( 'MyStyleMockAPI', 'mock_api_call' ), 10, 3 );
@@ -159,7 +167,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $_POST = $post;
         
         //Call the function
-        $html = $mystyle_handoff->handle();
+        $mystyle_handoff->handle();
+        $html = $mystyle_handoff->get_output();
         
         $this->assertContains( 'Product added to cart', $html );
         

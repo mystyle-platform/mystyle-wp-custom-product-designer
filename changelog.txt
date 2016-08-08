@@ -1,3 +1,69 @@
+= 1.4.2 =
+
+* Added a design index where you can view and page through saved public designs.
+* Now storing cart data with the design.
+* Design profile page now supports custom slugs.
+* Fixed bug where customize page title was being hidden from menus.
+
+= 1.4.1 =
+
+* Fixed a bug where the upgrader wasn't properly creating the design profile page.
+
+= 1.4.0 =
+
+* Added design profile pages.
+
+= 1.3.7 =
+
+* Fixed a bug that occurred when an order was marked as completed.
+
+= 1.3.6 =
+
+* Added code to recreate invalid session ids.
+
+= 1.3.5 =
+
+* Fixed a bug with the function that generates session ids.
+
+= 1.3.4 =
+
+* Updated the session id generation function to add support for servers that don't have openssl.
+* Updated the instructions in the readme.txt
+
+= 1.3.3 =
+
+* Bumping the version to try to fix vcs merge issue.
+
+= 1.3.2 =
+
+* Removed duplicate upgrade code from the MyStyle class constructor, to try to fix upgrade issue.
+
+= 1.3.1 =
+
+* Now setting the design complete email 'from' address using the admin email and blog name.
+* Fixed a bug with the boolean options on the main settings page.
+* Now passing through the print_type.
+* Fixed an issue where the save/validation messages weren't showing on the main settings page.
+* Added a 'mystyle_send_design_complete_email' action hook to allow for custom design complete emails.
+
+= 1.3.0 =
+
+* Now storing additional data including the designer's email address.
+* Now tracking sessions.
+* Fully tested and working with WP 4.5.1.
+
+= 1.2.10 =
+
+* Now displaying the design id in the cart, orders admin and Design Created email.
+* Fixed an issue with passing product addons through the customizer into the cart.
+
+= 1.2.9 =
+
+* Added a field to allow the admin to optionally hide the page title on the Customize page.
+* Added a Product field for optionally passing ux variables into the customizer.
+* Added a Product field for optionally passing the print type into the customizer.
+* Added a Product field for optionally passing a design id into the customizer.
+
 = 1.2.8 =
 
 * Now passing attributes through.

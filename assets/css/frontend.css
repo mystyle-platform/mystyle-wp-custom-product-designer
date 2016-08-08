@@ -1,8 +1,9 @@
-#customizer-wrapper {
+/* MyStyle Customize Page */
+#customizer-wrapper { 
     width: 950px;
     height: 550px;
     padding: 0;
-    text-align:center;
+    text-align:center; 
     margin-left: auto;
     margin-right: auto;
 }
@@ -26,15 +27,53 @@ body.mystyle-customize #secondary,
 body.mystyle-customize .site::before {
     display: none;
 }
-body.mystyle-customize .site-content {
-    margin-left: auto;
-}
 
-/* fix for some themes making tiny thumbs in cart */
-body.woocommerce-cart table.shop_table.cart img {
-    width: auto;
+/* MyStyle Design Profile Page */
+body.mystyle-design-profile img#mystyle-design-profile-img {
+    display: block;
     max-width: 100%;
+    width: auto;
     margin: auto;
-    padding: 10px;
+    margin-bottom: 1em;
+}
+body.mystyle-design-profile ul.mystyle-button-group {
+    list-style: none;
+    text-align: center;
+}
+body.mystyle-design-profile ul.mystyle-button-group li {display: inline-block;}
+
+body.mystyle-design-profile img#mystyle-design-profile-img {
     display: block;
 }
+
+body.mystyle-design-profile ul.mystyle-design-nav li {
+    margin: 5em;
+}
+
+/* MyStyle Design Profile Index */
+body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul {
+    list-style: none;
+}
+body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li {
+    display: inline-block;
+    margin: 1em;
+}
+
+body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li a {
+    display: block;
+    padding: 2em;
+    text-decoration: none;
+    box-shadow: none;
+}
+
+body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li a:hover {
+    -webkit-box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
+    -moz-box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
+    box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
+}
+
+body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li span.mystyle-design-id {
+    display: block;
+}
+
+

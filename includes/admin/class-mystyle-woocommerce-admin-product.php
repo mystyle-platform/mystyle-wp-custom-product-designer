@@ -156,7 +156,7 @@ class MyStyle_WooCommerce_Admin_Product {
         $template_id = $_POST['_mystyle_template_id'];
         $customizer_ux = $_POST['_mystyle_customizer_ux'];
         $mystyle_design_id = $_POST['_mystyle_design_id'];
-		$mystyle_print_type = $_POST['_mystyle_print_type'];
+        $mystyle_print_type = $_POST['_mystyle_print_type'];
         if ( $mystyle_enabled == 'yes' ) {
             if( $template_id != '' ) { //both options are set (store them)
                 update_post_meta( $post_id, '_mystyle_enabled', 'yes' );
