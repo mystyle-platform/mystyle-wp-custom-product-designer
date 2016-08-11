@@ -135,9 +135,9 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         //assert that the http response code is set to 200
         $this->assertEquals( 200, $mystyle_design_profile_page->get_http_response_code() );
         
-        $designs = $mystyle_design_profile_page->get_designs();
+        $pager = $mystyle_design_profile_page->get_pager();
         
-        $this->assertTrue( ! empty( $designs ) );
+        $this->assertTrue( ! empty( $pager ) );
     }
     
     /**
