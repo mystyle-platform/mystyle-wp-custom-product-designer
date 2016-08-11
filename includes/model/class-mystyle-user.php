@@ -20,7 +20,7 @@ class MyStyle_User {
      * @param integer $id The user id from the MyStyle API
      * @param string $email The email from the MyStyle API
      */
-    public function __construct($id, $email) {
+    public function __construct( $id, $email ) {
         $this->id = $id;
         $this->email = $email;
     }

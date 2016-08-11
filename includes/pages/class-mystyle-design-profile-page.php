@@ -32,13 +32,13 @@ class MyStyle_Design_Profile_Page {
     
     /**
      * The design that comes immediately before this one in the collection. 
-     * @var int
+     * @var MyStyle_Design
      */
     private $previous_design;
     
     /**
      * The design that comes immediately before this one in the collection. 
-     * @var int 
+     * @var MyStyle_Design 
      */
     private $next_design;
     
@@ -47,6 +47,12 @@ class MyStyle_Design_Profile_Page {
      * @var array
      */
     private $designs;
+    
+    /**
+     * Pager for the design profile index.
+     * @var MyStyle_Pager
+     */
+    private $pager;
     
     /**
      * Stores the currently thrown exception (if any) (when the class is
@@ -202,10 +208,44 @@ class MyStyle_Design_Profile_Page {
     }
     
     /**
-     * Init the singleton for an index request
+     * Init the singleton for an index request.
      */
     private function init_index_request( ) {
-        $this->designs = MyStyle_DesignManager::get_designs();
+        // ------- SET UP THE PAGER ------------//
+        //create a new pager
+        $this->pager = new MyStyle_Pager();
+        
+        //designs per page
+        $this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE ); 
+        
+        //current page number
+        $this->pager->set_current_page_number( 
+                        max( 1, get_query_var( 'paged' ) )
+                    ); 
+        
+        //pager items
+        $designs = MyStyle_DesignManager::get_designs(
+                        $this->pager->get_items_per_page(),
+                        $this->pager->get_current_page_number()
+                    );
+        $this->pager->set_items( $designs );
+        
+        //total items
+        $this->pager->set_total_item_count( 
+                        MyStyle_DesignManager::get_total_design_count()
+                    );
+        
+        //validate the requested page
+        try {
+            $this->pager->validate();
+        } catch ( MyStyle_Not_Found_Exception $ex ) {
+            $response_code = 404;
+            status_header( $response_code );
+
+            $this->set_exception( $ex );
+            $this->set_http_response_code( $response_code );
+        }
+        
     }
     
     /**
@@ -408,11 +448,11 @@ class MyStyle_Design_Profile_Page {
     }
     
     /**
-     * Gets the current designs.
-     * @return array Returns an array of MyStyle_Designs.
+     * Gets the pager for the designs index.
+     * @return MyStyle_Pager Returns the pager for the designs index.
      */
-    public function get_designs() {
-        return $this->designs;
+    public function get_pager() {
+        return $this->pager;
     }
     
     /**

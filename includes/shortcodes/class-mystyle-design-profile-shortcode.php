@@ -17,15 +17,21 @@ abstract class MyStyle_Design_Profile_Shortcode {
         //-------------------- handle exceptions ----------------------//
         $ex = $design_profile_page->get_exception();
         if( $ex != null ) { 
-            switch( get_class( $ex ) ) {
-                case 'MyStyle_Unauthorized_Exception':
-                    $template_name = 'design-profile_error-unauthorized.php';
-                    break;
-                case 'MyStyle_Forbidden_Exception':
-                    $template_name = 'design-profile_error-forbidden.php';
-                    break;
-                default:
-                    $template_name = 'design-profile_error-general.php';
+            if( $design_profile_page->get_pager() != null ) {
+                // index
+                $template_name = 'design-index_error-general.php';
+            } else {
+                // design profile page
+                switch( get_class( $ex ) ) {
+                    case 'MyStyle_Unauthorized_Exception':
+                        $template_name = 'design-profile_error-unauthorized.php';
+                        break;
+                    case 'MyStyle_Forbidden_Exception':
+                        $template_name = 'design-profile_error-forbidden.php';
+                        break;
+                    default:
+                        $template_name = 'design-profile_error-general.php';
+                }
             }
             
             ob_start();
@@ -79,10 +85,11 @@ abstract class MyStyle_Design_Profile_Shortcode {
      * @return string Returns the output for the design index.
      */
     public static function output_design_index() {
+        //get the design profile page
         $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
         
-        // ------------- set the template variables -------------------//
-        $designs = $design_profile_page->get_designs();
+        /* @var $pager \Mystyle_Pager */
+        $pager = $design_profile_page->get_pager();
         
         // ---------- Call the view layer ------------------------ //
         ob_start();

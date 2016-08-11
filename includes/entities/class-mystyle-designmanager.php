@@ -223,7 +223,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
         $sql .= " LIMIT $per_page";
 
-        //$sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
+        $sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
 
         $results = $wpdb->get_results( $sql, 'OBJECT' );
         
@@ -238,6 +238,24 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         }
 
         return $designs;
+    }
+    
+    /**
+     * Retrieve the total number of designs from the db.
+     *
+     * @return integer
+     * @global $wpdb;
+     * @todo add unit testing 
+     */
+    public static function get_total_design_count( ) {
+        global $wpdb;
+
+        $sql = 'SELECT COUNT(' . MyStyle_Design::get_primary_key() . ') ' .
+               'FROM ' . MyStyle_Design::get_table_name();
+
+        $count = $wpdb->get_var( $sql );
+
+        return $count;
     }
 
 }

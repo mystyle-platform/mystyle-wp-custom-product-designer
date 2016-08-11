@@ -51,28 +51,28 @@ body.mystyle-design-profile ul.mystyle-design-nav li {
 }
 
 /* MyStyle Design Profile Index */
-body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul {
+body.mystyle-design-profile ul.mystyle-designs {
     list-style: none;
 }
-body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li {
+body.mystyle-design-profile ul.mystyle-designs li {
     display: inline-block;
     margin: 1em;
 }
 
-body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li a {
+body.mystyle-design-profile ul.mystyle-designs li a {
     display: block;
     padding: 2em;
     text-decoration: none;
     box-shadow: none;
 }
 
-body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li a:hover {
+body.mystyle-design-profile ul.mystyle-designs li a:hover {
     -webkit-box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
     -moz-box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
     box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
 }
 
-body.mystyle-design-profile div#mystyle-design-profile-index-wrapper ul li span.mystyle-design-id {
+body.mystyle-design-profile ul.mystyle-designs li span.mystyle-design-id {
     display: block;
 }
 

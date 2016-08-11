@@ -44,8 +44,8 @@ if( file_exists( MYSTYLE_PATH . 'config.php' ) ) {
     include_once( MYSTYLE_PATH . 'config.php');
 }
 
-if( ! defined('MYSTYLE_SERVER') ) { define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' ); }
-if( ! defined('MYSTYLE_VERSION') ) { define( 'MYSTYLE_VERSION', '1.4.2' ); }
+if( ! defined( 'MYSTYLE_SERVER' ) ) { define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' ); }
+if( ! defined( 'MYSTYLE_VERSION' ) ) { define( 'MYSTYLE_VERSION', '1.4.2' ); }
 
 define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
 define( 'MYSTYLE_NOTICES_NAME', 'mystyle_notices' );
@@ -60,6 +60,7 @@ require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-forbidden-exception.p
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-not-found-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-unauthorized-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-access.php' );
+require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-pager.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-options.php' );
 
@@ -122,6 +123,8 @@ if( is_admin() ) {
 
 } else {
     //---- FRONT END ----//
+    if( ! defined( 'MYSTYLE_DESIGNS_PER_PAGE' ) ) { define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 ); }
+    
     require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
     require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
 
