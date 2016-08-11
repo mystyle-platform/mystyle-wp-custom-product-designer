@@ -1,3 +1,8 @@
+= 1.4.3 =
+
+* Added pagination to the design profile index.
+* Listed the Email Manager in the add-ons directory.
+
 = 1.4.2 =
 
 * Added a design index where you can view and page through saved public designs.
