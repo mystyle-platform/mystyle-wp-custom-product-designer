@@ -52,9 +52,10 @@ class MyStyle_Addons_Page {
                         <h3>MyStyle Design Manager</h3>
                         <img src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/design_manager.jpg' ?>" alt="Design Manager" />
                         <p>
-                            The MyStyle Design Manager allows you to manage
-                            the designs made by users from within the
-                            WordPress administrator.  Get quick links to reload or delete designs.
+                            The MyStyle Design Manager allows you to manage the
+                            designs made by users from within the WordPress
+                            administrator.  Get quick links to reload or delete
+                            designs.
                         </p>
                     </a>
                 </li>
@@ -64,8 +65,11 @@ class MyStyle_Addons_Page {
                         <h3>MyStyle Email Manager</h3>
                         <img src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/email-manager-screenshot.jpg' ?>" alt="Email Manager" />
                         <p>
-                            Our "MyStyle Email Manager" allows you to edit the email that is automatically sent when users save their designs.
-			    You can edit the body text content of the email, and move the placement of the user's design image and links.
+                            Our "MyStyle Email Manager" upgrades the emails that
+                            are automatically sent when users save their designs
+                            to use the WooCommerce email template, and allows
+                            you to edit the text content and placement of the
+                            image and links within these automatic emails.
                         </p>
                     </a>
                 </li>
@@ -75,8 +79,11 @@ class MyStyle_Addons_Page {
                         <h3>Edit Options in Cart*</h3>
                         <img src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/edit-options-in-cart.jpg' ?>" alt="Edit Product Options" />
                         <p>
-                            Our "Edit Options in Cart Plugin" allows users to change product options in the cart (and refreshes the page for new prices).<br/>
-                            *This is a standalone add-on for WooCommerce and does not require MyStyle.
+                            Our "Edit Options in Cart Plugin" allows users to
+                            change product options in the cart (and refreshes
+                            the page for new prices).<br/>
+                            *This is a standalone add-on for WooCommerce and
+                            does not require MyStyle.
                         </p>
                     </a>
                 </li>
