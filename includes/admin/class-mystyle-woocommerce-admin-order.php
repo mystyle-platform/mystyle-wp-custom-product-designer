@@ -53,7 +53,11 @@ class MyStyle_WooCommerce_Admin_Order {
             
             $design_id = $mystyle_data['design_id'];
             
-            $design = MyStyle_DesignManager::get( $design_id );
+            /** @var \WP_User */
+            $current_user = wp_get_current_user();
+            
+            /** @var \MyStyle_Design */
+            $design = MyStyle_DesignManager::get( $design_id, $current_user );
         }
     
         ?>

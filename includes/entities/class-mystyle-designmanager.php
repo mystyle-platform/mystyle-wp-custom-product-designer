@@ -16,6 +16,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
      * @global wpdb $wpdb
      * @param integer $design_id The design id.
      * @param WP_User $user (optional) The current user.
+     * @param MyStyle_Session $session 
      * @return \MyStyle_Design Returns the MyStyle_Design entity.
      * @throws MyStyle_Forbidden_Exception Throws a MyStyle_Forbidden_Exception
      * if the requested design is marked as private and the user isn't logged
@@ -25,7 +26,12 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
      * the passed user is not the owner of the design and the user doesn't have
      * 'read_private_posts' capability.
      */
-    public static function get( $design_id, WP_User $user = null ) {
+    public static function get( 
+                            $design_id,
+                            WP_User $user = null,
+                            MyStyle_Session $session = null
+                        )
+    {
         global $wpdb;
         
         $design = null;
@@ -43,12 +49,23 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         //-------------- SECURITY CHECK ------------//
         if( $design != null ) {
             if( $design->get_access() === MyStyle_Access::$PRIVATE ) {
-                if( ( $user == null ) || ( $user->ID == 0 ) ) {
-                    throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.');
-                }
-                if( $design->get_user_id() != $user->ID ) {
-                    if( ! $user->has_cap( 'read_private_posts' ) ) {
-                        throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+                //check if created by current/passed session
+                if( ( $session != null ) &&
+                    ( $design->get_session_id() != null ) &&
+                    ( $session->get_session_id() == $design->get_session_id() )
+                ) {
+                    //design was created by the passed session, continue.
+                } else {
+                    //check for wp user match
+                    if( $design->get_user_id() != null ) {
+                        if( ( $user == null ) || ( $user->ID == 0 ) ) {
+                            throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.');
+                        }
+                        if( $design->get_user_id() != $user->ID ) {
+                            if( ! $user->has_cap( 'read_private_posts' ) ) {
+                                throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+                            }
+                        }
                     }
                 }
             }

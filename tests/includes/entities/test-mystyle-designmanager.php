@@ -81,10 +81,12 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         $this->setExpectedException( 'MyStyle_Unauthorized_Exception' );
         
         $design_id = 1;
+        $user_id = 1;
         
         //Create a private design
         $design = MyStyle_MockDesign::getMockDesign( $design_id );
         $design->set_access( MyStyle_Access::$PRIVATE );
+        $design->set_user_id( $user_id ); 
         
         //Persist the design
         MyStyle_DesignManager::persist( $design );
@@ -101,10 +103,12 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         $this->setExpectedException( 'MyStyle_Forbidden_Exception' );
         
         $design_id = 1;
+        $user_id = 1;
         
         //Create a private design
         $design = MyStyle_MockDesign::getMockDesign( $design_id );
         $design->set_access( MyStyle_Access::$PRIVATE );
+        $design->set_user_id( $user_id );
         
         //Persist the design
         MyStyle_DesignManager::persist( $design );
@@ -119,8 +123,62 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test that the get function throws a MyStyle_Forbidden_Exception when
-     * accessing a private design that isn't the user's.
+     * Test that the get function returns a design to the user that created the
+     * design.
+     */    
+    function test_get_private_with_user_match() {
+        
+        $design_id = 1;
+        $user_id = 1;
+        
+        //Create a private design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        $design->set_access( MyStyle_Access::$PRIVATE );
+        $design->set_user_id( $user_id );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Mock a WP_User
+        $user = new WP_User();
+        $user->ID = $user_id;
+        
+        //Call the function
+        $design_from_db = MyStyle_DesignManager::get( $design_id, $user );
+        
+        //Assert that the design is returned
+        $this->assertEquals( $design_id, $design_from_db->get_design_id() );
+    }
+    
+    /**
+     * Test that the get function returns a design to the session that created
+     * the design.
+     */    
+    function test_get_private_with_session_match() {
+        
+        $design_id = 1;
+        $session_id = 'testsession';
+        
+        //Create the session
+        $session = MyStyle_Session::create( $session_id );
+        
+        //Create a private design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        $design->set_access( MyStyle_Access::$PRIVATE );
+        $design->set_session_id( $session->get_session_id() );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Call the function
+        $design_from_db = MyStyle_DesignManager::get( $design_id, null, $session );
+        
+        //Assert that the design is returned
+        $this->assertEquals( $design_id, $design_from_db->get_design_id() );
+    }
+    
+    /**
+     * Test that the get function returns a design when accessed by an admin.
      */    
     function test_get_private_when_admin() {
         

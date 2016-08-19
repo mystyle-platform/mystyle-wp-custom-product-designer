@@ -74,7 +74,7 @@ class MyStyle {
     
     /**
      * After the order is completed, do the following for all mystyle enabled
-     * products:
+     * products in the order:
      *  * Increment the design purchase count.
      * @param number $order_id The order_id of the new order.
      */
@@ -90,8 +90,16 @@ class MyStyle {
                     $mystyle_data = maybe_unserialize( $item['mystyle_data'] );
                     $design_id = $mystyle_data['design_id'];
 
+                    /** @var \WP_User */
+                    $current_user = wp_get_current_user();
+                    
+                    /** @var \MyStyle_Session */
+                    $session = MyStyle_SessionHandler::get();
+                    
+                    /** @var \MyStyle_Design */
+                    $design = MyStyle_DesignManager::get( $design_id, $current_user, $session );
+                    
                     //Increment the design purchase count
-                    $design = MyStyle_DesignManager::get( $design_id );
                     $design->increment_purchase_count();
                     MyStyle_DesignManager::persist( $design );
                 }
@@ -142,7 +150,14 @@ class MyStyle {
             
         if( $design_id != null ) {
             
-            $design = MyStyle_DesignManager::get( $design_id );
+            /** @var \WP_User */
+            $user = wp_get_current_user();
+            
+            /** @var \MyStyle_Session */
+            $session = MyStyle_SessionHandler::get();
+            
+            /** @var \MyStyle_Design */
+            $design = MyStyle_DesignManager::get( $design_id, $user, $session );
 
             //overwrite the src attribute
             $new_src = 'src="' . $design->get_thumb_url() . '"';

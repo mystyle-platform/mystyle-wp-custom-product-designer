@@ -290,7 +290,8 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Sets the value of user_id.
+     * Sets the value of user_id. This is the local (WordPress) user id (if the
+     * user/designer has one).
      * @param number $user_id The new value for user_id.
      */
     public function set_user_id( $user_id ) {
@@ -298,7 +299,8 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Gets the value of user_id.
+     * Gets the value of user_id. This is the local (WordPress) user id (if the
+     * user/designer has one).
      * @return number Returns the value of user_id.
      */
     public function get_user_id() {
@@ -306,7 +308,8 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Sets the value of designer_id.
+     * Sets the value of designer_id. This is the MyStyle user id (as
+     * communicated via the MyStyle API).
      * @param number $designer_id The new value for designer_id.
      */
     public function set_designer_id( $designer_id ) {
@@ -314,7 +317,8 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Gets the value of designer_id.
+     * Gets the value of designer_id. This is the MyStyle user id (as
+     * communicated via the MyStyle API).
      * @return number Returns the value of designer_id.
      */
     public function get_designer_id() {
