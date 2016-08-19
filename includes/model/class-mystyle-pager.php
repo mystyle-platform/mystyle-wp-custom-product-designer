@@ -6,7 +6,7 @@
  * The MyStyle_Pager class is used for controlling a paged interface.
  *
  * @package MyStyle
- * @since 1.4.3
+ * @since 1.4.4
  * @todo Add unit testing
  */
 class MyStyle_Pager {

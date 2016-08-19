@@ -1,3 +1,8 @@
+= 1.4.4 =
+
+* Fixed a bug with creating and purchasing private designs while not logged in.
+* Updated the readme.txt to reflect that the plugin is fully tested and working with WP 4.6.0.
+
 = 1.4.3 =
 
 * Added pagination to the design profile index.
