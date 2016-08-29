@@ -62,7 +62,17 @@ abstract class MyStyle_Customizer_Shortcode {
         $mystyle_template_id = get_post_meta( $product_id, '_mystyle_template_id', true );
         $customizer_ux       = get_post_meta( $product_id, '_mystyle_customizer_ux', true );
         $print_type          = get_post_meta( $product_id, '_mystyle_print_type', true );
-        $passthru            = ( isset( $_GET['h'] ) ) ? $_GET['h'] : '';
+        $passthru            = ( isset( $_GET['h'] ) ) ? $_GET['h'] : null;
+        
+        //if no passthru (h) data was received in the GET vars, build some
+        //defaults to keep things working.
+        if( $passthru == null ) {
+            $passthru_arr = array();
+            $passthru_arr['post'] = array();
+            $passthru_arr['post']['quantity'] = 1;
+            $passthru_arr['post']['add-to-cart'] = (int) $product_id;
+            $passthru = base64_encode( json_encode( $passthru_arr ) );
+        }
 
         // Product Settings - Default Design ID
         // if no reload design id from url, use default design ID if there is one

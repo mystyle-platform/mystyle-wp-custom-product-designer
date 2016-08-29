@@ -29,11 +29,20 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
      */    
     public function test_output_with_valid_params() {
         
+        //mock the GET params
         $_GET['product_id'] = 1;
+        $passthru = base64_encode( json_encode( array( 'post' => array( 'quantity' => 2, 'add-to-cart' => 1 ) ) ) );
+        $_GET['h'] = $passthru;
+        
+        //call the function
         $output = MyStyle_Customizer_Shortcode::output();
         
         //assert that the output includes an iframe tag
         $this->assertContains( '<iframe', $output );
+        
+        //assert that the expected passthru is included
+        $expectedPassthru = 'passthru=h,' . $passthru;
+        $this->assertContains( $expectedPassthru, $output );
     }
     
     /**
@@ -41,10 +50,34 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
      */    
     public function test_output_with_no_params() {
         
+        //call the function
         $output = MyStyle_Customizer_Shortcode::output();
         
         //assert that the output includes an iframe tag
         $this->assertContains( 'Sorry, no products are currently available for customization.', $output );
+    }
+    
+    /**
+     * Test the output function with no h param.  The function should stuff in
+     * some defaults.
+     */    
+    public function test_output_with_no_h_param() {
+        
+        //mock the GET params
+        $_GET['product_id'] = 1;
+        
+        //call the function
+        $output = MyStyle_Customizer_Shortcode::output();
+        
+        //assert that the output includes an iframe tag
+        $this->assertContains( '<iframe', $output );
+        
+        //build the expected passthru
+        $passthru = base64_encode( json_encode( array( 'post' => array( 'quantity' => 1, 'add-to-cart' => 1 ) ) ) );
+        $expectedPassthru = 'passthru=h,' . $passthru;
+        
+        //assert that the expected passthru is included
+        $this->assertContains( $expectedPassthru, $output );
     }
     
 }
