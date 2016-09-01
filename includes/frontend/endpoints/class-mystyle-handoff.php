@@ -149,6 +149,7 @@ class MyStyle_Handoff {
             $passthru = json_decode( base64_decode( $_POST['h'] ), true );
             $passthru_post = $passthru['post'];
             $quantity = $passthru_post['quantity'];
+            $cart_item_key = ( array_key_exists( 'cart_item_key', $passthru ) ) ? $passthru['cart_item_key'] : null;
             
             //Set the $_POST to the post data that passed through.
             $_POST = $passthru_post;
@@ -167,27 +168,38 @@ class MyStyle_Handoff {
             //exit;
             
             //Get the woocommerce cart
+            /* @var $cart \WC_Cart */
             $cart = $woocommerce->cart;
+            //init the cart contents (pull from memory, etc)
+            $cart->get_cart();
             
-            //Add the mystyle meta data to the cart item
-            $cart_item_data = array();
-            $cart_item_data['mystyle_data'] = $design->get_meta();
-            
-            //Add the product and meta data to the cart
-            $cart_item_key = $cart->add_to_cart(
-                                        $design->get_product_id(), //WooCommerce product id
-                                        $quantity, //quantity
-                                        $variation_id, //variation id
-                                        $variation, //variation attribute values
-                                        $cart_item_data //extra cart item data we want to pass into the item
-                                );
-            // ---------------------- Fix for WC 2.2----------------------- 
-            // Set a session variable with our data that can later be retrieved if necessary
-            if( isset( WC()->session ) ) {
-                WC()->session->set( 'mystyle_' . $cart_item_key, $cart_item_data );
+            if( $cart_item_key != null ) { //existing cart item
+                //update the mystyle data
+                $cart->cart_contents[$cart_item_key]['mystyle_data'] = $design->get_meta();
+                
+                //commit our change to the session
+                $cart->set_session();
+            } else { //new cart item
+                //Add the mystyle meta data to the cart item
+                $cart_item_data = array();
+                $cart_item_data['mystyle_data'] = $design->get_meta();
+                
+                //Add the product and meta data to the cart
+                $cart_item_key = $cart->add_to_cart(
+                                            $design->get_product_id(), //WooCommerce product id
+                                            $quantity, //quantity
+                                            $variation_id, //variation id
+                                            $variation, //variation attribute values
+                                            $cart_item_data //extra cart item data we want to pass into the item
+                                    );
+                
+                // ---------------------- Fix for WC 2.2----------------------- 
+                // Set a session variable with our data that can later be retrieved if necessary
+                if( isset( WC()->session ) ) {
+                    WC()->session->set( 'mystyle_' . $cart_item_key, $cart_item_data );
+                }
+                // ------------------------------------------------------------
             }
-            // ------------------------------------------------------------
-            
         }
         
         if( ! isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests

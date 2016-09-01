@@ -86,17 +86,24 @@ abstract class MyStyle_Customize_Page {
     /**
      * Builds a url to the customize page including url paramaters to load
      * the passed design.
-     * @param integer $design
+     * @param MyStyle_Design $design
+     * @param integer $cart_item_key
      * @return string Returns a link that can be used to reload a design.
      * @todo Add unit testing.
      */
-    public static function get_design_url( MyStyle_Design $design ) {
+    public static function get_design_url( MyStyle_Design $design, $cart_item_key = null ) {
+        
         $passthru = array(
             'post' => array (
                 'quantity' => 1,
                 'add-to-cart' => $design->get_product_id()
             )
         );
+        
+        if( $cart_item_key != null ) {
+            $passthru['cart_item_key'] = $cart_item_key;
+        }
+        
         $passthru_encoded = base64_encode( json_encode( $passthru ) );
         $customize_args = array(
             'product_id' => $design->get_product_id(),
