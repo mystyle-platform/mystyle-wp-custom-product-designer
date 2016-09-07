@@ -1,3 +1,8 @@
+= 1.4.6 =
+
+* Added support for editing designs that are in the cart.
+* Updated the readme.txt to reflect that the plugin is fully tested and working with WP 4.6.1.
+
 = 1.4.5 =
 
 * Now supports /customize urls that are missing the "h" parameter (falls back to quantity 1 with no options).
