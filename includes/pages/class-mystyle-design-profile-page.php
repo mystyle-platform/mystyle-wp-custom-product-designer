@@ -76,6 +76,7 @@ class MyStyle_Design_Profile_Page {
     public function __construct() {
         $this->http_response_code = 200;
         
+        add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
         add_action( 'template_redirect', array( &$this, 'init' ) );
     }
     
@@ -578,6 +579,37 @@ class MyStyle_Design_Profile_Page {
         $message .= $status;
 
         return $message;
+    }
+    
+    /**
+     * Filter the post title.
+     * @param string $title The title of the post.
+     * @param type $id The id of the post.
+     * @return string Returns the filtered title.
+     * @todo Add unit testing
+     */
+    public static function filter_title( $title, $id = null ) {
+        
+        try {
+            if( 
+                ( ! empty( $id ) ) &&
+                ( $id == self::get_id() ) &&
+                ( $id == get_the_ID() ) && //make sure we're in the loop
+                ( in_the_loop() ) //make sure we're in the loop
+              )
+            {
+                $instance = self::get_instance();
+                $design = $instance->get_design();
+                if( $design != null ) {
+                    $title = 'Design ' . $design->get_design_id();
+                }
+            }
+        } catch( MyStyle_Exception $e ) {
+            //this exception may be thrown if the Design Profile Page is 
+            //missing. For this function, that is okay, just continue.
+        }
+
+        return $title;
     }
     
     /**
