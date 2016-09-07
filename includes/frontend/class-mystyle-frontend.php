@@ -48,6 +48,7 @@ class MyStyle_FrontEnd {
      * to the body tag.
      * @return array Returns the filtered classes array.
      * @todo Add unit testing
+     * @todo Move to the MyStyle_Customize_Page class
      */
     public static function filter_body_class( $classes ) {
         global $post;
@@ -81,6 +82,7 @@ class MyStyle_FrontEnd {
      * @param type $id The id of the post.
      * @return string Returns the filtered title.
      * @todo Add unit testing
+     * @todo Move to the MyStyle_Customize_Page class
      */
     public static function filter_title( $title, $id = null ) {
         
