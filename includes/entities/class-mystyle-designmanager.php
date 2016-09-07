@@ -220,7 +220,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
      * Retrieve designs from the database.
      *
      * @param int $per_page 
-     * @param int $page_number TODO (Not yet implemented)
+     * @param int $page_number
      *
      * @return mixed
      * @global $wpdb;
