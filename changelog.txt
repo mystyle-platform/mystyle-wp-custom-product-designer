@@ -1,3 +1,8 @@
+= 1.4.7 =
+
+* Changed the default title for the Design Profile Page to 'Community Design Gallery'.
+* Changed the page title for individual design profile pages to 'Design ####'.
+
 = 1.4.6 =
 
 * Added support for editing designs that are in the cart.
