@@ -190,7 +190,7 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         $page = get_post($page_id); 
         
         //assert that the page was created and has the expected title
-        $this->assertEquals( 'Design Profile', $page->post_title );
+        $this->assertEquals( 'Community Design Gallery', $page->post_title );
     }
     
     /**

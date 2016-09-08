@@ -87,7 +87,7 @@ class MyStyle_Design_Profile_Page {
     public static function create() {
         //Create the Design Profile page
         $design_profile_page = array(
-            'post_title'   => 'Design Profile',
+            'post_title'   => 'Community Design Gallery',
             'post_name'    => 'designs',
             'post_content' => '[mystyle_design_profile]',
             'post_status'  => 'publish',
