@@ -76,7 +76,7 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Static function to create a new Design from a WP result object. Call 
+     * Static function to create a Design object from a WP result object. Call 
      * using MyStyle_Design::create_from_result_object($result_object);  This
      * function should correspond with the get_data_array() function below.
      * @param array $result_object A WP row result object to be used to 
@@ -111,6 +111,50 @@ class MyStyle_Design implements MyStyle_Entity {
         $instance->view_count = (int) htmlspecialchars( $result_object->design_view_count );
         $instance->purchase_count = (int) htmlspecialchars( $result_object->design_purchase_count );
         $instance->cart_data = $result_object->cart_data;
+        
+        return $instance;
+    }
+    
+    /**
+     * Static function to create a Design object from a WP result array. Call 
+     * using MyStyle_Design::create_from_result_array($result_array);  This
+     * function should correspond with the get_data_array() function below.
+     * 
+     * This is used for features such as the Design Manager's design list.
+     * 
+     * @param array $result_array A WP row result array to be used to 
+     * construct the Design. This is an associative array with keys that
+     * correspond to the column names from the database.
+     * @return \self Works like a constructor.
+     * @todo Add unit testing
+     */
+    public static function create_from_result_array( $result_array ) {
+        $instance = new self();
+        
+        //var_dump( $result_array );
+        
+        $instance->design_id = (int) htmlspecialchars( $result_array['ms_design_id'] );
+        $instance->template_id = (int) htmlspecialchars( $result_array['ms_product_id'] );
+        $instance->designer_id = (int) htmlspecialchars( $result_array['ms_user_id'] );
+        $instance->email = htmlspecialchars( $result_array['ms_email'] );
+        $instance->description = htmlspecialchars( $result_array['ms_description'] );
+        $instance->price = (int) htmlspecialchars( $result_array['ms_price'] );
+        $instance->print_url = htmlspecialchars( $result_array['ms_print_url'] );
+        $instance->web_url = htmlspecialchars( $result_array['ms_web_url'] );
+        $instance->thumb_url = htmlspecialchars( $result_array['ms_thumb_url'] );
+        $instance->design_url = htmlspecialchars( $result_array['ms_design_url'] );
+        $instance->product_id = (int) htmlspecialchars( $result_array['product_id'] );
+        $instance->user_id = (int) htmlspecialchars( $result_array['user_id'] );
+        $instance->session_id = htmlspecialchars( $result_array['session_id'] );
+        $instance->mobile = (int) htmlspecialchars( $result_array['ms_mobile'] );
+        $instance->access = (int) htmlspecialchars( $result_array['ms_access'] );
+        $instance->created = htmlspecialchars( $result_array['design_created'] );
+        $instance->created_gmt = htmlspecialchars( $result_array['design_created_gmt'] );
+        $instance->modified = htmlspecialchars( $result_array['design_modified'] );
+        $instance->modified_gmt = htmlspecialchars( $result_array['design_modified_gmt'] );
+        $instance->view_count = (int) htmlspecialchars( $result_array['design_view_count'] );
+        $instance->purchase_count = (int) htmlspecialchars( $result_array['design_purchase_count'] );
+        $instance->cart_data = $result_array['cart_data'];
         
         return $instance;
     }
