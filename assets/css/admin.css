@@ -25,9 +25,7 @@ span#mystyle-icon-general.icon100 {
 }
 
 .mystyle-notice {
-    border-left-color: #46b450;
     background: #fff;
-    border-left: 4px solid #46b450;
     -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     margin: 5px 0 2px;
