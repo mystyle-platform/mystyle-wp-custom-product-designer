@@ -86,9 +86,7 @@ span#mystyle-icon-general.icon100 {
 }
 
 /* WooCommerce Product Admin Page */
-
 #mystyle_product_data h3 {
-
     text-indent: 15px;
 }
 
@@ -96,7 +94,6 @@ span#mystyle-icon-general.icon100 {
 #mystyle_product_data.woocommerce_options_panel fieldset.form-field,
 #mystyle_product_data.woocommerce_options_panel p,
 #mystyle_product_data.woocommerce_options_panel fieldset {
-
     margin-left: 20px;
 }
 
@@ -152,9 +149,7 @@ span#mystyle-icon-general.icon100 {
 
 .mystyle_page_mystyle_addons li a:hover,
 .mystyle_page_mystyle_addons li a:hover h3 {
-
     color: #2288CC;
-
 }
 
 .mystyle_page_mystyle_addons ul.products li a {
