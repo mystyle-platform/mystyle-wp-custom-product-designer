@@ -76,6 +76,28 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
     }
     
     /**
+     * Deletes the passed design from the database.
+     * @param MyStyle_Design $design
+     * @global \wpdb $wpdb
+     * @return boolean Returns true is the Design was successfully deleted,
+     * otherwise, returns false.
+     * @todo Add unit testing
+     */
+    public static function delete( MyStyle_Design $design ) {
+        global $wpdb;
+        
+        $ret = $wpdb->delete( 
+                        MyStyle_Design::get_table_name(), 
+                        array( MyStyle_Design::get_primary_key() => $design->get_design_id() ),
+                        array( '%d' )
+                    );
+        
+        $deleted = ($ret != false);
+        
+        return $deleted;
+    }
+    
+    /**
      * Get the previous design from the database.
      * @global wpdb $wpdb
      * @param int $current_design_id The design_id that you want to use as

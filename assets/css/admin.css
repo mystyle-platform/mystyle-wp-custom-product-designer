@@ -120,12 +120,15 @@ span#mystyle-icon-general.icon100 {
     float: right;
 }
 
-/* WooCommerce Order Admin Page */
 .mystyle-admin-box {
     padding: 20px 50px;
     background-color: white;
     box-shadow: 0 2px 8px rgba(0,0,0,.3);
     border-top: 5px solid #2288CC;
+}
+
+.mystyle-admin-box.warning {
+    border-top-color: #ffb900;
 }
 
 /* MyStyle Add-Ons Page */
