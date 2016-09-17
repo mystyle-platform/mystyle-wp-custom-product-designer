@@ -43,31 +43,18 @@ class MyStyle_Product extends WC_Product {
      * Get's a permalink to the product.  If $this->design is set, return a
      * link to reload the design in the customizer instead.
      *
-     * @param array $cart_item (optional) If the cart item is passed, we can get
-     * a link containing the exact attributes selected for the variation, rather
-     * than the default attributes.
+     * @param array $item_object (optional) If the cart/order item is passed, we
+     * can get a link containing the exact attributes selected for the 
+     * variation, rather than the default attributes.
      * @return string
      */
-    public function get_permalink( $cart_item = null ) {
+    public function get_permalink( $item_object = null ) {
         
-        //if there is a design, return the url the design in the customizer
+        //if there is a design, return the url to the design profile page
         if( $this->design != null ) {
-            $url = MyStyle_Customize_Page::get_design_url( $this->design, $this->cart_item_key );
+            $url = MyStyle_Design_Profile_Page::get_design_url( $this->design, $this->cart_item_key );
         } else { //no design id, return a link to the product page
-        
             $url = get_permalink( $this->id );
-
-            if($cart_item != null) {
-                $url = add_query_arg( 
-                            array_map( 
-                                'urlencode', 
-                                array_filter( 
-                                    isset( $cart_item['variation'] ) ? $cart_item['variation'] : $this->variation_data 
-                                ) 
-                            ),
-                            $url 
-                        );
-            }
         }
         
         return $url;
