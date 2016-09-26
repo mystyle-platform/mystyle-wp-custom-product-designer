@@ -34,6 +34,8 @@ class MyStyle {
     public function init() {
         add_filter( 'woocommerce_cart_item_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
         add_filter( 'woocommerce_in_cart_product_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
+        add_filter( 'woocommerce_cart_item_permalink', array( &$this, 'modify_cart_item_permalink' ), 10, 3 );
+        add_filter( 'woocommerce_cart_item_name', array( &$this, 'modify_cart_item_name' ), 10, 3 );
         
         // Set the current version and handle any updates
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
@@ -127,7 +129,7 @@ class MyStyle {
     }
     
     /**
-     * Override the product thumbnail image.
+     * Override the cart item thumbnail image.
      * @param string $get_image The current image tag (ex. <img.../>).
      * @param string $cart_item The cart item that we are currently on.
      * @param string $cart_item_key The current cart_item_key.
@@ -166,11 +168,104 @@ class MyStyle {
             //remove the srcset attribute
             $new_image_tag = preg_replace( '/srcset\=".*?"/', '', $new_image_tag );
             
+            //prep the link to the design profile page for the design
+            $design_profile_url = MyStyle_Design_Profile_Page::get_design_url( $design, $cart_item_key );
+            $design_profile_anchor = '<a href="' . $design_profile_url . '">%s</a>';
+            
+            //prep the link to reload the design in the customizer
+            $customizer_url = MyStyle_Customize_Page::get_design_url( $design, $cart_item_key );
+            $customizer_anchor = '<a href="' . $customizer_url . '">%s</a>';
+            
             //add a figure and figcaption tag (with the design id)
-            $new_image_tag = '<figure>' . $new_image_tag . '<figcaption style="font-size: 0.5em">Design Id: ' . $design->get_design_id() . '</figcaption></figure>';
+            $new_image_tag = '<figure>' .
+                                sprintf( $design_profile_anchor, $new_image_tag ) .
+                                '<figcaption style="font-size: 0.5em">' .
+                                    'Design Id: ' . sprintf( $design_profile_anchor, $design->get_design_id() ) . '</a><br/>' .
+                                    sprintf( $customizer_anchor, 'Edit' );
+                                '</figcaption>' . 
+                              '</figure>';
         }
 	
         return $new_image_tag;
+    }
+    
+    /**
+     * Override the cart item permalink.
+     * 
+     * Note: we return false for the permalink for cart items with
+     * designs. This is because we actually have multiple links for the
+     * cart item. These links are being set via the
+     * woocommerce_cart_item_thumbnail and woocommerce_cart_item_thumbnail hooks.
+     * 
+     * @param string $permalink The current image tag (ex. <img.../>).
+     * @param string $cart_item The cart item that we are currently on.
+     * @param string $cart_item_key The current cart_item_key.
+     * @return string Returns the updated permalink.
+     * @todo Add unit testing
+     */
+    public static function modify_cart_item_permalink( $permalink, $cart_item, $cart_item_key ) {
+        
+        $new_permalink = $permalink;
+        $design_id = null;
+        
+        //Try to get the design id, first from the cart_item and then from the session
+        if( isset( $cart_item['mystyle_data'] ) ) {
+            $design_id = $cart_item['mystyle_data']['design_id'];
+        } else {
+            $session_data = self::get_cart_item_from_session( array(), null, $cart_item_key );
+            if( isset( $session_data['mystyle_data']) ) {
+                $design_id = $session_data['mystyle_data']['design_id'];
+            }
+        }
+            
+        if( $design_id != null ) {
+            //see the function doc for why we set this to false here.
+            $new_permalink = false;
+        }
+	
+        return $new_permalink;
+    }
+    
+    /**
+     * Override the cart item name.
+     * 
+     * @param string $name The current cart item name (ex. 'My Product').
+     * @param string $cart_item The cart item that we are currently on.
+     * @param string $cart_item_key The current cart_item_key.
+     * @return string Returns the updated cart item name.
+     * @todo Add unit testing
+     */
+    public static function modify_cart_item_name( $name, $cart_item, $cart_item_key ) {
+        
+        $new_name = $name;
+        $design_id = null;
+        
+        //Try to get the design id, first from the cart_item and then from the session
+        if( isset( $cart_item['mystyle_data'] ) ) {
+            $design_id = $cart_item['mystyle_data']['design_id'];
+        } else {
+            $session_data = self::get_cart_item_from_session( array(), null, $cart_item_key );
+            if( isset( $session_data['mystyle_data']) ) {
+                $design_id = $session_data['mystyle_data']['design_id'];
+            }
+        }
+            
+        if( $design_id != null ) {
+            /** @var \WP_User */
+            $user = wp_get_current_user();
+            
+            /** @var \MyStyle_Session */
+            $session = MyStyle_SessionHandler::get();
+            
+            /** @var \MyStyle_Design */
+            $design = MyStyle_DesignManager::get( $design_id, $user, $session );
+            
+            $url = MyStyle_Design_Profile_Page::get_design_url( $design, $cart_item_key );
+            
+            $new_name = sprintf( '<a href="%s">%s</a>', esc_url( $url ), $name );
+        }
+	
+        return $new_name;
     }
     
     /**

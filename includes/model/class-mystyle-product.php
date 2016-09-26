@@ -41,7 +41,7 @@ class MyStyle_Product extends WC_Product {
     
     /**
      * Get's a permalink to the product.  If $this->design is set, return a
-     * link to reload the design in the customizer instead.
+     * link to the design profile page instead.
      *
      * @param array $item_object (optional) If the cart/order item is passed, we
      * can get a link containing the exact attributes selected for the 
