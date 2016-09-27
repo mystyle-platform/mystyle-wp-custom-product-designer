@@ -433,4 +433,18 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         //Assert that the settings were stored.
         $this->assertFalse( empty( $new_options['secret'] ) );
     }
+    
+    /**
+     * Test the render_hide_customize_title function.
+     */    
+    public function test_render_hide_customize_title() {
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        //Assert that the force_mobile field was rendered
+        ob_start();
+        $mystyle_options_page->render_hide_customize_title();
+        $output = ob_get_contents();
+        ob_end_clean();
+        $this->assertContains( 'Hide the page title', $output );
+    }
 }

@@ -84,6 +84,22 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
     }
     
     /**
+     * Assert that get_customize_page_title_hide() returns the expected 
+     * customize_page_title_hide value.
+     */    
+    function test_get_customize_page_title_hide() {
+        //Set force_mobile
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['customize_page_title_hide'] = 1;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $customize_page_title_hide = MyStyle_Options::get_customize_page_title_hide();
+
+        $this->assertEquals( 1, $customize_page_title_hide );
+    }
+    
+    /**
      * Assert that is_demo_mode() returns true if api key is a demo key.
      */    
     function test_is_demo_mode_for_demo_key() {

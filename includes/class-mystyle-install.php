@@ -27,7 +27,6 @@ class MyStyle_Install {
     /**
      * Delta/Alter any tables.  Currently this does the same thing as
      * create_tables.
-     * @todo Add unit testing.
      */
     public static function delta_tables() {
         self::create_tables();

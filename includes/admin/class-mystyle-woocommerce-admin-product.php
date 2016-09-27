@@ -148,7 +148,6 @@ class MyStyle_WooCommerce_Admin_Product {
     /**
      * Process the mystyle tab options when a post is saved
      * @param integer $post_id The id of the post that is being saved.
-     * @todo Unit test the validation logic
      */
     public static function process_mystyle_data_panel( $post_id ) {
 
@@ -158,28 +157,32 @@ class MyStyle_WooCommerce_Admin_Product {
         $mystyle_design_id = $_POST['_mystyle_design_id'];
         $mystyle_print_type = $_POST['_mystyle_print_type'];
         if ( $mystyle_enabled == 'yes' ) {
-            if( $template_id != '' ) { //both options are set (store them)
+            if( $template_id != '' ) { //both required options are set (store them)
                 update_post_meta( $post_id, '_mystyle_enabled', 'yes' );
                 update_post_meta( $post_id, '_mystyle_template_id', $template_id );
                 update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
                 update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
-                update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );            } else { //enabled but no template id (store template_id, disable and notify)
+                update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );            
+            } else { //enabled but no template id (store data, disable and notify)
                 update_post_meta( $post_id, '_mystyle_enabled', 'no' );
                 update_post_meta( $post_id, '_mystyle_template_id', $template_id );
                 update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
                 update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
-                update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );                $validation_notice = MyStyle_Notice::create(
+                update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );                
+                $validation_notice = MyStyle_Notice::create(
                                         'invalid_product_options',
                                         'You must choose a Template Id in order to make the product customizable.',
                                         'error'
                                     );
                 mystyle_notice_add_to_queue( $validation_notice );
             }
-        } else { //not enabled (store both)
+        } else { //not enabled (store data)
             update_post_meta( $post_id, '_mystyle_enabled', 'no' );
             update_post_meta( $post_id, '_mystyle_template_id', $template_id );
             update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
             update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
-            update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );        }
+            update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );        
+        }
     }
+    
 }

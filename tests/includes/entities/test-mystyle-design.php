@@ -50,6 +50,24 @@ class MyStyleDesignTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the create_from_result_array function
+     */    
+    function test_create_from_result_array() {
+        
+        $design_id = 1;
+        
+        //Mock the result object
+        $result_object = new MyStyle_MockDesignQueryResult( $design_id );
+        
+        $result_array = $result_object->to_array();
+        
+        $design = MyStyle_Design::create_from_result_array( $result_array );
+        
+        //Assert that the design_id is set
+        $this->assertEquals( $design_id, $design->get_design_id() );
+    }
+    
+    /**
      * Test the add_api_data function
      */    
     function test_add_api_data() {

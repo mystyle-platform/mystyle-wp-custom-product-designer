@@ -201,7 +201,6 @@ class MyStyle {
      * @param string $cart_item The cart item that we are currently on.
      * @param string $cart_item_key The current cart_item_key.
      * @return string Returns the updated permalink.
-     * @todo Add unit testing
      */
     public static function modify_cart_item_permalink( $permalink, $cart_item, $cart_item_key ) {
         
@@ -233,7 +232,6 @@ class MyStyle {
      * @param string $cart_item The cart item that we are currently on.
      * @param string $cart_item_key The current cart_item_key.
      * @return string Returns the updated cart item name.
-     * @todo Add unit testing
      */
     public static function modify_cart_item_name( $name, $cart_item, $cart_item_key ) {
         
@@ -272,7 +270,6 @@ class MyStyle {
      * Called when a user logs in.
      * @param string $user_login
      * @param WP_User $user
-     * @todo Add unit testing
      */
     public static function on_wp_login( $user_login, $user ) {
         $session = MyStyle_SessionHandler::get();
@@ -282,7 +279,6 @@ class MyStyle {
     /**
      * Called when a user registers.
      * @param integer $user_id
-     * @todo Add unit testing
      */
     public static function on_user_register( $user_id ) {
         $session = MyStyle_SessionHandler::get();
@@ -294,7 +290,6 @@ class MyStyle {
      * Called when woocommerce creates a user (for instance when the user checks
      * out).
      * @param integer $user_id
-     * @todo Add unit testing
      */
     public static function on_woocommerce_created_customer( $customer_id, $new_customer_data, $password_generated ) {
         $session = MyStyle_SessionHandler::get();
@@ -305,7 +300,6 @@ class MyStyle {
     /**
      * Function that looks to see if any products are mystyle enabled.
      * @return boolean Returns true if at least one product is customizable.
-     * @todo: write unit tests
      */
     public static function site_has_customizable_products() {
         $args = array(

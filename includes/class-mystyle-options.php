@@ -80,7 +80,6 @@ abstract class MyStyle_Options {
      * Function that gets the value of the customize_page_title_hide setting.
      * @return boolean Returns 1 if the customize_page_title_hide setting is enabled,
      * otherwise returns false.
-     * @todo Add unit testing
      */
     static function get_customize_page_title_hide() {
         $customize_page_title_hide = 0;

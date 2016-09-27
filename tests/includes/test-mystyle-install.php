@@ -33,7 +33,6 @@ class MyStyleInstallTest extends WP_UnitTestCase {
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
     }
     
-    
     /**
      * Test the create_tables function successfully creates the tables.
      */    
@@ -47,6 +46,26 @@ class MyStyleInstallTest extends WP_UnitTestCase {
         
         //Create the tables
         MyStyle_Install::create_tables();
+        
+        $table_name = $wpdb->get_var( "SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'" );
+        
+        //Assert that the table now exists.
+        $this->assertEquals( MyStyle_Design::get_table_name(), $table_name );
+    }
+    
+    /**
+     * Test the delta_tables function successfully creates the tables.
+     */    
+    public function test_delta_tables() {
+        global $wpdb;
+        
+        $table_name = $wpdb->get_var( "SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'" );
+        
+        //Assert that the table doesn't yet exist.
+        $this->assertNotEquals( MyStyle_Design::get_table_name(), $table_name );
+        
+        //Create the tables
+        MyStyle_Install::delta_tables();
         
         $table_name = $wpdb->get_var( "SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'" );
         

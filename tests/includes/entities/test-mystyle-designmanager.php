@@ -300,7 +300,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         $session_id = 'testsessionid';
         $email = 'someone@example.com';
         
-        //Mock the user (note this will call the function since it is hooked into the register function)
+        //Mock the user
         $user_id = wp_create_user( 'testuser', 'testpassword', $email );
         $user = get_user_by( 'id', $user_id );
         
@@ -323,10 +323,10 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         //Assert that one row was modified
         $this->assertEquals( 1, $result );
         
-        //Get the design
+        //Get the updated design from the db
         $design_from_db = MyStyle_DesignManager::get( $design_id );
         
-        //Assert that the user_id is set
+        //Assert that the user_id is set on the design
         $this->assertEquals( $user_id, $design_from_db->get_user_id() );
     }
     

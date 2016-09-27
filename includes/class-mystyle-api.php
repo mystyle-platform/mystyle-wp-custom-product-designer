@@ -54,9 +54,9 @@ abstract class MyStyle_API {
         );
 
         if ( is_wp_error( $response ) ) {
-            //TODO: Handle this error
+            //We fail silently and write to the log.
             $error_message = $response->get_error_message();
-            //$body = "Something went wrong: $error_message";
+            error_log( $error_message );
         } else {            
             $response_data = json_decode( $response['body'], true ); //['data'][$design_id]);
             $design_data = $response_data['data'][ $design->get_design_id() ];            
@@ -112,9 +112,9 @@ abstract class MyStyle_API {
         );
 
         if ( is_wp_error( $response ) ) {
-            //TODO: Handle this error
+            //We fail silently and write to the log.
             $error_message = $response->get_error_message();
-            //$body = "Something went wrong: $error_message";
+            error_log( $error_message );
         } else {            
             $response_data = json_decode( $response['body'], true );
             //var_dump($response_data);

@@ -245,7 +245,6 @@ class MyStyle_Options_Page {
 
     /**
      * Function to render the Hide Customize Page Title option and checkbox.
-     * @todo Add unit testing
      */
     public static function render_hide_customize_title() {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
