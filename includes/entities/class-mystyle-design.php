@@ -126,7 +126,6 @@ class MyStyle_Design implements MyStyle_Entity {
      * construct the Design. This is an associative array with keys that
      * correspond to the column names from the database.
      * @return \self Works like a constructor.
-     * @todo Add unit testing
      */
     public static function create_from_result_array( $result_array ) {
         $instance = new self();
@@ -644,21 +643,24 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Build the url to the customizer including the product id and design id.
-     * @param integer The order item.
-     * @return string The url to reload the design.
-     * @todo Use the passed $item to pass the quantity, attributes, addons, etc
-     * back into the customizer.
-     * @todo Add unit testing
+     * Build the reload url to the customizer for the design.
      */
-    public function get_reload_url( $item = null ) {
+    public function get_reload_url() {
         $customize_page_id = MyStyle_Customize_Page::get_id();
-        $passthru = array(
-            'post' => array (
-                'quantity' => 1,
-                'add-to-cart' => $this->product_id,
-            )
-        );
+        
+        $passthru = array();
+        $passthru['post'] = null;
+        
+        if( $this->cart_data != null ) {
+            $post_data = json_decode( $this->cart_data, true );
+        } else {
+            //set some default post/cart data
+            $post_data = array (
+                    'quantity' => 1,
+                    'add-to-cart' => $this->product_id,
+                );
+        }
+        $passthru['post'] = $post_data;
         $passthru_encoded = base64_encode( json_encode( $passthru ) );
         $customize_args = array(
             'product_id' => $this->product_id,

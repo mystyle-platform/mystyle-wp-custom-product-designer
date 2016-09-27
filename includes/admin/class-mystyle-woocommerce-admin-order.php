@@ -70,7 +70,7 @@ class MyStyle_WooCommerce_Admin_Order {
                 <div class="mystyle-panel" id="mystyle-panel-<?php echo $item_id; ?>" style="display:none;">
                     <div>
                         <?php if( ! MyStyle_Options::is_demo_mode() ) { ?>
-                            Design Id: <a href="<?php echo $design->get_reload_url( $item ); ?>" target="_blank"><?php echo $design->get_design_id(); ?></a><br/>
+                            Design Id: <a href="<?php echo $design->get_reload_url(); ?>" target="_blank"><?php echo $design->get_design_id(); ?></a><br/>
                             <?php
                                 $multi_print_file = false;
                                 if( ( preg_match( "/^(.+\_)(\d+)(\..+)$/", $design->get_print_url(), $matches) ) && ( $matches[2] > 1 ) ) {

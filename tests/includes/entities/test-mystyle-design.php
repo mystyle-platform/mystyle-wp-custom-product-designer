@@ -265,4 +265,55 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         $this->assertEquals( $expected_formats_arr, $design->get_insert_format() );
     }
     
+    /**
+     * Test the get_reload_url function
+     */    
+    function test_get_reload_url() {
+        
+        //Create the MyStyle Customize page (needed for the url)
+        MyStyle_Customize_Page::create();
+        
+        //Create a design
+        $result_object = new MyStyle_MockDesignQueryResult( 1 );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        //call the function
+        $url = $design->get_reload_url();
+        
+        //Assert that the expected page_id parameter is included in the url
+        $this->assertContains( 'page_id=' . MyStyle_Customize_Page::get_id(), $url );
+        
+        //Assert that the expected page_id parameter is included in the url
+        $this->assertContains( 'design_id=' . $design->get_design_id(), $url );
+    }
+    
+    /**
+     * Test the get_reload_url function for a design with cart_data.
+     */    
+    function test_get_reload_url_for_design_with_cart_data() {
+        
+        //Create the MyStyle Customize page (needed for the url)
+        MyStyle_Customize_Page::create();
+        
+        //Create a design
+        $result_object = new MyStyle_MockDesignQueryResult( 1 );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        //Add the cart data to the design
+        $obj = new stdClass();
+        $obj->quantity = 1;
+        $obj->{'add-to-cart'} = 2;
+        $cart_data = json_encode( $obj );
+        $design->set_cart_data( $cart_data );
+        
+        //call the function
+        $url = $design->get_reload_url();
+        
+        //Assert that the expected page_id parameter is included in the url
+        $this->assertContains( 'page_id=' . MyStyle_Customize_Page::get_id(), $url );
+        
+        //Assert that the expected page_id parameter is included in the url
+        $this->assertContains( 'design_id=' . $design->get_design_id(), $url );
+    }
+    
 }
