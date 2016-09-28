@@ -586,7 +586,6 @@ class MyStyle_Design_Profile_Page {
      * @param string $title The title of the post.
      * @param type $id The id of the post.
      * @return string Returns the filtered title.
-     * @todo Add unit testing
      */
     public static function filter_title( $title, $id = null ) {
         try {
