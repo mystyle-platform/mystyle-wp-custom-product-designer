@@ -1,5 +1,7 @@
 <?php
 
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
+
 /**
  * The MyStyleCustomizePageTest class includes tests for testing the 
  * MyStyle_Customize_Page class.
@@ -65,6 +67,28 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
         
         //assert that the page was deleted
         $this->assertEquals( $page->post_status, 'trash' );
+    }
+    
+    /**
+     * Test the get_design_url function
+     */    
+    public function test_get_design_url() {
+        
+        //Create the MyStyle Customize page
+        $page_id = MyStyle_Customize_Page::create();
+        
+        //Build the expected url
+        $expected_url = 'http://example.org/?page_id=' . $page_id . '&product_id=0&design_id=1&h=eyJwb3N0Ijp7InF1YW50aXR5IjoxLCJhZGQtdG8tY2FydCI6MH19';
+        
+        //Create a design
+        $result_object = new MyStyle_MockDesignQueryResult( 1 );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        //Call the function
+        $url = MyStyle_Customize_Page::get_design_url( $design );
+        
+        //assert that the exepected $url was returned
+        $this->assertEquals( $expected_url, $url );
     }
     
 }

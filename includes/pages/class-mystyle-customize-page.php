@@ -89,7 +89,6 @@ abstract class MyStyle_Customize_Page {
      * @param MyStyle_Design $design
      * @param integer $cart_item_key
      * @return string Returns a link that can be used to reload a design.
-     * @todo Add unit testing.
      */
     public static function get_design_url( MyStyle_Design $design, $cart_item_key = null ) {
         

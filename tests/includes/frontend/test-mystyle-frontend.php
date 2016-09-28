@@ -23,6 +23,33 @@ class WC_Product_Variable {
 class MyStyleFrontEndTest extends WP_UnitTestCase {
     
     /**
+     * Overrwrite the setUp function so that our custom tables will be persisted
+     * to the test database.
+     */
+    function setUp() {
+        // Perform the actual task according to parent class.
+        parent::setUp();
+        // Remove filters that will create temporary tables. So that permanent tables will be created.
+        remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
+        remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
+        
+        //Create the tables
+        MyStyle_Install::create_tables();
+    }
+    
+    /**
+     * Overrwrite the tearDown function to remove our custom tables.
+     */
+    function tearDown() {
+        global $wpdb;
+        // Perform the actual task according to parent class.
+        parent::tearDown();
+        
+        //Drop the tables that we created
+        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+    }
+    
+    /**
      * Test the constructor
      */    
     public function test_constructor() {
@@ -154,9 +181,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $options['customize_page_title_hide'] = 1;
         update_option( MYSTYLE_OPTIONS_NAME, $options );
-        
-        //mock the $classes var
-        $classes = array();
         
         //call the function
         $new_title = $mystyle_frontend->filter_title( 'foo', MyStyle_Customize_Page::get_id() );
@@ -388,6 +412,89 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         
         //Assert that the mock add_to_cart function was called.
         $this->assertEquals( 1, $woocommerce->cart->add_to_cart_call_count );
+    }
+    
+    /**
+     * Test the add_query_vars_filter function.
+     */
+    public function test_add_query_vars_filter( ) {
+        $mystyle_frontend = new MyStyle_FrontEnd();
+        
+        $vars[] = array();
+        
+        //call the function
+        $ret_vars = MyStyle_FrontEnd::add_query_vars_filter( $vars );
+        
+        $this->assertTrue( in_array( 'design_id', $ret_vars ) );
+    }
+    
+    /**
+     * Test the filter_cart_item_product function.
+     */
+    public function test_filter_cart_item_product( ) {
+        $mystyle_frontend = new MyStyle_FrontEnd();
+        
+        //Create a design
+        $result_object = new MyStyle_MockDesignQueryResult( 1 );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Create a mock product (this class is mocked above).
+        $product = new WC_Product_Variable();
+        
+        $cart_item_key = 'test_cart_item_key';
+        
+        //create the cart item data
+        $cart_item = array(
+            'mystyle_data' => array(
+                'design_id' => $design->get_design_id()
+            )
+        );
+        
+        //call the function
+        $ret_product = MyStyle_FrontEnd::filter_cart_item_product( 
+                                        $product, 
+                                        $cart_item, 
+                                        $cart_item_key 
+                                    );
+        
+        $this->assertEquals( 'MyStyle_Product', get_class( $ret_product ) );
+    }
+    
+    /**
+     * Test the filter_order_item_product function.
+     */
+    public function test_filter_order_item_product( ) {
+        $mystyle_frontend = new MyStyle_FrontEnd();
+        
+        //Create a design
+        $result_object = new MyStyle_MockDesignQueryResult( 1 );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Create a mock product (this class is mocked above).
+        $product = new WC_Product_Variable();
+        
+        //create the cart item data
+        $cart_item = array(
+            'mystyle_data' => serialize( 
+                    array(
+                        'design_id' => $design->get_design_id()
+                    )
+                )
+        );
+        
+        //call the function
+        $ret_product = MyStyle_FrontEnd::filter_order_item_product( 
+                                        $product, 
+                                        $cart_item
+                                    );
+        
+        $this->assertEquals( 'MyStyle_Product', get_class( $ret_product ) );
     }
     
     /**

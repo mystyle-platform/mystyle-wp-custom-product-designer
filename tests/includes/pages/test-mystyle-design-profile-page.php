@@ -1,5 +1,8 @@
 <?php
 
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-design.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
+
 /**
  * The MyStyleDesignProfilePageTest class includes tests for testing the 
  * MyStyle_Design_Profile_Page class.
@@ -437,6 +440,42 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         
         //assert that the exepected design_id is returned
         $this->assertEquals( $design_id, $returned_design_id );
+    }
+    
+    /**
+     * Test the filter_title function.
+     */    
+    public function test_filter_title() {
+        global $post;
+        global $wp_query;
+        
+        //Create the MyStyle Customize page
+        MyStyle_Customize_Page::create();
+        
+        //Create the MyStyle Design Profile page
+        MyStyle_Design_Profile_Page::create();
+        
+        //Create a design
+        $result_object = new MyStyle_MockDesignQueryResult( 1 );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        //Instantiate the MyStyle Design Profile page
+        $mystyle_design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+        $mystyle_design_profile_page->set_design( $design );
+        
+        //mock the post, etc.
+        $post = new stdClass();
+        $post->ID = MyStyle_Design_Profile_Page::get_id();
+	$wp_query->in_the_loop = true;
+        
+        //call the function
+        $new_title = MyStyle_Design_Profile_Page::filter_title( 'foo', MyStyle_Design_Profile_Page::get_id() );
+
+        //expected
+        $expected = 'Design ' . $design->get_design_id();
+        
+        //Assert that the title has been set as expected
+        $this->assertEquals( $expected, $new_title );
     }
     
 }

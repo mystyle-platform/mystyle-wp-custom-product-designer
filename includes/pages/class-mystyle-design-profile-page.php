@@ -589,7 +589,6 @@ class MyStyle_Design_Profile_Page {
      * @todo Add unit testing
      */
     public static function filter_title( $title, $id = null ) {
-        
         try {
             if( 
                 ( ! empty( $id ) ) &&

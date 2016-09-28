@@ -7,7 +7,6 @@
  *
  * @package MyStyle
  * @since 1.4.4
- * @todo Add unit testing
  */
 class MyStyle_Pager {
     

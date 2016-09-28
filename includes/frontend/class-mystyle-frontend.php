@@ -266,7 +266,6 @@ class MyStyle_FrontEnd {
      * Add design_id as a custom query var.
      * @param array $vars
      * @return string
-     * @todo Add unit testing
      */
     public static function add_query_vars_filter( $vars ){
         $vars[] = 'design_id';
@@ -280,7 +279,6 @@ class MyStyle_FrontEnd {
      * @param array $cart_item
      * @param array $cart_item_key
      * @return mixed Returns a WC_Product or one of its child classes.
-     * @todo Add unit testing
      */
     public static function filter_cart_item_product( $product, $cart_item, $cart_item_key ){
         
@@ -302,9 +300,8 @@ class MyStyle_FrontEnd {
      * @param array $product
      * @param array $order_item
      * @return mixed Returns a WC_Product or one of its child classes.
-     * @todo Add unit testing
      */
-    public static function filter_order_item_product( $product, $order_item ){
+    public static function filter_order_item_product( $product, $order_item ) {
         
         //Note: we put the require_once here because we need to wait until after woocommerce is bootstrapped
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
