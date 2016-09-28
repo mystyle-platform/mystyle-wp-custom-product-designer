@@ -30,7 +30,6 @@ class MyStyle_FrontEnd {
     
     /**
      * Init the MyStyle front end.
-     * @todo: Add unit testing for the frontend stylesheet inclusion
      */
     public static function init() {
         //Add the MyStyle frontend stylesheet to the WP frontend head
@@ -48,7 +47,6 @@ class MyStyle_FrontEnd {
      * @param array $classes An array of classes that are going to be outputed
      * to the body tag.
      * @return array Returns the filtered classes array.
-     * @todo Add unit testing
      * @todo Move to the MyStyle_Customize_Page class
      */
     public static function filter_body_class( $classes ) {
@@ -72,7 +70,7 @@ class MyStyle_FrontEnd {
             //Profile Page is missing.
             //For this function, that is okay, just continue.
         }
-        
+
 	return $classes;
     }
     
@@ -82,11 +80,9 @@ class MyStyle_FrontEnd {
      * @param string $title The title of the post.
      * @param type $id The id of the post.
      * @return string Returns the filtered title.
-     * @todo Add unit testing
      * @todo Move to the MyStyle_Customize_Page class
      */
     public static function filter_title( $title, $id = null ) {
-        
         try {
             if( 
                 ( ! empty( $id ) ) &&
@@ -191,7 +187,7 @@ class MyStyle_FrontEnd {
 		esc_url( $customizer_url ),
 		$product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
 		esc_attr( $product->product_type ),
-		esc_html( "Customize" ) ); //TODO: Add multilingual support
+		esc_html( "Customize" ) );
 	
             
             $ret = $customize_link;
@@ -205,7 +201,6 @@ class MyStyle_FrontEnd {
     /**
      * Handles the add_to_cart action for customizing customizable products.
      * @param string $url The current url.
-     * @todo Add unit testing
      */
     public static function mystyle_add_to_cart_handler_customize( $url ) {
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
@@ -231,14 +226,17 @@ class MyStyle_FrontEnd {
         
         $customizer_url = add_query_arg( $args, get_permalink( $customize_page_id ) );
         wp_safe_redirect( $customizer_url );
-        exit;
+        
+        //exit (unless called by phpunit)
+        if( ! defined('PHPUNIT_RUNNING') ) {
+            exit;
+        }
     }
     
     /**
      * Handles the add_to_cart action for when an exising design is added to the
      * cart.
      * @param string $url The current url.
-     * @todo Add unit testing
      */
     public static function mystyle_add_to_cart_handler( $url ) {
         global $woocommerce;
@@ -271,7 +269,7 @@ class MyStyle_FrontEnd {
      * @todo Add unit testing
      */
     public static function add_query_vars_filter( $vars ){
-        $vars[] = "design_id";
+        $vars[] = 'design_id';
         
         return $vars;
     }

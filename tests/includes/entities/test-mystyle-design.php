@@ -283,7 +283,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         //Assert that the expected page_id parameter is included in the url
         $this->assertContains( 'page_id=' . MyStyle_Customize_Page::get_id(), $url );
         
-        //Assert that the expected page_id parameter is included in the url
+        //Assert that the expected design_id parameter is included in the url
         $this->assertContains( 'design_id=' . $design->get_design_id(), $url );
     }
     
@@ -312,8 +312,37 @@ class MyStyleDesignTest extends WP_UnitTestCase {
         //Assert that the expected page_id parameter is included in the url
         $this->assertContains( 'page_id=' . MyStyle_Customize_Page::get_id(), $url );
         
-        //Assert that the expected page_id parameter is included in the url
+        //Assert that the expected design_id parameter is included in the url
         $this->assertContains( 'design_id=' . $design->get_design_id(), $url );
+    }
+    
+    /**
+     * Test the get_add_to_cart_url function for a design with cart_data.
+     */    
+    function test_get_add_to_cart_url() {
+        global $woocommerce;
+        $product_id = 1;
+        $design_id = 2;
+        
+        //Mock woocommerce
+        $woocommerce = new MyStyle_MockWooCommerce();
+        
+        //Create the MyStyle Customize page
+        MyStyle_Customize_Page::create();
+        
+        //Create a design
+        $result_object = new MyStyle_MockDesignQueryResult( $design_id );
+        $result_object->product_id = $product_id;
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        //call the function
+        $url = $design->get_add_to_cart_url();
+        
+        //Assert that the expected product_id parameter is included in the url
+        $this->assertContains( 'add-to-cart=' . $product_id, $url );
+        
+        //Assert that the expected design_id parameter is included in the url
+        $this->assertContains( 'design_id=' . $design_id, $url );
     }
     
 }

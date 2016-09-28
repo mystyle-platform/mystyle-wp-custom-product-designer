@@ -204,6 +204,74 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the delete function.
+     */    
+    function test_delete() {
+        
+        $design_id = 1;
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        
+        //Persist the design
+        MyStyle_DesignManager::persist( $design );
+        
+        //Assert that the design is found
+        $design_from_db = MyStyle_DesignManager::get( $design_id );
+        $this->assertEquals( $design_id, $design_from_db->get_design_id() );
+        
+        //call the function
+        $deleted = MyStyle_DesignManager::delete( $design );
+        
+        //Assert that the function returned true
+        $this->assertTrue( $deleted );
+        
+        //Assert that the design is no longer found
+        $design_from_db = MyStyle_DesignManager::get( $design_id );
+        $this->assertNull( $design_from_db );
+    }
+    
+    /**
+     * Test the get_previous_design function.
+     */    
+    function test_get_previous_design() {
+        
+        //Create a design
+        $design_1 = MyStyle_MockDesign::getMockDesign( 1 );
+        MyStyle_DesignManager::persist( $design_1 );
+        
+        //Create another design
+        $design_2 = MyStyle_MockDesign::getMockDesign( 2 );
+        MyStyle_DesignManager::persist( $design_2 );
+        
+        //call the function
+        $previous_design = MyStyle_DesignManager::get_previous_design( 2 );
+        
+        //Assert that the previous design was found and has the expected id
+        $this->assertEquals( 1, $previous_design->get_design_id() );
+    }
+    
+    /**
+     * Test the get_next_design function.
+     */    
+    function test_get_next_design() {
+        
+        //Create a design
+        $design_1 = MyStyle_MockDesign::getMockDesign( 1 );
+        MyStyle_DesignManager::persist( $design_1 );
+        
+        //Create another design
+        $design_2 = MyStyle_MockDesign::getMockDesign( 2 );
+        MyStyle_DesignManager::persist( $design_2 );
+        
+        //call the function
+        $next_design = MyStyle_DesignManager::get_next_design( 1 );
+        
+        //Assert that the design design was found and has the expected id
+        $this->assertEquals( 2, $next_design->get_design_id() );
+    }
+    
+    /**
      * Test the set_user_id function sets the user_id on a design that matches
      * both the session and the user's email.
      * @global wpdb $wpdb
@@ -372,6 +440,46 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         
         //Assert that the user_id is NOT set
         $this->assertEquals( 0, $design_from_db->get_user_id() );
+    }
+    
+    /**
+     * Test the get_designs function.
+     */    
+    function test_get_designs() {
+        
+        //Create a design
+        $design_1 = MyStyle_MockDesign::getMockDesign( 1 );
+        MyStyle_DesignManager::persist( $design_1 );
+        
+        //Create another design
+        $design_2 = MyStyle_MockDesign::getMockDesign( 2 );
+        MyStyle_DesignManager::persist( $design_2 );
+        
+        //call the function
+        $designs = MyStyle_DesignManager::get_designs();
+        
+        //Assert that the design design was found and has the expected id
+        $this->assertEquals( 2, sizeof( $designs ) );
+    }
+    
+    /**
+     * Test the get_total_design_count function.
+     */    
+    function test_get_total_design_count() {
+        
+        //Create a design
+        $design_1 = MyStyle_MockDesign::getMockDesign( 1 );
+        MyStyle_DesignManager::persist( $design_1 );
+        
+        //Create another design
+        $design_2 = MyStyle_MockDesign::getMockDesign( 2 );
+        MyStyle_DesignManager::persist( $design_2 );
+        
+        //call the function
+        $count = MyStyle_DesignManager::get_total_design_count();
+        
+        //Assert that the expected count is returned
+        $this->assertEquals( 2, $count );
     }
 
 }

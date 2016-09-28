@@ -17,7 +17,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
      * @param integer $design_id The design id.
      * @param WP_User $user (optional) The current user.
      * @param MyStyle_Session $session 
-     * @return \MyStyle_Design Returns the MyStyle_Design entity.
+     * @return \MyStyle_Design|null Returns the MyStyle_Design entity or null
+     * if the design can't be found.
      * @throws MyStyle_Forbidden_Exception Throws a MyStyle_Forbidden_Exception
      * if the requested design is marked as private and the user isn't logged
      * in.
@@ -81,7 +82,6 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
      * @global \wpdb $wpdb
      * @return boolean Returns true is the Design was successfully deleted,
      * otherwise, returns false.
-     * @todo Add unit testing
      */
     public static function delete( MyStyle_Design $design ) {
         global $wpdb;
@@ -103,8 +103,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
      * @param int $current_design_id The design_id that you want to use as
      * the base for retrieving the previous design.
      * @param WP_User $user (optional) The current user.
-     * @return \MyStyle_Design Returns the MyStyle_Design entity.
-     * @todo Add unit testing
+     * @return \MyStyle_Design|null Returns the previous MyStyle_Design or null if
+     * there isn't one.
      */
     public static function get_previous_design( 
                                 $current_design_id, 
@@ -150,8 +150,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
      * @param int $current_design_id The design_id that you want to use as
      * the base for retrieving the next design.
      * @param WP_User $user (optional) The current user.
-     * @return \MyStyle_Design Returns the MyStyle_Design entity.
-     * @todo Add unit testing
+     * @return \MyStyle_Design|null Returns the next MyStyle_Design or null if
+     * there isn't one.
      */
     public static function get_next_design( 
                                 $current_design_id, 
@@ -244,9 +244,9 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
      * @param int $per_page 
      * @param int $page_number
      *
-     * @return mixed
      * @global $wpdb;
-     * @todo add unit testing 
+     * @return mixed Returns an array of MyStyle_Design objects or null if none
+     * are found.
      */
     public static function get_designs( $per_page = 250, $page_number = 1 ) {
         global $wpdb;
@@ -282,9 +282,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
     /**
      * Retrieve the total number of designs from the db.
      *
+     * @global $wpdb
      * @return integer
-     * @global $wpdb;
-     * @todo add unit testing 
      */
     public static function get_total_design_count( ) {
         global $wpdb;

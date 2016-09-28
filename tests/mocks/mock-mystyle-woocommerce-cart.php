@@ -8,8 +8,10 @@
  */
 class MyStyle_MockWooCommerceCart {
     
+    public $add_to_cart_call_count;
+    
     public function __construct() {
-        //
+        $this->add_to_cart_call_count = 0;
     }
     
     /**
@@ -21,7 +23,7 @@ class MyStyle_MockWooCommerceCart {
      * @param type $cart_item_data
      */
     public function add_to_cart( $product_id, $some_int, $some_string, $some_array, $cart_item_data ) {
-        // do nothing
+        $this->add_to_cart_call_count++;
     }
     
     /**

@@ -673,10 +673,10 @@ class MyStyle_Design implements MyStyle_Entity {
     }
     
     /**
-     * Get URL that will add the design to the cart and then show the cart.
-     * @return string The url to add the design to the cart and show the cart.
+     * Get URL that will add the design to the cart and then show the cart. This
+     * is used for adding designs from the design profile page to the cart.
      * @global type $woocommerce
-     * @todo Add unit testing
+     * @return string The url to add the design to the cart and show the cart.
      */
     public function get_add_to_cart_url( ) {
         global $woocommerce;
