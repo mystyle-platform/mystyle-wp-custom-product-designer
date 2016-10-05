@@ -9,6 +9,7 @@
 class MyStyle_MockWooCommerceCart {
     
     public $add_to_cart_call_count;
+    public $added_to_cart;
     
     public function __construct() {
         $this->add_to_cart_call_count = 0;
@@ -16,14 +17,31 @@ class MyStyle_MockWooCommerceCart {
     
     /**
      * Mock the add_to_cart method.
-     * @param type $product_id
-     * @param type $some_int
-     * @param type $some_string
-     * @param type $some_array
-     * @param type $cart_item_data
+     * @param int $product_id
+     * @param int $quantity
+     * @param int $variation_id
+     * @param array $variation attribute values
+     * @param array $cart_item_data extra cart item data we want to pass into 
+     * the item.
+     * @return string|bool $cart_item_key
      */
-    public function add_to_cart( $product_id, $some_int, $some_string, $some_array, $cart_item_data ) {
+    public function add_to_cart( 
+                        $product_id, 
+                        $quantity, 
+                        $variation_id, 
+                        $some_array, 
+                        $cart_item_data ) 
+    {
         $this->add_to_cart_call_count++;
+        $this->added_to_cart = array(
+            'product_id' => $product_id,
+            'quantity' => $quantity,
+            'variation_id' => $variation_id, 
+            'some_array' => $some_array, 
+            'cart_item_data' => $cart_item_data
+        );
+        
+        return true;
     }
     
     /**

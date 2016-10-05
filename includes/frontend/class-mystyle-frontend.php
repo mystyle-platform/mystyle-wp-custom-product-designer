@@ -214,7 +214,7 @@ class MyStyle_FrontEnd {
      * Filter the construction of the cart item product.
      * @param array $product
      * @param array $cart_item
-     * @param array $cart_item_key
+     * @param string $cart_item_key
      * @return mixed Returns a WC_Product or one of its child classes.
      */
     public static function filter_cart_item_product( $product, $cart_item, $cart_item_key ){
@@ -223,7 +223,11 @@ class MyStyle_FrontEnd {
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
         
         //convert the product to a MyStyle_Product (if it has mystyle_data)
-        if( array_key_exists('mystyle_data', $cart_item ) ) {
+        if( 
+            ( array_key_exists( 'mystyle_data', $cart_item ) ) &&
+            ( $cart_item['mystyle_data'] != null )
+          ) 
+        {
             $design_id = $cart_item['mystyle_data']['design_id'];
             $design = MyStyle_DesignManager::get( $design_id );
             $product = new MyStyle_Product( $product, $design, $cart_item_key );

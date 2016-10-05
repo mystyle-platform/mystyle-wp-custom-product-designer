@@ -170,7 +170,74 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $mystyle_handoff->handle();
         $html = $mystyle_handoff->get_output();
         
+        //Assert that the 'product added to cart' message is displayed
         $this->assertContains( 'Product added to cart', $html );
+        
+        //Assert that add_to_cart was called.
+        $this->assertEquals( 1, $woocommerce->cart->add_to_cart_call_count );
+        
+        //Assert that the email was sent
+        $this->assertEquals( 'Design Created!', $mail_message['subject'] );
+        $this->assertContains( 'http://', $mail_message['message'] );
+    }
+    
+    /**
+     * Test the handle function for a POST request with a variation
+     */
+    public function test_handle_post_request_with_variation() {
+        global $post;
+        global $woocommerce;
+        global $mail_message;
+        $GLOBALS['skip_ob_start'] = true;
+        
+        //Create the MyStyle Customize page (needed for the link in the email)
+        MyStyle_Customize_Page::create();
+        
+        //Create the MyStyle Design Profile page (needed for the link in the email)
+        MyStyle_Design_Profile_Page::create();
+        
+        //Mock the API response
+        add_filter( 'pre_http_request', array( 'MyStyleMockAPI', 'mock_api_call' ), 10, 3 );
+        
+        //Mock woocommerce
+        $woocommerce = new MyStyle_MockWooCommerce();
+        
+        $mystyle_handoff = new MyStyle_Handoff();
+        
+        //Mock the POST
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $post = array();
+        $post['description'] = 'test description';
+        $post['design_id'] = 1;
+        $post['product_id'] = 0;
+        $post['h'] = base64_encode( 
+                        json_encode( 
+                            array(
+                                'post' => array(
+                                    'add-to-cart' => 0, 
+                                    'quantity' => 1,
+                                    'variation_id' => 2.
+                                )
+                            ) 
+                        ) 
+                    );
+        $post['user_id'] = 2;
+        $post['price'] = 0;
+        $_POST = $post;
+        
+        //Call the function
+        $mystyle_handoff->handle();
+        $html = $mystyle_handoff->get_output();
+        
+        //Assert that the 'product added to cart' message is displayed
+        $this->assertContains( 'Product added to cart', $html );
+        
+        //Assert that add_to_cart was called.
+        $this->assertEquals( 1, $woocommerce->cart->add_to_cart_call_count );
+        
+        //Assert that add_to_cart was called.
+        $added_to_cart = $woocommerce->cart->added_to_cart;
+        $this->assertEquals( 2, $added_to_cart['variation_id'] );
         
         //Assert that the email was sent
         $this->assertEquals( 'Design Created!', $mail_message['subject'] );
