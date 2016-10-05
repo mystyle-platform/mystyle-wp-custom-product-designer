@@ -25,6 +25,28 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the constructor
+     * @global wp_filter
+     */    
+    public function test_constructor() {
+        global $wp_filter;
+        
+        MyStyle_Customize_Page::get_instance();
+        
+        //Assert that the init function is registered.
+        $function_names = get_function_names( $wp_filter['init'] );
+        $this->assertContains( 'init', $function_names );
+        
+        //Assert that the filter_title function is registered.
+        $function_names = get_function_names( $wp_filter['the_title'] );
+        $this->assertContains( 'filter_title', $function_names );
+        
+        //Assert that the filter_body_class function is registered.
+        $function_names = get_function_names( $wp_filter['body_class'] );
+        $this->assertContains( 'filter_body_class', $function_names );
+    }
+    
+    /**
      * Test the get_id function
      */    
     public function test_get_id() {
@@ -91,4 +113,60 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
         $this->assertEquals( $expected_url, $url );
     }
     
+    /**
+     * Test the filter_title function.
+     */    
+    public function test_filter_title() {
+        global $post;
+        global $wp_query;
+        
+        //Create the MyStyle Customize page
+        MyStyle_Customize_Page::create();
+        
+        //Create the MyStyle Design Profile page
+        MyStyle_Design_Profile_Page::create();
+        
+        //mock the post, etc.
+        $post = new stdClass();
+        $post->ID = MyStyle_Customize_Page::get_id();
+	$wp_query->in_the_loop = true;
+        
+        //Enable the hide title option
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $options['customize_page_title_hide'] = 1;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        //call the function
+        $new_title = MyStyle_Customize_Page::filter_title( 'foo', MyStyle_Customize_Page::get_id() );
+
+        //Assert that the title has been set to the empty string
+        $this->assertEquals( '', $new_title );
+    }
+    
+    /**
+     * Test the filter_body_class function.
+     */    
+    public function test_filter_body_class_adds_class_to_customize_page() {
+        global $post;
+        
+        //Create the MyStyle Customize page
+        MyStyle_Customize_Page::create();
+        
+        //Create the MyStyle Design Profile page
+        MyStyle_Design_Profile_Page::create();
+        
+        //mock the post and get vars
+        $post = new stdClass();
+        $post->ID = MyStyle_Customize_Page::get_id();
+        $_GET['product_id'] = 1;
+        
+        //mock the $classes var
+        $classes = array();
+        
+        //call the function
+        $returned_classes = MyStyle_Customize_Page::filter_body_class( $classes );
+
+        //Assert that the mystyle-customize class is added to the classes array.
+        $this->assertEquals( 'mystyle-customize', $returned_classes[0] );
+    }
 }

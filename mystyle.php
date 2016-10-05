@@ -132,6 +132,7 @@ if( is_admin() ) {
     $mystyle_handoff = new MyStyle_Handoff();
     $mystyle_session = MyStyle_SessionHandler::get();
     
+    MyStyle_Customize_Page::get_instance();
     MyStyle_Design_Profile_Page::get_instance();
 }
 

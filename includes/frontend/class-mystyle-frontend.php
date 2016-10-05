@@ -14,8 +14,6 @@ class MyStyle_FrontEnd {
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
-        add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
-        add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
         add_filter( 'woocommerce_product_single_add_to_cart_text', array( &$this, 'filter_cart_button_text' ), 10, 1 ); 
         add_filter( 'woocommerce_add_to_cart_handler', array( &$this, 'filter_add_to_cart_handler' ), 10, 2 );
         add_filter( 'woocommerce_cart_item_product', array( &$this, 'filter_cart_item_product' ), 10, 3 );
@@ -39,67 +37,6 @@ class MyStyle_FrontEnd {
         //Add the swfobject.js file to the WP head
         wp_register_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js' );
         wp_enqueue_script( 'swfobject' );
-    }
-    
-    /**
-     * Filter the body class output.  Adds a "mystyle-customize" class if the
-     * page is the Customize page.
-     * @param array $classes An array of classes that are going to be outputed
-     * to the body tag.
-     * @return array Returns the filtered classes array.
-     * @todo Move to the MyStyle_Customize_Page class
-     */
-    public static function filter_body_class( $classes ) {
-        global $post;
-        
-        try {
-            if( $post != null ) {
-                if( 
-                    ( $post->ID == MyStyle_Customize_Page::get_id() ) &&
-                    ( isset( $_GET['product_id'] ) )
-                  )
-                {
-                    $classes[] = 'mystyle-customize';
-                } else if($post->ID == MyStyle_Design_Profile_Page::get_id() )
-                {
-                    $classes[] = 'mystyle-design-profile';
-                }
-            }
-        } catch( MyStyle_Exception $e ) {
-            //this exception may be thrown if the Customize Page or Design
-            //Profile Page is missing.
-            //For this function, that is okay, just continue.
-        }
-
-	return $classes;
-    }
-    
-    /**
-     * Filter the post title. Hide the title if on the Customize page and the
-     * customize_page_title_hide setting is set to true. 
-     * @param string $title The title of the post.
-     * @param type $id The id of the post.
-     * @return string Returns the filtered title.
-     * @todo Move to the MyStyle_Customize_Page class
-     */
-    public static function filter_title( $title, $id = null ) {
-        try {
-            if( 
-                ( ! empty( $id ) ) &&
-                ( $id == MyStyle_Customize_Page::get_id() ) &&
-                ( MyStyle_Options::get_customize_page_title_hide() ) &&
-                ( $id == get_the_ID() ) &&
-                ( in_the_loop() )
-              )
-            {
-                $title = '';
-            }
-        } catch( MyStyle_Exception $e ) {
-            //this exception may be thrown if the Customize Page is missing.
-            //For this function, that is okay, just continue.
-        }
-
-        return $title;
     }
     
     /**

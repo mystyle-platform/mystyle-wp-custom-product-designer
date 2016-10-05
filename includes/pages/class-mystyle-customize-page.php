@@ -5,7 +5,21 @@
  * @package MyStyle
  * @since 0.2.1
  */
-abstract class MyStyle_Customize_Page {
+class MyStyle_Customize_Page {
+    
+    /**
+     * Singleton class instance
+     * @var MyStyle_Design_Profile_Page
+     */
+    private static $instance;
+    
+    /**
+     * Constructor.
+     */
+    public function __construct() {
+        add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
+        add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
+    }
     
     /**
      * Function to create the page.
@@ -116,6 +130,61 @@ abstract class MyStyle_Customize_Page {
     }
     
     /**
+     * Filter the post title. Hide the title if on the Customize page and the
+     * customize_page_title_hide setting is set to true. 
+     * @param string $title The title of the post.
+     * @param type $id The id of the post.
+     * @return string Returns the filtered title.
+     */
+    public static function filter_title( $title, $id = null ) {
+        try {
+            if( 
+                ( ! empty( $id ) ) &&
+                ( $id == MyStyle_Customize_Page::get_id() ) &&
+                ( MyStyle_Options::get_customize_page_title_hide() ) &&
+                ( $id == get_the_ID() ) &&
+                ( in_the_loop() )
+              )
+            {
+                $title = '';
+            }
+        } catch( MyStyle_Exception $e ) {
+            //this exception may be thrown if the Customize Page is missing.
+            //For this function, that is okay, just continue.
+        }
+
+        return $title;
+    }
+    
+    /**
+     * Filter the body class output.  Adds a "mystyle-customize" class if the
+     * page is the Customize page.
+     * @param array $classes An array of classes that are going to be outputed
+     * to the body tag.
+     * @return array Returns the filtered classes array.
+     */
+    public static function filter_body_class( $classes ) {
+        global $post;
+        
+        try {
+            if( $post != null ) {
+                if( 
+                    ( $post->ID == MyStyle_Customize_Page::get_id() ) &&
+                    ( isset( $_GET['product_id'] ) )
+                  )
+                {
+                    $classes[] = 'mystyle-customize';
+                }
+            }
+        } catch( MyStyle_Exception $e ) {
+            //this exception may be thrown if the Customize Page is missing.
+            //For this function, that is okay, just continue.
+        }
+
+	return $classes;
+    }
+    
+    /**
      * Attempt to fix the Customize page. This may involve creating, re-creating
      * or repairing it.
      * @return Returns a message describing the outcome of fix operation.
@@ -196,6 +265,33 @@ abstract class MyStyle_Customize_Page {
         $message .= $status;
 
         return $message;
+    }
+    
+    /**
+     * Resets the singleton instance. This is used during testing if we want to
+     * clear out the existing singleton instance.
+     * @return MyStyle_Design_Profile_Page Returns the singleton instance of
+     * this class.
+     */
+    public static function reset_instance() {
+        
+        self::$instance = new self();
+
+        return self::$instance;
+    }
+    
+    
+    /**
+     * Gets the singleton instance.
+     * @return MyStyle_Design_Profile_Page Returns the singleton instance of
+     * this class.
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
 }

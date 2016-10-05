@@ -478,4 +478,30 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         $this->assertEquals( $expected, $new_title );
     }
     
+    /**
+     * Test the filter_body_class function.
+     */    
+    public function test_filter_body_class_adds_class_to_design_profile_page() {
+        global $post;
+        
+        //Create the MyStyle Customize page
+        MyStyle_Customize_Page::create();
+        
+        //Create the MyStyle Design Profile page
+        MyStyle_Design_Profile_Page::create();
+        
+        //mock the post and get vars
+        $post = new stdClass();
+        $post->ID = MyStyle_Design_Profile_Page::get_id();
+        
+        //mock the $classes var
+        $classes = array();
+        
+        //call the function
+        $returned_classes = MyStyle_Design_Profile_Page::filter_body_class( $classes );
+
+        //Assert that the mystyle-design-profile class is added to the classes array.
+        $this->assertEquals( 'mystyle-design-profile', $returned_classes[0] );
+    }
+    
 }

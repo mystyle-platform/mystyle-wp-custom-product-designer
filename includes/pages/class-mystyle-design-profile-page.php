@@ -15,7 +15,7 @@ class MyStyle_Design_Profile_Page {
      * Singleton class instance
      * @var MyStyle_Design_Profile_Page
      */
-    static $instance;
+    private static $instance;
     
     /**
      * Stores the currently loaded design (when the class is instantiated as a
@@ -77,6 +77,7 @@ class MyStyle_Design_Profile_Page {
         $this->http_response_code = 200;
         
         add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
+        add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
         add_action( 'template_redirect', array( &$this, 'init' ) );
     }
     
@@ -608,6 +609,31 @@ class MyStyle_Design_Profile_Page {
         }
 
         return $title;
+    }
+    
+    /**
+     * Filter the body class output.  Adds a "mystyle-design-profile" class if
+     * the page is the Design_Profile page.
+     * @param array $classes An array of classes that are going to be outputed
+     * to the body tag.
+     * @return array Returns the filtered classes array.
+     */
+    public static function filter_body_class( $classes ) {
+        global $post;
+        
+        try {
+            if( $post != null ) {
+                if( $post->ID == MyStyle_Design_Profile_Page::get_id() ) {
+                    $classes[] = 'mystyle-design-profile';
+                }
+            }
+        } catch( MyStyle_Exception $e ) {
+            //this exception may be thrown if the Customize Page or Design
+            //Profile Page is missing.
+            //For this function, that is okay, just continue.
+        }
+
+	return $classes;
     }
     
     /**
