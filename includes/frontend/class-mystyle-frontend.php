@@ -221,6 +221,7 @@ class MyStyle_FrontEnd {
         
         //Note: we put the require_once here because we need to wait until after woocommerce is bootstrapped
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
+        require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product-variation.php' );
         
         //convert the product to a MyStyle_Product (if it has mystyle_data)
         if( 
@@ -230,7 +231,11 @@ class MyStyle_FrontEnd {
         {
             $design_id = $cart_item['mystyle_data']['design_id'];
             $design = MyStyle_DesignManager::get( $design_id );
-            $product = new MyStyle_Product( $product, $design, $cart_item_key );
+            if( get_class( $product ) == 'WC_Product_Variation' ) {
+                $product = new MyStyle_Product_Variation( $product, $design, $cart_item_key );
+            } else {
+                $product = new MyStyle_Product( $product, $design, $cart_item_key );
+            }
         }
         
         return $product;
@@ -246,18 +251,22 @@ class MyStyle_FrontEnd {
         
         //Note: we put the require_once here because we need to wait until after woocommerce is bootstrapped
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
+        require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product-variation.php' );
         
         //convert the product to a MyStyle_Product (if it has mystyle_data)
         if( array_key_exists('mystyle_data', $order_item ) ) {
             $mystyle_data = unserialize( $order_item['mystyle_data'] );
             $design_id = $mystyle_data['design_id'];
             $design = MyStyle_DesignManager::get( $design_id );
-            $product = new MyStyle_Product( $product, $design );
+            if( get_class( $product ) == 'WC_Product_Variation' ) {
+                $product = new MyStyle_Product_Variation( $product, $design );
+            } else {
+                $product = new MyStyle_Product( $product, $design );
+            }
         }
         
         return $product;
     }
     
 }
-
 
