@@ -9,7 +9,7 @@ class MyStyle_Customize_Page {
     
     /**
      * Singleton class instance
-     * @var MyStyle_Design_Profile_Page
+     * @var MyStyle_Customize_Page
      */
     private static $instance;
     
@@ -270,7 +270,7 @@ class MyStyle_Customize_Page {
     /**
      * Resets the singleton instance. This is used during testing if we want to
      * clear out the existing singleton instance.
-     * @return MyStyle_Design_Profile_Page Returns the singleton instance of
+     * @return MyStyle_Customize_Page Returns the singleton instance of
      * this class.
      */
     public static function reset_instance() {
@@ -283,7 +283,7 @@ class MyStyle_Customize_Page {
     
     /**
      * Gets the singleton instance.
-     * @return MyStyle_Design_Profile_Page Returns the singleton instance of
+     * @return MyStyle_Customize_Page Returns the singleton instance of
      * this class.
      */
     public static function get_instance() {
