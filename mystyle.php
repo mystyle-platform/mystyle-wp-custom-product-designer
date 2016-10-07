@@ -59,6 +59,9 @@ require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-forbidden-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-not-found-exception.php' );
 require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-unauthorized-exception.php' );
+require_once( MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-wc-interface.php' );
+require_once( MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-abstract-wc.php' );
+require_once( MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-wc.php' );
 require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-access.php' );
 require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-pager.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle.php' );
@@ -71,6 +74,7 @@ require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-session.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionmanager.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php' );
+
 require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
 require_once( MYSTYLE_INCLUDES . 'class-mystyle-api.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
@@ -83,8 +87,15 @@ require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
 require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php' );
 require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
 
+require_once( MYSTYLE_PATH . 'functions.php' );
+
+MyStyle::get_instance();
+if( ! defined('PHPUNIT_RUNNING') ) {
+    //set up the third party interfaces
+    $mystyle->setWC( new MyStyle_WC() );
+}
+
 //plugin setup and registrations
-$mystyle = new MyStyle();
 register_activation_hook( __FILE__, array( 'MyStyle_Install', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'MyStyle_Install', 'deactivate' ) );
 register_uninstall_hook( __FILE__, array( 'MyStyle_Install', 'uninstall' ) );

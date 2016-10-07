@@ -39,7 +39,7 @@ abstract class MyStyle_Customizer_Shortcode {
 
             if( strlen( $out ) < 50 ) {
                 $out = '<p>Sorry, no products are currently available for customization.</p>';
-                $out .= '<h2><a class="button" href="' . get_permalink( woocommerce_get_page_id( 'shop' ) ) . '">Shop</a></h2>';
+                $out .= '<h2><a class="button" href="' . get_permalink( MyStyle_WC()->wc_get_page_id( 'shop' ) ) . '">Shop</a></h2>';
                 if( is_super_admin() ) {
                     $out .= '<div style="background-color: #fafafa; border: solid 1px #eeeeee; font-family: \'Noto Sans\', sans-serif; padding: 10px;">' .
                                 '<p><strong>MyStyle Admin Notice:</strong></p>' .

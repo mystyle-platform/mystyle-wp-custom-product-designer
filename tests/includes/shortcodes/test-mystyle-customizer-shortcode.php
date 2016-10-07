@@ -1,5 +1,8 @@
 <?php
 
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-wc.php' );
+require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
+
 /**
  * The MyStyleCustomizerShortcodeTest class includes tests for testing the 
  * MyStyle_Customizer_Shortcode class.
@@ -8,6 +11,14 @@
  * @since 0.2.1
  */
 class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
+    
+    /**
+     * Override the setUp function.
+     */
+    function setUp() {
+        parent::setUp();
+        MyStyle::get_instance()->set_WC( new MyStyle_MockWC() );
+    }
     
     /**
      * Test the modify_woocommerce_shortcode_products_query function with valid parameters.

@@ -14,6 +14,18 @@ class MyStyle {
     public static $STANDARD_DATE_FORMAT = 'Y-m-d H:i:s';
     
     /**
+     * Singleton class instance
+     * @var MyStyle
+     */
+    private static $instance;
+    
+    /**
+     * Our WooCommerce interface.
+     * @var MyStyle_WC_Interface
+     */
+    private static $wc;
+    
+    /**
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
@@ -332,6 +344,50 @@ class MyStyle {
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Sets the WooCommerce interface.
+     * @param MyStyle_WC_Interface $mystyle_wc_interface The WooCommerce 
+     * interface.
+     */
+    public function set_WC( MyStyle_WC_Interface $mystyle_wc_interface ) {
+        $this->wc = $mystyle_wc_interface;
+    }
+    
+    /**
+     * Gets the WooCommerce interface.
+     * @return MyStyle_WC_Interface Returns the value of template_id.
+     */
+    public function get_WC() {
+        return $this->wc;
+    }
+    
+    /**
+     * Resets the singleton instance. This is used during testing if we want to
+     * clear out the existing singleton instance.
+     * @return MyStyle_Customize_Page Returns the singleton instance of
+     * this class.
+     */
+    public static function reset_instance() {
+        
+        self::$instance = new self();
+
+        return self::$instance;
+    }
+    
+    
+    /**
+     * Gets the singleton instance.
+     * @return MyStyle Returns the singleton instance of
+     * this class.
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
     
 }
