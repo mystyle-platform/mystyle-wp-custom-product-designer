@@ -121,7 +121,7 @@ if( is_admin() ) {
         add_action( 'admin_footer', 'mystyle_load_qunit' );
     }
 
-} else {
+} else if ( ! defined('PHPUNIT_RUNNING') ) {
     //---- FRONT END ----//
     if( ! defined( 'MYSTYLE_DESIGNS_PER_PAGE' ) ) { define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 ); }
     

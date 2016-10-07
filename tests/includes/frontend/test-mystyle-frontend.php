@@ -86,14 +86,20 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
      * Test the mystyle_frontend_init function.
      */    
     public function test_mystyle_frontend_init() {
+        global $wp_scripts;
+        global $wp_styles;
+        
+        define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 );
+        
         $mystyle_frontend = new MyStyle_Frontend();
         
+        //call the function
+        MyStyle_Frontend::init();
+        
         //Assert that our scripts are registered
-        global $wp_scripts;
         $this->assertContains( 'swfobject', serialize( $wp_scripts ) );
         
         //Assert that our stylesheets are registered
-        global $wp_styles;
         $this->assertContains( 'myStyleFrontendStylesheet', serialize( $wp_styles ) );
     }
     
