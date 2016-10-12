@@ -35,7 +35,7 @@ class MyStyle_FrontEnd {
     /**
      * Init the MyStyle front end.
      */
-    public static function init() {
+    public function init() {
         //Add the MyStyle frontend stylesheet to the WP frontend head
         wp_register_style( 'myStyleFrontendStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css' );
         wp_enqueue_style( 'myStyleFrontendStylesheet' );
@@ -49,7 +49,7 @@ class MyStyle_FrontEnd {
      * Filter the "Add to Cart" button text.
      * @param string $text The current cart button text.
      */
-    public static function filter_cart_button_text( $text ) {
+    public function filter_cart_button_text( $text ) {
         global $product;
         
         if( $product != null ) {
@@ -69,7 +69,7 @@ class MyStyle_FrontEnd {
      * @return string Returns the name of the handler to use for the add_to_cart
      * action.
      */
-    public static function filter_add_to_cart_handler( $handler, $product ) {
+    public function filter_add_to_cart_handler( $handler, $product ) {
 
         if($product != null) {
             $product_id = $product->id;
@@ -81,7 +81,7 @@ class MyStyle_FrontEnd {
             $handler = 'mystyle_add_to_cart';
             if(WC_VERSION < 2.3) {
                 //old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
-                self::mystyle_add_to_cart_handler( false );
+                $this->mystyle_add_to_cart_handler( false );
             }
         } else {
         
@@ -89,7 +89,7 @@ class MyStyle_FrontEnd {
                 $handler = 'mystyle_customizer';
                 if(WC_VERSION < 2.3) {
                     //old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
-                    self::mystyle_add_to_cart_handler_customize( false );
+                    $this->mystyle_add_to_cart_handler_customize( false );
                 }
             }
         }
@@ -103,7 +103,7 @@ class MyStyle_FrontEnd {
      * @param type $product The current product.
      * @return type Returns the html to be outputted.
      */
-    public static function loop_add_to_cart_link( $link, $product ) {
+    public function loop_add_to_cart_link( $link, $product ) {
         //var_dump($product);
         
         if( ( MyStyle::product_is_customizable( $product->id ) ) && ( $product->product_type != 'variable') ) {
@@ -145,7 +145,7 @@ class MyStyle_FrontEnd {
      * Handles the add_to_cart action for customizing customizable products.
      * @param string $url The current url.
      */
-    public static function mystyle_add_to_cart_handler_customize( $url ) {
+    public function mystyle_add_to_cart_handler_customize( $url ) {
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
         
         //set up an array of data to pass to/through the customizer.
@@ -181,7 +181,7 @@ class MyStyle_FrontEnd {
      * cart.
      * @param string $url The current url.
      */
-    public static function mystyle_add_to_cart_handler( $url ) {
+    public function mystyle_add_to_cart_handler( $url ) {
         global $woocommerce;
         
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
@@ -210,7 +210,7 @@ class MyStyle_FrontEnd {
      * @param array $vars
      * @return string
      */
-    public static function add_query_vars_filter( $vars ){
+    public function add_query_vars_filter( $vars ){
         $vars[] = 'design_id';
         
         return $vars;
@@ -223,7 +223,7 @@ class MyStyle_FrontEnd {
      * @param string $cart_item_key
      * @return mixed Returns a WC_Product or one of its child classes.
      */
-    public static function filter_cart_item_product( $product, $cart_item, $cart_item_key ){
+    public function filter_cart_item_product( $product, $cart_item, $cart_item_key ){
         
         //Note: we put the require_once here because we need to wait until after woocommerce is bootstrapped
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
@@ -253,7 +253,7 @@ class MyStyle_FrontEnd {
      * @param array $order_item
      * @return mixed Returns a WC_Product or one of its child classes.
      */
-    public static function filter_order_item_product( $product, $order_item ) {
+    public function filter_order_item_product( $product, $order_item ) {
         
         //Note: we put the require_once here because we need to wait until after woocommerce is bootstrapped
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
