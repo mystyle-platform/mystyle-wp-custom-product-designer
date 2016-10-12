@@ -80,7 +80,7 @@ class MyStyle {
      * @param array $values The values from the cart.
      * @return Returns false on failure. On success, returns the ID of the inserted row.
      */
-    public static function add_mystyle_order_item_meta( $item_id, $values ) {
+    public function add_mystyle_order_item_meta( $item_id, $values ) {
         if( isset( $values['mystyle_data'] ) ) {
             return wc_add_order_item_meta( $item_id, 'mystyle_data', $values['mystyle_data'] );
         }
@@ -129,7 +129,7 @@ class MyStyle {
      * @param string $key The key of the cart item.
      * @return string Returns the updated cart image tag.
      */
-    public static function get_cart_item_from_session( $session_data, $values, $key ) {
+    public function get_cart_item_from_session( $session_data, $values, $key ) {
         
         // Fix for WC 2.2 (if our data is missing from the cart item, get it from the session variable 
         if( ! isset( $session_data['mystyle_data'] ) ) {
@@ -147,7 +147,7 @@ class MyStyle {
      * @param string $cart_item_key The current cart_item_key.
      * @return string Returns the updated cart image tag.
      */
-    public static function modify_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key ) {
+    public function modify_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key ) {
         
         $new_image_tag = $get_image;
         $design_id = null;
@@ -214,7 +214,7 @@ class MyStyle {
      * @param string $cart_item_key The current cart_item_key.
      * @return string Returns the updated permalink.
      */
-    public static function modify_cart_item_permalink( $permalink, $cart_item, $cart_item_key ) {
+    public function modify_cart_item_permalink( $permalink, $cart_item, $cart_item_key ) {
         
         $new_permalink = $permalink;
         $design_id = null;
@@ -245,7 +245,7 @@ class MyStyle {
      * @param string $cart_item_key The current cart_item_key.
      * @return string Returns the updated cart item name.
      */
-    public static function modify_cart_item_name( $name, $cart_item, $cart_item_key ) {
+    public function modify_cart_item_name( $name, $cart_item, $cart_item_key ) {
         
         $new_name = $name;
         $design_id = null;
@@ -283,7 +283,7 @@ class MyStyle {
      * @param string $user_login
      * @param WP_User $user
      */
-    public static function on_wp_login( $user_login, $user ) {
+    public function on_wp_login( $user_login, $user ) {
         $session = MyStyle_SessionHandler::get();
         MyStyle_DesignManager::set_user_id( $user, $session );
     }
@@ -292,7 +292,7 @@ class MyStyle {
      * Called when a user registers.
      * @param integer $user_id
      */
-    public static function on_user_register( $user_id ) {
+    public function on_user_register( $user_id ) {
         $session = MyStyle_SessionHandler::get();
         $user = get_user_by( 'id', $user_id );
         MyStyle_DesignManager::set_user_id( $user, $session );
@@ -303,7 +303,7 @@ class MyStyle {
      * out).
      * @param integer $user_id
      */
-    public static function on_woocommerce_created_customer( $customer_id, $new_customer_data, $password_generated ) {
+    public function on_woocommerce_created_customer( $customer_id, $new_customer_data, $password_generated ) {
         $session = MyStyle_SessionHandler::get();
         $user = get_user_by( 'id', $customer_id );
         MyStyle_DesignManager::set_user_id( $user, $session );
@@ -313,7 +313,7 @@ class MyStyle {
      * Function that looks to see if any products are mystyle enabled.
      * @return boolean Returns true if at least one product is customizable.
      */
-    public static function site_has_customizable_products() {
+    public function site_has_customizable_products() {
         $args = array(
                     'post_type'      => 'product',
                     'numberposts' => 1,
@@ -336,7 +336,7 @@ class MyStyle {
      * @return boolean Returns true if the product is customizable, otherwise,
      * returns false.
      */
-    public static function product_is_customizable( $product_id ) {
+    public function product_is_customizable( $product_id ) {
         $mystyle_enabled = get_post_meta( $product_id, '_mystyle_enabled', true );
         
         if( $mystyle_enabled == 'yes' ) {
