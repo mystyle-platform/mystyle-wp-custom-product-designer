@@ -121,7 +121,7 @@ if( is_admin() ) {
     add_filter( 'contextual_help', 'mystyle_help_dispatch', 10, 3 );
     
     //set up the addons page
-    $mystyle_addons_page = new MyStyle_Addons_Page();
+    MyStyle_Addons_Page::get_instance();
     
     //hook into the WooCommerce admin
     $mystyle_woocommerce_admin_product = new MyStyle_WooCommerce_Admin_Product();
