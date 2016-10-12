@@ -11,6 +11,12 @@
 class MyStyle_Admin {
 
     /**
+     * Singleton instance
+     * @var MyStyle_Admin
+     */
+    private static $instance;
+    
+    /**
      * Constructor, constructs the admin class and registers hooks.
      * menu.
      */
@@ -23,7 +29,7 @@ class MyStyle_Admin {
     /**
      * Init the mystyle admin
      */
-    function admin_init() {
+    public function admin_init() {
         //Add the MyStyle admin stylesheet to the WP admin head
         wp_register_style( 'myStyleAdminStylesheet', MYSTYLE_ASSETS_URL . 'css/admin.css' );
         wp_enqueue_style( 'myStyleAdminStylesheet' );
@@ -38,10 +44,22 @@ class MyStyle_Admin {
      * @param array $links An array of existing links for the plugin
      * @return array The new array of links
      */
-    public static function add_settings_link( $links ) {
+    public function add_settings_link( $links ) {
         $settings_link = '<a href="options-general.php?page=mystyle">Settings</a>';
         array_unshift( $links, $settings_link );
         return $links;
+    }
+    
+    /**
+     * Get the singleton instance
+     * @return MyStyle_Addons_Page
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
 }

@@ -114,7 +114,7 @@ if( is_admin() ) {
     MyStyle_Notice_Controller::get_instance();
 
     //set up the main admin class.
-    $mystyle_admin = new MyStyle_Admin();
+    MyStyle_Admin::get_instance();
 
     //set up the options page
     MyStyle_Options_Page::get_instance();
