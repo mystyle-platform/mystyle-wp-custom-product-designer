@@ -136,7 +136,7 @@ class MyStyle_Customize_Page {
      * @param type $id The id of the post.
      * @return string Returns the filtered title.
      */
-    public static function filter_title( $title, $id = null ) {
+    public function filter_title( $title, $id = null ) {
         try {
             if( 
                 ( ! empty( $id ) ) &&
@@ -163,7 +163,7 @@ class MyStyle_Customize_Page {
      * to the body tag.
      * @return array Returns the filtered classes array.
      */
-    public static function filter_body_class( $classes ) {
+    public function filter_body_class( $classes ) {
         global $post;
         
         try {
