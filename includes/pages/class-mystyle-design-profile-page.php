@@ -130,7 +130,7 @@ class MyStyle_Design_Profile_Page {
      * 
      * @throws MyStyle_Not_Found_Exception
      */
-    public static function init() {
+    public function init() {
         
         //only run if we are currently serving the design profile page
         if( self::is_current_post() ) { 
@@ -588,7 +588,7 @@ class MyStyle_Design_Profile_Page {
      * @param type $id The id of the post.
      * @return string Returns the filtered title.
      */
-    public static function filter_title( $title, $id = null ) {
+    public function filter_title( $title, $id = null ) {
         try {
             if( 
                 ( ! empty( $id ) ) &&
@@ -597,8 +597,7 @@ class MyStyle_Design_Profile_Page {
                 ( in_the_loop() ) //make sure we're in the loop
               )
             {
-                $instance = self::get_instance();
-                $design = $instance->get_design();
+                $design = $this->get_design();
                 if( $design != null ) {
                     $title = 'Design ' . $design->get_design_id();
                 }
@@ -618,7 +617,7 @@ class MyStyle_Design_Profile_Page {
      * to the body tag.
      * @return array Returns the filtered classes array.
      */
-    public static function filter_body_class( $classes ) {
+    public function filter_body_class( $classes ) {
         global $post;
         
         try {

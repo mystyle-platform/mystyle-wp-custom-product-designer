@@ -78,11 +78,11 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         $post = new stdClass();
         $post->ID = MyStyle_Design_Profile_Page::get_id();
         
-        //call the function
-        MyStyle_Design_Profile_Page::init();
-        
         //get the Mystyle_Design_Profile page singleton
         $mystyle_design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+        
+        //call the function
+        $mystyle_design_profile_page->init();
         
         //get the current design from the singleton instance
         $current_design = $mystyle_design_profile_page->get_design();
@@ -472,7 +472,7 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
 	$wp_query->in_the_loop = true;
         
         //call the function
-        $new_title = MyStyle_Design_Profile_Page::filter_title( 'foo', MyStyle_Design_Profile_Page::get_id() );
+        $new_title = $mystyle_design_profile_page->filter_title( 'foo', MyStyle_Design_Profile_Page::get_id() );
 
         //expected
         $expected = 'Design ' . $design->get_design_id();
