@@ -25,7 +25,7 @@ class MyStyle_Addons_Page {
     /**
      * Function to add the designs page to the MyStyle menu.
      */
-    public static function add_page_to_menu() {
+    public function add_page_to_menu() {
         $mystyle_hook = 'mystyle';
 
         $hook = add_submenu_page(
@@ -41,7 +41,7 @@ class MyStyle_Addons_Page {
     /**
      * Function to render the MyStyle Addons page.
      */
-    public static function render_page() {
+    public function render_page() {
         ?>
         <div class="wrap">
             <h2 class="mystyle-admin-title">
