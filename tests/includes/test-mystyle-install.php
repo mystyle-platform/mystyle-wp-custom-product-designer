@@ -152,10 +152,8 @@ class MyStyleInstallTest extends WP_UnitTestCase {
      * Test the uninstall function.
      */    
     public function test_uninstall() {
-        $mystyle_admin = new MyStyle_Admin();
-        
         //init the plugin so that we can then uninstall it
-        $mystyle_admin->admin_init();
+        MyStyle::init();
         
         //assert that there are options
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
