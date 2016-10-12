@@ -1,6 +1,10 @@
 <?php
 
+require_once( MYSTYLE_PATH . '../woocommerce/woocommerce.php' );
 require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
 
 /**
  * Mock the WC_Product_Variable class. This is used by the 
