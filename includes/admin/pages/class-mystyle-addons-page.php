@@ -101,8 +101,9 @@ class MyStyle_Addons_Page {
         <?php
     }
 
-    /*
-     * Singleton instance
+    /**
+     * Get the singleton instance
+     * @return MyStyle_Addons_Page
      */
     public static function get_instance() {
         if ( ! isset( self::$instance ) ) {

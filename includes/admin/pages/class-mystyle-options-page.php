@@ -9,6 +9,12 @@
 class MyStyle_Options_Page {
 
     /**
+     * Singleton instance
+     * @var MyStyle_Options_Page
+     */
+    private static $instance;
+    
+    /**
      * Constructor, constructs the options page and adds it to the Settings
      * menu.
      */
@@ -122,7 +128,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the MyStyle options page.
      */
-    public static function render_page() {
+    public function render_page() {
     ?>
         <div class="wrap">
             <h2 class="mystyle-admin-title">
@@ -173,7 +179,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the text for the access section.
      */
-    public static function render_access_section_text() {
+    public function render_access_section_text() {
     ?>
         <p>
             To use the <a href="http://www.mystyleplatform.com">MyStyle</a> customizer,
@@ -186,7 +192,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the API Key field and description
      */
-    public static function render_api_key() {
+    public function render_api_key() {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $api_key = ( array_key_exists('api_key', $options) ) ? $options['api_key'] : '';
      ?>
@@ -202,7 +208,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the Secret field and description
      */
-    public static function render_secret() {
+    public function render_secret() {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $secret = ( array_key_exists( 'secret', $options ) ) ? $options['secret'] : '';
      ?>
@@ -218,7 +224,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the text for the advanced section.
      */
-    public static function render_advanced_section_text() {
+    public function render_advanced_section_text() {
     ?>
         <p>
             For advanced users only.
@@ -229,7 +235,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the Force Mobile field and description
      */
-    public static function render_force_mobile() {
+    public function render_force_mobile() {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $force_mobile = ( array_key_exists( 'force_mobile', $options ) ) ? $options['force_mobile'] : 0;
      ?>
@@ -246,7 +252,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the Hide Customize Page Title option and checkbox.
      */
-    public static function render_hide_customize_title() {
+    public function render_hide_customize_title() {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $customize_page_title_hide = ( array_key_exists( 'customize_page_title_hide', $options ) ) ? $options['customize_page_title_hide'] : 0;
      ?>
@@ -262,7 +268,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the form integration config field
      */
-    public static function render_form_integration_config() {
+    public function render_form_integration_config() {
 
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() ); // get WP Options table Key of this option
         $currentVal = ( array_key_exists( 'mystyle_form_integration_config', $options ) ) ? $options['mystyle_form_integration_config'] : '';
@@ -275,7 +281,7 @@ class MyStyle_Options_Page {
     /**
      * Function to render the text for the tools section.
      */
-    public static function render_tools_section_text() {
+    public function render_tools_section_text() {
     ?>
         <p>
             The below tools are available to repair your MyStyle configuration.
@@ -292,7 +298,7 @@ class MyStyle_Options_Page {
      * @param array $input The submitted values
      * @return array Returns the new options to be stored in the database.
      */
-    public static function validate( $input ) {
+    public function validate( $input ) {
         $old_options = get_option( MYSTYLE_OPTIONS_NAME );
         $new_options = $old_options;  //start with the old options.
 
@@ -362,5 +368,17 @@ class MyStyle_Options_Page {
         );
 
         return $new_options;
+    }
+    
+    /**
+     * Get the singleton instance
+     * @return MyStyle_Addons_Page
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 }

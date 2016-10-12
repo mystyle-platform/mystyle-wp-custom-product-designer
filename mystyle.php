@@ -117,7 +117,7 @@ if( is_admin() ) {
     $mystyle_admin = new MyStyle_Admin();
 
     //set up the options page
-    $mystyle_options_page = new MyStyle_Options_Page();
+    MyStyle_Options_Page::get_instance();
     add_filter( 'contextual_help', 'mystyle_help_dispatch', 10, 3 );
     
     //set up the addons page
