@@ -8,8 +8,11 @@
  */
 class MyStyle_Addons_Page {
 
-    // class instance
-    static $instance;
+    /**
+     * Singleton instance
+     * @var MyStyle_Addons_Page
+     */
+    private static $instance;
 
     /**
      * Constructor, constructs the addons page and adds it to the Settings
@@ -22,7 +25,7 @@ class MyStyle_Addons_Page {
     /**
      * Function to add the designs page to the MyStyle menu.
      */
-    public function add_page_to_menu() {
+    public static function add_page_to_menu() {
         $mystyle_hook = 'mystyle';
 
         $hook = add_submenu_page(
@@ -38,7 +41,7 @@ class MyStyle_Addons_Page {
     /**
      * Function to render the MyStyle Addons page.
      */
-    public function render_page() {
+    public static function render_page() {
         ?>
         <div class="wrap">
             <h2 class="mystyle-admin-title">
