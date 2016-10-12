@@ -92,7 +92,7 @@ require_once( MYSTYLE_PATH . 'functions.php' );
 MyStyle::get_instance();
 if( ! defined('PHPUNIT_RUNNING') ) {
     //set up the third party interfaces
-    $mystyle->setWC( new MyStyle_WC() );
+    MyStyle::get_instance()->set_WC( new MyStyle_WC() );
 }
 
 //plugin setup and registrations
@@ -139,7 +139,7 @@ if( is_admin() ) {
     require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
     require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
 
-    $mystyle_frontend = new MyStyle_FrontEnd();
+    MyStyle_FrontEnd::get_instance();
     $mystyle_handoff = new MyStyle_Handoff();
     $mystyle_session = MyStyle_SessionHandler::get();
     

@@ -95,8 +95,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         
         define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 );
         
-        $mystyle_frontend = new MyStyle_Frontend();
-        
         //call the function
         MyStyle_Frontend::init();
         
@@ -126,8 +124,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
     public function test_filter_cart_button_text_doesnt_modify_button_text_when_not_mystyle_enabled() {
         global $product;
         
-        $mystyle_frontend = new MyStyle_Frontend();
-        
         //Mock the global $post variable
         $post_vars = new stdClass();
         $post_vars->ID = 1;
@@ -136,7 +132,7 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         //Create a mock product using the mock Post
         $product = new WC_Product_Simple($GLOBALS['post']);
         
-        $text = $mystyle_frontend->filter_cart_button_text( 'Add to Cart' );
+        $text = MyStyle_Frontend::filter_cart_button_text( 'Add to Cart' );
         
         //Assert that the expected text is returned
         $this->assertContains( 'Add to Cart', $text );
@@ -147,8 +143,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
      */    
     public function test_filter_cart_button_text_modifies_button_text_when_mystyle_enabled() {
         global $product;
-        
-        $mystyle_frontend = new MyStyle_Frontend();
         
         //Mock the global $post variable
         $post_vars = new stdClass();
@@ -161,7 +155,7 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         //Mock the mystyle_metadata
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
         
-        $text = $mystyle_frontend->filter_cart_button_text( 'Add to Cart' );
+        $text = MyStyle_Frontend::filter_cart_button_text( 'Add to Cart' );
         
         //Assert that the expected text is returned
         $this->assertContains( 'Customize', $text );
@@ -174,8 +168,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
     public function test_filter_add_to_cart_handler_doesnt_modify_handler_when_not_mystyle_enabled() {
         global $product;
         
-        $mystyle_frontend = new MyStyle_Frontend();
-        
         //Mock the global $post variable
         $post_vars = new stdClass();
         $post_vars->ID = 1;
@@ -184,7 +176,7 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         //Create a mock product using the mock Post
         $product = new WC_Product_Simple($GLOBALS['post']);
         
-        $text = $mystyle_frontend->filter_add_to_cart_handler( 'test_handler', $product );
+        $text = MyStyle_FrontEnd::filter_add_to_cart_handler( 'test_handler', $product );
         
         //Assert that the expected text is returned
         $this->assertContains( 'test_handler', $text );
@@ -195,8 +187,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
      */    
     public function test_filter_add_to_cart_handler_modifies_handler_when_mystyle_enabled() {
         global $product;
-        
-        $mystyle_frontend = new MyStyle_Frontend();
         
         //Mock the global $post variable
         $post_vars = new stdClass();
@@ -210,7 +200,9 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
         
         if(WC_VERSION >= 2.3) { //we intercept the filter and call the the handler in old versions of WC, so this test always fails
-            $text = $mystyle_frontend->filter_add_to_cart_handler( 'test_handler', $product );
+            
+            //call the function
+            $text = MyStyle_FrontEnd::filter_add_to_cart_handler( 'test_handler', $product );
         
             //Assert that the expected text is returned
             $this->assertContains( 'mystyle_customizer', $text );
@@ -222,8 +214,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
      * product.
      */    
     public function test_loop_add_to_cart_link_for_uncustomizable_product() {
-        $mystyle_frontend = new MyStyle_FrontEnd();
-        
         //Create a mock link
         $link = '<a href="">link</a>';
         
@@ -235,7 +225,7 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         //Create a mock product using the mock Post
         $product = new WC_Product_Simple($GLOBALS['post']);
         
-        $html = $mystyle_frontend->loop_add_to_cart_link( $link, $product );
+        $html = MyStyle_FrontEnd::loop_add_to_cart_link( $link, $product );
         
         $this->assertContains( $link, $html );
     }
@@ -244,8 +234,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
      * Test the loop_add_to_cart_link function for a customizable product.
      */    
     public function test_loop_add_to_cart_link_for_customizable_product() {
-        $mystyle_frontend = new MyStyle_FrontEnd();
-        
         //Create a mock link
         $link = '<a href="">link</a>';
         
@@ -264,7 +252,7 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         MyStyle_Customize_Page::create();
         
         //Run the function
-        $html = $mystyle_frontend->loop_add_to_cart_link( $link, $product );
+        $html = MyStyle_FrontEnd::loop_add_to_cart_link( $link, $product );
         
         //var_dump($html);
         
@@ -349,8 +337,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
      * Test the filter_cart_item_product function.
      */
     public function test_filter_cart_item_product( ) {
-        $mystyle_frontend = new MyStyle_FrontEnd();
-        
         //Create a design
         $result_object = new MyStyle_MockDesignQueryResult( 1 );
         $design = MyStyle_Design::create_from_result_object( $result_object );
@@ -384,8 +370,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
      * Test the filter_order_item_product function.
      */
     public function test_filter_order_item_product( ) {
-        $mystyle_frontend = new MyStyle_FrontEnd();
-        
         //Create a design
         $result_object = new MyStyle_MockDesignQueryResult( 1 );
         $design = MyStyle_Design::create_from_result_object( $result_object );
@@ -435,8 +419,6 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         global $product;
         global $filter_wp_redirect_called;
         
-        $mystyle_frontend = new MyStyle_Frontend();
-        
         //Mock the global $post variable
         $post_vars = new stdClass();
         $post_vars->ID = 1;
@@ -455,7 +437,8 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
         //Disable the redirect
         add_filter('wp_redirect', array( &$this, 'filter_wp_redirect' ), 10, 2);
         
-        $mystyle_frontend->mystyle_add_to_cart_handler_customize( '' );
+        //call the function
+        MyStyle_FrontEnd::mystyle_add_to_cart_handler_customize( '' );
         
         //Assert that the function called the filter_wp_redirect function (see above)
         $this->assertTrue( $filter_wp_redirect_called );

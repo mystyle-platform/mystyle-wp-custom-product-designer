@@ -1,5 +1,6 @@
 <?php
 
+require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-design.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
 
@@ -102,6 +103,7 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
      */    
     public function test_init_with_no_design_id() {
         global $post;
+        if( ! defined( 'MYSTYLE_DESIGNS_PER_PAGE' ) ) { define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 ); }
         
         $design_id = 1;
         
@@ -382,7 +384,8 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         $query = 'http://localhost/index.php?page_id=1&design_id=' . $design_id;
         
         //init the mystyle frontend to register the design_id query var.
-        $mystyle_frontend = new MyStyle_FrontEnd();
+        if( ! defined( 'MYSTYLE_DESIGNS_PER_PAGE' ) ) { define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 ); }
+        MyStyle_FrontEnd::get_instance();
         
         //mock the current query
         $wp_query = new WP_Query( $query );

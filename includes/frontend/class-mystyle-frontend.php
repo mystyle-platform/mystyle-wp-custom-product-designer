@@ -11,6 +11,12 @@
 class MyStyle_FrontEnd {
     
     /**
+     * Singleton class instance
+     * @var MyStyle_Frontend
+     */
+    private static $instance;
+    
+    /**
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
@@ -266,6 +272,33 @@ class MyStyle_FrontEnd {
         }
         
         return $product;
+    }
+    
+    /**
+     * Resets the singleton instance. This is used during testing if we want to
+     * clear out the existing singleton instance.
+     * @return MyStyle_Design_Profile_Page Returns the singleton instance of
+     * this class.
+     */
+    public static function reset_instance() {
+        
+        self::$instance = new self();
+
+        return self::$instance;
+    }
+    
+    
+    /**
+     * Gets the singleton instance.
+     * @return MyStyle_Design_Profile_Page Returns the singleton instance of
+     * this class.
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
     
 }
