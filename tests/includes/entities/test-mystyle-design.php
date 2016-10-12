@@ -1,6 +1,8 @@
 <?php
 
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php' );
 
 /**
  * The MyStyleDesignTest class includes tests for testing the MyStyle_Design
