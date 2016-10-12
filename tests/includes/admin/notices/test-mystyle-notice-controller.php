@@ -34,11 +34,9 @@ class MyStyleNoticeControllerTest extends WP_UnitTestCase {
      * TODO: add more tests for this function.
      */    
     public function test_admin_notices() {
-        $mystyle_notice_controller = new MyStyle_Notice_Controller();
-        
         //assert that a notice was registered
         ob_start();
-        $mystyle_notice_controller->admin_notices();
+        MyStyle_Notice_Controller::admin_notices();
         $outbound = ob_get_contents();
         ob_end_clean();
         
@@ -56,12 +54,10 @@ class MyStyleNoticeControllerTest extends WP_UnitTestCase {
         $_POST['notice_key'] = $notice_key;
         $_POST['remind_when'] = $remind_when;
         
-        $mystyle_notice_controller = new MyStyle_Notice_Controller();
-        
         //Assert that the expected output string is returned.
         $this->expectOutputString($expected);
         try {
-            $mystyle_notice_controller->set_notice_pref_callback();
+            MyStyle_Notice_Controller::set_notice_pref_callback();
         } catch(WPDieException $ex) {
             //
         }

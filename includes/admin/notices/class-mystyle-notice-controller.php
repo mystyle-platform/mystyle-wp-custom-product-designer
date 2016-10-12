@@ -14,7 +14,7 @@ class MyStyle_Notice_Controller {
      * Constructor, constructs the MyStyle_Notice_Controller and registers
      * actions.
      */
-    function __construct() {
+    public function __construct() {
         add_action( 'admin_notices', array( &$this, 'admin_notices' ) );
         add_action( 'wp_ajax_mystyle_set_notice_pref', array( &$this, 'set_notice_pref_callback' ) );
     }
@@ -24,7 +24,7 @@ class MyStyle_Notice_Controller {
      * mystyle_notices. Once the notices have been displayed, delete them from
      * the database.
      */
-    function admin_notices() {
+    public static function admin_notices() {
         
         $screen = get_current_screen();
         $screen_id = ( ! empty( $screen ) ? $screen->id : null );
@@ -68,7 +68,7 @@ class MyStyle_Notice_Controller {
     /**
      * Called via ajax to dismiss a notice. Registered in the constructor above.
      */
-    function set_notice_pref_callback() {
+    public static function set_notice_pref_callback() {
         //Get the variables from the post request
         $notice_key = $_POST['notice_key'];
         $remind_when = $_POST['remind_when'];
