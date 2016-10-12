@@ -12,6 +12,12 @@
 class MyStyle_WooCommerce_Admin_Order {
     
     /**
+     * Singleton instance
+     * @var MyStyle_WooCommerce_Admin_Order
+     */
+    private static $instance;
+    
+    /**
      * Constructor, constructs the class and registers hooks.
      */
     public function __construct() {
@@ -94,6 +100,18 @@ class MyStyle_WooCommerce_Admin_Order {
         </td>
         <?php
 
+    }
+    
+    /**
+     * Get the singleton instance.
+     * @return MyStyle_WooCommerce_Admin_Order
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
 }

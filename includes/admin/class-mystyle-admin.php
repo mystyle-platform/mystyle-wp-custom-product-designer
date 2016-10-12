@@ -51,8 +51,8 @@ class MyStyle_Admin {
     }
     
     /**
-     * Get the singleton instance
-     * @return MyStyle_Addons_Page
+     * Get the singleton instance.
+     * @return MyStyle_Admin
      */
     public static function get_instance() {
         if ( ! isset( self::$instance ) ) {

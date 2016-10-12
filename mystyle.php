@@ -125,7 +125,7 @@ if( is_admin() ) {
     
     //hook into the WooCommerce admin
     $mystyle_woocommerce_admin_product = new MyStyle_WooCommerce_Admin_Product();
-    $mystyle_woocommerce_admin_order = new MyStyle_WooCommerce_Admin_Order();
+    MyStyle_WooCommerce_Admin_Order::get_instance();
 
     //load qunit
     if( ( defined('MYSTYLE_LOAD_QUNIT') ) && ( MYSTYLE_LOAD_QUNIT == true ) ) {
