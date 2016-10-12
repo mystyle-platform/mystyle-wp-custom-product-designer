@@ -12,6 +12,12 @@
 class MyStyle_WooCommerce_Admin_Product {
 
     /**
+     * Singleton instance
+     * @var MyStyle_WooCommerce_Admin_Product
+     */
+    private static $instance;
+    
+    /**
      * Constructor, constructs the class and registers hooks.
      */
     public function __construct() {
@@ -30,7 +36,7 @@ class MyStyle_WooCommerce_Admin_Product {
     /**
      * Add a MyStyle tab to the product options tab set.
      */
-    public static function add_product_data_tab() {
+    public function add_product_data_tab() {
         echo '<li class="mystyle_product_tab mystyle_product_options"><a href="#mystyle_product_data">MyStyle</a></li>';
     }
 
@@ -38,7 +44,7 @@ class MyStyle_WooCommerce_Admin_Product {
      * Create the content of the MyStyle product options tab.
      * @global WP_Post $post The post that is currently being edited
      */
-    public static function add_mystyle_data_panel() {
+    public function add_mystyle_data_panel() {
         global $post;
 
         // pull existing values
@@ -149,7 +155,7 @@ class MyStyle_WooCommerce_Admin_Product {
      * Process the mystyle tab options when a post is saved
      * @param integer $post_id The id of the post that is being saved.
      */
-    public static function process_mystyle_data_panel( $post_id ) {
+    public function process_mystyle_data_panel( $post_id ) {
 
         $mystyle_enabled = ( isset( $_POST['_mystyle_enabled'] ) && $_POST['_mystyle_enabled'] ) ? 'yes' : 'no' ;
         $template_id = $_POST['_mystyle_template_id'];
@@ -183,6 +189,18 @@ class MyStyle_WooCommerce_Admin_Product {
             update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
             update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );        
         }
+    }
+    
+    /**
+     * Get the singleton instance.
+     * @return MyStyle_WooCommerce_Admin_Product
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
     
 }

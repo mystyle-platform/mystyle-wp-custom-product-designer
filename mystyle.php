@@ -124,7 +124,7 @@ if( is_admin() ) {
     MyStyle_Addons_Page::get_instance();
     
     //hook into the WooCommerce admin
-    $mystyle_woocommerce_admin_product = new MyStyle_WooCommerce_Admin_Product();
+    MyStyle_WooCommerce_Admin_Product::get_instance();
     MyStyle_WooCommerce_Admin_Order::get_instance();
 
     //load qunit

@@ -35,7 +35,7 @@ class MyStyle_WooCommerce_Admin_Order {
     /**
      * Add the mystyle column header to the order items table.
      */
-    public static function add_order_item_header() {
+    public function add_order_item_header() {
         ?>
             <th class="item-mystyle"><?php _e( 'MyStyle', 'woocommerce' ); ?></th>
         <?php
@@ -44,7 +44,7 @@ class MyStyle_WooCommerce_Admin_Order {
     /**
      * Add the mystyle column body to the order items table.
      */
-    public static function admin_order_item_values( $_product, $item, $item_id ) {
+    public function admin_order_item_values( $_product, $item, $item_id ) {
 
         $design = null;
         if( isset( $item['mystyle_data'] ) ) {            
