@@ -111,7 +111,7 @@ if( is_admin() ) {
     require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php' );
     
     //set up the notifications system.
-    $mystyle_notice_controller = new MyStyle_Notice_Controller();
+    MyStyle_Notice_Controller::get_instance();
 
     //set up the main admin class.
     $mystyle_admin = new MyStyle_Admin();

@@ -11,6 +11,12 @@
 class MyStyle_Notice_Controller {
     
     /**
+     * Singleton class instance
+     * @var MyStyle_Notice_Controller
+     */
+    private static $instance;
+    
+    /**
      * Constructor, constructs the MyStyle_Notice_Controller and registers
      * actions.
      */
@@ -24,7 +30,7 @@ class MyStyle_Notice_Controller {
      * mystyle_notices. Once the notices have been displayed, delete them from
      * the database.
      */
-    public static function admin_notices() {
+    public function admin_notices() {
         
         $screen = get_current_screen();
         $screen_id = ( ! empty( $screen ) ? $screen->id : null );
@@ -68,7 +74,7 @@ class MyStyle_Notice_Controller {
     /**
      * Called via ajax to dismiss a notice. Registered in the constructor above.
      */
-    public static function set_notice_pref_callback() {
+    public function set_notice_pref_callback() {
         //Get the variables from the post request
         $notice_key = $_POST['notice_key'];
         $remind_when = $_POST['remind_when'];
@@ -92,6 +98,19 @@ class MyStyle_Notice_Controller {
         //return the json
         echo json_encode( $ret );
 	wp_die(); //terminate immediately and return a proper response
+    }
+    
+    /**
+     * Gets the singleton instance.
+     * @return MyStyle_Customize_Page Returns the singleton instance of
+     * this class.
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
 }
