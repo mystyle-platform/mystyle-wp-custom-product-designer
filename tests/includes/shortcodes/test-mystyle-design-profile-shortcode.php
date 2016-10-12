@@ -1,5 +1,7 @@
 <?php
 
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-design.php' );
+
 /**
  * The MyStyleDesignProfileShortcodeTest class includes tests for testing the 
  * MyStyle_Design_Profile_Shortcode class.
@@ -84,6 +86,7 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
      */    
     public function test_output_with_no_design_id() {
         global $post;
+        if( ! defined( 'MYSTYLE_DESIGNS_PER_PAGE' ) ) { define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 ); }
         
         $design_id = 1;
         
