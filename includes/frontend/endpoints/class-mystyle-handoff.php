@@ -10,6 +10,12 @@ class MyStyle_Handoff {
     private static $SLUG = 'mystyle-handoff';
     
     /**
+     * Singleton instance
+     * @var MyStyle_Handoff
+     */
+    private static $instance;
+    
+    /**
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
@@ -27,9 +33,9 @@ class MyStyle_Handoff {
     /**
      * Scan the url and catch any requests that match the handoff slug.
      * 
-     * Needs to be public and static because it is registered as an a WP action.
+     * Needs to be public because it is registered as a WP action.
      */
-    public static function override() {
+    public function override() {
         
         $url = $_SERVER['REQUEST_URI'];
         //echo $url;
@@ -37,7 +43,7 @@ class MyStyle_Handoff {
             if( isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
                 return true;
             } else {
-                self::handle();
+                $this->handle();
             }
         } else {
             if( isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
@@ -52,12 +58,12 @@ class MyStyle_Handoff {
      * page. Only supports POST requests, GET requests are given an Access
      * DENIED message.
      * 
-     * Needs to be public and static because it is registered as a WP action.
+     * Needs to be public because it is registered as a WP action.
      * 
      * @todo Unit test the variation support
      * @todo Break this long function up.
      */
-    public static function handle() {
+    public function handle() {
         if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
             
             /*
@@ -212,11 +218,11 @@ class MyStyle_Handoff {
      * Only supports POST requests, GET requests are given an Access
      * DENIED message.
      * 
-     * Needs to be public and static because it is called by a static function.
+     * Needs to be public because it is called by a static function.
      * 
      * @return string Returns the html to output to the browser.
      */
-    public static function get_output() {
+    public function get_output() {
         if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
             //- Add the product to the cart along with the mystyle variables -//
             global $woocommerce;
@@ -281,6 +287,18 @@ class MyStyle_Handoff {
         $html = sprintf($format, $redirect, $title, $title, $link);
         
         return $html;
+    }
+    
+    /**
+     * Get the singleton instance.
+     * @return MyStyle_Handoff
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
     
 }

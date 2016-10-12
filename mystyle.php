@@ -140,7 +140,7 @@ if( is_admin() ) {
     require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
 
     MyStyle_FrontEnd::get_instance();
-    $mystyle_handoff = new MyStyle_Handoff();
+    MyStyle_Handoff::get_instance();
     $mystyle_session = MyStyle_SessionHandler::get();
     
     MyStyle_Customize_Page::get_instance();
