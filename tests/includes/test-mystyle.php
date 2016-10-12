@@ -2,6 +2,7 @@
 
 require_once( MYSTYLE_PATH . '../woocommerce/woocommerce.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-design.php' );
 
 /**
  * The MyStyleClassTest class includes tests for testing the MyStyle
@@ -93,6 +94,12 @@ class MyStyleClassTest extends WP_UnitTestCase {
      * Test the modify_cart_item_thumbnail function.
      */    
     public function test_modify_cart_item_thumbnail() {
+        //Create the MyStyle Customize page (needed for the link in the email)
+        MyStyle_Customize_Page::create();
+        
+        //Create the MyStyle Design Profile page (needed for the link in the email)
+        MyStyle_Design_Profile_Page::create();
+        
         $design_id = 1;
         $get_image = '<img src="someimage.jpg"/>';
         $cart_item = array();
@@ -137,6 +144,14 @@ class MyStyleClassTest extends WP_UnitTestCase {
      * Test the modify_cart_item_name function.
      */    
     public function test_modify_cart_item_name() {
+        global $wp_rewrite;
+        
+        //Create the MyStyle Design Profile page (needed for the link in the email)
+        MyStyle_Design_Profile_Page::create();
+        
+        //disable page permalinks
+        $wp_rewrite->page_structure = null;
+        
         $design_id = 1;
         $name = 'Foo';
         $cart_item = array();
@@ -152,7 +167,7 @@ class MyStyleClassTest extends WP_UnitTestCase {
         //call the function
         $new_name = MyStyle::modify_cart_item_name( $name, $cart_item, $cart_item_key );
         
-        $expected = '<a href="http://example.org/designs/1">Foo</a>';
+        $expected = '<a href="http://example.org/?page_id=' . MyStyle_Design_Profile_Page::get_id() . '&#038;design_id=1">Foo</a>';
         
         //Assert that the expected name is returned
         $this->assertEquals( $expected, $new_name );
