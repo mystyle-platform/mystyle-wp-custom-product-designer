@@ -137,9 +137,11 @@ if( is_admin() ) {
     if( ! defined( 'MYSTYLE_DESIGNS_PER_PAGE' ) ) { define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 ); }
     
     require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
+    require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-cart.php' );
     require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
 
     MyStyle_FrontEnd::get_instance();
+    MyStyle_Cart::get_instance();
     MyStyle_Handoff::get_instance();
     $mystyle_session = MyStyle_SessionHandler::get();
     
