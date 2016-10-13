@@ -36,8 +36,6 @@ class MyStyle {
         add_action( 'wp_login', array( &$this, 'on_wp_login' ), 10, 2 );
         add_action( 'user_register', array( &$this, 'on_user_register' ), 10, 1 );
         add_action( 'woocommerce_created_customer', array( &$this, 'on_woocommerce_created_customer' ), 10, 3 );
-        
-        add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'get_cart_item_from_session' ), 10, 3 );
     }
     
     /**
@@ -119,25 +117,6 @@ class MyStyle {
                 }
             }
         }
-    }
-    
-    /**
-     * Filter the woocommerce_get_cart_item_from_session and add our session 
-     * data.
-     * @param array $session_data The current session_data.
-     * @param array $values The values that are to be stored in the session.
-     * @param string $key The key of the cart item.
-     * @return string Returns the updated cart image tag.
-     */
-    public function get_cart_item_from_session( $session_data, $values, $key ) {
-        
-        // Fix for WC 2.2 (if our data is missing from the cart item, get it from the session variable 
-        if( ! isset( $session_data['mystyle_data'] ) ) {
-            $cart_item_data = WC()->session->get( 'mystyle_' . $key );
-            $session_data['mystyle_data'] = $cart_item_data['mystyle_data'];
-        }
-	
-        return $session_data;
     }
     
     /**

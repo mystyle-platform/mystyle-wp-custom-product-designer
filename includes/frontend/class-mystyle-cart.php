@@ -22,6 +22,7 @@ class MyStyle_Cart {
         add_filter( 'woocommerce_product_single_add_to_cart_text', array( &$this, 'filter_cart_button_text' ), 10, 1 ); 
         add_filter( 'woocommerce_add_to_cart_handler', array( &$this, 'filter_add_to_cart_handler' ), 10, 2 );
         add_filter( 'woocommerce_cart_item_product', array( &$this, 'filter_cart_item_product' ), 10, 3 );
+        add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'get_cart_item_from_session' ), 10, 3 );
         
         add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
         add_action( 'woocommerce_add_to_cart_handler_mystyle_customizer', array( &$this, 'mystyle_add_to_cart_handler_customize' ), 10, 1 );
@@ -217,6 +218,25 @@ class MyStyle_Cart {
         }
         
         return $product;
+    }
+    
+    /**
+     * Filter the woocommerce_get_cart_item_from_session and add our session 
+     * data.
+     * @param array $session_data The current session_data.
+     * @param array $values The values that are to be stored in the session.
+     * @param string $key The key of the cart item.
+     * @return string Returns the updated cart image tag.
+     */
+    public function get_cart_item_from_session( $session_data, $values, $key ) {
+        
+        // Fix for WC 2.2 (if our data is missing from the cart item, get it from the session variable 
+        if( ! isset( $session_data['mystyle_data'] ) ) {
+            $cart_item_data = WC()->session->get( 'mystyle_' . $key );
+            $session_data['mystyle_data'] = $cart_item_data['mystyle_data'];
+        }
+	
+        return $session_data;
     }
     
     /**
