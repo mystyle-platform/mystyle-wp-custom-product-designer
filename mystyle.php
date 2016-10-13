@@ -86,6 +86,7 @@ require_once( MYSTYLE_INCLUDES . 'class-mystyle-install.php' );
 require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
 require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php' );
 require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
+require_once( MYSTYLE_INCLUDES . 'class-mystyle-order.php' );
 
 require_once( MYSTYLE_PATH . 'functions.php' );
 
@@ -94,6 +95,7 @@ if( ! defined('PHPUNIT_RUNNING') ) {
     //set up the third party interfaces
     MyStyle::get_instance()->set_WC( new MyStyle_WC() );
 }
+MyStyle_Order::get_instance();
 
 //plugin setup and registrations
 register_activation_hook( __FILE__, array( 'MyStyle_Install', 'activate' ) );

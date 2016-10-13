@@ -20,7 +20,6 @@ class MyStyle_FrontEnd {
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
-        add_filter( 'woocommerce_order_item_product', array( &$this, 'filter_order_item_product' ), 10, 2 );
         add_filter( 'query_vars', array( &$this, 'add_query_vars_filter' ), 10, 1 );
         
         add_action( 'init', array( &$this, 'init' ) );
@@ -48,33 +47,6 @@ class MyStyle_FrontEnd {
         $vars[] = 'design_id';
         
         return $vars;
-    }
-    
-    /**
-     * Filter the construction of the order item product.
-     * @param array $product
-     * @param array $order_item
-     * @return mixed Returns a WC_Product or one of its child classes.
-     */
-    public function filter_order_item_product( $product, $order_item ) {
-        
-        //Note: we put the require_once here because we need to wait until after woocommerce is bootstrapped
-        require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
-        require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product-variation.php' );
-        
-        //convert the product to a MyStyle_Product (if it has mystyle_data)
-        if( array_key_exists('mystyle_data', $order_item ) ) {
-            $mystyle_data = unserialize( $order_item['mystyle_data'] );
-            $design_id = $mystyle_data['design_id'];
-            $design = MyStyle_DesignManager::get( $design_id );
-            if( get_class( $product ) == 'WC_Product_Variation' ) {
-                $product = new MyStyle_Product_Variation( $product, $design );
-            } else {
-                $product = new MyStyle_Product( $product, $design );
-            }
-        }
-        
-        return $product;
     }
     
     /**

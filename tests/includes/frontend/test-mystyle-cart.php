@@ -58,6 +58,10 @@ class MyStyleCartTest extends WP_UnitTestCase {
         $function_names = get_function_names( $wp_filter['woocommerce_add_to_cart_handler'] );
         $this->assertContains( 'filter_add_to_cart_handler', $function_names );
         
+        //Assert that the filter_cart_item_product function is registered.
+        $function_names = get_function_names( $wp_filter['woocommerce_cart_item_product'] );
+        $this->assertContains( 'filter_cart_item_product', $function_names );
+        
         //Assert that the mystyle_add_to_cart_handler_customize function is registered.
         $function_names = get_function_names( $wp_filter['woocommerce_add_to_cart_handler_mystyle_customizer'] );
         $this->assertContains( 'mystyle_add_to_cart_handler_customize', $function_names );
