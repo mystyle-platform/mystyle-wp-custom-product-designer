@@ -62,11 +62,7 @@ class MyStyleClassTest extends WP_UnitTestCase {
         
         //Assert that the init function is registered.
         $function_names = get_function_names( $wp_filter['init'] );
-        $this->assertContains( 'init', $function_names );  
-        
-        //Assert that the add_mystyle_order_item_meta function is registered.
-        $function_names = get_function_names( $wp_filter['woocommerce_add_order_item_meta'] );
-        $this->assertContains( 'add_mystyle_order_item_meta', $function_names );
+        $this->assertContains( 'init', $function_names );
     }
     
     /**
@@ -80,14 +76,6 @@ class MyStyleClassTest extends WP_UnitTestCase {
         //Assert that the init function is registered.
         $function_names = get_function_names( $wp_filter['woocommerce_cart_item_thumbnail'] );
         $this->assertContains( 'modify_cart_item_thumbnail', $function_names );
-    }
-    
-    /**
-     * Test the add_mystyle_order_item_meta function.
-     * @todo Get this test to work.  See the notes in Google Docs.
-     */
-    public function test_add_mystyle_order_item_meta() {
-         //TODO
     }
     
     /**

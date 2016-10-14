@@ -52,6 +52,10 @@ class MyStyleOrderTest extends WP_UnitTestCase {
         //Assert that the filter_cart_item_product function is registered.
         $function_names = get_function_names( $wp_filter['woocommerce_order_item_product'] );
         $this->assertContains( 'filter_order_item_product', $function_names );
+        
+        //Assert that the add_mystyle_order_item_meta function is registered.
+        $function_names = get_function_names( $wp_filter['woocommerce_add_order_item_meta'] );
+        $this->assertContains( 'add_mystyle_order_item_meta', $function_names );
     }
     
     /**
@@ -96,6 +100,14 @@ class MyStyleOrderTest extends WP_UnitTestCase {
                                     );
         
         $this->assertEquals( 'MyStyle_Product', get_class( $ret_product ) );
+    }
+    
+    /**
+     * Test the add_mystyle_order_item_meta function.
+     * @todo Get this test to work.  See the notes in Google Docs.
+     */
+    public function test_add_mystyle_order_item_meta() {
+         //TODO
     }
     
 }
