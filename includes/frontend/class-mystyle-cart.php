@@ -24,9 +24,20 @@ class MyStyle_Cart {
         add_filter( 'woocommerce_cart_item_product', array( &$this, 'filter_cart_item_product' ), 10, 3 );
         add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'get_cart_item_from_session' ), 10, 3 );
         
+        add_action( 'init', array( &$this, 'init' ) );
         add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
         add_action( 'woocommerce_add_to_cart_handler_mystyle_customizer', array( &$this, 'mystyle_add_to_cart_handler_customize' ), 10, 1 );
         add_action( 'woocommerce_add_to_cart_handler_mystyle_add_to_cart', array( &$this, 'mystyle_add_to_cart_handler' ), 10, 1 );
+    }
+    
+    /**
+     * Init hooks.
+     */
+    public function init() {
+        add_filter( 'woocommerce_cart_item_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
+        add_filter( 'woocommerce_in_cart_product_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
+        add_filter( 'woocommerce_cart_item_permalink', array( &$this, 'modify_cart_item_permalink' ), 10, 3 );
+        add_filter( 'woocommerce_cart_item_name', array( &$this, 'modify_cart_item_name' ), 10, 3 );
     }
     
     /**
@@ -237,6 +248,144 @@ class MyStyle_Cart {
         }
 	
         return $session_data;
+    }
+    
+    /**
+     * Override the cart item thumbnail image.
+     * @param string $get_image The current image tag (ex. <img.../>).
+     * @param string $cart_item The cart item that we are currently on.
+     * @param string $cart_item_key The current cart_item_key.
+     * @return string Returns the updated cart image tag.
+     */
+    public function modify_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key ) {
+        
+        $new_image_tag = $get_image;
+        $design_id = null;
+        
+        //Try to get the design id, first from the cart_item and then from the session
+        if( isset( $cart_item['mystyle_data'] ) ) {
+            $design_id = $cart_item['mystyle_data']['design_id'];
+        } else {
+            $session_data = self::get_cart_item_from_session( array(), null, $cart_item_key );
+            if( isset( $session_data['mystyle_data']) ) {
+                $design_id = $session_data['mystyle_data']['design_id'];
+            }
+        }
+            
+        if( $design_id != null ) {
+            
+            /** @var \WP_User */
+            $user = wp_get_current_user();
+            
+            /** @var \MyStyle_Session */
+            $session = MyStyle_SessionHandler::get();
+            
+            /** @var \MyStyle_Design */
+            $design = MyStyle_DesignManager::get( $design_id, $user, $session );
+
+            //overwrite the src attribute
+            $new_src = 'src="' . $design->get_thumb_url() . '"';
+            $new_image_tag = preg_replace( '/src\=".*?"/', $new_src, $new_image_tag );
+            
+            //remove the srcset attribute
+            $new_image_tag = preg_replace( '/srcset\=".*?"/', '', $new_image_tag );
+            
+            //prep the link to the design profile page for the design
+            $design_profile_url = MyStyle_Design_Profile_Page::get_design_url( $design, $cart_item_key );
+            $design_profile_anchor = '<a href="' . $design_profile_url . '">%s</a>';
+            
+            //prep the link to reload the design in the customizer
+            $customizer_url = MyStyle_Customize_Page::get_design_url( $design, $cart_item_key );
+            $customizer_anchor = '<a href="' . $customizer_url . '">%s</a>';
+            
+            //add a figure and figcaption tag (with the design id)
+            $new_image_tag = '<figure>' .
+                                sprintf( $design_profile_anchor, $new_image_tag ) .
+                                '<figcaption style="font-size: 0.5em">' .
+                                    'Design Id: ' . sprintf( $design_profile_anchor, $design->get_design_id() ) . '</a><br/>' .
+                                    sprintf( $customizer_anchor, 'Edit' );
+                                '</figcaption>' . 
+                              '</figure>';
+        }
+	
+        return $new_image_tag;
+    }
+    
+    /**
+     * Override the cart item permalink.
+     * 
+     * Note: we return false for the permalink for cart items with
+     * designs. This is because we actually have multiple links for the
+     * cart item. These links are being set via the
+     * woocommerce_cart_item_thumbnail and woocommerce_cart_item_thumbnail hooks.
+     * 
+     * @param string $permalink The current image tag (ex. <img.../>).
+     * @param string $cart_item The cart item that we are currently on.
+     * @param string $cart_item_key The current cart_item_key.
+     * @return string Returns the updated permalink.
+     */
+    public function modify_cart_item_permalink( $permalink, $cart_item, $cart_item_key ) {
+        
+        $new_permalink = $permalink;
+        $design_id = null;
+        
+        //Try to get the design id, first from the cart_item and then from the session
+        if( isset( $cart_item['mystyle_data'] ) ) {
+            $design_id = $cart_item['mystyle_data']['design_id'];
+        } else {
+            $session_data = self::get_cart_item_from_session( array(), null, $cart_item_key );
+            if( isset( $session_data['mystyle_data']) ) {
+                $design_id = $session_data['mystyle_data']['design_id'];
+            }
+        }
+            
+        if( $design_id != null ) {
+            //see the function doc for why we set this to false here.
+            $new_permalink = false;
+        }
+	
+        return $new_permalink;
+    }
+    
+    /**
+     * Override the cart item name.
+     * 
+     * @param string $name The current cart item name (ex. 'My Product').
+     * @param string $cart_item The cart item that we are currently on.
+     * @param string $cart_item_key The current cart_item_key.
+     * @return string Returns the updated cart item name.
+     */
+    public function modify_cart_item_name( $name, $cart_item, $cart_item_key ) {
+        
+        $new_name = $name;
+        $design_id = null;
+        
+        //Try to get the design id, first from the cart_item and then from the session
+        if( isset( $cart_item['mystyle_data'] ) ) {
+            $design_id = $cart_item['mystyle_data']['design_id'];
+        } else {
+            $session_data = self::get_cart_item_from_session( array(), null, $cart_item_key );
+            if( isset( $session_data['mystyle_data']) ) {
+                $design_id = $session_data['mystyle_data']['design_id'];
+            }
+        }
+            
+        if( $design_id != null ) {
+            /** @var \WP_User */
+            $user = wp_get_current_user();
+            
+            /** @var \MyStyle_Session */
+            $session = MyStyle_SessionHandler::get();
+            
+            /** @var \MyStyle_Design */
+            $design = MyStyle_DesignManager::get( $design_id, $user, $session );
+            
+            $url = MyStyle_Design_Profile_Page::get_design_url( $design, $cart_item_key );
+            
+            $new_name = sprintf( '<a href="%s">%s</a>', esc_url( $url ), $name );
+        }
+	
+        return $new_name;
     }
     
     /**

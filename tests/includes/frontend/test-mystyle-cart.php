@@ -76,6 +76,30 @@ class MyStyleCartTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the init function.
+     */    
+    public function test_init() {
+        global $wp_filter;
+        
+        //call the function
+        $mystyle_cart = new MyStyle_Cart();
+        $mystyle_cart->init();
+        
+        //Assert that the expected functions are registered.
+        $function_names = get_function_names( $wp_filter['woocommerce_cart_item_thumbnail'] );
+        $this->assertContains( 'modify_cart_item_thumbnail', $function_names );
+        
+        $function_names = get_function_names( $wp_filter['woocommerce_in_cart_product_thumbnail'] );
+        $this->assertContains( 'modify_cart_item_thumbnail', $function_names );
+        
+        $function_names = get_function_names( $wp_filter['woocommerce_cart_item_permalink'] );
+        $this->assertContains( 'modify_cart_item_permalink', $function_names );
+        
+        $function_names = get_function_names( $wp_filter['woocommerce_cart_item_name'] );
+        $this->assertContains( 'modify_cart_item_name', $function_names );
+    }
+    
+    /**
      * Mock the mystyle_metadata
      * @param type $metadata
      * @param type $object_id
@@ -363,9 +387,96 @@ class MyStyleCartTest extends WP_UnitTestCase {
         add_filter('wp_redirect', array( &$this, 'filter_wp_redirect' ), 10, 2);
         
         //call the function
-        MyStyle_Cart::get_instance()->mystyle_add_to_cart_handler_customize( '' );
+        $mystyle_cart = MyStyle_Cart::get_instance();
+        $mystyle_cart->mystyle_add_to_cart_handler_customize( '' );
         
         //Assert that the function called the filter_wp_redirect function (see above)
         $this->assertTrue( $filter_wp_redirect_called );
+    }
+    
+    /**
+     * Test the modify_cart_item_thumbnail function.
+     */    
+    public function test_modify_cart_item_thumbnail() {
+        //Create the MyStyle Customize page (needed for the link in the email)
+        MyStyle_Customize_Page::create();
+        
+        //Create the MyStyle Design Profile page (needed for the link in the email)
+        MyStyle_Design_Profile_Page::create();
+        
+        $design_id = 1;
+        $get_image = '<img src="someimage.jpg"/>';
+        $cart_item = array();
+        $cart_item['mystyle_data'] = array();
+        $cart_item['mystyle_data']['design_id'] = $design_id;
+        $cart_item_key = null;
+        
+        //Create the design (note: we should maybe mock this in the tested class)
+        $result_object = new MyStyle_MockDesignQueryResult( $design_id );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        MyStyle_DesignManager::persist( $design );
+        
+        //call the function
+        $mystyle_cart = MyStyle_Cart::get_instance();
+        $new_image = $mystyle_cart->modify_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key );
+        
+        $this->assertContains( 'http://www.example.com/example.jpg' , $new_image );
+    }
+    
+    /**
+     * Test the modify_cart_item_permalink function.
+     */    
+    public function test_modify_cart_item_permalink() {
+        $design_id = 1;
+        $permalink = 'http://www.example.com';
+        $cart_item = array();
+        $cart_item['mystyle_data'] = array();
+        $cart_item['mystyle_data']['design_id'] = $design_id;
+        $cart_item_key = null;
+        
+        //Create the design (note: we should maybe mock this in the tested class)
+        $result_object = new MyStyle_MockDesignQueryResult( $design_id );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        MyStyle_DesignManager::persist( $design );
+        
+        //call the function
+        $mystyle_cart = MyStyle_Cart::get_instance();
+        $new_permalink = $mystyle_cart->modify_cart_item_permalink( $permalink, $cart_item, $cart_item_key );
+        
+        $this->assertFalse( $new_permalink );
+    }
+    
+    /**
+     * Test the modify_cart_item_name function.
+     */    
+    public function test_modify_cart_item_name() {
+        global $wp_rewrite;
+        
+        //Create the MyStyle Design Profile page (needed for the link in the email)
+        MyStyle_Design_Profile_Page::create();
+        
+        //disable page permalinks
+        $wp_rewrite->page_structure = null;
+        
+        $design_id = 1;
+        $name = 'Foo';
+        $cart_item = array();
+        $cart_item['mystyle_data'] = array();
+        $cart_item['mystyle_data']['design_id'] = $design_id;
+        $cart_item_key = null;
+        
+        //Create the design (note: we should maybe mock this in the tested class)
+        $result_object = new MyStyle_MockDesignQueryResult( $design_id );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        MyStyle_DesignManager::persist( $design );
+        
+        //call the function
+        $mystyle_cart = MyStyle_Cart::get_instance();
+        $new_name = $mystyle_cart->modify_cart_item_name( $name, $cart_item, $cart_item_key );
+        
+        $expected = '<a href="http://example.org/?page_id=' . MyStyle_Design_Profile_Page::get_id() . '&#038;design_id=1">Foo</a>';
+        
+        //Assert that the expected name is returned
+        $this->assertEquals( $expected, $new_name );
     }
 }
