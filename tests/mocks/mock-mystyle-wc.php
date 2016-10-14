@@ -4,7 +4,7 @@
  * Mocks our interface with WooCommerce.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 class MyStyle_MockWC extends MyStyle_AbstractWC implements MyStyle_WC_Interface {
     

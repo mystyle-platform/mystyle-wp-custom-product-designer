@@ -12,7 +12,7 @@ require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
  * class.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 class MyStyleProductTest extends WP_UnitTestCase {
 

@@ -5,7 +5,7 @@
  * The MyStyle Cart class has hooks for working with the shopping cart.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 class MyStyle_Cart {
     

@@ -6,7 +6,7 @@
  * Interface for facilitating interactions with woocommerce.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 interface MyStyle_WC_Interface {
     

@@ -1,3 +1,11 @@
+= 1.5.0 =
+
+* Added link to the cart to edit the design.
+* Fixed a bug with the price showing incorrectly for products with variations.
+* Fixed a bug with that was occurring when the design_id somehow ended up as an empty string.
+* Significant improvements to the testing system (fixed isolation bugs, fixed dependency issues).
+* Significant refactoring (reorganized much of the code by function, additional use of singletons).
+
 = 1.4.9 =
 
 * Updated the user facing order info to use the design profile url.

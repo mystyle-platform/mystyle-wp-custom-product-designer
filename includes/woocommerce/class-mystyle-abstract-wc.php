@@ -8,7 +8,7 @@
  * The abstract class, interface, etc is primarily used for testing purposes.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 abstract class MyStyle_AbstractWC {
     

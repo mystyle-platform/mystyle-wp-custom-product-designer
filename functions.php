@@ -2,7 +2,7 @@
 /**
  * Miscellaneous functions used by the plugin.
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
     
 /**

@@ -5,7 +5,7 @@
  * class.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 class MyStylePagerTest extends WP_UnitTestCase {
 

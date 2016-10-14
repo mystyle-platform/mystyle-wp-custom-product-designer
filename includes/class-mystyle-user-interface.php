@@ -7,7 +7,7 @@
  * WooCommerce user interface.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 class MyStyle_User_Interface {
     

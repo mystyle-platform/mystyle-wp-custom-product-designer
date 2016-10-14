@@ -9,7 +9,7 @@ require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-design.php' );
  * MyStyle_User_Interface class.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 class MyStyleUserInterfaceTest extends WP_UnitTestCase {
 

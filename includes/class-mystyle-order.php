@@ -6,7 +6,7 @@
  * etc.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 class MyStyle_Order {
     

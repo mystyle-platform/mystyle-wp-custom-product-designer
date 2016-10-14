@@ -11,7 +11,7 @@ require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-wc-product-variable.php' 
  * The MyStyleCartTest class includes tests for testing the MyStyle_Cart class.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 class MyStyleCartTest extends WP_UnitTestCase {
     

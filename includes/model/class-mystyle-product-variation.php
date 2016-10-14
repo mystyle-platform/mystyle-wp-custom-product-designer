@@ -7,7 +7,7 @@
  * with changes for customizable products.
  *
  * @package MyStyle
- * @since 1.4.10
+ * @since 1.5.0
  */
 class MyStyle_Product_Variation extends WC_Product_Variation {
     
