@@ -216,7 +216,7 @@ class MyStyle_Cart {
         //convert the product to a MyStyle_Product (if it has mystyle_data)
         if( 
             ( array_key_exists( 'mystyle_data', $cart_item ) ) &&
-            ( $cart_item['mystyle_data'] != null )
+            ( ! empty( $cart_item['mystyle_data'] ) )
           ) 
         {
             $design_id = $cart_item['mystyle_data']['design_id'];
