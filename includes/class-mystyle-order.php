@@ -38,11 +38,17 @@ class MyStyle_Order {
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product-variation.php' );
         
+        /** @var \WP_User */
+        $current_user = wp_get_current_user();
+
+        /** @var \MyStyle_Session */
+        $session = MyStyle_SessionHandler::get();
+        
         //convert the product to a MyStyle_Product (if it has mystyle_data)
         if( array_key_exists('mystyle_data', $order_item ) ) {
             $mystyle_data = unserialize( $order_item['mystyle_data'] );
             $design_id = $mystyle_data['design_id'];
-            $design = MyStyle_DesignManager::get( $design_id );
+            $design = MyStyle_DesignManager::get( $design_id, $current_user, $session );
             if( get_class( $product ) == 'WC_Product_Variation' ) {
                 $product = new MyStyle_Product_Variation( $product, $design );
             } else {
@@ -73,6 +79,12 @@ class MyStyle_Order {
      */
     function on_order_completed( $order_id ) {
 
+        /** @var \WP_User */
+        $current_user = wp_get_current_user();
+                    
+        /** @var \MyStyle_Session */
+        $session = MyStyle_SessionHandler::get();
+        
         // order object (optional but handy)
         $order = new WC_Order( $order_id );
 
@@ -82,12 +94,6 @@ class MyStyle_Order {
                 if ( isset( $item['mystyle_data'] ) ) {  
                     $mystyle_data = maybe_unserialize( $item['mystyle_data'] );
                     $design_id = $mystyle_data['design_id'];
-
-                    /** @var \WP_User */
-                    $current_user = wp_get_current_user();
-                    
-                    /** @var \MyStyle_Session */
-                    $session = MyStyle_SessionHandler::get();
                     
                     /** @var \MyStyle_Design */
                     $design = MyStyle_DesignManager::get( $design_id, $current_user, $session );

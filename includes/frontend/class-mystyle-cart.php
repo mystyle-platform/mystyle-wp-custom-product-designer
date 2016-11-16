@@ -213,6 +213,12 @@ class MyStyle_Cart {
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product-variation.php' );
         
+        /** @var \WP_User */
+        $user = wp_get_current_user();
+        
+        /** @var \MyStyle_Session */
+        $session = MyStyle_SessionHandler::get();
+        
         //convert the product to a MyStyle_Product (if it has mystyle_data)
         if( 
             ( array_key_exists( 'mystyle_data', $cart_item ) ) &&
@@ -220,7 +226,7 @@ class MyStyle_Cart {
           ) 
         {
             $design_id = $cart_item['mystyle_data']['design_id'];
-            $design = MyStyle_DesignManager::get( $design_id );
+            $design = MyStyle_DesignManager::get( $design_id, $user, $session );
             if( get_class( $product ) == 'WC_Product_Variation' ) {
                 $product = new MyStyle_Product_Variation( $product, $design, $cart_item_key );
             } else {

@@ -86,6 +86,7 @@ class MyStyle_Handoff {
             
             //Add the session id to the design
             $session = MyStyle_SessionHandler::get();
+            
             $design->set_session_id( $session->get_session_id() );
             
             //Add data from api call

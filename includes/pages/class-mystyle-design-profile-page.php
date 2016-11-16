@@ -31,6 +31,13 @@ class MyStyle_Design_Profile_Page {
     private $user;
     
     /**
+     * Stores the current session (when the class is instantiated as a 
+     * singleton).
+     * @var MyStyle_Session
+     */
+    private $session;
+    
+    /**
      * The design that comes immediately before this one in the collection. 
      * @var MyStyle_Design
      */
@@ -137,8 +144,15 @@ class MyStyle_Design_Profile_Page {
             
             $design_profile_page = MyStyle_Design_Profile_Page::get_instance();
 
+            //set the user
+            /** @var \WP_User */
             $user = wp_get_current_user();
             $design_profile_page->set_user( $user );
+            
+            //set the session
+            /** @var \MyStyle_Session */
+            $session = MyStyle_SessionHandler::get();
+            $design_profile_page->set_session( $session );
 
             //get the design from the url, if it's not found, this function
             //returns false.
@@ -171,7 +185,11 @@ class MyStyle_Design_Profile_Page {
 
             //get the design.  If the user doesn't have access, an exception
             //is thrown.
-            $design = MyStyle_DesignManager::get( $design_id, $this->user );
+            $design = MyStyle_DesignManager::get( 
+                            $design_id, 
+                            $this->user,
+                            $this->session
+                        );
 
             //throw exception if design isn't found (it's caught at the
             //bottom of this function.
@@ -407,6 +425,22 @@ class MyStyle_Design_Profile_Page {
      */
     public function get_user() {
         return $this->user;
+    }
+    
+    /**
+     * Sets the current session.
+     * @param MyStyle_Session $session The session to set as the current session.
+     */
+    public function set_session( MyStyle_Session $session ) {
+        $this->session = $session;
+    }
+    
+    /**
+     * Gets the current session.
+     * @return MyStyle_Session Returns the currently loaded MyStyle_Session.
+     */
+    public function get_session() {
+        return $this->session;
     }
     
     /**
