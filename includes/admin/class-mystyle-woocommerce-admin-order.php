@@ -92,6 +92,9 @@ class MyStyle_WooCommerce_Admin_Order {
                                 } ?>
                         <?php } ?>
                         <a href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a><br/>
+                        <?php if( defined( 'MYSTYLE_RENDERER' )  &&  MYSTYLE_RENDERER ) { ?>
+                            <a href="http://mystyleplatform.com/tools/render/?design_url=<?php echo $design->get_design_url() ?>" target="_blank">Renderer</a><br/>
+                        <?php } ?>
                     </div>
                     <img src="<?php echo $design->get_thumb_url(); ?>"/>
  
