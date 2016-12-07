@@ -1,3 +1,7 @@
+= 1.5.1 =
+
+* Fixed a bug causing a MyStyle_Unauthorized_Exception when an anonymous user attempted to create a private design.
+
 = 1.5.0 =
 
 * Added link to the cart to edit the design.
