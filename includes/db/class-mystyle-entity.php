@@ -3,7 +3,7 @@
 /**
  * MyStyle_Entity class. 
  * 
- * The MyStyle_Entity class is an abstract class that can be used by the
+ * The MyStyle_Entity class is an interface that can be implemented to allow the
  * MyStyle_DBManager to perisit objects to the database.
  *
  * @package MyStyle

@@ -6,11 +6,58 @@
  * @package MyStyle
  * @since 0.2.1
  */
-class MyStyleMockAPI {
+class MyStyle_MockAPI implements MyStyle_API_Interface {
 
+    /**
+     * Constructor.
+     */
+    public function __construct( ) {
+        //
+    }
     
     /**
-     * Returns a mocked response from the MyStyle API.
+     * Stubs the response from the add_api_data_to_design function.
+     * @param MyStyle_Design $design
+     * @return \MyStyle_Design
+     */
+    public function add_api_data_to_design( MyStyle_Design $design ) {
+            
+        $design_data = array();
+        $design_data['thumb_url'] = 'http://testhost/test_thumb_url.jpg';
+        $design_data['web_url'] = 'http://testhost/test_web_url.jpg';
+        $design_data['print_url'] = 'http://testhost/test_print_url.jpg';
+        $design_data['design_url'] = 'http://testhost/test_design_url.jpg';
+        $design_data['access'] = 0;
+        $design_data['mobile'] = 0;
+        $design_data['design_id'] = $design->get_design_id();
+        $design_data['user_id'] = 1;
+        $design_data['app_id'] = 0;
+        $design_data['product_id'] = 0;
+        $design_data['created'] = 0;
+
+        $design->add_api_data( $design_data );
+        
+        return $design;
+    }
+    
+    /**
+     * Stubs the get_user function. Creates and returns a MyStyle_User object
+     * using the passed user_id and a pre set email.
+     * @param integer $user_id The MyStyle user id.
+     * @return \MyStyle_User
+     */
+    public function get_user( $user_id ) {
+        
+        $email = 'someone@example.com';
+        
+        $user = new \MyStyle_User( $user_id, $email );
+        
+        return $user;
+    }
+    
+    /**
+     * Returns a mocked response from the MyStyle API. To use, hook the
+     * pre_http_request action.
      * 
      * NOTE: We are returning both the design and the user in a single mocked
      * response.  Our code will work in this scenario but this wouldn't ever

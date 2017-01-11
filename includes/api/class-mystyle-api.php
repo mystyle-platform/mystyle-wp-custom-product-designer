@@ -8,9 +8,16 @@
  * @package MyStyle
  * @since 0.2.1
  */
-abstract class MyStyle_API {
+class MyStyle_API implements MyStyle_API_Interface {
     
-    private static $api_endpoint_url = MYSTYLE_SERVER;
+    private $api_endpoint_url;
+    
+    /**
+     * Constructor.
+     */
+    public function __construct( $api_endpoint_url ) {
+        $this->api_endpoint_url = $api_endpoint_url;
+    }
     
     /**
      * Retrieves design data from the API and adds it to the passed design
@@ -18,7 +25,7 @@ abstract class MyStyle_API {
      * @param MyStyle_Design $design
      * @return \MyStyle_Design
      */
-    public static function add_api_data_to_design( MyStyle_Design $design ) {
+    public function add_api_data_to_design( MyStyle_Design $design ) {
             
         //Set up the api call variables.
         $api_key = MyStyle_Options::get_api_key();
@@ -41,7 +48,7 @@ abstract class MyStyle_API {
         //$post_data['session'] = //not currently being used
         //$post_data['user_id'] = //not currently being used
 
-        $response = wp_remote_post( self::$api_endpoint_url, array(
+        $response = wp_remote_post( $this->api_endpoint_url, array(
                 'method' => 'POST',
                 'timeout' => 45,
                 'redirection' => 5,
@@ -74,7 +81,7 @@ abstract class MyStyle_API {
      * @param integer $user_id The MyStyle user id.
      * @return \MyStyle_User
      */
-    public static function get_user( $user_id ) {
+    public function get_user( $user_id ) {
         /* @var $user \MyStyle_User */
         $user = null;
         
@@ -99,7 +106,7 @@ abstract class MyStyle_API {
         //$post_data['session'] = //not currently being used
         //$post_data['user_id'] = //not currently being used
 
-        $response = wp_remote_post( self::$api_endpoint_url, array(
+        $response = wp_remote_post( $this->api_endpoint_url, array(
                 'method' => 'POST',
                 'timeout' => 45,
                 'redirection' => 5,

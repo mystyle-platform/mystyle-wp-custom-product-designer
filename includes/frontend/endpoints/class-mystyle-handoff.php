@@ -10,15 +10,18 @@ class MyStyle_Handoff {
     private static $SLUG = 'mystyle-handoff';
     
     /**
-     * Singleton instance
-     * @var MyStyle_Handoff
+     * @var MyStyle_Api_Interface 
      */
-    private static $instance;
+    private $mystyle_api;
     
     /**
      * Constructor, constructs the class and sets up the hooks.
      */
-    public function __construct() {
+    public function __construct( MyStyle_API_Interface $mystyle_api ) {
+        //construct object
+        $this->mystyle_api = $mystyle_api;
+        
+        //hooks
         add_action( 'wp_loaded', array( &$this, 'override' ) );
     }
     
@@ -58,8 +61,9 @@ class MyStyle_Handoff {
      * page. Only supports POST requests, GET requests are given an Access
      * DENIED message.
      * 
-     * Needs to be public because it is registered as a WP action.
-     * 
+     * Public for now to make testing easier.
+     *
+     * @todo Make private. 
      * @todo Unit test the variation support
      * @todo Break this long function up.
      */
@@ -90,11 +94,11 @@ class MyStyle_Handoff {
             $design->set_session_id( $session->get_session_id() );
             
             //Add data from api call
-            $design = MyStyle_Api::add_api_data_to_design( $design );
+            $design = $this->mystyle_api->add_api_data_to_design( $design );
             
             //Get the mystyle user from the API
             /* @var $user \MyStyle_User */
-            $mystyle_user = MyStyle_Api::get_user( $design->get_designer_id() );
+            $mystyle_user = $this->mystyle_api->get_user( $design->get_designer_id() );
             
             //Add data from the user to the design
             $design->set_email( $mystyle_user->get_email() );
@@ -156,6 +160,7 @@ class MyStyle_Handoff {
             $passthru = json_decode( base64_decode( $_POST['h'] ), true );
             $passthru_post = $passthru['post'];
             $quantity = $passthru_post['quantity'];
+            $product_id = $passthru_post['add-to-cart'];
             $cart_item_key = ( array_key_exists( 'cart_item_key', $passthru ) ) ? $passthru['cart_item_key'] : null;
             
             //Set the $_POST to the post data that passed through.
@@ -169,6 +174,14 @@ class MyStyle_Handoff {
                 if( substr( $key, 0, 10 ) === "attribute_" ) {
                     $variation[$key] = $value;
                 }
+            }
+            
+            //The customizer may change the attributes but doesn't ever change
+            //the variation_id.  Here we update the variation_id to match the
+            //passed attributes.
+            if( ! empty( $variation_id ) ) {
+                $variable_product = new WC_Product_Variable( $product_id );
+                $variation_id = $variable_product->get_matching_variation( $variation );
             }
             
             //echo $quantity . ':' . $variation_id;
@@ -209,8 +222,8 @@ class MyStyle_Handoff {
             }
         }
         
-        if( ! isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
-            ob_start( array( 'MyStyle_Handoff', 'get_output' ) );
+        if( ! isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests to skip the ob_start line
+            ob_start( array( &$this, 'get_output' ) );
         }
     }
     
@@ -219,7 +232,8 @@ class MyStyle_Handoff {
      * Only supports POST requests, GET requests are given an Access
      * DENIED message.
      * 
-     * Needs to be public because it is called by a static function.
+     * Public because it is called by the ob_start callback (see the end of the
+     * 'handle' function above).
      * 
      * @return string Returns the html to output to the browser.
      */
@@ -234,10 +248,10 @@ class MyStyle_Handoff {
             
             if(MyStyle_Options::is_demo_mode()) {
                 //Send to Demo Mode Message
-                $html = self::buildView('MyStyle Demo', $cart->get_cart_url(), false);
+                $html = $this->buildView('MyStyle Demo', $cart->get_cart_url(), false);
             } else {
                 //Redirect the user to the cart
-                $html = self::buildView('Adding Product to Cart...', $cart->get_cart_url(), true);
+                $html = $this->buildView('Adding Product to Cart...', $cart->get_cart_url(), true);
             }
             
         }
@@ -250,12 +264,13 @@ class MyStyle_Handoff {
     
     /**
      * Builds a view to display to the user after the handoff.
+     * 
      * @param string $title The title to be used in the view.
      * @param string $link The link to be used in the view.
      * @param string $enable_redirect Whether or not to redirect.
      * @return string Returns a string of html.
      */
-    public static function buildView( $title, $link, $enable_redirect ) {
+    public function buildView( $title, $link, $enable_redirect ) {
         
         $redirect = ( $enable_redirect ) 
                         ? '<META http-equiv="refresh" content="0;URL=' . $link . '">' 
@@ -288,18 +303,6 @@ class MyStyle_Handoff {
         $html = sprintf($format, $redirect, $title, $title, $link);
         
         return $html;
-    }
-    
-    /**
-     * Get the singleton instance.
-     * @return MyStyle_Handoff
-     */
-    public static function get_instance() {
-        if ( ! isset( self::$instance ) ) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
     }
     
 }

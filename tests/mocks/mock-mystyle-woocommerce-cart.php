@@ -29,7 +29,7 @@ class MyStyle_MockWooCommerceCart {
                         $product_id, 
                         $quantity, 
                         $variation_id, 
-                        $some_array, 
+                        $variation, 
                         $cart_item_data ) 
     {
         $this->add_to_cart_call_count++;
@@ -37,7 +37,7 @@ class MyStyle_MockWooCommerceCart {
             'product_id' => $product_id,
             'quantity' => $quantity,
             'variation_id' => $variation_id, 
-            'some_array' => $some_array, 
+            'variation' => $variation,
             'cart_item_data' => $cart_item_data
         );
         

@@ -76,7 +76,8 @@ require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
 require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php' );
 
 require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
-require_once( MYSTYLE_INCLUDES . 'class-mystyle-api.php' );
+require_once( MYSTYLE_INCLUDES . 'api/interface-mystyle-api.php' );
+require_once( MYSTYLE_INCLUDES . 'api/class-mystyle-api.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
 require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
 require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-design-profile-page.php' );
@@ -147,9 +148,9 @@ if( is_admin() ) {
 
     MyStyle_FrontEnd::get_instance();
     MyStyle_Cart::get_instance();
-    MyStyle_Handoff::get_instance();
+    $mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
+    $mystyle_handoff = new MyStyle_Handoff( $mystyle_api ); 
     $mystyle_session = MyStyle_SessionHandler::get();
-    
     MyStyle_Customize_Page::get_instance();
     MyStyle_Design_Profile_Page::get_instance();
 }

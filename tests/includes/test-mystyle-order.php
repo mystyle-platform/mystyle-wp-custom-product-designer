@@ -4,7 +4,6 @@ require_once( MYSTYLE_PATH . '../woocommerce/woocommerce.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
-require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-wc-product-variable.php' );
 
 /**
  * The MyStyle_OrderTest class includes tests for testing the MyStyle_Order class.
@@ -81,8 +80,8 @@ class MyStyleOrderTest extends WP_UnitTestCase {
         //Persist the design
         MyStyle_DesignManager::persist( $design );
         
-        //Create a mock product (this class is mocked above).
-        $product = new WC_Product_Variable();
+        //Create a VARIABLE product
+        $product = new WC_Product_Variable( 1 );
         
         //create the cart item data
         $cart_item = array(
