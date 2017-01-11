@@ -23,7 +23,7 @@ class MyStyle {
      * Our WooCommerce interface.
      * @var MyStyle_WC_Interface
      */
-    private static $wc;
+    private $wc;
     
     /**
      * Constructor, constructs the class and sets up the hooks.
