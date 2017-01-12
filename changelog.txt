@@ -1,3 +1,9 @@
+= 1.6.0 =
+
+* Now able to add variation data to the cart from the design profile page.
+* Now recalculating the variation_id based on the selected attributes in the post data during the handoff.
+* Fixed bug where the 'wc' property in the MyStyle class was erroneously marked as 'static'.
+
 = 1.5.2 =
 
 * Renderer link.
