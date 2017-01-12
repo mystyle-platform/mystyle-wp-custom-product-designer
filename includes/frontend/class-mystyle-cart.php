@@ -138,6 +138,10 @@ class MyStyle_Cart {
     
     /**
      * Handles the add_to_cart action for customizing customizable products.
+     *
+     * The handler to use is determined by the filter_add_to_cart_handler 
+     * function above.
+     *
      * @param string $url The current url.
      */
     public function mystyle_add_to_cart_handler_customize( $url ) {
@@ -174,6 +178,10 @@ class MyStyle_Cart {
     /**
      * Handles the add_to_cart action for when an exising design is added to the
      * cart.
+     * 
+     * The handler to use is determined by the filter_add_to_cart_handler 
+     * function above.
+     * 
      * @param string $url The current url.
      */
     public function mystyle_add_to_cart_handler( $url ) {
@@ -185,6 +193,17 @@ class MyStyle_Cart {
         //Get the woocommerce cart
         $cart = $woocommerce->cart;
         
+        
+        $variation_id = ( isset( $_REQUEST['variation_id'] ) ) ? $_REQUEST['variation_id'] : null;
+        
+        //get the variations (they should all be in the passthru post and start with "attribute_")
+        $variation = array();
+        foreach( $_REQUEST as $key => $value ) {
+            if( substr( $key, 0, 10 ) === "attribute_" ) {
+                $variation[$key] = $value;
+            }
+        }
+        
         //Add the mystyle meta data to the cart item
         $cart_item_data = array();
         $cart_item_data['mystyle_data'] = array( 'design_id' => $design_id );
@@ -193,8 +212,8 @@ class MyStyle_Cart {
         $cart_item_key = $cart->add_to_cart(
                                     $product_id, //WooCommerce product id
                                     1, //quantity
-                                    null, //variation id
-                                    null, //variation attribute values
+                                    $variation_id, //variation id
+                                    $variation, //variation attribute values
                                     $cart_item_data //extra cart item data we want to pass into the item
                             );
         

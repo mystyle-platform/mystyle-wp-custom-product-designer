@@ -497,7 +497,8 @@ class MyStyle_Design implements MyStyle_Entity {
     
     /**
      * Gets the value of cart_data.
-     * @return string Returns the value of cart_data.
+     * @return string Returns the value of cart_data. cart_data is a json
+     * encoded string of the cart_item data from when the design was created.
      */
     public function get_cart_data() {
         return $this->cart_data;
@@ -690,6 +691,21 @@ class MyStyle_Design implements MyStyle_Entity {
         $cart_url = add_query_arg( 'design_id', $this->design_id, $cart_url );
         
         return $cart_url;
+    }
+    
+    /**
+     * Gets the cart_data as an associative array.
+     * @return array|null Returns the cart data as an associative 
+     * ($key => $value) array or returns null if there is no cart_data.
+     */
+    public function get_cart_data_array() {
+        $cart_data_array = null;
+        
+        if( ! empty( $this->cart_data ) ) {
+            $cart_data_array = json_decode( $this->cart_data, true );
+        }
+        
+        return $cart_data_array;
     }
 
 }
