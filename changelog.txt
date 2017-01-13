@@ -1,3 +1,7 @@
+= 1.6.1 =
+
+* Hotfix to fix errors caused by vcs merge issue in v1.6.0 release.
+
 = 1.6.0 =
 
 * Now able to add variation data to the cart from the design profile page.
