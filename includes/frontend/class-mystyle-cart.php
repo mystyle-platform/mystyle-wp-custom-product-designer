@@ -21,7 +21,6 @@ class MyStyle_Cart {
     public function __construct() {
         add_filter( 'woocommerce_product_single_add_to_cart_text', array( &$this, 'filter_cart_button_text' ), 10, 1 ); 
         add_filter( 'woocommerce_add_to_cart_handler', array( &$this, 'filter_add_to_cart_handler' ), 10, 2 );
-        add_filter( 'woocommerce_cart_item_product', array( &$this, 'filter_cart_item_product' ), 10, 3 );
         add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'get_cart_item_from_session' ), 10, 3 );
         
         add_action( 'init', array( &$this, 'init' ) );
@@ -217,43 +216,6 @@ class MyStyle_Cart {
                                     $cart_item_data //extra cart item data we want to pass into the item
                             );
         
-    }
-
-    /**
-     * Filter the construction of the cart item product.
-     * @param array $product
-     * @param array $cart_item
-     * @param string $cart_item_key
-     * @return mixed Returns a WC_Product or one of its child classes.
-     */
-    public function filter_cart_item_product( $product, $cart_item, $cart_item_key ){
-        
-        //Note: we put the require_once here because we need to wait until after woocommerce is bootstrapped
-        require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
-        require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product-variation.php' );
-        
-        /** @var \WP_User */
-        $user = wp_get_current_user();
-        
-        /** @var \MyStyle_Session */
-        $session = MyStyle_SessionHandler::get();
-        
-        //convert the product to a MyStyle_Product (if it has mystyle_data)
-        if( 
-            ( array_key_exists( 'mystyle_data', $cart_item ) ) &&
-            ( ! empty( $cart_item['mystyle_data'] ) )
-          ) 
-        {
-            $design_id = $cart_item['mystyle_data']['design_id'];
-            $design = MyStyle_DesignManager::get( $design_id, $user, $session );
-            if( get_class( $product ) == 'WC_Product_Variation' ) {
-                $product = new MyStyle_Product_Variation( $product, $design, $cart_item_key );
-            } else {
-                $product = new MyStyle_Product( $product, $design, $cart_item_key );
-            }
-        }
-        
-        return $product;
     }
     
     /**

@@ -48,10 +48,6 @@ class MyStyleOrderTest extends WP_UnitTestCase {
         
         global $wp_filter;
         
-        //Assert that the filter_cart_item_product function is registered.
-        $function_names = get_function_names( $wp_filter['woocommerce_order_item_product'] );
-        $this->assertContains( 'filter_order_item_product', $function_names );
-        
         //Assert that the add_mystyle_order_item_meta function is registered.
         $function_names = get_function_names( $wp_filter['woocommerce_add_order_item_meta'] );
         $this->assertContains( 'add_mystyle_order_item_meta', $function_names );
@@ -67,38 +63,6 @@ class MyStyleOrderTest extends WP_UnitTestCase {
      */
     function mock_mystyle_metadata( $metadata, $object_id, $meta_key, $single ){
         return 'yes';
-    }
-    
-    /**
-     * Test the filter_order_item_product function.
-     */
-    public function test_filter_order_item_product( ) {
-        //Create a design
-        $result_object = new MyStyle_MockDesignQueryResult( 1 );
-        $design = MyStyle_Design::create_from_result_object( $result_object );
-        
-        //Persist the design
-        MyStyle_DesignManager::persist( $design );
-        
-        //Create a VARIABLE product
-        $product = new WC_Product_Variable( 1 );
-        
-        //create the cart item data
-        $cart_item = array(
-            'mystyle_data' => serialize( 
-                    array(
-                        'design_id' => $design->get_design_id()
-                    )
-                )
-        );
-        
-        //call the function
-        $ret_product = MyStyle_Order::get_instance()->filter_order_item_product( 
-                                        $product, 
-                                        $cart_item
-                                    );
-        
-        $this->assertEquals( 'MyStyle_Product', get_class( $ret_product ) );
     }
     
     /**

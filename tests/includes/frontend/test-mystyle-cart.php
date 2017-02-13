@@ -57,10 +57,6 @@ class MyStyleCartTest extends WP_UnitTestCase {
         $function_names = get_function_names( $wp_filter['woocommerce_add_to_cart_handler'] );
         $this->assertContains( 'filter_add_to_cart_handler', $function_names );
         
-        //Assert that the filter_cart_item_product function is registered.
-        $function_names = get_function_names( $wp_filter['woocommerce_cart_item_product'] );
-        $this->assertContains( 'filter_cart_item_product', $function_names );
-        
         //Assert that the mystyle_add_to_cart_handler_customize function is registered.
         $function_names = get_function_names( $wp_filter['woocommerce_add_to_cart_handler_mystyle_customizer'] );
         $this->assertContains( 'mystyle_add_to_cart_handler_customize', $function_names );
@@ -311,39 +307,6 @@ class MyStyleCartTest extends WP_UnitTestCase {
         
         //Assert that the mock add_to_cart function was called.
         $this->assertEquals( 1, $woocommerce->cart->add_to_cart_call_count );
-    }
-    
-    /**
-     * Test the filter_cart_item_product function.
-     */
-    public function test_filter_cart_item_product( ) {
-        //Create a design
-        $result_object = new MyStyle_MockDesignQueryResult( 1 );
-        $design = MyStyle_Design::create_from_result_object( $result_object );
-        
-        //Persist the design
-        MyStyle_DesignManager::persist( $design );
-        
-        //Create a VARIABLE product
-        $product = new WC_Product_Variable( 1 );
-        
-        $cart_item_key = 'test_cart_item_key';
-        
-        //create the cart item data
-        $cart_item = array(
-            'mystyle_data' => array(
-                'design_id' => $design->get_design_id()
-            )
-        );
-        
-        //call the function
-        $ret_product = MyStyle_Cart::get_instance()->filter_cart_item_product( 
-                                        $product, 
-                                        $cart_item, 
-                                        $cart_item_key 
-                                    );
-        
-        $this->assertEquals( 'MyStyle_Product', get_class( $ret_product ) );
     }
     
     /**
