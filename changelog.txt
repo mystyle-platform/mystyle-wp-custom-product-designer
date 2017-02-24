@@ -1,3 +1,7 @@
+= 1.6.3 =
+
+* Now catching session errors (and starting a new session).
+
 = 1.6.2 =
 
 * Fixed an integration issue with the woocommerce-dynamic-pricing plugin.
