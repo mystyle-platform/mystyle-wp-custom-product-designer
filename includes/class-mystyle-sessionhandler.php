@@ -35,6 +35,7 @@ class MyStyle_SessionHandler {
             if( isset( $_COOKIE[MyStyle_Session::$COOKIE_NAME] ) ) {
                 $session_id = $_COOKIE[MyStyle_Session::$COOKIE_NAME];
                 $session = MyStyle_SessionManager::get( $session_id );
+                $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
             }
         }
         
