@@ -71,5 +71,36 @@ class MyStyle_SessionHandler {
         return $session;
     }
     
+    /**
+     * Static function to clean up stalled sessions.
+     * 
+     * Criteria
+     *  * Session must be orphaned (no designs created).
+     *  * Session must be inactive for more than 2 days.
+     *
+     * @global wpdb $wpdb
+     */
+    public static function garbage_collection() {
+        global $wpdb;
+        
+        if ( ! defined( 'WP_SETUP_CONFIG' ) && ! defined( 'WP_INSTALLING' ) ) {
+            
+            //get what time it was 48 hours ago (in GMT)
+            $expire_after = gmdate('Y-m-d H:m:s', strtotime('-48 hours')); 
+
+            $wpdb->query( 
+                $wpdb->prepare( 
+                            "DELETE 
+                             FROM " . MyStyle_Session::get_table_name() . "
+                             WHERE session_id NOT IN ( 
+                                                    SELECT session_id
+                                                    FROM " . MyStyle_Design::get_table_name()  . 
+                                                     ")
+                             AND session_modified_gmt < %d",
+                             $expire_after
+                        ) 
+                );
+        }
+    }
     
 }
