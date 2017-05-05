@@ -110,6 +110,9 @@ class MyStyle_Install {
         //Delta the database tables
         MyStyle_Install::delta_tables();
         
+        //create (or recreate) the cron jobs
+        self::create_cron_jobs();
+        
         //Add the Design page if upgrading from less than 1.4.0 (versions that were before this page existed)
         //Changed to v1.4.1 (with exists check) because 1.4.0 wasn't working properly
         if( version_compare( $old_version, '1.4.1', '<' ) ) {
