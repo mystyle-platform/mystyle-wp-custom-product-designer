@@ -58,6 +58,22 @@ class MyStyle_Install {
     }
     
     /**
+     * Create cron jobs (clear them first).
+     */
+    public static function create_cron_jobs() {
+        wp_clear_scheduled_hook( 'mystyle_session_garbage_collection' );
+
+        wp_schedule_event( time(), 'twicedaily', 'mystyle_session_garbage_collection' );
+    }
+    
+    /**
+     * Clear cron jobs.
+     */
+    public static function clear_cron_jobs() {
+        wp_clear_scheduled_hook( 'mystyle_session_garbage_collection' );
+    }
+    
+    /**
      * Called when the plugin is activated.
      */
     static function activate() {
@@ -67,7 +83,8 @@ class MyStyle_Install {
         if( ! MyStyle_Design_Profile_Page::exists() ) {
             MyStyle_Design_Profile_Page::create();
         }
-        MyStyle_Install::create_tables();
+        self::create_tables();
+        self::create_cron_jobs();
     }
 
     /**
@@ -82,6 +99,7 @@ class MyStyle_Install {
      */
     static function uninstall() {
         delete_option( MYSTYLE_NOTICES_NAME );
+        self::clear_cron_jobs();
     }
 
 }

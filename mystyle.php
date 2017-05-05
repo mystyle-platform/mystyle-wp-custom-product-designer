@@ -98,6 +98,7 @@ if( ! defined('PHPUNIT_RUNNING') ) {
     MyStyle::get_instance()->set_WC( new MyStyle_WC() );
 }
 
+MyStyle_SessionHandler::get_instance();
 MyStyle_User_Interface::get_instance();
 MyStyle_Order::get_instance();
 

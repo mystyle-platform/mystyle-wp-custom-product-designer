@@ -39,6 +39,19 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the constructor
+     */    
+    public function test_constructor() {
+        global $wp_filter;
+        
+        $mystyle_sessionhandler = new MyStyle_SessionHandler();
+        
+        //Assert that the expected functions are registered.
+        $function_names = get_function_names( $wp_filter['mystyle_session_garbage_collection'] );
+        $this->assertContains( 'garbage_collection', $function_names );
+    }
+    
+    /**
      * Test that the get function generates a new session if one doesn't exist.
      * @global \wpdb $wpdb
      */

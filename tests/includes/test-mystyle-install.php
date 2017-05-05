@@ -133,6 +133,9 @@ class MyStyleInstallTest extends WP_UnitTestCase {
         
         //assert that the Design Profile page was created
         $this->assertNotNull( $design_profile_page_id );
+        
+        //assert that the cron jobs were scheduled
+        $this->assertContains( 'mystyle_session_garbage_collection', $this->get_cronjob_names() );
     }
     
     /**
@@ -152,12 +155,16 @@ class MyStyleInstallTest extends WP_UnitTestCase {
      * Test the uninstall function.
      */    
     public function test_uninstall() {
-        //init the plugin so that we can then uninstall it
+        //activate and init the plugin so that we can then uninstall it.
+        MyStyle_Install::activate();
         MyStyle::init();
         
         //assert that there are options
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $this->assertNotEmpty( $options );
+        
+        //assert that the cron jobs are there
+        $this->assertContains( 'mystyle_session_garbage_collection', $this->get_cronjob_names() );
         
         //uninstall the plugin
         MyStyle_Install::uninstall();
@@ -165,6 +172,26 @@ class MyStyleInstallTest extends WP_UnitTestCase {
         //assert that the options are still there
         $options_new = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $this->assertNotEmpty( $options_new );
+        
+        //assert that the cron jobs were removed
+        $this->assertNotContains( 'mystyle_session_garbage_collection', $this->get_cronjob_names() );
+    }
+    
+    /**
+     * Private function to get the names of the currently registered cron jobs.
+     * @return array An array of the function names that were found.
+     */
+    function get_cronjob_names() {
+        $cronjobs = get_option( 'cron' );
+
+        $cronjob_names = array();
+        foreach( $cronjobs as $id => $cronjob) {
+            if( is_array( $cronjob ) ) {
+                $cronjob_names[] = key($cronjob);
+            }
+        }
+        
+        return $cronjob_names;
     }
     
 }

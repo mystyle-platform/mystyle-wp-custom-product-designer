@@ -11,6 +11,20 @@
 class MyStyle_SessionHandler {
     
     /**
+     * Singleton class instance
+     * @var MyStyle_SessionHandler
+     */
+    private static $instance;
+    
+    /**
+     * Constructor.
+     */
+    public function __construct() {
+        // Register hooks
+        add_action( 'mystyle_session_garbage_collection', array( $this, 'garbage_collection' ), 10 );
+    }
+    
+    /**
      * Static function to get the current MyStyle Session. This function does
      * the following:
      * * Looks for the session in the session variables
@@ -101,6 +115,32 @@ class MyStyle_SessionHandler {
             
             $wpdb->query( $query );
         }
+    }
+    
+    /**
+     * Resets the singleton instance. This is used during testing if we want to
+     * clear out the existing singleton instance.
+     * @return MyStyle_SessionHandler Returns the singleton instance of
+     * this class.
+     */
+    public static function reset_instance() {
+        
+        self::$instance = new self();
+
+        return self::$instance;
+    }
+    
+    /**
+     * Gets the singleton instance.
+     * @return MyStyle_SessionHandler Returns the singleton instance of
+     * this class.
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
     
 }
