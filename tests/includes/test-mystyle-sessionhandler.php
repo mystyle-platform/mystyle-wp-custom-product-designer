@@ -36,12 +36,11 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Session::get_table_name());
-        
     }
     
     /**
-     * Test the get function.
-     * @global wpdb $wpdb
+     * Test that the get function generates a new session if one doesn't exist.
+     * @global \wpdb $wpdb
      */
     function test_get_generates_new_session_if_one_doesnt_exist() {
         
@@ -66,11 +65,9 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
     
     
     /**
-     * Test the get function.
-     * @global wpdb $wpdb
+     * Test that the get function returns an existing persisted session.
      */
     function test_get_returns_existing_persisted_session() {
-        global $wpdb;
         
         $session_id = 'testsession';
         
@@ -91,4 +88,81 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
         $this->assertEquals( $session_id, $returned_session->get_session_id() );
     }
 
+    /**
+     * Test that the garbage_collection function leaves a new session.
+     * @global \wpdb $wpdb
+     */
+    function test_garbage_collection_leaves_new_session() {
+        
+        $session_id = 'testsession';
+        
+        //Create and persist the session
+        $session = MyStyle_Session::create( $session_id );
+        MyStyle_SessionManager::persist( $session );
+        
+        //Call the garbage collector
+        MyStyle_SessionHandler::garbage_collection();
+        
+        //attempt to get the session from the db.
+        $session_from_db = MyStyle_SessionManager::get( $session_id );
+        
+        //Assert that the session is still in the db.
+        $this->assertEquals( $session_id, $session_from_db->get_session_id() );
+    }
+    
+    /**
+     * Test that the garbage_collection function removes an old session.
+     * @global \wpdb $wpdb
+     */
+    function test_garbage_collection_removes_an_old_session() {
+        
+        $session_id = 'testsession';
+        
+        //Create and persist an old session
+        $session = MyStyle_Session::create( $session_id );
+        $one_week_ago = gmdate( 'Y-m-d H:m:s', strtotime( '-7 days' ) );
+        $session->set_modified_gmt( $one_week_ago );
+        MyStyle_SessionManager::persist( $session );
+        
+        //Call the garbage collector
+        MyStyle_SessionHandler::garbage_collection();
+        
+        //attempt to get the session from the db.
+        $session_from_db = MyStyle_SessionManager::get( $session_id );
+        
+        //Assert that the session is no longer in the db
+        $this->assertNull( $session_from_db );
+    }
+    
+    /**
+     * Test that the garbage_collection function leaves an old session with a
+     * design.
+     * @global wpdb $wpdb
+     */
+    function test_garbage_collection_leaves_old_session_with_design() {
+        
+        $session_id = 'testsession';
+        
+        //Create and persist an old session
+        $session = MyStyle_Session::create( $session_id );
+        $one_week_ago = gmdate( 'Y-m-d H:m:s', strtotime( '-7 days' ) );
+        $session->set_modified_gmt( $one_week_ago );
+        MyStyle_SessionManager::persist( $session );
+        
+        //Create and persist a design with the same session_id.
+        $design_id = 1;
+        $design = MyStyle_MockDesign::getMockDesign( $design_id );
+        $design->set_session_id( $session_id );
+        MyStyle_DesignManager::persist( $design );
+        
+        //Call the garbage collector
+        MyStyle_SessionHandler::garbage_collection();
+        
+        //attempt to get the session from the db.
+        $session_from_db = MyStyle_SessionManager::get( $session_id );
+        
+        //Assert that the session is still in the db.
+        $this->assertEquals( $session_id, $session_from_db->get_session_id() );
+    }
+    
 }

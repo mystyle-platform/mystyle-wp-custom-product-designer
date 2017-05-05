@@ -48,7 +48,7 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
         global $wpdb;
         
         $session->set_modified( date( MyStyle::$STANDARD_DATE_FORMAT ) );
-        $session->set_modified_gmt( date( MyStyle::$STANDARD_DATE_FORMAT ) );
+        $session->set_modified_gmt( gmdate( MyStyle::$STANDARD_DATE_FORMAT ) );
         
         $wpdb->replace(
                 $session->get_table_name(),

@@ -26,7 +26,7 @@ abstract class MyStyle_EntityManager {
                     $entity->get_insert_format() 
                 );
         
-        if($ret == false) {
+        if( $ret == false ) {
             $msg = "Could not persist data to database.\n" .
                     $wpdb->last_error . "\n" .
                     $wpdb->last_query . "\n" .

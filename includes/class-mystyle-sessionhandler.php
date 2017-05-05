@@ -86,20 +86,20 @@ class MyStyle_SessionHandler {
         if ( ! defined( 'WP_SETUP_CONFIG' ) && ! defined( 'WP_INSTALLING' ) ) {
             
             //get what time it was 48 hours ago (in GMT)
-            $expire_after = gmdate('Y-m-d H:m:s', strtotime('-48 hours')); 
+            $expire_after = gmdate( MyStyle::$STANDARD_DATE_FORMAT, strtotime( '-48 hours' ) );
 
-            $wpdb->query( 
-                $wpdb->prepare( 
-                            "DELETE 
-                             FROM " . MyStyle_Session::get_table_name() . "
-                             WHERE session_id NOT IN ( 
-                                                    SELECT session_id
-                                                    FROM " . MyStyle_Design::get_table_name()  . 
-                                                     ")
-                             AND session_modified_gmt < %d",
-                             $expire_after
-                        ) 
-                );
+            $query = 
+                "DELETE 
+                 FROM " . MyStyle_Session::get_table_name() . "
+                 WHERE session_id NOT IN ( 
+                                            SELECT session_id
+                                            FROM " . MyStyle_Design::get_table_name()  . 
+                                         ")
+                 AND session_modified_gmt < '" . $expire_after ."';";
+                        
+            //echo $query;
+            
+            $wpdb->query( $query );
         }
     }
     

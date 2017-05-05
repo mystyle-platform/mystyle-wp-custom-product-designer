@@ -67,7 +67,7 @@ class MyStyle_Session implements MyStyle_Entity {
         $instance->created = htmlspecialchars( $result_object->session_created );
         $instance->created_gmt = htmlspecialchars( $result_object->session_created_gmt );
         $instance->modified = htmlspecialchars( $result_object->session_modified );
-        $instance->modified_gmt = htmlspecialchars( $result_object->session_modified );
+        $instance->modified_gmt = htmlspecialchars( $result_object->session_modified_gmt );
         
         return $instance;
     }
