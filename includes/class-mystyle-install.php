@@ -63,7 +63,7 @@ class MyStyle_Install {
     public static function create_cron_jobs() {
         wp_clear_scheduled_hook( 'mystyle_session_garbage_collection' );
 
-        wp_schedule_event( time(), 'twicedaily', 'mystyle_session_garbage_collection' );
+        wp_schedule_event( time(), 'daily', 'mystyle_session_garbage_collection' );
     }
     
     /**

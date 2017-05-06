@@ -88,9 +88,14 @@ class MyStyle_SessionHandler {
     /**
      * Static function to clean up stalled sessions.
      * 
-     * Criteria
+     * Criteria:
      *  * Session must be orphaned (no designs created).
      *  * Session must be inactive for more than 2 days.
+     * 
+     * Strategy:
+     *  * Delete 1000 at a time
+     *  * 10 times in a row.
+     *  * Once a day (see MyStyle_Install class).
      *
      * @global wpdb $wpdb
      */
@@ -109,11 +114,15 @@ class MyStyle_SessionHandler {
                                             SELECT session_id
                                             FROM " . MyStyle_Design::get_table_name()  . 
                                          ")
-                 AND session_modified_gmt < '" . $expire_after ."';";
-                        
+                 AND session_modified_gmt < '" . $expire_after ."'
+                 LIMIT 1000;";
+            
             //echo $query;
             
-            $wpdb->query( $query );
+            for( $i = 0; $i < 10; $i++ ) {
+                $wpdb->query( $query );
+                sleep( 1 );
+            }
         }
     }
     
