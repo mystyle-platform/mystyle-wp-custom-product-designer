@@ -176,12 +176,18 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $post['price'] = 0;
         $_POST = $post;
         
+        //Assert that the session is not yet persisted
+        $this->assertFalse( MyStyle_SessionHandler::get()->is_persistent() );
+        
         //Call the function
         $mystyle_handoff->handle();
         $html = $mystyle_handoff->get_output();
         
         //Assert that the 'product added to cart' message is displayed
         $this->assertContains( 'Product added to cart', $html );
+        
+        //Assert that the session was persisted
+        $this->assertTrue( MyStyle_SessionHandler::get()->is_persistent() );
         
         //Assert that add_to_cart was called.
         $this->assertEquals( 1, $woocommerce->cart->add_to_cart_call_count );

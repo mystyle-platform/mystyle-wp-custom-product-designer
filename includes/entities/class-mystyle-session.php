@@ -23,6 +23,8 @@ class MyStyle_Session implements MyStyle_Entity {
     private $modified; //the date the session was last modified/used 
     private $modified_gmt; //the date the session was last modified/used (adjusted to the GMT timezone).
     
+    private $persistent; //whether or not the session has been persisted to the database.
+    
     /**
      * Constructor. Note: see the functions below for additional ways to create
      * a Design.
@@ -32,6 +34,7 @@ class MyStyle_Session implements MyStyle_Entity {
         $this->created_gmt = gmdate( MyStyle::$STANDARD_DATE_FORMAT );
         $this->modified = date( MyStyle::$STANDARD_DATE_FORMAT );
         $this->modified_gmt = gmdate( MyStyle::$STANDARD_DATE_FORMAT );
+        $this->persistent = false;
     }
     
     /**
@@ -68,6 +71,8 @@ class MyStyle_Session implements MyStyle_Entity {
         $instance->created_gmt = htmlspecialchars( $result_object->session_created_gmt );
         $instance->modified = htmlspecialchars( $result_object->session_modified );
         $instance->modified_gmt = htmlspecialchars( $result_object->session_modified );
+        
+        $instance->persistent = true;
         
         return $instance;
     }
@@ -126,6 +131,24 @@ class MyStyle_Session implements MyStyle_Entity {
      */
     public function get_modified_gmt() {
         return $this->modified_gmt;
+    }
+    
+    /**
+     * Sets the value of persistent.
+     * @param boolean Sets whether or not the Session is persistent (stored
+     * in the database).
+     */
+    public function set_persistent( $persistent ) {
+        $this->persistent = $persistent;
+    }
+    
+    /**
+     * Gets the value of persistent.
+     * @return boolean Returns whether or not the Session is persistent (stored
+     * in the database).
+     */
+    public function is_persistent() {
+        return $this->persistent;
     }
     
     /**

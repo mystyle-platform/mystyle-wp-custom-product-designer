@@ -87,6 +87,9 @@ class MyStyleSessionManagerTest extends WP_UnitTestCase {
         //Call the update function
         $session_from_db = MyStyle_SessionManager::update( $session );
         
+        //Assert that the session is marked as persistent
+        $this->assertTrue( $session_from_db->is_persistent() );
+        
         //Get the new modified date
         $modified_updated = $session_from_db->get_modified();
         

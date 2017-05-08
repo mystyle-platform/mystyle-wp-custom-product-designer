@@ -12,6 +12,20 @@
 abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
     
     /**
+     * Persists the passed MyStyle_Session to the database.
+     * @global \wpdb $wpdb
+     * @param MyStyle_Session $session
+     * @return \MyStyle_Session Returns the persisted MyStyle_Session.
+     */
+    public static function persist( MyStyle_Session $session ) {
+        $session = parent::persist( $session );
+        
+        $session->set_persistent( true );
+        
+        return $session;
+    }
+    
+    /**
      * Get the session from the database.
      * @global wpdb $wpdb
      * @param string $session_id The session id.
@@ -31,7 +45,6 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
             $session = MyStyle_Session::create_from_result_object( $result_object );
         }
         
-        
         return $session;
     }
     
@@ -49,6 +62,7 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
         
         $session->set_modified( date( MyStyle::$STANDARD_DATE_FORMAT ) );
         $session->set_modified_gmt( date( MyStyle::$STANDARD_DATE_FORMAT ) );
+        $session->set_persistent( true );
         
         $wpdb->replace(
                 $session->get_table_name(),
@@ -60,5 +74,3 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
     }
 
 }
-
-

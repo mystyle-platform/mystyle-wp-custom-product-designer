@@ -150,7 +150,6 @@ if( is_admin() ) {
     MyStyle_Cart::get_instance();
     $mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
     $mystyle_handoff = new MyStyle_Handoff( $mystyle_api ); 
-    $mystyle_session = MyStyle_SessionHandler::get();
     MyStyle_Customize_Page::get_instance();
     MyStyle_Design_Profile_Page::get_instance();
 }

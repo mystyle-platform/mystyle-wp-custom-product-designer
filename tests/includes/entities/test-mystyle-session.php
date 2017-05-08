@@ -51,6 +51,9 @@ class MyStyleSessionTest extends WP_UnitTestCase {
         
         //Assert that the session_id is set
         $this->assertEquals( $session_id, $session->get_session_id() );
+        
+        //Assert that the session is marked as persistent
+        $this->assertTrue( $session->is_persistent() );
     }
     
     /**

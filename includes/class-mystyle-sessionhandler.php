@@ -66,10 +66,33 @@ class MyStyle_SessionHandler {
                 $session->get_session_id(), 
                 time() + (60*60*24*365*10) );
         }
-        MyStyle_SessionManager::update( $session );
+        
+        //if the session is already persistent, update it.
+        if($session->is_persistent()) {
+            MyStyle_SessionManager::update( $session );
+        }
         
         return $session;
     }
     
+    /**
+     * Persist the current MyStyle_Session to the database. Upgrades a session
+     * to a persistent session (one that is stored in the db) or if it is
+     * already persistent, updates it (updates the modified date).
+     * 
+     * @param \MyStyle_Session (optional) The session to persist. If not passed,
+     * it will pull the current session using the get function of this class.
+     * @return \MyStyle_Session Returns the session.
+     * @todo Add unit tests.
+     */
+    public static function persist( $session = null ) {
+        if( $session == null ) {
+            $session = self::get();
+        }
+        
+        MyStyle_SessionManager::update( $session );
+        
+        return $session;
+    }
     
 }

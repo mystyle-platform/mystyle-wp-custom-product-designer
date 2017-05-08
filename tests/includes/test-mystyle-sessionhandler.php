@@ -41,7 +41,7 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
     
     /**
      * Test the get function.
-     * @global wpdb $wpdb
+     * @global \wpdb $wpdb
      */
     function test_get_generates_new_session_if_one_doesnt_exist() {
         
@@ -67,7 +67,7 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
     
     /**
      * Test the get function.
-     * @global wpdb $wpdb
+     * @global \wpdb $wpdb
      */
     function test_get_returns_existing_persisted_session() {
         global $wpdb;
@@ -89,6 +89,40 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
         
         //Assert that the session_id is set
         $this->assertEquals( $session_id, $returned_session->get_session_id() );
+    }
+    
+    /**
+     * Test the persist function.
+     * @global \wpdb $wpdb
+     */
+    function test_persist() {
+        global $wpdb;
+        
+        $session_id = 'testsession';
+        
+        //Create a session
+        $session = MyStyle_Session::create( $session_id );
+        
+        //Set the session variable
+        if(session_id() == '') {
+            session_start();
+        }
+        $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
+        
+        //Assert that the session is not yet persisted
+        $this->assertFalse( MyStyle_SessionHandler::get()->is_persistent() );
+        
+        //Call the function
+        $returned_session = MyStyle_SessionHandler::persist( $session );
+        
+        //Assert that the session was persisted
+        $this->assertTrue( $returned_session->is_persistent() );
+        
+        //Get the session from the db
+        $session_from_db = MyStyle_SessionManager::get( $session_id );
+        
+        //Assert that the session was persisted to the db
+        $this->assertEquals( $session_id, $session_from_db->get_session_id() );
     }
 
 }
