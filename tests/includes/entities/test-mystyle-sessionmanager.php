@@ -39,6 +39,25 @@ class MyStyleSessionManagerTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the persist function.
+     * @global \wpdb $wpdb
+     */
+    function test_persist() {
+        global $wpdb;
+        
+        $session_id = 'testsession';
+        
+        //Create a session
+        $session = MyStyle_Session::create( $session_id );
+        
+        //Call the function
+        MyStyle_SessionManager::persist( $session );
+        
+        //Assert that the session is marked as persisted
+        $this->assertTrue( $session->is_persistent() );
+    }
+    
+    /**
      * Test the get function.
      * @global wpdb $wpdb
      */    
@@ -94,6 +113,71 @@ class MyStyleSessionManagerTest extends WP_UnitTestCase {
         $modified_updated = $session_from_db->get_modified();
         
         $this->assertNotEquals( $modified_updated, $modified_orig );
+    }
+    
+    /**
+     * Test the purge_abandoned_sessions() function.
+     * @global \wpdb $wpdb
+     */
+    function test_purge_abandoned_sessions() {
+        global $wpdb;
+        
+        $session_id_1           = 'testsession1';
+        $design_id_1            = 0;
+        $abandoned_session_id_1 = 'abandonedsession1';
+        $abandoned_session_id_2 = 'abandonedsession2';
+        
+        //Assert that there are 0 sessions currently in the db
+        $this->assertEquals( 0, $this->get_session_count() );
+        
+        //Create and persist a session with a design
+        $session_1 = MyStyle_Session::create( $session_id_1 );
+        MyStyle_SessionManager::persist( $session_1 );
+        $design = MyStyle_MockDesign::getMockDesign( $design_id_1 );
+        $design->set_session_id( $session_id_1 );
+        MyStyle_DesignManager::persist( $design );
+        
+        //Create and persist 2 abandoned sessions
+        $abandoned_session_1 = MyStyle_Session::create( $abandoned_session_id_1 );
+        MyStyle_SessionManager::persist( $abandoned_session_1 );
+        $abandoned_session_2 = MyStyle_Session::create( $abandoned_session_id_2 );
+        MyStyle_SessionManager::persist( $abandoned_session_2 );
+        
+        //Assert that there are now 3 sessions in the db
+        $this->assertEquals( 3, $this->get_session_count() );
+        
+        //Run the function
+        MyStyle_SessionManager::purge_abandoned_sessions();
+        
+        //Assert that there is now 1 session in the db
+        $this->assertEquals( 1, $this->get_session_count() );
+        
+        //Get the session with a design from the db
+        $session_from_db = MyStyle_SessionManager::get( $session_id_1 );
+        
+        //Assert that the session with the design is still in the db
+        $this->assertEquals( $session_id_1, $session_from_db->get_session_id() );
+        
+        //Attempt to get the abandoned session from the db
+        $session_from_db = MyStyle_SessionManager::get( $abandoned_session_id_1 );
+        
+        //Assert that the abandoned session is no longer in the db
+        $this->assertNull( $session_from_db );
+    }
+    
+    /**
+     * Private helper function that returns the total number of sessions
+     * currently in the database.
+     *
+     * @global \wpdb $wpdb
+     * @return integer Returns the number of sessions currently in the database.
+     */
+    private function get_session_count() {
+        global $wpdb;
+
+        $sql = "SELECT COUNT(*) FROM " . MyStyle_Session::get_table_name();
+
+        return intval( $wpdb->get_var( $sql ) );
     }
 
 }
