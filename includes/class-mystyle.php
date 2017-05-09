@@ -46,7 +46,7 @@ class MyStyle {
             update_option( MYSTYLE_OPTIONS_NAME, $options );
             if( ! is_null( $data_version ) ) {  //skip if not an upgrade
                 //Run the upgrader
-                MyStyle_Install::upgrade( MYSTYLE_VERSION, $data_version );
+                MyStyle_Install::upgrade( $data_version, MYSTYLE_VERSION );
             }
         }
     }

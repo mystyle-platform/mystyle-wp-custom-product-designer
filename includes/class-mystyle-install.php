@@ -99,6 +99,13 @@ class MyStyle_Install {
                 MyStyle_Design_Profile_Page::create();
             }
         }
+        
+        //Versions prior to 1.7.0 were creating an exorbitant number of 
+        //sessions. Here we purge them on upgrade.
+        if( version_compare( $old_version, '1.7.0', '<' ) ) {
+            MyStyle_SessionManager::purge_abandoned_sessions();
+        }
+        
         $upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $old_version . ' to ' . $new_version . '.' );
         mystyle_notice_add_to_queue( $upgrade_notice );
     }
