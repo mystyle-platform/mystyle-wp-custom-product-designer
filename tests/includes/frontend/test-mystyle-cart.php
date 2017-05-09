@@ -113,13 +113,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
     public function test_filter_cart_button_text_doesnt_modify_button_text_when_not_mystyle_enabled() {
         global $product;
         
-        //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
-        //Create a mock product using the mock Post
-        $product = new WC_Product_Simple($GLOBALS['post']);
+        $product = create_test_product();
+        $GLOBALS['post'] = $product;
         
         //call the function
         $text = MyStyle_Cart::get_instance()->filter_cart_button_text( 'Add to Cart' );
@@ -135,12 +130,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         global $product;
         
         //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
-        //Create a mock product using the mock Post
-        $product = new WC_Product_Simple($GLOBALS['post']);
+        $product = create_test_product();
+        $GLOBALS['post'] = $product;
         
         //Mock the mystyle_metadata
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
@@ -159,12 +150,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         global $product;
         
         //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
-        //Create a mock product using the mock Post
-        $product = new WC_Product_Simple($GLOBALS['post']);
+        $product = create_test_product();
+        $GLOBALS['post'] = $product;
         
         $text = MyStyle_Cart::get_instance()->filter_add_to_cart_handler( 'test_handler', $product );
         
@@ -179,12 +166,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         global $product;
         
         //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
-        //Create a mock product using the mock Post
-        $product = new WC_Product_Simple($GLOBALS['post']);
+        $product = create_test_product();
+        $GLOBALS['post'] = $product;
         
         //Mock the mystyle_metadata
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
@@ -207,13 +190,9 @@ class MyStyleCartTest extends WP_UnitTestCase {
         //Create a mock link
         $link = '<a href="">link</a>';
         
-         //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
-        //Create a mock product using the mock Post
-        $product = new WC_Product_Simple($GLOBALS['post']);
+        //Mock the global $post variable
+        $product = create_test_product();
+        $GLOBALS['post'] = $product;
         
         $html = MyStyle_Cart::get_instance()->loop_add_to_cart_link( $link, $product );
         
@@ -228,12 +207,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         $link = '<a href="">link</a>';
         
         //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
-        //Create a mock product using the mock Post
-        $product = new WC_Product_Simple($GLOBALS['post']);
+        $product = create_test_product();
+        $GLOBALS['post'] = $product;
         
         //Mock the mystyle_metadata
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
@@ -266,16 +241,12 @@ class MyStyleCartTest extends WP_UnitTestCase {
         //Create a mock link
         $link = '<a href="">link</a>';
         
-        //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
         //Mock the mystyle_metadata
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
         
-        //Create a mock VARIABLE product using the mock Post
-        $product = new WC_Product_Variable( $GLOBALS['post'] );
+        //Mock the global $post variable
+        $product = create_test_product('WC_Product_Variable');
+        $GLOBALS['post'] = $product;
         
         $html = $mystyle_cart->loop_add_to_cart_link( $link, $product );
         
@@ -331,12 +302,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         global $filter_wp_redirect_called;
         
         //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
-        //Create a mock product using the mock Post
-        $product = new WC_Product_Simple($GLOBALS['post']);
+        $product = create_test_product();
+        $GLOBALS['post'] = $product;
         
         //Set the expected request variables
         $_REQUEST['add-to-cart'] = $product->id;
@@ -441,4 +408,5 @@ class MyStyleCartTest extends WP_UnitTestCase {
         //Assert that the expected name is returned
         $this->assertEquals( $expected, $new_name );
     }
+    
 }

@@ -23,6 +23,28 @@ function get_function_names( $regArray1 ) {
 }
 
 /**
+ * Function that creates a simple WC_Product to run our tests against.
+ * @param string $type (optional) The product type to create (default: 
+ * WC_Product_Simple).
+ * @return \WC_Product
+ */
+function create_test_product( $type = 'WC_Product_Simple' ) {
+    $product = null;
+    if(WC_VERSION < 2.3) {
+        //Mock the global $post variable
+        $post_vars = new stdClass();
+        $post_vars->ID = 1;
+
+        //Create a mock product using the mock Post
+        $product = new $type( new WP_Post( $post_vars ) );
+    } else {
+        $product = new $type();
+    }
+
+    return $product;
+}
+
+/**
  * Function to create a WooCommerce product for testing purposes.
  * @param string $name (optional) A name/title for the product.
  * @param string $type (optional) The type of product to create 

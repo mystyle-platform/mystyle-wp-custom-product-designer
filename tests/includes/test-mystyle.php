@@ -104,13 +104,9 @@ class MyStyleClassTest extends WP_UnitTestCase {
     public function test_product_is_customizable_returns_false_when_product_not_mystyle_enabled() {
         global $product;
         
-        //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
-        
         //Create a mock product using the mock Post
-        $product = new WC_Product_Simple($GLOBALS['post']);
+        $product = create_test_product();
+        $GLOBALS['post'] = $product;
         
         $is_customizable = MyStyle::product_is_customizable( $product->id );
         
@@ -126,9 +122,8 @@ class MyStyleClassTest extends WP_UnitTestCase {
         global $product;
         
         //Mock the global $post variable
-        $post_vars = new stdClass();
-        $post_vars->ID = 1;
-        $GLOBALS['post'] = new WP_Post( $post_vars );
+        $product = create_test_product();
+        $GLOBALS['post'] = $product;
         
         //Create a mock product using the mock Post
         $product = new WC_Product_Simple($GLOBALS['post']);
