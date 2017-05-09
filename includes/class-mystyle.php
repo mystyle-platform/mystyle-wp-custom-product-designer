@@ -45,20 +45,8 @@ class MyStyle {
             $options['version'] = MYSTYLE_VERSION;
             update_option( MYSTYLE_OPTIONS_NAME, $options );
             if( ! is_null( $data_version ) ) {  //skip if not an upgrade
-                
-                //Delta the database tables
-                MyStyle_Install::delta_tables();
-
-                //Add the Design page if upgrading from less than 1.4.0 (versions that were before this page existed)
-                //Changed to v1.4.1 (with exists check) because 1.4.0 wasn't working properly
-                if( version_compare( $data_version, '1.4.1', '<' ) ) {
-                    if( ! MyStyle_Design_Profile_Page::exists() ) {
-                        MyStyle_Design_Profile_Page::create();
-                    }
-                }
-                
-                $upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $data_version . ' to ' . MYSTYLE_VERSION . '.' );
-                mystyle_notice_add_to_queue( $upgrade_notice );
+                //Run the upgrader
+                MyStyle_Install::upgrade( MYSTYLE_VERSION, $data_version );
             }
         }
     }

@@ -83,5 +83,25 @@ class MyStyle_Install {
     static function uninstall() {
         delete_option( MYSTYLE_NOTICES_NAME );
     }
+    
+    /**
+     * Function called when MyStyle is upgraded.
+     * @todo Add unit testing
+     */
+    public static function upgrade( $old_version, $new_version ) {
+        //Delta the database tables
+        MyStyle_Install::delta_tables();
+        
+        //Add the Design page if upgrading from less than 1.4.0 (versions that were before this page existed)
+        //Changed to v1.4.1 (with exists check) because 1.4.0 wasn't working properly
+        if( version_compare( $old_version, '1.4.1', '<' ) ) {
+            if( ! MyStyle_Design_Profile_Page::exists() ) {
+                MyStyle_Design_Profile_Page::create();
+            }
+        }
+        $upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $old_version . ' to ' . $new_version . '.' );
+        mystyle_notice_add_to_queue( $upgrade_notice );
+    }
+
 
 }
