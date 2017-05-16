@@ -59,13 +59,12 @@ final class MyStyle {
      * Constructor.
      */
     public function __construct() {
-           $this->define_constants();
-           //$this->includes();
-           $this->init_hooks();
+        $this->define_constants();
+        $this->init_hooks();
     }
     
     /**
-     * Define WC Constants.
+     * Define MYSTYLE Constants.
      */
     private function define_constants() {
         define( 'MYSTYLE_PATH', plugin_dir_path( __FILE__ ) );
@@ -92,22 +91,31 @@ final class MyStyle {
     
     /**
      * Hook into actions and filters.
-    */
+     */
     private function init_hooks() {
         //plugin setup and registrations
         register_activation_hook( __FILE__, array( 'MyStyle_Install', 'activate' ) );
         register_deactivation_hook( __FILE__, array( 'MyStyle_Install', 'deactivate' ) );
         register_uninstall_hook( __FILE__, array( 'MyStyle_Install', 'uninstall' ) );
     
-        add_action( 'plugins_loaded', array( $this, 'includes' ), 100, 0 );
-        add_action( 'init', array( $this, 'init' ), 100, 0 );
+        add_action( 'woocommerce_init', array( $this, 'woocommerce_init' ), 10, 0 );
         add_action( 'init', array( $this, 'check_version' ), 101, 0 );
+    }
+    
+    
+    /**
+     * Hook the woocommerce_init event to include our files and init the plugin's
+     * singletons.
+     */
+    public function woocommerce_init() {
+        $this->includes();
+        $this->init_singletons();
     }
     
     /**
      * Include required core files used in admin and on the frontend.
      */
-    public function includes() {
+    private function includes() {
    
         require_once( MYSTYLE_PATH . 'tests/qunit.php' );
         require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
@@ -160,7 +168,7 @@ final class MyStyle {
     /**
      * Include required admin files.
      */
-    public function admin_includes() {
+    private function admin_includes() {
         require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
         require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php' );
         require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php' );
@@ -172,7 +180,7 @@ final class MyStyle {
     /**
      * Include required frontend files.
      */
-    public function frontend_includes() {
+    private function frontend_includes() {
         require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
         require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-cart.php' );
         require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
@@ -181,11 +189,10 @@ final class MyStyle {
     /**
      * Init MyStyle and WordPress Initialises.
      */
-    public function init() {
-        MyStyle::get_instance();
-        if( ! defined('PHPUNIT_RUNNING') ) {
+    private function init_singletons() {
+        if( ! defined('DOING_PHPUNIT') ) {
             //set up the third party interfaces
-            MyStyle::get_instance()->set_WC( new MyStyle_WC() );
+            self::get_instance()->set_WC( new MyStyle_WC() );
         }
 
         MyStyle_User_Interface::get_instance();
@@ -233,6 +240,9 @@ final class MyStyle {
         //Register shortcodes
         add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
         add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
+        
+        // Init action.
+        do_action( 'mystyle_init' );
     }
     
     /**
@@ -361,8 +371,7 @@ endif;
  *
  * Returns the main instance of MyStyle to prevent the need to use globals.
  *
- * @since  2.1
- * @return WooCommerce
+ * @return MyStyle
  */
 function MyStyle() {
     return MyStyle::get_instance();

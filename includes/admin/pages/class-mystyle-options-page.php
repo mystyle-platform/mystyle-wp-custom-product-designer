@@ -19,7 +19,7 @@ class MyStyle_Options_Page {
      * menu.
      */
     public function __construct() {
-        add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ), 100, 0 );
+        add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ), 10, 0 );
         add_action( 'admin_init', array( &$this, 'admin_init' ) );
     }
 
@@ -122,7 +122,6 @@ class MyStyle_Options_Page {
 
         add_menu_page('MyStyle', 'MyStyle', 'manage_options', $mystyle_hook, array( &$this, 'render_page' ), MYSTYLE_ASSETS_URL . '/images/mystyle-icon.png', '56' );
         add_submenu_page( $mystyle_hook, 'Settings', 'Settings', 'manage_options', $mystyle_hook );
-        //add_submenu_page( $mystyle_hook, 'Designs', 'Designs', 'manage_product_terms', 'edit-tags.php?taxonomy=product_shipping_class&post_type=product' );
     }
 
     /**
