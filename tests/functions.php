@@ -30,7 +30,7 @@ function get_function_names( $regArray1 ) {
  */
 function create_test_product( $type = 'WC_Product_Simple' ) {
     $product = null;
-    if(WC_VERSION < 2.3) {
+    if( WC_VERSION < 3.0 ) {
         //Mock the global $post variable
         $post_vars = new stdClass();
         $post_vars->ID = 1;

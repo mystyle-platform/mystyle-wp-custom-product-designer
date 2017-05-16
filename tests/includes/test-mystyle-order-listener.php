@@ -6,12 +6,13 @@ require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
 
 /**
- * The MyStyle_OrderTest class includes tests for testing the MyStyle_Order class.
+ * The MyStyleOrderListenerTest class includes tests for testing the 
+ * MyStyle_Order_Listener class.
  *
  * @package MyStyle
  * @since 0.2.1
  */
-class MyStyleOrderTest extends WP_UnitTestCase {
+class MyStyleOrderListenerTest extends WP_UnitTestCase {
     
     /**
      * Overrwrite the setUp function so that our custom tables will be persisted
@@ -44,7 +45,7 @@ class MyStyleOrderTest extends WP_UnitTestCase {
      * Test the constructor
      */    
     public function test_constructor() {
-        $mystyle_order = new MyStyle_Order();
+        $mystyle_order_listener = new MyStyle_Order_Listener();
         
         global $wp_filter;
         

@@ -1,18 +1,18 @@
 <?php
 
 /**
- * MyStyle_Order class.
- * The MyStyle_Order class sets up and controls the MyStyle order related hooks,
- * etc.
+ * MyStyle_Order_Listener class.
+ * The MyStyle_Order_Listener class sets up and controls the MyStyle order related
+ * hooks, etc.
  *
  * @package MyStyle
  * @since 1.5.0
  */
-class MyStyle_Order {
+class MyStyle_Order_Listener {
     
     /**
      * Singleton class instance
-     * @var MyStyle_Frontend
+     * @var MyStyle_Order_Listener
      */
     private static $instance;
     
@@ -20,17 +20,44 @@ class MyStyle_Order {
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
-        add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_mystyle_order_item_meta' ), 10, 2 );
+        
+        if( WC()->version < 3.0 ) {
+            add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_mystyle_order_item_meta_legacy' ), 10, 2 );
+        } else {
+            add_action( 'woocommerce_checkout_create_order_line_item', array( &$this, 'add_mystyle_order_item_meta' ), 10, 4 );
+        }
+        
         add_action( 'woocommerce_order_status_completed', array( &$this, 'on_order_completed' ), 10, 1 );
     }
     
     /**
      * Add the item meta from the cart to the order.
+     * @param \WC_Order_Item $item The item being added to the order.
+     * @param string $cart_item_key The cart_item_key of the item being added.
+     * @param array $values The values from the cart.
+     * @param \WC_Order $order The order that is being created.
+     * @return Returns false on failure. On success, returns the ID of the inserted row.
+     */
+    public function add_mystyle_order_item_meta( 
+                        \WC_Order_Item $item, 
+                        $cart_item_key, 
+                        $values, 
+                        \WC_Order $order ) {
+        if( isset( $values['mystyle_data'] ) ) {
+            $item->add_meta_data( 'mystyle_data', $values['mystyle_data'] );
+        }
+    }
+    
+    /**
+     * Legacy function for adding the item meta from the cart to the order.
+     * 
+     * For WC < 3.0
+     * 
      * @param number $item_id The item_id of the item being added.
      * @param array $values The values from the cart.
      * @return Returns false on failure. On success, returns the ID of the inserted row.
      */
-    public function add_mystyle_order_item_meta( $item_id, $values ) {
+    public function add_mystyle_order_item_meta_legacy( $item_id, $values ) {
         if( isset( $values['mystyle_data'] ) ) {
             return wc_add_order_item_meta( $item_id, 'mystyle_data', $values['mystyle_data'] );
         }
@@ -74,7 +101,7 @@ class MyStyle_Order {
     /**
      * Resets the singleton instance. This is used during testing if we want to
      * clear out the existing singleton instance.
-     * @return MyStyle_Design_Profile_Page Returns the singleton instance of
+     * @return MyStyle_Order_Listener Returns the singleton instance of
      * this class.
      */
     public static function reset_instance() {
@@ -87,7 +114,7 @@ class MyStyle_Order {
     
     /**
      * Gets the singleton instance.
-     * @return MyStyle_Design_Profile_Page Returns the singleton instance of
+     * @return MyStyle_Order_Listener Returns the singleton instance of
      * this class.
      */
     public static function get_instance() {

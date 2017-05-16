@@ -182,8 +182,7 @@ class MyStyle_Handoff {
             //the variation_id.  Here we update the variation_id to match the
             //passed attributes.
             if( ! empty( $variation_id ) ) {
-                $variable_product = new WC_Product_Variable( $product_id );
-                $variation_id = $variable_product->get_matching_variation( $variation );
+                $variation_id = MyStyle_WC()->get_matching_variation( $product_id, $variation );
             }
             
             //echo $quantity . ':' . $variation_id;

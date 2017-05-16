@@ -47,8 +47,9 @@ class MyStyle_Cart {
         global $product;
         
         if( $product != null ) {
+            $product_id = MyStyle_WC()->get_product_id( $product );
             
-            if( MyStyle::product_is_customizable( $product->id ) ) {
+            if( MyStyle::product_is_customizable( $product_id ) ) {
                 $text = "Customize";
             }
         }
@@ -66,7 +67,7 @@ class MyStyle_Cart {
     public function filter_add_to_cart_handler( $handler, $product ) {
 
         if($product != null) {
-            $product_id = $product->id;
+            $product_id = MyStyle_WC()->get_product_id( $product );
         } else {
             $product_id = absint( $_REQUEST['add-to-cart'] );
         }
@@ -100,17 +101,20 @@ class MyStyle_Cart {
     public function loop_add_to_cart_link( $link, $product ) {
         //var_dump($product);
         
-        if( ( MyStyle::product_is_customizable( $product->id ) ) && ( $product->product_type != 'variable') ) {
+        $product_id   = MyStyle_WC()->get_product_id( $product );
+        $product_type = MyStyle_WC()->get_product_type( $product );
+        
+        if( ( MyStyle::product_is_customizable( $product_id ) ) && ( $product_type != 'variable') ) {
             $customize_page_id = MyStyle_Customize_Page::get_id();
             
             //build the url to the customizer including the poduct_id
-            $customizer_url = add_query_arg( 'product_id', $product->id, get_permalink( $customize_page_id ) );
+            $customizer_url = add_query_arg( 'product_id', $product_id, get_permalink( $customize_page_id ) );
             
             //Add the passthru data to the url
             $passthru = array();
             $passthru['post'] = array();
             $passthru['post']['quantity'] = 1;
-            $passthru['post']['add-to-cart'] = $product->id;
+            $passthru['post']['add-to-cart'] = $product_id;
             $passthru_encoded = base64_encode( json_encode( $passthru ) );
             $customizer_url = add_query_arg( 'h', $passthru_encoded, $customizer_url );
             
@@ -123,7 +127,7 @@ class MyStyle_Cart {
                 '>%s</a>',
 		esc_url( $customizer_url ),
 		$product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
-		esc_attr( $product->product_type ),
+		esc_attr( $product_type ),
 		esc_html( "Customize" ) );
 	
             

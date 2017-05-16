@@ -21,11 +21,6 @@ class MyStyle_SessionHandler {
      * @return \MyStyle_Session Returns the current mystyle session.
      */
     public static function get() {
-        if(session_id() == '') {
-            //require the MyStyle_Session class again just in case.
-            require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-session.php' );
-            session_start();
-        }
         
         $session = null;
         

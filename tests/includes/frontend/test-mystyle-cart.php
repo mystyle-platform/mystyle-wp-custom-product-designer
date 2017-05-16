@@ -27,6 +27,9 @@ class MyStyleCartTest extends WP_UnitTestCase {
         
         //Create the tables
         MyStyle_Install::create_tables();
+        
+        //Instantiate the MyStyle and MyStyle_WC object.
+        MyStyle::get_instance()->set_WC( new MyStyle_WC() );
     }
     
     /**
@@ -39,6 +42,9 @@ class MyStyleCartTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+        
+        //Reset the MyStyle singleton instance.
+        MyStyle::reset_instance();
     }
     
     /**
@@ -109,11 +115,13 @@ class MyStyleCartTest extends WP_UnitTestCase {
     /**
      * Test the filter_cart_button_text function when product isn't mystyle
      * enabled.
+     * @global \WC_Product $product
      */    
     public function test_filter_cart_button_text_doesnt_modify_button_text_when_not_mystyle_enabled() {
         global $product;
-        
+
         $product = create_test_product();
+        
         $GLOBALS['post'] = $product;
         
         //call the function
@@ -130,12 +138,14 @@ class MyStyleCartTest extends WP_UnitTestCase {
         global $product;
         
         //Mock the global $post variable
-        $product = create_test_product();
+        $product_id = create_wc_test_product();
+        $product = new \WC_Product_Simple( $product_id );
         $GLOBALS['post'] = $product;
         
         //Mock the mystyle_metadata
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
         
+        //run the function
         $text = MyStyle_Cart::get_instance()->filter_cart_button_text( 'Add to Cart' );
         
         //Assert that the expected text is returned
@@ -150,7 +160,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         global $product;
         
         //Mock the global $post variable
-        $product = create_test_product();
+        $product_id = create_wc_test_product();
+        $product = new \WC_Product_Simple( $product_id );
         $GLOBALS['post'] = $product;
         
         $text = MyStyle_Cart::get_instance()->filter_add_to_cart_handler( 'test_handler', $product );
@@ -166,7 +177,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         global $product;
         
         //Mock the global $post variable
-        $product = create_test_product();
+        $product_id = create_wc_test_product();
+        $product = new \WC_Product_Simple( $product_id );
         $GLOBALS['post'] = $product;
         
         //Mock the mystyle_metadata
@@ -191,7 +203,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         $link = '<a href="">link</a>';
         
         //Mock the global $post variable
-        $product = create_test_product();
+        $product_id = create_wc_test_product();
+        $product = new \WC_Product_Simple( $product_id );
         $GLOBALS['post'] = $product;
         
         $html = MyStyle_Cart::get_instance()->loop_add_to_cart_link( $link, $product );
@@ -207,7 +220,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         $link = '<a href="">link</a>';
         
         //Mock the global $post variable
-        $product = create_test_product();
+        $product_id = create_wc_test_product();
+        $product = new \WC_Product_Simple( $product_id );
         $GLOBALS['post'] = $product;
         
         //Mock the mystyle_metadata
@@ -222,13 +236,18 @@ class MyStyleCartTest extends WP_UnitTestCase {
         //var_dump($html);
         
         $cust_pid = MyStyle_Customize_Page::get_id();
-        $h = base64_encode( json_encode( array( 'post' => array( 'quantity' => 1, 'add-to-cart' => 1 ) ) ) );
+        $h = base64_encode( json_encode( array( 'post' => array( 'quantity' => 1, 'add-to-cart' => $product_id ) ) ) );
+        $expected_url = 'http://example.org/';
+        $expected_url = add_query_arg( 'page_id', $cust_pid, $expected_url );
+        $expected_url = add_query_arg( 'product_id', $product_id, $expected_url );
+        $expected_url = add_query_arg( 'h', $h, $expected_url );
+        $expected_url = esc_url( $expected_url );
         
-        $expectedUrl = 'http://example.org/?page_id=' . $cust_pid . '&#038;product_id=1&#038;h=' . $h;
+        //$expectedUrl = 'http://example.org/?page_id=' . $cust_pid . '&#038;product_id=' . $product_id . '&#038;h=' . $h;
         
-        $expectedHtml = '<a href="'.$expectedUrl.'" rel="nofollow" class="button  product_type_simple" >Customize</a>';
+        $expected_html = '<a href="'.$expected_url.'" rel="nofollow" class="button  product_type_simple" >Customize</a>';
         
-        $this->assertEquals( $expectedHtml, $html );
+        $this->assertEquals( $expected_html, $html );
     }
     
     /**
@@ -245,7 +264,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
         
         //Mock the global $post variable
-        $product = create_test_product('WC_Product_Variable');
+        $product_id = create_wc_test_product();
+        $product = new \WC_Product_Variable( $product_id );
         $GLOBALS['post'] = $product;
         
         $html = $mystyle_cart->loop_add_to_cart_link( $link, $product );
@@ -301,12 +321,15 @@ class MyStyleCartTest extends WP_UnitTestCase {
         global $product;
         global $filter_wp_redirect_called;
         
+        $product_id = MyStyle_WC()->get_product_id( $product );
+        
         //Mock the global $post variable
-        $product = create_test_product();
+        $product_id = create_wc_test_product();
+        $product = new \WC_Product_Simple( $product_id );
         $GLOBALS['post'] = $product;
         
         //Set the expected request variables
-        $_REQUEST['add-to-cart'] = $product->id;
+        $_REQUEST['add-to-cart'] = $product_id;
         $_REQUEST['quantity'] = 1;
         
         //Create the MyStyle Customize page (needed by the function)

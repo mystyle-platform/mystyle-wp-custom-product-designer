@@ -26,6 +26,9 @@ class MyStyleClassTest extends WP_UnitTestCase {
         
         //Create the tables
         MyStyle_Install::create_tables();
+        
+        //Instantiate the MyStyle and MyStyle_WC object.
+        MyStyle::get_instance()->set_WC( new MyStyle_WC() );
     }
     
     /**
@@ -38,6 +41,9 @@ class MyStyleClassTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+        
+        //Reset the MyStyle singleton instance.
+        MyStyle::reset_instance();
     }
     
     /**
@@ -104,11 +110,14 @@ class MyStyleClassTest extends WP_UnitTestCase {
     public function test_product_is_customizable_returns_false_when_product_not_mystyle_enabled() {
         global $product;
         
-        //Create a mock product using the mock Post
-        $product = create_test_product();
+        $product_id = MyStyle_WC()->get_product_id( $product );
+        
+        //Mock the global $post variable
+        $product_id = create_wc_test_product();
+        $product = new \WC_Product_Simple( $product_id );
         $GLOBALS['post'] = $product;
         
-        $is_customizable = MyStyle::product_is_customizable( $product->id );
+        $is_customizable = MyStyle::product_is_customizable( $product_id );
         
         //Assert that is_customizable is false
         $this->assertFalse( $is_customizable );
@@ -122,7 +131,8 @@ class MyStyleClassTest extends WP_UnitTestCase {
         global $product;
         
         //Mock the global $post variable
-        $product = create_test_product();
+        $product_id = create_wc_test_product();
+        $product = new \WC_Product_Simple( $product_id );
         $GLOBALS['post'] = $product;
         
         //Create a mock product using the mock Post
@@ -131,7 +141,7 @@ class MyStyleClassTest extends WP_UnitTestCase {
         //Mock the mystyle_metadata
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
         
-        $is_customizable = MyStyle::product_is_customizable( $product->id );
+        $is_customizable = MyStyle::product_is_customizable( MyStyle_WC()->get_product_id( $product ) );
         
         //Assert that is_customizable is true
         $this->assertTrue( $is_customizable );

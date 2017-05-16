@@ -19,7 +19,7 @@ class MyStyle_Options_Page {
      * menu.
      */
     public function __construct() {
-        add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ) );
+        add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ), 100, 0 );
         add_action( 'admin_init', array( &$this, 'admin_init' ) );
     }
 

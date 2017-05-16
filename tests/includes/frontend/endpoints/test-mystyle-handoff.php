@@ -34,6 +34,9 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         
         //Create the tables
         MyStyle_Install::create_tables();
+        
+        //Instantiate the MyStyle and MyStyle_WC object.
+        MyStyle::get_instance()->set_WC( new MyStyle_WC() );
     }
     
     /**
@@ -46,6 +49,9 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+        
+        //Reset the MyStyle singleton instance.
+        MyStyle::reset_instance();
     }
     
     /**

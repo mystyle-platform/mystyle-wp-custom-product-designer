@@ -86,6 +86,8 @@ class MyStyle_Install {
     
     /**
      * Function called when MyStyle is upgraded.
+     * @param string $old_version The version that you are upgrading from.
+     * @param string $new_version The version that you are upgrading to.
      * @todo Add unit testing
      */
     public static function upgrade( $old_version, $new_version ) {
