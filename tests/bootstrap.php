@@ -24,9 +24,12 @@ function wp_mail($to, $subject, $message) {
 function _manually_load_plugin() {
     require dirname( __FILE__ ) . '/../mystyle.php';
 }
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+tests_add_filter( 'plugins_loaded', '_manually_load_plugin' );
 
-require $_tests_dir . '/includes/bootstrap.php';
+//bootstrap woocommerce
+require dirname( __FILE__ ) . '/../../woocommerce/tests/bootstrap.php';
+
+require_once $_tests_dir . '/includes/bootstrap.php';
 
 require dirname( __FILE__ ) . '/functions.php';
 

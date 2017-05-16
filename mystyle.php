@@ -98,16 +98,15 @@ final class MyStyle {
         register_deactivation_hook( __FILE__, array( 'MyStyle_Install', 'deactivate' ) );
         register_uninstall_hook( __FILE__, array( 'MyStyle_Install', 'uninstall' ) );
     
-        add_action( 'woocommerce_init', array( $this, 'woocommerce_init' ), 10, 0 );
+        add_action( 'woocommerce_init', array( $this, 'init' ), 10, 0 );
         add_action( 'init', array( $this, 'check_version' ), 101, 0 );
     }
     
     
     /**
-     * Hook the woocommerce_init event to include our files and init the plugin's
-     * singletons.
+     * Initialize the plugin.
      */
-    public function woocommerce_init() {
+    public function init() {
         $this->includes();
         $this->init_singletons();
     }
