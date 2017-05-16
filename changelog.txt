@@ -1,3 +1,8 @@
+= 1.7.0 =
+
+* Now only storing sessions after design save.
+* Automatically purges all abandoned sessions.
+
 = 1.6.3 =
 
 * Now catching session errors (and starting a new session).
