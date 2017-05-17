@@ -284,22 +284,6 @@ final class MyStyle {
     }
     
     /**
-     * Function that looks to see if passed product is mystyle enabled.
-     * @param integer $product_id The id of the product to check.
-     * @return boolean Returns true if the product is customizable, otherwise,
-     * returns false.
-     */
-    public static function product_is_customizable( $product_id ) {
-        $mystyle_enabled = get_post_meta( $product_id, '_mystyle_enabled', true );
-        
-        if( $mystyle_enabled == 'yes' ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    /**
      * Sets the WooCommerce interface.
      * @param MyStyle_WC_Interface $mystyle_wc_interface The WooCommerce 
      * interface.
@@ -315,20 +299,6 @@ final class MyStyle {
     public function get_WC() {
         return $this->wc;
     }
-    
-    /**
-     * Resets the singleton instance. This is used during testing if we want to
-     * clear out the existing singleton instance.
-     * @return MyStyle Returns the singleton instance of
-     * this class.
-     */
-    public static function reset_instance() {
-        
-        self::$instance = new self();
-
-        return self::$instance;
-    }
-    
     
     /**
      * Gets the singleton instance.

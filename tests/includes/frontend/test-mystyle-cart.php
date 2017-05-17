@@ -42,9 +42,6 @@ class MyStyleCartTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
-        
-        //Reset the MyStyle singleton instance.
-        MyStyle::reset_instance();
     }
     
     /**
@@ -138,8 +135,11 @@ class MyStyleCartTest extends WP_UnitTestCase {
         global $product;
         
         //Mock the global $post variable
-        $product_id = create_wc_test_product();
-        $product = new \WC_Product_Simple( $product_id );
+        //$product_id = create_wc_test_product();
+        //$product = new \WC_Product_Simple( $product_id )
+        //;
+        $product = WC_Helper_Product::create_simple_product();
+        add_post_meta($product->get_id(), '_mystyle_enabled', 'yes');
         $GLOBALS['post'] = $product;
         
         //Mock the mystyle_metadata
@@ -264,8 +264,8 @@ class MyStyleCartTest extends WP_UnitTestCase {
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
         
         //Mock the global $post variable
-        $product_id = create_wc_test_product();
-        $product = new \WC_Product_Variable( $product_id );
+        //$product_id = create_wc_test_product();
+        $product = WC_Helper_Product::create_variation_product();
         $GLOBALS['post'] = $product;
         
         $html = $mystyle_cart->loop_add_to_cart_link( $link, $product );
@@ -320,8 +320,6 @@ class MyStyleCartTest extends WP_UnitTestCase {
     public function test_mystyle_add_to_cart_handler_customize() {
         global $product;
         global $filter_wp_redirect_called;
-        
-        $product_id = MyStyle_WC()->get_product_id( $product );
         
         //Mock the global $post variable
         $product_id = create_wc_test_product();

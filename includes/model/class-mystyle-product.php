@@ -18,7 +18,7 @@ class MyStyle_Product extends WC_Product {
      * Constructor
      * @param \WC_Product $product The WC_Product that we are extending.
      */
-    public function __construct( WC_Product $product ) {
+    public function __construct( \WC_Product $product ) {
         parent::__construct( $product );
     }
     
@@ -41,13 +41,30 @@ class MyStyle_Product extends WC_Product {
      * @return number Returns the product type.
      */
     public function get_type() {
+        $product_type = null;
+        
         if( is_callable( 'parent::get_type' ) ) {
             $product_type = parent::get_type();
-        } else {
+        } elseif( property_exists( $this, 'product_type' ) ) {
             $product_type = $this->product_type;
         }
         
         return $product_type;
+    }
+    
+    /**
+     * Function that looks to see if the product is mystyle enabled.
+     * @return boolean Returns true if the product is customizable, otherwise,
+     * returns false.
+     */
+    public function is_customizable() {
+        $mystyle_enabled = get_post_meta( $this->id, '_mystyle_enabled', true );
+        
+        if( $mystyle_enabled == 'yes' ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

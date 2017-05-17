@@ -153,7 +153,7 @@ class MyStyleInstallTest extends WP_UnitTestCase {
      */    
     public function test_uninstall() {
         //init the plugin so that we can then uninstall it
-        MyStyle::init();
+        //MyStyle::init();
         
         //assert that there are options
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );

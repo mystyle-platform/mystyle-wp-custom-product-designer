@@ -56,7 +56,7 @@ class MyStyleUserInterfaceTest extends WP_UnitTestCase {
      * Test the constructor
      */    
     public function test_constructor() {
-        $mystyle = new MyStyle();
+        $mystyle_ui = new MyStyle_User_Interface();
         
         global $wp_filter;
         

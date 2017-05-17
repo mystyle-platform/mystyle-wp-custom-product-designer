@@ -41,4 +41,36 @@ class MyStyleTest extends WP_UnitTestCase {
         $this->assertArrayHasKey( 'mystyle_design_profile', $shortcode_tags );
     }
     
+    /**
+     * Test the site_has_customizable_products function returns true when
+     * customizable products exist.
+     */
+    public function test_site_has_customizable_products_returns_false_when_customizable_products_dont_exist() {
+        //create a regular test product
+        $product_id = create_wc_test_product('Test Product');
+        
+        //call the function
+        $result = MyStyle::site_has_customizable_products();
+        
+        $this->assertFalse( $result );
+    }
+    
+    
+    /**
+     * Test the site_has_customizable_products function returns true when
+     * customizable products exist.
+     */
+    public function test_site_has_customizable_products_returns_true_when_customizable_products_exist() {
+        //create a regular test product
+        $product_id = create_wc_test_product('Test Product');
+        
+        //enable mystyle for the product
+        update_post_meta( $product_id, '_mystyle_enabled', 'yes' );
+        
+        //call the function
+        $result = MyStyle::site_has_customizable_products();
+        
+        $this->assertTrue( $result );
+    }
+    
 }

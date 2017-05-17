@@ -47,9 +47,9 @@ class MyStyle_Cart {
         global $product;
         
         if( $product != null ) {
-            $product_id = MyStyle_WC()->get_product_id( $product );
+            $mystyle_product = new \MyStyle_Product( $product );
             
-            if( MyStyle::product_is_customizable( $product_id ) ) {
+            if( $mystyle_product->is_customizable() ) {
                 $text = "Customize";
             }
         }
@@ -67,9 +67,11 @@ class MyStyle_Cart {
     public function filter_add_to_cart_handler( $handler, $product ) {
 
         if($product != null) {
-            $product_id = MyStyle_WC()->get_product_id( $product );
+            $mystyle_product = new \MyStyle_Product( $product );
+            $product_id = $mystyle_product->get_id();
         } else {
             $product_id = absint( $_REQUEST['add-to-cart'] );
+            $mystyle_product = new Mystyle_Product( new WC_Product( $product_id ) );
         }
         
         if( isset( $_REQUEST['design_id'] ) ) {
@@ -80,7 +82,7 @@ class MyStyle_Cart {
             }
         } else {
         
-            if( MyStyle::product_is_customizable( $product_id ) ) {
+            if( $mystyle_product->is_customizable() ) {
                 $handler = 'mystyle_customizer';
                 if(WC_VERSION < 2.3) {
                     //old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
@@ -101,10 +103,11 @@ class MyStyle_Cart {
     public function loop_add_to_cart_link( $link, $product ) {
         //var_dump($product);
         
-        $product_id   = MyStyle_WC()->get_product_id( $product );
-        $product_type = MyStyle_WC()->get_product_type( $product );
+        $mystyle_product = new \MyStyle_Product( $product );
+        $product_id = $mystyle_product->get_id();
+        $product_type = $mystyle_product->get_type();
         
-        if( ( MyStyle::product_is_customizable( $product_id ) ) && ( $product_type != 'variable') ) {
+        if( ( $mystyle_product->is_customizable() ) && ( $product_type != 'variable') ) {
             $customize_page_id = MyStyle_Customize_Page::get_id();
             
             //build the url to the customizer including the poduct_id
@@ -173,7 +176,7 @@ class MyStyle_Cart {
         wp_safe_redirect( $customizer_url );
         
         //exit (unless called by phpunit)
-        if( ! defined('PHPUNIT_RUNNING') ) {
+        if( ! defined('DOING_PHPUNIT') ) {
             exit;
         }
     }

@@ -1,11 +1,11 @@
 <?php
 
 //bootstrap woocommerce
-require_once( MYSTYLE_PATH . '../woocommerce/woocommerce.php' );
-require_once( MYSTYLE_PATH . '../woocommerce/includes/abstracts/abstract-wc-product.php' );
-require_once( MYSTYLE_PATH . '../woocommerce/includes/class-wc-product-variable.php' );
+//require_once( MYSTYLE_PATH . '../woocommerce/woocommerce.php' );
+//require_once( MYSTYLE_PATH . '../woocommerce/includes/abstracts/abstract-wc-product.php' );
+//require_once( MYSTYLE_PATH . '../woocommerce/includes/class-wc-product-variable.php' );
 
-require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
+//require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-api.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php' );
@@ -49,9 +49,6 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
-        
-        //Reset the MyStyle singleton instance.
-        MyStyle::reset_instance();
     }
     
     /**
@@ -113,14 +110,6 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $ret = $mystyle_handoff->override();
         
         $this->assertTrue( $ret );
-        
-        /*
-        $url = 'http://localhost/wordpress/?mystyle-handoff';
- 
-        $response = wp_remote_get( $url );
-        
-        $this->assertContains( '<h2>Access Denied</h2>', $response['body'] );
-         */
     }
     
     /**
@@ -221,6 +210,9 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         //Mock woocommerce
         $woocommerce = new MyStyle_MockWooCommerce();
         
+        $product = WC_Helper_Product::create_simple_product();
+        $product_id = $product->get_id();
+        /*
         //create a variable product
         $product_id = create_wc_test_product(
                 'Test Product', //name
@@ -236,6 +228,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
                             1,
                             array('color' => 'red')
         );
+         */
         
         //Init the MyStyle_Handoff
         $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
@@ -295,6 +288,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $woocommerce = new MyStyle_MockWooCommerce();
         
         //create a variable product
+        
         $product_id = create_wc_test_product(
                 'Test Product', //name
                 'variable', //type
@@ -309,6 +303,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
                             1,
                             array('color' => 'red')
         );
+         
         
         //create the blue variation
         $blue_variation_id = create_wc_test_product_variation(
