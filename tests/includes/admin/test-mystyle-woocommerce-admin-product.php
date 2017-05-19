@@ -40,7 +40,11 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
         $this->assertContains( 'add_product_data_tab', $function_names );
         
         //Assert that the add_mystyle_data_panel function is registered.
-        $function_names = get_function_names( $wp_filter['woocommerce_product_write_panels'] );
+        if( WC_VERSION < 2.6 ) {
+            $function_names = get_function_names( $wp_filter['woocommerce_product_write_panels'] );
+        } else {
+            $function_names = get_function_names( $wp_filter['woocommerce_product_data_panels'] );
+        }
         $this->assertContains( 'add_mystyle_data_panel', $function_names );
         
         //Assert that the process_mystyle_data_panel function is registered.

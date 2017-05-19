@@ -19,9 +19,6 @@ class MyStyleProductTest extends WP_UnitTestCase {
     function setUp() {
         // Perform the actual task according to parent class.
         parent::setUp();
-        // Remove filters that will create temporary tables. So that permanent tables will be created.
-        remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
-        remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
         
         //Create the tables
         MyStyle_Install::create_tables();
@@ -40,6 +37,53 @@ class MyStyleProductTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+    }
+    
+    /**
+     * Test the get_id function.
+     */    
+    public function test_get_id() {
+        
+        //set up the test data
+        $product = new MyStyle_Product( WC_Helper_Product::create_simple_product() );
+        $expected_id = 3;
+    
+        //call the function
+        $id = $product->get_id();
+        
+        //assert that a product id is returned.
+        $this->assertTrue( $id > 0 );
+    }
+    
+    /**
+     * Test the get_type function.
+     */    
+    public function test_get_type() {
+        
+        //set up the test data
+        $product = new MyStyle_Product( WC_Helper_Product::create_simple_product() );
+        $expected_type = 'simple';
+    
+        //call the function
+        $type = $product->get_type();
+        
+        //assert that the expected product type is returned.
+        $this->assertEquals( $expected_type, $type );
+    }
+    
+    /**
+     * Test the get_children function.
+     */    
+    public function test_get_children() {
+        
+        //set up the test data
+        $product = new MyStyle_Product( WC_Helper_Product::create_variation_product() );
+    
+        //call the function
+        $children = $product->get_children();
+        
+        //assert that the expected number of children are returned.
+        $this->assertEquals( 2, count( $children ) );
     }
     
     /**

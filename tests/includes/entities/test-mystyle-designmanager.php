@@ -37,6 +37,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Session::get_table_name());
     }
     
     /**

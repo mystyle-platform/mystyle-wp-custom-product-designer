@@ -5,7 +5,7 @@
 //require_once( MYSTYLE_PATH . '../woocommerce/includes/abstracts/abstract-wc-product.php' );
 //require_once( MYSTYLE_PATH . '../woocommerce/includes/class-wc-product-variable.php' );
 
-//require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
+require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-api.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php' );
@@ -28,10 +28,11 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
     function setUp() {
         // Perform the actual task according to parent class.
         parent::setUp();
+        /*
         // Remove filters that will create temporary tables. So that permanent tables will be created.
         remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
         remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
-        
+        */
         //Create the tables
         MyStyle_Install::create_tables();
         
@@ -42,6 +43,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
     /**
      * Overrwrite the tearDown function to remove our custom tables.
      */
+    /*
     function tearDown() {
         global $wpdb;
         // Perform the actual task according to parent class.
@@ -50,6 +52,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
     }
+     */
     
     /**
      * Test the constructor
@@ -210,25 +213,17 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         //Mock woocommerce
         $woocommerce = new MyStyle_MockWooCommerce();
         
-        $product = WC_Helper_Product::create_simple_product();
+        $customer = WC_Helper_Customer::create_mock_customer();
+        $product = new MyStyle_Product( WC_Helper_Product::create_variation_product() );
         $product_id = $product->get_id();
-        /*
-        //create a variable product
-        $product_id = create_wc_test_product(
-                'Test Product', //name
-                'variable', //type
-                array('color' => array('red', 'blue')) //attributes
-        );
+        $children = $product->get_children();
         
-        $parent = get_post( $product_id );
-        
-        //create a variation
-        $variation_id = create_wc_test_product_variation(
-                            $parent,
-                            1,
-                            array('color' => 'red')
-        );
-         */
+        //we simulate the scenario that the variation was changed in the
+        //customizer. This would pass variation values (ex: 'large') that are
+        //different from the variation id.
+        $passed_variation_id = $children[0];
+        $correct_variation_id = $children[1];
+        $correct_variation = wc_get_product_variation_attributes($correct_variation_id);
         
         //Init the MyStyle_Handoff
         $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
@@ -246,13 +241,13 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
                                     'add-to-cart' => $product_id, 
                                     'product_id' => $product_id,
                                     'quantity' => 1,
-                                    'variation_id' => $variation_id,
-                                    'attribute_pa_color' => 'blue',
+                                    'variation_id' => $passed_variation_id,
+                                    'attribute_pa_size' => $correct_variation['attribute_pa_size'],
                                 )
                             ) 
                         ) 
                     );
-        $post['user_id'] = $parent->post_author;
+        $post['user_id'] = $customer->get_id();
         $post['price'] = 0;
         $_POST = $post;
         
@@ -263,7 +258,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         //Assert that the expected product variation was added to the cart.
         $added_to_cart = $woocommerce->cart->added_to_cart;
         
-        $this->assertEquals( $variation_id, $added_to_cart['variation_id'] );
+        $this->assertEquals( $correct_variation_id, $added_to_cart['variation_id'] );
     }
     
     /**

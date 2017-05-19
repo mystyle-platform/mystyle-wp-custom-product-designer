@@ -1,5 +1,7 @@
 <?php
 
+require_once(MYSTYLE_PATH . 'tests/mocks/mock-mystyle-design.php');
+
 /**
  * The MyStyleSessionManagerTest class includes tests for testing the 
  * MyStyle_SessionManager
@@ -14,6 +16,7 @@ class MyStyleSessionManagerTest extends WP_UnitTestCase {
      * Overrwrite the setUp function so that our custom tables will be persisted
      * to the test database.
      */
+    
     function setUp() {
         // Perform the actual task according to parent class.
         parent::setUp();
@@ -24,6 +27,7 @@ class MyStyleSessionManagerTest extends WP_UnitTestCase {
         //Create the tables
         MyStyle_Install::create_tables();
     }
+     
     
     /**
      * Overrwrite the tearDown function to remove our custom tables.

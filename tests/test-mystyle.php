@@ -9,6 +9,34 @@
 class MyStyleTest extends WP_UnitTestCase {
 
     /**
+     * Overrwrite the setUp function so that our custom tables will be persisted
+     * to the test database.
+     */
+    function setUp() {
+        // Perform the actual task according to parent class.
+        parent::setUp();
+        
+        //Create the tables
+        MyStyle_Install::create_tables();
+        
+        //Instantiate the MyStyle and MyStyle_WC object.
+        MyStyle::get_instance()->set_WC( new MyStyle_WC() );
+    }
+    
+    /**
+     * Overrwrite the tearDown function to remove our custom tables.
+     */
+    function tearDown() {
+        global $wpdb;
+        // Perform the actual task according to parent class.
+        parent::tearDown();
+        
+        //Drop the tables that we created
+        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Session::get_table_name());
+    }
+    
+    /**
      * Assert that the expected constants are declared and accessible.
      */    
     function testConstants() {

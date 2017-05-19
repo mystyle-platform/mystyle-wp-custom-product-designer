@@ -1,6 +1,5 @@
 <?php
 
-require_once( MYSTYLE_PATH . '../woocommerce/woocommerce.php' );
 require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-cart.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce.php' );
 require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-woocommerce-cart.php' );
@@ -21,9 +20,6 @@ class MyStyleCartTest extends WP_UnitTestCase {
     function setUp() {
         // Perform the actual task according to parent class.
         parent::setUp();
-        // Remove filters that will create temporary tables. So that permanent tables will be created.
-        remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
-        remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
         
         //Create the tables
         MyStyle_Install::create_tables();
@@ -42,6 +38,7 @@ class MyStyleCartTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Session::get_table_name());
     }
     
     /**
