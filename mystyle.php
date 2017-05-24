@@ -136,6 +136,7 @@ final class MyStyle {
         require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
         require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php' );
 
+        require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-customer.php' );
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
         require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-order.php' );

@@ -42,8 +42,12 @@ abstract class MyStyle_AbstractWC {
                         $product_id, 
                         $variation ) 
     {
+        echo 'in get_matching_variation';
         if( WC_VERSION < 3.0 ) {
             $variable_product = new \WC_Product_Variable( $product_id );
+            //'searching...';
+            //var_dump( $variation );
+            //var_dump($variable_product);
             return $variable_product->get_matching_variation( $variation );
         } else {
             $product = new WC_Product( $product_id );

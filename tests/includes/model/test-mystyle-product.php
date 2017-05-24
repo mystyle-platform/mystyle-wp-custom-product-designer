@@ -1,8 +1,5 @@
 <?php
 
-//require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-designqueryresult.php' );
-//require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-design.php' );
-
 /**
  * The MyStyleProductTest class includes tests for testing the MyStyle_Product
  * class.
@@ -37,6 +34,7 @@ class MyStyleProductTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Session::get_table_name());
     }
     
     /**
@@ -46,7 +44,6 @@ class MyStyleProductTest extends WP_UnitTestCase {
         
         //set up the test data
         $product = new MyStyle_Product( WC_Helper_Product::create_simple_product() );
-        $expected_id = 3;
     
         //call the function
         $id = $product->get_id();

@@ -28,11 +28,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
     function setUp() {
         // Perform the actual task according to parent class.
         parent::setUp();
-        /*
-        // Remove filters that will create temporary tables. So that permanent tables will be created.
-        remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
-        remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
-        */
+        
         //Create the tables
         MyStyle_Install::create_tables();
         
@@ -43,7 +39,6 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
     /**
      * Overrwrite the tearDown function to remove our custom tables.
      */
-    /*
     function tearDown() {
         global $wpdb;
         // Perform the actual task according to parent class.
@@ -51,8 +46,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         
         //Drop the tables that we created
         $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Session::get_table_name());
     }
-     */
     
     /**
      * Test the constructor
@@ -213,7 +208,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         //Mock woocommerce
         $woocommerce = new MyStyle_MockWooCommerce();
         
-        $customer = WC_Helper_Customer::create_mock_customer();
+        $customer = new MyStyle_Customer( WC_Helper_Customer::create_mock_customer() );
         $product = new MyStyle_Product( WC_Helper_Product::create_variation_product() );
         $product_id = $product->get_id();
         $children = $product->get_children();
@@ -223,7 +218,14 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         //different from the variation id.
         $passed_variation_id = $children[0];
         $correct_variation_id = $children[1];
-        $correct_variation = wc_get_product_variation_attributes($correct_variation_id);
+        
+        $correct_variation = wc_get_product_variation_attributes( $correct_variation_id );
+        
+        echo 'passed_variation_id' . $passed_variation_id;
+        var_dump(wc_get_product_variation_attributes( $passed_variation_id ));
+        echo 'correct_variation_id' . $correct_variation_id;
+        var_dump($correct_variation);
+        echo '================';
         
         //Init the MyStyle_Handoff
         $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
