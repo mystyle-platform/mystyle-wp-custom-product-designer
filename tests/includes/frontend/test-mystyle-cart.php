@@ -257,11 +257,7 @@ class MyStyleCartTest extends WP_UnitTestCase {
         //Create a mock link
         $link = '<a href="">link</a>';
         
-        //Mock the mystyle_metadata
-        add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
-        
         //Mock the global $post variable
-        //$product_id = create_wc_test_product();
         $product = WC_Helper_Product::create_variation_product();
         
         //fix the test data (WC < 3.0 is broken)
