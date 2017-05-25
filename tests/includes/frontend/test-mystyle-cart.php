@@ -181,7 +181,7 @@ class MyStyleCartTest extends WP_UnitTestCase {
         //Mock the mystyle_metadata
         add_filter('get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4);
         
-        if(WC_VERSION >= 2.3) { //we intercept the filter and call the the handler in old versions of WC, so this test always fails
+        if( version_compare( WC_VERSION, '2.3', '<' ) ) { //we intercept the filter and call the the handler in old versions of WC, so this test always fails
             
             //call the function
             $text = MyStyle_Cart::get_instance()->filter_add_to_cart_handler( 'test_handler', $product );

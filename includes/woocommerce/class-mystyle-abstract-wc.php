@@ -42,7 +42,7 @@ abstract class MyStyle_AbstractWC {
                         $product_id, 
                         $variation ) 
     {
-        if( WC_VERSION < 3.0 ) {
+        if( version_compare( WC_VERSION, '3.0', '<' ) ) {
             $variable_product = new \WC_Product_Variable( $product_id );
             return $variable_product->get_matching_variation( $variation );
         } else {

@@ -30,7 +30,7 @@ function get_function_names( $regArray1 ) {
  */
 function create_test_product( $type = 'WC_Product_Simple' ) {
     $product = null;
-    if( WC_VERSION < 3.0 ) {
+    if( version_compare( WC_VERSION, '3.0', '<' ) ) {
         //Mock the global $post variable
         $post_vars = new stdClass();
         $post_vars->ID = 1;
@@ -162,7 +162,7 @@ function create_wc_test_product_variation(
  */
 function fix_variation_product( WC_Product $product ) {
     
-    if( WC_VERSION < 3.0 ) {
+    if( version_compare( WC_VERSION, '3.0', '<' ) ) {
         
         //properly create the product attributes on the post.
         update_post_meta( 

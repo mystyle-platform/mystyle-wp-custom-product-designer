@@ -30,8 +30,8 @@ class MyStyle_WooCommerce_Admin_Product {
     function admin_init() {
         add_action( 'woocommerce_product_write_panel_tabs', array( &$this, 'add_product_data_tab' ) );
         add_action( 'woocommerce_process_product_meta', array( &$this, 'process_mystyle_data_panel' ) );
-        
-        if( WC_VERSION < 2.6 ) {
+
+        if( version_compare( WC_VERSION, '2.6', '<' ) ) {
             add_action( 'woocommerce_product_write_panels', array( &$this, 'add_mystyle_data_panel' ) );
         } else {
             add_action( 'woocommerce_product_data_panels', array( &$this, 'add_mystyle_data_panel' ) );

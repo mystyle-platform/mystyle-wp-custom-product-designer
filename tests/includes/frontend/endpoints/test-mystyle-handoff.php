@@ -225,7 +225,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $passed_variation_id = $children[0];
         $correct_variation_id = $children[1];
         
-        if( WC_VERSION < 3.0 ) {
+        if( version_compare( WC_VERSION, '3.0', '<' ) ) {
             $attribute_name = 'size';
         } else {
             $attribute_name = 'pa_size';
