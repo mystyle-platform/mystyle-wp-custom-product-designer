@@ -225,8 +225,14 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $passed_variation_id = $children[0];
         $correct_variation_id = $children[1];
         
+        if( WC_VERSION < 3.0 ) {
+            $attribute_name = 'size';
+        } else {
+            $attribute_name = 'pa_size';
+        }
+        
         $correct_variation = wc_get_product_variation_attributes( $correct_variation_id );
-        $size = $correct_variation['attribute_size'];
+        $size = $correct_variation['attribute_' . $attribute_name];
         
         //Init the MyStyle_Handoff
         $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
@@ -245,7 +251,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
                                     'product_id' => $product_id,
                                     'quantity' => 1,
                                     'variation_id' => $passed_variation_id,
-                                    'attribute_size' => $size,
+                                    'attribute_' . $attribute_name => $size,
                                 )
                             ) 
                         ) 
