@@ -80,7 +80,7 @@ final class MyStyle {
         }
 
         if( ! defined( 'MYSTYLE_SERVER' ) ) { define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' ); }
-        if( ! defined( 'MYSTYLE_VERSION' ) ) { define( 'MYSTYLE_VERSION', '1.6.3' ); }
+        if( ! defined( 'MYSTYLE_VERSION' ) ) { define( 'MYSTYLE_VERSION', '1.7.0' ); }
 
         define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
         define( 'MYSTYLE_NOTICES_NAME', 'mystyle_notices' );
