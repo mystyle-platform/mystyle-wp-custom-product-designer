@@ -181,12 +181,9 @@ class MyStyle_Handoff {
             //The customizer may change the attributes but doesn't ever change
             //the variation_id.  Here we update the variation_id to match the
             //passed attributes.
-            echo 'before:' . $variation_id;
-            var_dump($variation);
             if( ! empty( $variation_id ) ) {
                 $variation_id = MyStyle_WC()->get_matching_variation( $product_id, $variation );
             }
-            echo 'after:' . $variation_id;
             
             //echo $quantity . ':' . $variation_id;
             //exit;

@@ -209,7 +209,12 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $woocommerce = new MyStyle_MockWooCommerce();
         
         $customer = new MyStyle_Customer( WC_Helper_Customer::create_mock_customer() );
-        $product = new MyStyle_Product( WC_Helper_Product::create_variation_product() );
+        $wc_product = WC_Helper_Product::create_variation_product();
+        
+        //fix the test data (WC < 3.0 is broken)
+        fix_variation_product( $wc_product );
+        
+        $product = new MyStyle_Product( $wc_product );
         $product_id = $product->get_id();
         $children = $product->get_children();
         
@@ -220,12 +225,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $correct_variation_id = $children[1];
         
         $correct_variation = wc_get_product_variation_attributes( $correct_variation_id );
-        
-        echo 'passed_variation_id' . $passed_variation_id;
-        var_dump(wc_get_product_variation_attributes( $passed_variation_id ));
-        echo 'correct_variation_id' . $correct_variation_id;
-        var_dump($correct_variation);
-        echo '================';
+        $size = get_post_meta( $correct_variation_id, 'attribute_pa_size' );
         
         //Init the MyStyle_Handoff
         $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
@@ -244,7 +244,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
                                     'product_id' => $product_id,
                                     'quantity' => 1,
                                     'variation_id' => $passed_variation_id,
-                                    'attribute_pa_size' => $correct_variation['attribute_pa_size'],
+                                    'attribute_pa_size' => $size,
                                 )
                             ) 
                         ) 
