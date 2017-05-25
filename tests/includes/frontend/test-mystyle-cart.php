@@ -263,6 +263,10 @@ class MyStyleCartTest extends WP_UnitTestCase {
         //Mock the global $post variable
         //$product_id = create_wc_test_product();
         $product = WC_Helper_Product::create_variation_product();
+        
+        //fix the test data (WC < 3.0 is broken)
+        fix_variation_product( $product );
+        
         $GLOBALS['post'] = $product;
         
         $html = $mystyle_cart->loop_add_to_cart_link( $link, $product );
