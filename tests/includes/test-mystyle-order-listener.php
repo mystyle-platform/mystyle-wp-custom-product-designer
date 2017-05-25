@@ -52,12 +52,16 @@ class MyStyleOrderListenerTest extends WP_UnitTestCase {
         
         if( WC()->version < 3.0 ) {
             $function_names = get_function_names( $wp_filter['woocommerce_add_order_item_meta'] );
+            
+            //Assert that the add_mystyle_order_item_meta function is registered.
+            $this->assertContains( 'add_mystyle_order_item_meta_legacy', $function_names );
         } else {
             $function_names = get_function_names( $wp_filter['woocommerce_checkout_create_order_line_item'] );
+            
+            //Assert that the add_mystyle_order_item_meta function is registered.
+            $this->assertContains( 'add_mystyle_order_item_meta', $function_names );
         }
         
-    //Assert that the add_mystyle_order_item_meta function is registered.
-        $this->assertContains( 'add_mystyle_order_item_meta', $function_names );
     }
     
     /**

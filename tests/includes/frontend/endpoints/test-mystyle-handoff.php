@@ -208,7 +208,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         //Mock woocommerce
         $woocommerce = new MyStyle_MockWooCommerce();
         
-        $customer = new MyStyle_Customer( WC_Helper_Customer::create_mock_customer() );
+        //$customer = new MyStyle_Customer( WC_Helper_Customer::create_mock_customer() );
+        $user_id = get_current_user_id();
         $wc_product = WC_Helper_Product::create_variation_product();
         
         //fix the test data (WC < 3.0 is broken)
@@ -249,7 +250,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
                             ) 
                         ) 
                     );
-        $post['user_id'] = $customer->get_id();
+        $post['user_id'] = $user_id;
         $post['price'] = 0;
         $_POST = $post;
         
