@@ -39,7 +39,7 @@ class MyStyleTest extends WP_UnitTestCase {
     /**
      * Assert that the expected constants are declared and accessible.
      */    
-    function testConstants() {
+    function test_constants() {
         $this->assertNotEmpty( MYSTYLE_PATH );
         $this->assertNotEmpty( MYSTYLE_INCLUDES );
         $this->assertNotEmpty( MYSTYLE_BASENAME );
@@ -54,7 +54,7 @@ class MyStyleTest extends WP_UnitTestCase {
     /**
      * Assert that the mystyle_customizer shortcode is registered
      */    
-    function testCustomizerShortcodeIsRegistered() {
+    function test_customizer_shortcode_is_registered() {
         global $shortcode_tags;
 
         $this->assertArrayHasKey( 'mystyle_customizer', $shortcode_tags );
@@ -63,7 +63,7 @@ class MyStyleTest extends WP_UnitTestCase {
     /**
      * Assert that the mystyle_design_profile shortcode is registered
      */    
-    function testDesignProfileShortcodeIsRegistered() {
+    function test_design_profile_shortcode_is_registered() {
         global $shortcode_tags;
 
         $this->assertArrayHasKey( 'mystyle_design_profile', $shortcode_tags );
