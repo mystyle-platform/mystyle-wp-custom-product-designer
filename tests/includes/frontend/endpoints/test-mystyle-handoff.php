@@ -225,7 +225,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $correct_variation_id = $children[1];
         
         $correct_variation = wc_get_product_variation_attributes( $correct_variation_id );
-        $size = get_post_meta( $correct_variation_id, 'attribute_pa_size' );
+        $size = $correct_variation['attribute_size'];
         
         //Init the MyStyle_Handoff
         $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
@@ -244,7 +244,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
                                     'product_id' => $product_id,
                                     'quantity' => 1,
                                     'variation_id' => $passed_variation_id,
-                                    'attribute_pa_size' => $size,
+                                    'attribute_size' => $size,
                                 )
                             ) 
                         ) 
