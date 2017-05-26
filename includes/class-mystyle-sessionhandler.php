@@ -47,6 +47,8 @@ class MyStyle_SessionHandler {
         if(!session_id()) {
             session_start();
         }
+        
+        $this->get();
     }
 
     /**
