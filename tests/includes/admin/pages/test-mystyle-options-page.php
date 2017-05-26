@@ -154,7 +154,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
      */    
     public function test_add_page_to_menu() {
         
-        wp_set_current_user($this->factory->user->create( array( 'role' => 'administrator' ) ) );
+        //wp_set_current_user($this->factory->user->create( array( 'role' => 'administrator' ) ) );
         
         //Assert that the menu page doesn't yet exist
         $this->assertEquals( '', menu_page_url( 'mystyle', false ) );
@@ -164,7 +164,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         
         //Assert that the menu page was added
         $expected = 'http://example.org/wp-admin/admin.php?page=mystyle';
-        $this->assertEquals($expected, menu_page_url( 'mystyle', false ) );
+        $this->assertEquals( $expected, menu_page_url( 'mystyle', false ) );
     }
     
     /**

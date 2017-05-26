@@ -91,9 +91,6 @@ class MyStyleUserInterfaceTest extends WP_UnitTestCase {
         MyStyle_SessionManager::persist( $session );
         
         //Set the session to be for the current request
-        if(session_id() == '') {
-            session_start();
-        }
         $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
         
         //Create a design
@@ -107,7 +104,7 @@ class MyStyleUserInterfaceTest extends WP_UnitTestCase {
         $this->assertNull( $design->get_user_id() );
         
         //Mock a WP_User
-        $user_id = wp_create_user( 'testuser', 'testpassword', $email );
+        $user_id = MyStyle_Test_util::create_user( 'testuser', 'testpassword', $email );
         /** \WP_User */
         $user = get_user_by( 'id', $user_id );
         
@@ -141,9 +138,6 @@ class MyStyleUserInterfaceTest extends WP_UnitTestCase {
         MyStyle_SessionManager::persist( $session );
         
         //Set the session to be for the current request
-        if(session_id() == '') {
-            session_start();
-        }
         $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
         
         //Create a design
@@ -157,7 +151,7 @@ class MyStyleUserInterfaceTest extends WP_UnitTestCase {
         $this->assertNull( $design->get_user_id() );
         
         //Mock a WP_User
-        $user_id = wp_create_user( 'testuser', 'testpassword', $email );
+        $user_id = MyStyle_Test_util::create_user( 'testuser', 'testpassword', $email );
         /** \WP_User */
         $user = get_user_by( 'id', $user_id );
         
@@ -191,9 +185,6 @@ class MyStyleUserInterfaceTest extends WP_UnitTestCase {
         MyStyle_SessionManager::persist( $session );
         
         //Set the session to be for the current request
-        if(session_id() == '') {
-            session_start();
-        }
         $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
         
         //Create a design
@@ -207,7 +198,7 @@ class MyStyleUserInterfaceTest extends WP_UnitTestCase {
         $this->assertNull( $design->get_user_id() );
         
         //Mock a WP_User
-        $user_id = wp_create_user( 'testuser', 'testpassword', $email );
+        $user_id = MyStyle_Test_util::create_user( 'testuser', 'testpassword', $email );
         /** \WP_User */
         $user = get_user_by( 'id', $user_id );
         

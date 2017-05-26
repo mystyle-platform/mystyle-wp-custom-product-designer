@@ -284,8 +284,13 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         $session_id = 'testsessionid';
         $email = 'someone@example.com';
         
+        //Create the session
+        MyStyle_SessionHandler::get_instance();
+        
+        remove_action( 'user_register', array( MyStyle_User_Interface::get_instance() , 'on_user_register' ) );
+        
         //Mock the user (note this will call the function since it is hooked into the register function)
-        $user_id = wp_create_user( 'testuser', 'testpassword', $email );
+        $user_id = MyStyle_Test_util::create_user( 'testuser', 'testpassword', $email );
         $user = get_user_by( 'id', $user_id );
         
         //Mock the session
@@ -327,8 +332,8 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         $session_id = 'testsessionid';
         $email = null;
         
-        //Mock the user (note this will call the function since it is hooked into the register function)
-        $user_id = wp_create_user( 'testuser', 'testpassword', $email );
+        //Mock the user (remove our hooked functions first)
+        $user_id = MyStyle_Test_util::create_user( 'testuser', 'testpassword', $email );
         $user = get_user_by( 'id', $user_id );
         
         //Mock the session
@@ -370,7 +375,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         $email = 'someone@example.com';
         
         //Mock the user
-        $user_id = wp_create_user( 'testuser', 'testpassword', $email );
+        $user_id = MyStyle_Test_util::create_user( 'testuser', 'testpassword', $email );
         $user = get_user_by( 'id', $user_id );
         
         //Mock the session
@@ -413,7 +418,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         $email2 = 'someoneelse@example.com';
         
         //Mock the user (note this will call the function since it is hooked into the register function)
-        $user_id = wp_create_user( 'testuser', 'testpassword', $email1 );
+        $user_id = MyStyle_Test_util::create_user( 'testuser', 'testpassword', $email1 );
         $user = get_user_by( 'id', $user_id );
         
         //Mock the session

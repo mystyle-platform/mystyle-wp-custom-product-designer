@@ -33,7 +33,7 @@ class MyStyle_User_Interface {
      * @param WP_User $user
      */
     public function on_wp_login( $user_login, $user ) {
-        $session = MyStyle_SessionHandler::get();
+        $session = MyStyle()->get_session();
         MyStyle_DesignManager::set_user_id( $user, $session );
     }
     
@@ -42,7 +42,7 @@ class MyStyle_User_Interface {
      * @param integer $user_id
      */
     public function on_user_register( $user_id ) {
-        $session = MyStyle_SessionHandler::get();
+        $session = MyStyle()->get_session();
         $user = get_user_by( 'id', $user_id );
         MyStyle_DesignManager::set_user_id( $user, $session );
     }
@@ -53,7 +53,7 @@ class MyStyle_User_Interface {
      * @param integer $user_id
      */
     public function on_woocommerce_created_customer( $customer_id, $new_customer_data, $password_generated ) {
-        $session = MyStyle_SessionHandler::get();
+        $session = MyStyle()->get_session();
         $user = get_user_by( 'id', $customer_id );
         MyStyle_DesignManager::set_user_id( $user, $session );
     }

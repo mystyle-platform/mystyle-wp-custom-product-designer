@@ -273,7 +273,7 @@ class MyStyle_Cart {
             $user = wp_get_current_user();
             
             /** @var \MyStyle_Session */
-            $session = MyStyle_SessionHandler::get();
+            $session = MyStyle()->get_session();
             
             /** @var \MyStyle_Design */
             $design = MyStyle_DesignManager::get( $design_id, $user, $session );
@@ -370,7 +370,7 @@ class MyStyle_Cart {
             $user = wp_get_current_user();
             
             /** @var \MyStyle_Session */
-            $session = MyStyle_SessionHandler::get();
+            $session = MyStyle()->get_session();
             
             /** @var \MyStyle_Design */
             $design = MyStyle_DesignManager::get( $design_id, $user, $session );

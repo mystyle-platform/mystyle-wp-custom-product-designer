@@ -136,6 +136,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         global $woocommerce;
         global $mail_message;
         $GLOBALS['skip_ob_start'] = true;
+        $session_handler = MyStyle_SessionHandler::get_instance();
+        $session_handler->disable_cookies();
         
         //Create the MyStyle Customize page (needed for the link in the email)
         MyStyle_Customize_Page::create();
@@ -170,7 +172,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $_POST = $post;
         
         //Assert that the session is not yet persisted
-        $this->assertFalse( MyStyle_SessionHandler::get()->is_persistent() );
+        $session = $session_handler->get();
+        $this->assertFalse( $session->is_persistent() );
         
         //Call the function
         $mystyle_handoff->handle();
@@ -180,7 +183,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $this->assertContains( 'Product added to cart', $html );
         
         //Assert that the session was persisted
-        $this->assertTrue( MyStyle_SessionHandler::get()->is_persistent() );
+        $this->assertTrue( $session->is_persistent() );
         
         //Assert that add_to_cart was called.
         $this->assertEquals( 1, $woocommerce->cart->add_to_cart_call_count );

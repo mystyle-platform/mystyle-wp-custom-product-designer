@@ -89,8 +89,9 @@ class MyStyle_Handoff {
             $design = MyStyle_Design::create_from_post( $_POST );
             
             //Get and persist the Design
-            $session = MyStyle_SessionHandler::get();
-            MyStyle_SessionHandler::persist( $session );
+            $session_handler = MyStyle_SessionHandler::get_instance();
+            $session = $session_handler->get();
+            $session_handler->persist( $session );
             
             //Add the session id to the design
             $design->set_session_id( $session->get_session_id() );

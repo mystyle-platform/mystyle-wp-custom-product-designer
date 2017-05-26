@@ -75,7 +75,7 @@ class MyStyle_Order_Listener {
         $current_user = wp_get_current_user();
                     
         /** @var \MyStyle_Session */
-        $session = MyStyle_SessionHandler::get();
+        $session = MyStyle()->get_session();
         
         // order object (optional but handy)
         $order = new WC_Order( $order_id );

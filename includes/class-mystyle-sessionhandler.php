@@ -11,6 +11,60 @@
 class MyStyle_SessionHandler {
     
     /**
+     * Singleton class instance
+     * @var MyStyle_SessionHandler
+     */
+    private static $instance;
+    
+    /**
+     * The current MyStyle_Session
+     * @var MyStyle_Session 
+     */
+    private $session;
+    
+    /**
+     * Switch to enable/disable cookies. This is just used for testing purposes
+     * at this point.
+     * @var boolean 
+     */
+    private $use_cookies;
+    
+    /**
+     * Constructor, constructs the class and sets up the hooks.
+     */
+    public function __construct() {
+        $this->use_cookies = true; //use cookie by default.
+        
+        add_action( 'init', array( &$this, 'start_session' ), 1, 0 );
+        add_action( 'wp_logout', array( &$this, 'end_session' ), 10, 0 );
+        add_action( 'wp_login', array( &$this, 'start_session' ), 10, 0 );
+    }
+    
+    /**
+     * Starts the session.
+     */
+    public function start_session() {
+        if(!session_id()) {
+            session_start();
+        }
+    }
+
+    /**
+     * Ends/destroy's the session.
+     */
+    public function end_session() {
+        session_destroy ();
+    }
+    
+
+    /**
+     * Disables cookies. This is just used for testing at this point.
+     */
+    public function disable_cookies() {
+        $this->use_cookies = false;
+    }
+    
+    /**
      * Static function to get the current MyStyle Session. This function does
      * the following:
      * * Looks for the session in the session variables
@@ -20,7 +74,11 @@ class MyStyle_SessionHandler {
      *   database.
      * @return \MyStyle_Session Returns the current mystyle session.
      */
-    public static function get() {
+    public function get() {
+        
+        if( $this->session != null ) {
+            return $this->session;
+        }
         
         $session = null;
         
@@ -56,10 +114,12 @@ class MyStyle_SessionHandler {
         if( $session == null ) {
             $session = MyStyle_Session::create();
             $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
-            setcookie( 
-                MyStyle_Session::$COOKIE_NAME, 
-                $session->get_session_id(), 
-                time() + (60*60*24*365*10) );
+            if( $this->use_cookies ) {
+                setcookie( 
+                    MyStyle_Session::$COOKIE_NAME, 
+                    $session->get_session_id(), 
+                    time() + (60*60*24*365*10) );
+            }
         }
         
         //if the session is already persistent, update it.
@@ -67,7 +127,9 @@ class MyStyle_SessionHandler {
             MyStyle_SessionManager::update( $session );
         }
         
-        return $session;
+        $this->session = $session;
+        
+        return $this->session;
     }
     
     /**
@@ -80,7 +142,7 @@ class MyStyle_SessionHandler {
      * @return \MyStyle_Session Returns the session.
      * @todo Add unit tests.
      */
-    public static function persist( $session = null ) {
+    public function persist( $session = null ) {
         if( $session == null ) {
             $session = self::get();
         }
@@ -88,6 +150,33 @@ class MyStyle_SessionHandler {
         MyStyle_SessionManager::update( $session );
         
         return $session;
+    }
+    
+    /**
+     * Resets the singleton instance. This is used during testing if we want to
+     * clear out the existing singleton instance.
+     * @return MyStyle_SessionHandler Returns the singleton instance of
+     * this class.
+     */
+    public static function reset_instance() {
+        
+        self::$instance = new self();
+
+        return self::$instance;
+    }
+    
+    
+    /**
+     * Gets the singleton instance.
+     * @return MyStyle_SessionHandler Returns the singleton instance of
+     * this class.
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
     
 }

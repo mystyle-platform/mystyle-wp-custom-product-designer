@@ -151,7 +151,7 @@ class MyStyle_Design_Profile_Page {
             
             //set the session
             /** @var \MyStyle_Session */
-            $session = MyStyle_SessionHandler::get();
+            $session = MyStyle()->get_session();
             $design_profile_page->set_session( $session );
 
             //get the design from the url, if it's not found, this function

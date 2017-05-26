@@ -186,7 +186,7 @@ final class MyStyle {
     }
     
     /**
-     * Init MyStyle and WordPress Initialises.
+     * Init our singletons (registers hooks, etc).
      */
     private function init_singletons() {
         if( ! defined('DOING_PHPUNIT') ) {
@@ -228,6 +228,7 @@ final class MyStyle {
             //---- FRONT END ----//
             if( ! defined( 'MYSTYLE_DESIGNS_PER_PAGE' ) ) { define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 ); }
 
+            MyStyle_SessionHandler::get_instance();
             MyStyle_FrontEnd::get_instance();
             MyStyle_Cart::get_instance();
             $mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
@@ -298,6 +299,17 @@ final class MyStyle {
      */
     public function get_WC() {
         return $this->wc;
+    }
+    
+    /**
+     * Gets the current MyStyle_Session.
+     * 
+     * This is just a shortcut to make it easier to get the current session.
+     * 
+     * @return MyStyle_Session Returns the current MyStyle_Session.
+     */
+    public function get_session() {
+        return MyStyle_SessionHandler::get_instance()->get();
     }
     
     /**

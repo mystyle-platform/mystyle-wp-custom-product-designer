@@ -45,22 +45,19 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
      */
     function test_get_generates_new_session_if_one_doesnt_exist() {
         
-        //Set the session variable
-        if(session_id() == '') {
-            session_start();
-        }
-        
         //Assert that the $_SESSION variable isn't set
         unset( $_SESSION[MyStyle_Session::$SESSION_KEY] );
         $this->assertFalse( isset( $_SESSION[MyStyle_Session::$SESSION_KEY] ) );
+        MyStyle_SessionHandler::reset_instance();
+        MyStyle_SessionHandler::get_instance()->disable_cookies();
         
         //Call the function
-        $returned_session = MyStyle_SessionHandler::get();
+        $returned_session = MyStyle_SessionHandler::get_instance()->get();
         
         //Assert that the session_id is set
         $this->assertNotNull( $returned_session->get_session_id() );
         
-        //Assert taht the $_SESSION variable is now set
+        //Assert that the $_SESSION variable is now set
         $this->assertTrue( isset( $_SESSION[MyStyle_Session::$SESSION_KEY] ) );
     }
     
@@ -72,6 +69,11 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
     function test_get_returns_existing_persisted_session() {
         global $wpdb;
         
+        //Clear everything out
+        unset( $_SESSION[MyStyle_Session::$SESSION_KEY] );
+        MyStyle_SessionHandler::reset_instance();
+        MyStyle_SessionHandler::get_instance()->disable_cookies();
+        
         $session_id = 'testsession';
         
         //Create and persist the session
@@ -79,13 +81,10 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
         MyStyle_SessionManager::persist( $session );
         
         //Set the session variable
-        if(session_id() == '') {
-            session_start();
-        }
         $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
         
         //Call the function
-        $returned_session = MyStyle_SessionHandler::get();
+        $returned_session = MyStyle_SessionHandler::get_instance()->get();
         
         //Assert that the session_id is set
         $this->assertEquals( $session_id, $returned_session->get_session_id() );
@@ -98,22 +97,27 @@ class MyStyleSessionHandlerTest extends WP_UnitTestCase {
     function test_persist() {
         global $wpdb;
         
+        //Clear everything out
+        unset( $_SESSION[MyStyle_Session::$SESSION_KEY] );
+        MyStyle_SessionHandler::reset_instance();
+        MyStyle_SessionHandler::get_instance()->disable_cookies();
+        
         $session_id = 'testsession';
         
         //Create a session
         $session = MyStyle_Session::create( $session_id );
         
+        //Init and get the session handler
+        $session_handler = MyStyle_SessionHandler::get_instance();
+        
         //Set the session variable
-        if(session_id() == '') {
-            session_start();
-        }
         $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
         
         //Assert that the session is not yet persisted
-        $this->assertFalse( MyStyle_SessionHandler::get()->is_persistent() );
+        $this->assertFalse( $session_handler->get()->is_persistent() );
         
         //Call the function
-        $returned_session = MyStyle_SessionHandler::persist( $session );
+        $returned_session = $session_handler->persist( $session );
         
         //Assert that the session was persisted
         $this->assertTrue( $returned_session->is_persistent() );
