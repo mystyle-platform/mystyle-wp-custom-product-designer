@@ -14,10 +14,10 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
     /**
      * Persists the passed MyStyle_Session to the database.
      * @global \wpdb $wpdb
-     * @param MyStyle_Session $session
+     * @param MyStyle_Entity $session
      * @return \MyStyle_Session Returns the persisted MyStyle_Session.
      */
-    public static function persist( MyStyle_Session $session ) {
+    public static function persist( MyStyle_Entity $session ) {
         $session = parent::persist( $session );
         
         $session->set_persistent( true );
