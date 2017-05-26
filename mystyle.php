@@ -99,8 +99,8 @@ final class MyStyle {
         register_deactivation_hook( __FILE__, array( 'MyStyle', 'deactivate' ) );
         register_uninstall_hook( __FILE__, array( 'MyStyle', 'uninstall' ) );
         
-        add_action( 'woocommerce_init', array( $this, 'init' ), 10, 0 );
-        add_action( 'init', array( $this, 'check_version' ), 101, 0 );
+        add_action( 'init', array( $this, 'init' ), 10, 0 );
+        add_action( 'init', array( $this, 'check_version' ), 10, 0 );
     }
     
     /**
