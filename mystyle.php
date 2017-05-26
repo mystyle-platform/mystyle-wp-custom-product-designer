@@ -62,6 +62,7 @@ final class MyStyle {
         $this->define_constants();
         $this->includes();
         $this->init_hooks();
+        $this->init();
     }
     
     /**
@@ -99,7 +100,6 @@ final class MyStyle {
         register_deactivation_hook( __FILE__, array( 'MyStyle', 'deactivate' ) );
         register_uninstall_hook( __FILE__, array( 'MyStyle', 'uninstall' ) );
         
-        add_action( 'init', array( $this, 'init' ), 10, 0 );
         add_action( 'init', array( $this, 'check_version' ), 10, 0 );
     }
     
@@ -193,7 +193,7 @@ final class MyStyle {
     private function init_singletons() {
         if( ! defined('DOING_PHPUNIT') ) {
             //set up the third party interfaces
-            self::get_instance()->set_WC( new MyStyle_WC() );
+            $this->set_WC( new MyStyle_WC() );
         }
 
         MyStyle_User_Interface::get_instance();

@@ -20,14 +20,25 @@ class MyStyle_Order_Listener {
      * Constructor, constructs the class and sets up the hooks.
      */
     public function __construct() {
-        
+        add_action( 'woocommerce_order_status_completed', array( &$this, 'on_order_completed' ), 10, 1 );
+        add_action( 'init', array( &$this, 'init' ), 10, 1 );
+    }
+    
+    /**
+     * Init the class.
+     * 
+     * In this function we define some additional hooks. We do this late so that
+     * we can see what version WooCommerce is on.
+     * 
+     * Must be public because it is called by a hook.
+     */
+    public function init() {
+        //we hook these in the init event because we need to wait until WooCommerce is loaded so we know the version
         if( WC()->version < 3.0 ) {
             add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_mystyle_order_item_meta_legacy' ), 10, 2 );
         } else {
             add_action( 'woocommerce_checkout_create_order_line_item', array( &$this, 'add_mystyle_order_item_meta' ), 10, 4 );
         }
-        
-        add_action( 'woocommerce_order_status_completed', array( &$this, 'on_order_completed' ), 10, 1 );
     }
     
     /**
