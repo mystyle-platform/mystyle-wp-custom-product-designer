@@ -78,6 +78,7 @@ class MyStyleInstallTest extends WP_UnitTestCase {
      * Test the get_schema function
      */    
     public function test_get_schema() {
+        global $wpdb;
         
         $expected_schema = "
             CREATE TABLE wptests_mystyle_designs (
@@ -104,7 +105,7 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 session_id varchar(100) NULL DEFAULT NULL,
                 cart_data TEXT NULL DEFAULT NULL,
                 PRIMARY KEY  (ms_design_id)
-            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+            ) DEFAULT CHARACTER SET $wpdb->charset COLLATE $wpdb->collate;
             CREATE TABLE wptests_mystyle_sessions (
                 session_id varchar(100) NOT NULL,
                 session_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -112,7 +113,7 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 session_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 session_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 PRIMARY KEY  (session_id)
-            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
+            ) DEFAULT CHARACTER SET $wpdb->charset COLLATE $wpdb->collate;";
         
         $schema = MyStyle_Install::get_schema();
         
