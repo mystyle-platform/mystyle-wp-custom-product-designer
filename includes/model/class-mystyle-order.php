@@ -55,11 +55,12 @@ class MyStyle_Order extends WC_Order {
      * 
      * Works with WC 2.x and WC 3.x.
      * 
+     * @param  string $context
      * @return string Returns the shipping first name.
      */
-    public function get_shipping_first_name() {
+    public function get_shipping_first_name( $context = 'view' ) {
         if( is_callable( 'parent::get_shipping_first_name' ) ) {
-            $first_name = parent::get_shipping_first_name();
+            $first_name = parent::get_shipping_first_name( $context );
         } else { //WC  < 3.0
             $first_name = $this->shipping_first_name;
         }
@@ -72,11 +73,12 @@ class MyStyle_Order extends WC_Order {
      * 
      * Works with WC 2.x and WC 3.x.
      * 
+     * @param  string $context
      * @return string Returns the shipping last name.
      */
-    public function get_shipping_last_name() {
+    public function get_shipping_last_name( $context = 'view' ) {
         if( is_callable( 'parent::get_shipping_last_name' ) ) {
-            $last_name = parent::get_shipping_last_name();
+            $last_name = parent::get_shipping_last_name( $context );
         } else { //WC  < 3.0
             $last_name = $this->shipping_last_name;
         }
@@ -89,11 +91,12 @@ class MyStyle_Order extends WC_Order {
      * 
      * Works with WC 2.x and WC 3.x.
      * 
+     * @param  string $context
      * @return string Returns the billing email.
      */
-    public function get_billing_email() {
+    public function get_billing_email( $context = 'view' ) {
         if( is_callable( 'parent::get_billing_email' ) ) {
-            $email = parent::get_billing_email();
+            $email = parent::get_billing_email( $context );
         } else { //WC  < 3.0
             $email = $this->billing_email;
         }
