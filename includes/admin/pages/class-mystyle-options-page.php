@@ -20,14 +20,15 @@ class MyStyle_Options_Page {
      */
     public function __construct() {
         add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ), 10, 0 );
-        add_action( 'admin_init', array( &$this, 'admin_init' ) );
+        add_action( 'admin_init', array( &$this, 'admin_init' ), 10, 0 );
     }
 
     /**
      * Function to initialize the MyStyle options page.
      */
     public function admin_init() {
-        $sanitize_callback = array( &$this, 'validate' ); //A callback function that sanitizes the option's value.
+        //$sanitize_callback = array( &$this, 'validate' ); //A callback function that sanitizes the option's value.
+        register_setting( 'mystyle_options', MYSTYLE_OPTIONS_NAME, array( &$this, 'validate' ) );
         // ************** ACCOUNT SETTINGS SECTION ******************//
         add_settings_section(
                 'mystyle_options_access_section',
@@ -96,7 +97,6 @@ class MyStyle_Options_Page {
                 'mystyle_tools'
         );
         if ( ( ! empty( $_GET['action'] ) ) && ( $_SERVER['REQUEST_METHOD'] == 'POST' ) ) {
-            $sanitize_callback = ''; //turn off validation
             switch ( $_GET['action'] ) {
                 case 'fix_customize_page' :
 
@@ -110,7 +110,6 @@ class MyStyle_Options_Page {
                     break;
             }
         }
-        register_setting( 'mystyle_options', MYSTYLE_OPTIONS_NAME, $sanitize_callback );
     }
 
     /**
@@ -298,6 +297,12 @@ class MyStyle_Options_Page {
      * @return array Returns the new options to be stored in the database.
      */
     public function validate( $input ) {
+        
+        //Return without doing any validation if a tools/action button pressed
+        if ( ( ! empty( $_GET['action'] ) ) && ( $_SERVER['REQUEST_METHOD'] == 'POST' ) ) {
+            return $input;
+        }
+        
         $old_options = get_option( MYSTYLE_OPTIONS_NAME );
         $new_options = $old_options;  //start with the old options.
 
@@ -354,14 +359,14 @@ class MyStyle_Options_Page {
         }*/
 
 
-        if(!$has_errors) {
+        if( ! $has_errors ) {
             $msg_type = 'updated';
             $msg_message = 'Settings saved.';
         }
 
         add_settings_error(
             'MyStyleOptionsSaveMessage',
-            esc_attr('settings_updated'),
+            esc_attr( 'settings_updated' ),
             $msg_message,
             $msg_type
         );
