@@ -30,7 +30,7 @@ class MyStyleAddonsPageTest extends WP_UnitTestCase {
     public function test_render_page() {
         //Assert that the options page was rendered
         ob_start();
-        MyStyle_Addons_Page::render_page();
+        MyStyle_Addons_Page::get_instance()->render_page();
         $outbound = ob_get_contents();
         ob_end_clean();
         $this->assertContains( 'MyStyle Add-ons', $outbound );

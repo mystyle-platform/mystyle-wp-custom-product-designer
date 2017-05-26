@@ -71,7 +71,7 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
         $post->ID = MyStyle_Design_Profile_Page::get_id();
         
         //Init the MyStyle_Design_Profile_Page
-        MyStyle_Design_Profile_Page::init();
+        MyStyle_Design_Profile_Page::get_instance()->init();
 
         //call the function
         $output = MyStyle_Design_Profile_Shortcode::output();
@@ -109,7 +109,7 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
         $post->ID = MyStyle_Design_Profile_Page::get_id();
         
         //init the MyStyle_Design_Profile_Page
-        MyStyle_Design_Profile_Page::init();
+        MyStyle_Design_Profile_Page::get_instance()->init();
         
         //call the function
         $output = MyStyle_Design_Profile_Shortcode::output();
@@ -137,7 +137,7 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
         MyStyle_Design_Profile_Page::reset_instance();
         
         //init the MyStyle_Design_Profile_Page
-        MyStyle_Design_Profile_Page::init();
+        MyStyle_Design_Profile_Page::get_instance()->init();
         
         //call the function
         $output = MyStyle_Design_Profile_Shortcode::output();

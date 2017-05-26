@@ -120,7 +120,7 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
         wp_insert_post( $test_post );
         
         //Call the function
-        MyStyle_WooCommerce_Admin_Product::process_mystyle_data_panel( $post_id );
+        MyStyle_WooCommerce_Admin_Product::get_instance()->process_mystyle_data_panel( $post_id );
         
         //Get the post meta
         $mystyle_enabled = get_post_meta( $post->ID, '_mystyle_enabled', true );
@@ -172,7 +172,7 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
         wp_insert_post( $test_post );
         
         //Call the function
-        MyStyle_WooCommerce_Admin_Product::process_mystyle_data_panel( $post_id );
+        MyStyle_WooCommerce_Admin_Product::get_instance()->process_mystyle_data_panel( $post_id );
         
         //Get the post meta
         $mystyle_enabled = get_post_meta( $post->ID, '_mystyle_enabled', true );
@@ -226,7 +226,7 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
         wp_insert_post( $test_post );
         
         //Call the function
-        MyStyle_WooCommerce_Admin_Product::process_mystyle_data_panel( $post_id );
+        MyStyle_WooCommerce_Admin_Product::get_instance()->process_mystyle_data_panel( $post_id );
         
         //Get the post meta
         $mystyle_enabled = get_post_meta( $post->ID, '_mystyle_enabled', true );

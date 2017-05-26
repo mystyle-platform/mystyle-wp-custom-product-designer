@@ -70,8 +70,7 @@ class MyStyle_MockAPI implements MyStyle_API_Interface {
      * @param string $url The request URL.
      * @return Returns a mocked response from the MyStyle API.
      */
-   function mock_api_call( $preempt, $args, $url )
-   {
+   static function mock_api_call( $preempt, $args, $url ) {
         // Get an instance of WP_Http.
         $http = _wp_http_get_object();
 

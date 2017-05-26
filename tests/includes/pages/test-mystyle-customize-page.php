@@ -137,7 +137,7 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         
         //call the function
-        $new_title = MyStyle_Customize_Page::filter_title( 'foo', MyStyle_Customize_Page::get_id() );
+        $new_title = MyStyle_Customize_Page::get_instance()->filter_title( 'foo', MyStyle_Customize_Page::get_id() );
 
         //Assert that the title has been set to the empty string
         $this->assertEquals( '', $new_title );
@@ -164,7 +164,7 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
         $classes = array();
         
         //call the function
-        $returned_classes = MyStyle_Customize_Page::filter_body_class( $classes );
+        $returned_classes = MyStyle_Customize_Page::get_instance()->filter_body_class( $classes );
 
         //Assert that the mystyle-customize class is added to the classes array.
         $this->assertEquals( 'mystyle-customize', $returned_classes[0] );

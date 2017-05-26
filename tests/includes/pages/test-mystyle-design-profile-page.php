@@ -130,7 +130,7 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         $post->ID = MyStyle_Design_Profile_Page::get_id();
         
         //call the function
-        MyStyle_Design_Profile_Page::init();
+        MyStyle_Design_Profile_Page::get_instance()->init();
         
         //get the Mystyle_Design_Profile page singleton
         $mystyle_design_profile_page = MyStyle_Design_Profile_Page::get_instance();
@@ -171,7 +171,7 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         $post->ID = MyStyle_Design_Profile_Page::get_id();
         
         //call the function
-        MyStyle_Design_Profile_Page::init();
+        MyStyle_Design_Profile_Page::get_instance()->init();
         
         //get the Mystyle_Design_Profile page singleton
         $mystyle_design_profile_page = MyStyle_Design_Profile_Page::get_instance();
@@ -502,7 +502,7 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         $classes = array();
         
         //call the function
-        $returned_classes = MyStyle_Design_Profile_Page::filter_body_class( $classes );
+        $returned_classes = MyStyle_Design_Profile_Page::get_instance()->filter_body_class( $classes );
 
         //Assert that the mystyle-design-profile class is added to the classes array.
         $this->assertEquals( 'mystyle-design-profile', $returned_classes[0] );

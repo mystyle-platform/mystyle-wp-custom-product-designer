@@ -36,7 +36,7 @@ class MyStyleNoticeControllerTest extends WP_UnitTestCase {
     public function test_admin_notices() {
         //assert that a notice was registered
         ob_start();
-        MyStyle_Notice_Controller::admin_notices();
+        MyStyle_Notice_Controller::get_instance()->admin_notices();
         $outbound = ob_get_contents();
         ob_end_clean();
         
@@ -57,7 +57,7 @@ class MyStyleNoticeControllerTest extends WP_UnitTestCase {
         //Assert that the expected output string is returned.
         $this->expectOutputString($expected);
         try {
-            MyStyle_Notice_Controller::set_notice_pref_callback();
+            MyStyle_Notice_Controller::get_instance()->set_notice_pref_callback();
         } catch(WPDieException $ex) {
             //
         }
