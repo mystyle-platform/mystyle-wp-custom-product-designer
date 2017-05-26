@@ -44,7 +44,7 @@ class MyStyle_SessionHandler {
      * Starts the session.
      */
     public function start_session() {
-        if(!session_id()) {
+        if( ( ! headers_sent() ) && ( ! session_id() ) ) {
             session_start();
         }
         
@@ -116,7 +116,7 @@ class MyStyle_SessionHandler {
         if( $session == null ) {
             $session = MyStyle_Session::create();
             $_SESSION[MyStyle_Session::$SESSION_KEY] = $session;
-            if( $this->use_cookies ) {
+            if( ( $this->use_cookies ) && ( ! headers_sent() ) ) {
                 setcookie( 
                     MyStyle_Session::$COOKIE_NAME, 
                     $session->get_session_id(), 

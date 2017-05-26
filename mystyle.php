@@ -191,6 +191,7 @@ final class MyStyle {
      * Init our singletons (registers hooks, etc).
      */
     private function init_singletons() {
+        
         if( ! defined('DOING_PHPUNIT') ) {
             //set up the third party interfaces
             $this->set_WC( new MyStyle_WC() );
