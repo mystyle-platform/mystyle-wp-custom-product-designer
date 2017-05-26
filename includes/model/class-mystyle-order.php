@@ -29,6 +29,14 @@ class MyStyle_Order {
     }
     
     /**
+     * Returns the underlying WC_Order.
+     * @return \WC_Order The WC_Order that this class wraps.
+     */
+    public function get_order() {
+        return $this->order;
+    }
+    
+    /**
      * Gets the order id.
      * 
      * Works with WC 2.x and WC 3.x.
