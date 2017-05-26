@@ -5,21 +5,27 @@
  * 
  * The MyStyle Order class is used to wrap the WC_Order class to allow us to
  * support multiple versions of WooCommerce.
+ * 
+ * We don't extend the WC_Order because we can't guarantee that our plugin will
+ * be included after WooCommerce.
  *
  * @package MyStyle
  * @since 1.7.0
  * @todo Add unit testing
  */
-class MyStyle_Order extends WC_Order {
+class MyStyle_Order {
     
     public static $MYSTYLE_DATA_KEY = 'mystyle_data';
+    
+    /** @var \WC_Order */
+    private $order;
     
     /**
      * Constructor
      * @param \WC_Order $order The WC_Order that we are extending.
      */
     public function __construct( WC_Order $order ) {
-        parent::__construct( $order );
+        $this->order = $order;
     }
     
     /**
@@ -30,7 +36,13 @@ class MyStyle_Order extends WC_Order {
      * @return number Returns the order id.
      */
     public function get_id() {
-        return $this->id;
+        if( method_exists( $this->order, 'get_id' ) ) {
+            $id = $this->order->get_id();
+        } else {
+            $id = $this->order->ID; 
+        }
+        
+        return $id;
     }
     
     /**
@@ -41,10 +53,10 @@ class MyStyle_Order extends WC_Order {
      * @return string Returns the order date as a string.
      */
     public function get_order_date() {
-        if( is_callable( 'parent::get_date_created' ) ) {
-            $order_date = parent::get_date_created();
+        if( method_exists( $this->order, 'get_date_created' ) ) {
+            $order_date = $this->order->get_date_created();
         } else { //WC  < 3.0
-            $order_date = $this->order_date;
+            $order_date = $this->order->order_date;
         }
         
         return $order_date;
@@ -55,14 +67,13 @@ class MyStyle_Order extends WC_Order {
      * 
      * Works with WC 2.x and WC 3.x.
      * 
-     * @param  string $context
      * @return string Returns the shipping first name.
      */
-    public function get_shipping_first_name( $context = 'view' ) {
-        if( is_callable( 'parent::get_shipping_first_name' ) ) {
-            $first_name = parent::get_shipping_first_name( $context );
+    public function get_shipping_first_name() {
+        if( method_exists( $this->order, 'get_shipping_first_name' ) ) {
+            $first_name = $this->order->get_shipping_first_name();
         } else { //WC  < 3.0
-            $first_name = $this->shipping_first_name;
+            $first_name = $this->order->shipping_first_name;
         }
         
         return $first_name;
@@ -73,14 +84,13 @@ class MyStyle_Order extends WC_Order {
      * 
      * Works with WC 2.x and WC 3.x.
      * 
-     * @param  string $context
      * @return string Returns the shipping last name.
      */
-    public function get_shipping_last_name( $context = 'view' ) {
-        if( is_callable( 'parent::get_shipping_last_name' ) ) {
-            $last_name = parent::get_shipping_last_name( $context );
+    public function get_shipping_last_name() {
+        if( method_exists( $this->order, 'get_shipping_last_name' ) ) {
+            $last_name = $this->order->get_shipping_last_name();
         } else { //WC  < 3.0
-            $last_name = $this->shipping_last_name;
+            $last_name = $this->order->shipping_last_name;
         }
         
         return $last_name;
@@ -91,14 +101,13 @@ class MyStyle_Order extends WC_Order {
      * 
      * Works with WC 2.x and WC 3.x.
      * 
-     * @param  string $context
      * @return string Returns the billing email.
      */
     public function get_billing_email( $context = 'view' ) {
-        if( is_callable( 'parent::get_billing_email' ) ) {
-            $email = parent::get_billing_email( $context );
+        if( method_exists( $this->order, 'get_billing_email' ) ) {
+            $email = $this->order->get_billing_email();
         } else { //WC  < 3.0
-            $email = $this->billing_email;
+            $email = $this->order->billing_email;
         }
         
         return $email;
@@ -115,7 +124,7 @@ class MyStyle_Order extends WC_Order {
         
         
         /** @var $items array */
-        $items = $this->get_items();
+        $items = $this->order->get_items();
         
         /* @var $item \WC_Order_Item */
         $item = $items[ $item_id ];
@@ -143,7 +152,7 @@ class MyStyle_Order extends WC_Order {
         $design = null;
         
         /** @var $items array */
-        $items = $this->get_items();
+        $items = $this->order->get_items();
         
         /* @var $item \WC_Order_Item */
         $item = $items[ $item_id ];
@@ -176,7 +185,7 @@ class MyStyle_Order extends WC_Order {
         $product = null;
         
         /** @var $items array */
-        $items = $this->get_items();
+        $items = $this->order->get_items();
         
         /* @var $item \WC_Order_Item_Product */
         $item = $items[ $item_id ];

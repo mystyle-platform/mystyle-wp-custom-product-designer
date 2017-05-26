@@ -60,6 +60,7 @@ final class MyStyle {
      */
     public function __construct() {
         $this->define_constants();
+        $this->includes();
         $this->init_hooks();
     }
     
@@ -94,21 +95,22 @@ final class MyStyle {
      */
     private function init_hooks() {
         //plugin setup and registrations
-        register_activation_hook( __FILE__, array( 'MyStyle_Install', 'activate' ) );
-        register_deactivation_hook( __FILE__, array( 'MyStyle_Install', 'deactivate' ) );
-        register_uninstall_hook( __FILE__, array( 'MyStyle_Install', 'uninstall' ) );
-    
+        register_activation_hook( __FILE__, array( 'MyStyle', 'activate' ) );
+        register_deactivation_hook( __FILE__, array( 'MyStyle', 'deactivate' ) );
+        register_uninstall_hook( __FILE__, array( 'MyStyle', 'uninstall' ) );
+        
         add_action( 'woocommerce_init', array( $this, 'init' ), 10, 0 );
         add_action( 'init', array( $this, 'check_version' ), 101, 0 );
     }
-    
     
     /**
      * Initialize the plugin.
      */
     public function init() {
-        $this->includes();
         $this->init_singletons();
+        
+        // Init action.
+        do_action( 'mystyle_init' );
     }
     
     /**
@@ -240,9 +242,6 @@ final class MyStyle {
         //Register shortcodes
         add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
         add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
-        
-        // Init action.
-        do_action( 'mystyle_init' );
     }
     
     /**
@@ -261,6 +260,27 @@ final class MyStyle {
                 MyStyle_Install::upgrade( $data_version, MYSTYLE_VERSION );
             }
         }
+    }
+    
+    /**
+     * Activate function. Activates the plugin.
+     */
+    public static function activate() {
+        MyStyle_Install::activate();
+    }
+    
+    /**
+     * Deactivate function. Deactivates the plugin.
+     */
+    public static function deactivate() {
+        MyStyle_Install::deactivate();
+    }
+    
+    /**
+     * Uninstall function. Uninstalls the plugin.
+     */
+    public static function uninstall() {
+        MyStyle_Install::uninstall();
     }
     
     /**
