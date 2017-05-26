@@ -518,6 +518,9 @@ class MyStyle_Design_Profile_Page {
      */
     public function set_http_response_code( $http_response_code ) {
         $this->http_response_code = $http_response_code;
+        if( function_exists( 'http_response_code' ) ) {
+            http_response_code( $http_response_code );
+        }
     }
     
     /**
@@ -526,7 +529,7 @@ class MyStyle_Design_Profile_Page {
      * shortcode and view layer.
      */
     public function get_http_response_code() {
-        if(function_exists('http_response_code')) {
+        if( function_exists( 'http_response_code' ) ) {
             return http_response_code();
         } else {
             return $this->http_response_code;

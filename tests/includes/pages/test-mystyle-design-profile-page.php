@@ -62,6 +62,11 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
     public function test_init_with_valid_design_id() {
         global $post;
         
+        //default the response code to 200
+        if( function_exists( 'http_response_code' ) ) {
+            http_response_code( 200 );
+        }
+        
         $design_id = 1;
         
         //Create the Design Profile Page.
