@@ -47,7 +47,7 @@ class MyStyle_Order {
         if( method_exists( $this->order, 'get_id' ) ) {
             $id = $this->order->get_id();
         } else {
-            $id = $this->order->ID; 
+            $id = $this->order->id; 
         }
         
         return $id;
