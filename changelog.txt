@@ -1,3 +1,9 @@
+= 2.0.0 =
+
+* Added support for WC 3.0
+* Added support for PHP 7.0
+* Added support for HTTPS for the HTML5 customizer.
+
 = 1.7.0 =
 
 * Now only storing sessions after design save.
