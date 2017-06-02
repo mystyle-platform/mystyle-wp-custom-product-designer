@@ -6,7 +6,7 @@ Tags: customization, designer, personalization, product-preview, woocommerce, cu
 Requires at least: 3.3
 Tested up to: 4.7.5
 WC tested up to: 3.0.7
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 
 The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
@@ -80,27 +80,25 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 
 == Changelog ==
 
-= 2.0.0 =
+= 2.0.1 =
+* Fixed an issue with the retrieving order item designs when the design is private.
 
+= 2.0.0 =
 * Added support for WC 3.0
 * Added support for PHP 7.0
 * Added support for HTTPS for the HTML5 customizer.
 
 = 1.7.0 =
-
 * Now only storing sessions after design save.
 * Automatically purges all abandoned sessions.
 
 = 1.6.3 =
-
 * Now catching session errors (and starting a new session).
 
 = 1.6.2 =
-
 * Fixed an integration issue with the woocommerce-dynamic-pricing plugin.
 
 = 1.6.1 =
-
 * Hotfix to fix errors caused by vcs merge issue in v1.6.0 release.
 
 = 1.6.0 =
