@@ -175,7 +175,15 @@ class MyStyle_Order {
         
         if( $mystyle_data != null ) {
             $design_id = $mystyle_data['design_id'];
-            $design = MyStyle_DesignManager::get( $design_id );
+            
+            /** @var \WP_User */
+            $current_user = wp_get_current_user();
+                    
+            /** @var \MyStyle_Session */
+            $session = MyStyle()->get_session();
+            
+            /** @var \MyStyle_Design */
+            $design = MyStyle_DesignManager::get( $design_id, $current_user, $session );
         }
         
         return $design;
