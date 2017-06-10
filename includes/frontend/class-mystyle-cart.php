@@ -196,6 +196,7 @@ class MyStyle_Cart {
         
         $product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
         $design_id = absint( $_REQUEST['design_id'] );
+        $quantity = absint( $_REQUEST['quantity'] );
         
         //Get the woocommerce cart
         $cart = $woocommerce->cart;
@@ -218,12 +219,21 @@ class MyStyle_Cart {
         //Add the product and meta data to the cart
         $cart_item_key = $cart->add_to_cart(
                                     $product_id, //WooCommerce product id
-                                    1, //quantity
+                                    $quantity, //quantity
                                     $variation_id, //variation id
                                     $variation, //variation attribute values
                                     $cart_item_data //extra cart item data we want to pass into the item
                             );
         
+        if($cart_item_key) {
+            wc_add_to_cart_message( array( $product_id => $quantity ), true );
+            wp_redirect( wc_get_page_permalink( 'cart' ) );
+            
+            //exit (unless called by phpunit)
+            if( ! defined('DOING_PHPUNIT') ) {
+                exit();
+            }
+        }
     }
     
     /**

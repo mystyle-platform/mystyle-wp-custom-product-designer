@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <ul class="mystyle-button-group">
         <li><a onclick="location.href = '<?php echo $design->get_reload_url(); ?>';" class="button">Customize</a></li>
         <li>
-            <form enctype="multipart/form-data" method="post">
+            <form enctype="multipart/form-data" method="post" action="<?php echo get_permalink( $design->get_product_id() ); ?>">
                 <?php 
                     //if we have the cart_data (older versions of the plugin don't) through it all into hidden fields
                     if( $design->get_cart_data_array() != null ) { 

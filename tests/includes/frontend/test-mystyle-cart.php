@@ -289,6 +289,10 @@ class MyStyleCartTest extends WP_UnitTestCase {
         //Mock the request
         $_REQUEST['add-to-cart'] = 1;
         $_REQUEST['design_id'] = 2;
+        $_REQUEST['quantity'] = 1;
+        
+        //Disable the redirect
+        add_filter( 'wp_redirect', array( &$this, 'filter_wp_redirect' ), 10, 2 );
         
         //call the function
         $mystyle_cart->mystyle_add_to_cart_handler( 'http://www.example.com' );
