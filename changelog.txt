@@ -1,3 +1,9 @@
+= 2.0.3 =
+
+* Now using actual passthru data from the handoff in the design complete email reload url.
+* Now sending actual passthru data from the handoff in the mystyle_send_design_complete_email hook (used by the Email Manager add-on).
+* Reception of the design description and price is now optional in the handoff (fixes an error message briefly displayed before redirecting to the cart).
+
 = 2.0.2 =
 
 * Fixed a bug with setting the quantity when adding to the cart from the design profile page.
