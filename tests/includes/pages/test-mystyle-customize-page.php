@@ -114,6 +114,36 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the get_design_url function when passed passthru data.
+     */    
+    public function test_get_design_url_with_passthru() {
+        
+        //Create the MyStyle Customize page
+        $page_id = MyStyle_Customize_Page::create();
+        
+        //Build the expected url
+        $expected_url = 'http://example.org/?page_id=' . $page_id . '&product_id=0&design_id=1&h=eyJwb3N0Ijp7InF1YW50aXR5Ijo3LCJhZGQtdG8tY2FydCI6MH19';
+        
+        //Create a design
+        $result_object = new MyStyle_MockDesignQueryResult( 1 );
+        $design = MyStyle_Design::create_from_result_object( $result_object );
+        
+        //Create the passthru
+        $passthru = array(
+                'post' => array (
+                    'quantity' => 7,
+                    'add-to-cart' => $design->get_product_id()
+                )
+            );
+        
+        //Call the function
+        $url = MyStyle_Customize_Page::get_design_url( $design, null, $passthru );
+        
+        //assert that the exepected $url was returned
+        $this->assertEquals( $expected_url, $url );
+    }
+    
+    /**
      * Test the filter_title function.
      */    
     public function test_filter_title() {
