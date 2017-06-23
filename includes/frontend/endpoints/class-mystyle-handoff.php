@@ -118,6 +118,12 @@ class MyStyle_Handoff {
                 }
             }
             
+            //Persist the design to the database
+            $design = MyStyle_DesignManager::persist( $design );
+            
+            //Get the passthru data
+            $passthru = json_decode( base64_decode( $_POST['h'] ), true );
+            
             // ------------------- Send email to user ---------------
             //$design_complete_email = new MyStyle_Email_Design_Complete( $design );
             //$design_complete_email->send();
@@ -139,7 +145,7 @@ class MyStyle_Handoff {
                         "url:\n\n" . 
                         MyStyle_Design_Profile_Page::get_design_url( $design ) . "\n\n".
                         "Reload and edit your design at any time here:\n\n".
-                        MyStyle_Customize_Page::get_design_url( $design ) . "\n".
+                        MyStyle_Customize_Page::get_design_url( $design, null, $passthru ) . "\n".
                 $admin_email = get_option( 'admin_email' );
                 $blogname = get_option( 'blogname' );
                 $headers = '';
@@ -156,11 +162,6 @@ class MyStyle_Handoff {
             }
             // -------------------------------------------------------
             
-            //Persist the design to the database
-            $design = MyStyle_DesignManager::persist( $design );
-            
-            //Get the passthru data
-            $passthru = json_decode( base64_decode( $_POST['h'] ), true );
             $passthru_post = $passthru['post'];
             $quantity = $passthru_post['quantity'];
             $product_id = $passthru_post['add-to-cart'];

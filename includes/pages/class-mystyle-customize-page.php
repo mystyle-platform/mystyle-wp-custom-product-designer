@@ -102,16 +102,20 @@ class MyStyle_Customize_Page {
      * the passed design.
      * @param MyStyle_Design $design
      * @param integer $cart_item_key
+     * @param array $passthru Any passthru data to include in the url. If non is
+     * passed, defaults are used.
      * @return string Returns a link that can be used to reload a design.
      */
-    public static function get_design_url( MyStyle_Design $design, $cart_item_key = null ) {
+    public static function get_design_url( MyStyle_Design $design, $cart_item_key = null, $passthru = null ) {
         
-        $passthru = array(
-            'post' => array (
-                'quantity' => 1,
-                'add-to-cart' => $design->get_product_id()
-            )
-        );
+        if($passthru == null) {
+            $passthru = array(
+                'post' => array (
+                    'quantity' => 1,
+                    'add-to-cart' => $design->get_product_id()
+                )
+            );
+        }
         
         if( $cart_item_key != null ) {
             $passthru['cart_item_key'] = $cart_item_key;
