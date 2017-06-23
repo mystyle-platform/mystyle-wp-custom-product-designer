@@ -65,12 +65,18 @@ class MyStyle_Design implements MyStyle_Entity {
         $product_id = $passthru_post['add-to-cart'];
         
         $instance->product_id = (int) htmlspecialchars( $product_id ); //mapping local_product_id to product_id
-        $instance->description = htmlspecialchars( $post_data['description'] );
         $instance->design_id = (int) htmlspecialchars( $post_data['design_id'] );
         $instance->template_id = (int) htmlspecialchars( $post_data['product_id'] ); //mapping product_id to template_id
         $instance->designer_id = (int) htmlspecialchars( $post_data['user_id'] );
-        $instance->price = (int) htmlspecialchars( $post_data['price'] );
         $instance->cart_data = json_encode( $passthru_post );
+        
+        //these aren't always passed (or may be deprecated)
+        if( isset( $post_data['description'] ) ) {
+            $instance->description = htmlspecialchars( $post_data['description'] );
+        }
+        if( isset( $post_data['price'] ) ) {
+            $instance->price = (int) htmlspecialchars( $post_data['price'] );
+        }
         
         return $instance;
     }
