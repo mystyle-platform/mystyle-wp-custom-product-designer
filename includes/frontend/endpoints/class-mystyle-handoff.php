@@ -130,7 +130,7 @@ class MyStyle_Handoff {
             
             if ( has_action( 'mystyle_send_design_complete_email' ) ) {
                 //custom email
-                do_action( 'mystyle_send_design_complete_email', $design );
+                do_action( 'mystyle_send_design_complete_email', $design, $passthru );
             } else {
                 //basic email
                 $site_title = get_bloginfo( 'name' );
