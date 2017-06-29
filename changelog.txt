@@ -1,3 +1,8 @@
+= 2.1.0 =
+
+* Added a system for theming the output of the plugin.
+* Added a themable template file for the output of the cart item thumbnail for customized products.
+
 = 2.0.3 =
 
 * Now using actual passthru data from the handoff in the design complete email reload url.
