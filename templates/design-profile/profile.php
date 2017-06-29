@@ -1,6 +1,9 @@
 <?php
 /**
  * The template for displaying the MyStyle Design Profile page content.
+ * 
+ * NOTE: THIS FILE IS NOT YET THEMEABLE.
+ * 
  * @package MyStyle
  * @since 1.4.0
  */

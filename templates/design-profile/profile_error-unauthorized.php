@@ -2,6 +2,9 @@
 /**
  * The template for displaying the MyStyle Design Profile page when the user is
  * trying to access a private design but isn't logged in.
+ * 
+ * NOTE: THIS FILE IS NOT YET THEMEABLE.
+ * 
  * @package MyStyle
  * @since 1.4.2
  */

@@ -2,6 +2,9 @@
 /**
  * The template for displaying the thumbnail cell for the cart item rows for
  * customized products.
+ * 
+ * This template can be overridden by copying it to yourtheme/mystyle/cart/cart-item_thumbnail.php.
+ * 
  * @package MyStyle
  * @since 2.1.0
  */

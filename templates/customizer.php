@@ -1,6 +1,9 @@
 <?php
 /**
  * The template for displaying the MyStyle customizer.
+ * 
+ * NOTE: THIS FILE IS NOT YET THEMEABLE.
+ * 
  * @package MyStyle
  * @since 1.1.0
  */
