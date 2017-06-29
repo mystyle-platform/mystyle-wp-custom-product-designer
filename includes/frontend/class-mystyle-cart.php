@@ -300,12 +300,16 @@ class MyStyle_Cart {
             //prep the link to reload the design in the customizer
             $customizer_url = MyStyle_Customize_Page::get_design_url( $design, $cart_item_key );
             
-            // ---------- Call the view layer ------------------------ //
-            ob_start();
-            require( MYSTYLE_TEMPLATES . 'cart-item_thumbnail.php' );
-            $out = ob_get_contents();
-            ob_end_clean();
-            // ------------------------------------------------------ //
+            // call the view/template layer
+            $out = mystyle_get_template_html( 
+                        'cart-item_thumbnail.php',
+                        array(
+                            'product_img_tag'     => $product_img_tag,
+                            'design'              => $design,
+                            'design_profile_url'  => $design_profile_url,
+                            'customizer_url'      => $customizer_url,
+                        )
+                    );
         }
 	
         return $out;

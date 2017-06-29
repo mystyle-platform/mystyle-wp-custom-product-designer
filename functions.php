@@ -13,3 +13,107 @@
 function MyStyle_WC() {
     return MyStyle::get_instance()->get_WC();
 }
+
+/**
+ * Locate a template and return the path for inclusion.
+ *
+ * This is the load order:
+ *
+ *    yourtheme/$template_path/$template_name
+ *    yourtheme/$template_name
+ *    $default_path/$template_name
+ * 
+ * This function is based off of the wc_get_template function.
+ *
+ * @access public
+ * @param string $template_name
+ * @param string $template_path (default: '')
+ * @param string $default_path (default: '')
+ * @return string
+ */
+function mystyle_locate_template( 
+                $template_name, 
+                $template_path = '', 
+                $default_path = '' 
+            ) 
+{
+    if( ! $template_path ) {
+        $template_path = MYSTYLE_TEMPLATES;
+    }
+
+    if( ! $default_path ) {
+        $default_path = MYSTYLE_PATH . '/templates/';
+    }
+
+    // Look within passed path within the theme - this is priority.
+    $template = locate_template(
+        array(
+            trailingslashit( $template_path ) . $template_name,
+            $template_name,
+        )
+    );
+
+    // Get default template/
+    if( ! $template || MYSTYLE_TEMPLATE_DEBUG_MODE ) {
+        $template = $default_path . $template_name;
+    }
+
+    // Return what we found.
+    return apply_filters( 'mystyle_locate_template', $template, $template_name, $template_path );
+}
+
+/**
+ * Get template passing attributes and including the file.
+ * 
+ * This function is based off of the wc_get_template function.
+ *
+ * @access public
+ * @param string $template_name
+ * @param array $args (default: array())
+ * @param string $template_path (default: '')
+ * @param string $default_path (default: '')
+ * @todo Add unit testing
+ */
+function mystyle_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+    if( ! empty( $args ) && is_array( $args ) ) {
+        extract( $args );
+    }
+
+    $located = mystyle_locate_template( $template_name, $template_path, $default_path );
+
+    if( ! file_exists( $located ) ) {
+        _doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'mystyle' ), '<code>' . $located . '</code>' ), '2.1' );
+        return;
+    }
+
+    // Allow 3rd party plugin to filter template file from their plugin.
+    $located = apply_filters( 'mystyle_get_template', $located, $template_name, $args, $template_path, $default_path );
+
+    do_action( 'mystyle_before_template_part', $template_name, $template_path, $located, $args );
+
+    include( $located );
+
+    do_action( 'mystyle_after_template_part', $template_name, $template_path, $located, $args );
+}
+
+/**
+ * Like mystyle_get_template but returns the HTML instead of outputting.
+ * 
+ * This function is based off of the wc_get_template_html function.
+ * 
+ * @see mystyle_get_template
+ * @since 2.1.0
+ * @param string $template_name
+ * @todo Add unit testing
+ */
+function mystyle_get_template_html( 
+                $template_name, 
+                $args = array(), 
+                $template_path = '', 
+                $default_path = '' 
+        ) 
+{
+    ob_start();
+    mystyle_get_template( $template_name, $args, $template_path, $default_path );
+    return ob_get_clean();
+}
