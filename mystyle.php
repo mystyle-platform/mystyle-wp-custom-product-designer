@@ -83,6 +83,7 @@ final class MyStyle {
 
         if( ! defined( 'MYSTYLE_SERVER' ) ) { define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' ); }
         if( ! defined( 'MYSTYLE_VERSION' ) ) { define( 'MYSTYLE_VERSION', '2.0.3' ); }
+        if( ! defined( 'MYSTYLE_TEMPLATE_DEBUG_MODE' ) ) { define( 'MYSTYLE_TEMPLATE_DEBUG_MODE', false ); }
 
         define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
         define( 'MYSTYLE_NOTICES_NAME', 'mystyle_notices' );

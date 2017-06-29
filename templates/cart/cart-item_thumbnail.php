@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <a href="<?php echo $design_profile_url ?>">
         <?php echo $product_img_tag; ?>
     </a>
-                                
+    
     <figcaption style="font-size: 0.5em">
         Design Id: <a href="<?php echo $design_profile_url; ?>"><?php echo $design->get_design_id();?></a><br/>
         <a href="<?php echo $customizer_url; ?>">Edit</a>                                

@@ -38,7 +38,7 @@ function mystyle_locate_template(
             ) 
 {
     if( ! $template_path ) {
-        $template_path = MYSTYLE_TEMPLATES;
+        $template_path = '/mystyle/';
     }
 
     if( ! $default_path ) {
@@ -57,6 +57,8 @@ function mystyle_locate_template(
     if( ! $template || MYSTYLE_TEMPLATE_DEBUG_MODE ) {
         $template = $default_path . $template_name;
     }
+    
+    //echo $template;
 
     // Return what we found.
     return apply_filters( 'mystyle_locate_template', $template, $template_name, $template_path );
