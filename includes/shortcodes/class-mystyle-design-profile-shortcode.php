@@ -19,18 +19,18 @@ abstract class MyStyle_Design_Profile_Shortcode {
         if( $ex != null ) { 
             if( $design_profile_page->get_pager() != null ) {
                 // index
-                $template_name = 'design-index_error-general.php';
+                $template_name = 'design-profile/index_error-general.php';
             } else {
                 // design profile page
                 switch( get_class( $ex ) ) {
                     case 'MyStyle_Unauthorized_Exception':
-                        $template_name = 'design-profile_error-unauthorized.php';
+                        $template_name = 'design-profile/profile_error-unauthorized.php';
                         break;
                     case 'MyStyle_Forbidden_Exception':
-                        $template_name = 'design-profile_error-forbidden.php';
+                        $template_name = 'design-profile/profile_error-forbidden.php';
                         break;
                     default:
-                        $template_name = 'design-profile_error-general.php';
+                        $template_name = 'design-profile/profile_error-general.php';
                 }
             }
             
@@ -72,7 +72,7 @@ abstract class MyStyle_Design_Profile_Shortcode {
         
         // ---------- Call the view layer ------------------------ //
         ob_start();
-        require( MYSTYLE_TEMPLATES . 'design-profile.php' );
+        require( MYSTYLE_TEMPLATES . 'design-profile/profile.php' );
         $out = ob_get_contents();
         ob_end_clean();
         // ------------------------------------------------------ //
@@ -93,7 +93,7 @@ abstract class MyStyle_Design_Profile_Shortcode {
         
         // ---------- Call the view layer ------------------------ //
         ob_start();
-        require( MYSTYLE_TEMPLATES . 'design-index.php' );
+        require( MYSTYLE_TEMPLATES . 'design-profile/index.php' );
         $out = ob_get_contents();
         ob_end_clean();
         // ------------------------------------------------------ //
