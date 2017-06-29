@@ -87,9 +87,6 @@ class MyStyleCartTest extends WP_UnitTestCase {
         $function_names = get_function_names( $wp_filter['woocommerce_in_cart_product_thumbnail'] );
         $this->assertContains( 'modify_cart_item_thumbnail', $function_names );
         
-        $function_names = get_function_names( $wp_filter['woocommerce_cart_item_permalink'] );
-        $this->assertContains( 'modify_cart_item_permalink', $function_names );
-        
         $function_names = get_function_names( $wp_filter['woocommerce_cart_item_name'] );
         $this->assertContains( 'modify_cart_item_name', $function_names );
     }
@@ -372,29 +369,6 @@ class MyStyleCartTest extends WP_UnitTestCase {
         $new_image = $mystyle_cart->modify_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key );
         
         $this->assertContains( 'http://www.example.com/example.jpg' , $new_image );
-    }
-    
-    /**
-     * Test the modify_cart_item_permalink function.
-     */    
-    public function test_modify_cart_item_permalink() {
-        $design_id = 1;
-        $permalink = 'http://www.example.com';
-        $cart_item = array();
-        $cart_item['mystyle_data'] = array();
-        $cart_item['mystyle_data']['design_id'] = $design_id;
-        $cart_item_key = null;
-        
-        //Create the design (note: we should maybe mock this in the tested class)
-        $result_object = new MyStyle_MockDesignQueryResult( $design_id );
-        $design = MyStyle_Design::create_from_result_object( $result_object );
-        MyStyle_DesignManager::persist( $design );
-        
-        //call the function
-        $mystyle_cart = MyStyle_Cart::get_instance();
-        $new_permalink = $mystyle_cart->modify_cart_item_permalink( $permalink, $cart_item, $cart_item_key );
-        
-        $this->assertFalse( $new_permalink );
     }
     
     /**

@@ -35,7 +35,6 @@ class MyStyle_Cart {
     public function init() {
         add_filter( 'woocommerce_cart_item_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
         add_filter( 'woocommerce_in_cart_product_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
-        add_filter( 'woocommerce_cart_item_permalink', array( &$this, 'modify_cart_item_permalink' ), 10, 3 );
         add_filter( 'woocommerce_cart_item_name', array( &$this, 'modify_cart_item_name' ), 10, 3 );
     }
     
@@ -314,42 +313,6 @@ class MyStyle_Cart {
         }
 	
         return $new_image_tag;
-    }
-    
-    /**
-     * Override the cart item permalink.
-     * 
-     * Note: we return false for the permalink for cart items with
-     * designs. This is because we actually have multiple links for the
-     * cart item. These links are being set via the
-     * woocommerce_cart_item_thumbnail and woocommerce_cart_item_thumbnail hooks.
-     * 
-     * @param string $permalink The current image tag (ex. <img.../>).
-     * @param string $cart_item The cart item that we are currently on.
-     * @param string $cart_item_key The current cart_item_key.
-     * @return string Returns the updated permalink.
-     */
-    public function modify_cart_item_permalink( $permalink, $cart_item, $cart_item_key ) {
-        
-        $new_permalink = $permalink;
-        $design_id = null;
-        
-        //Try to get the design id, first from the cart_item and then from the session
-        if( isset( $cart_item['mystyle_data'] ) ) {
-            $design_id = $cart_item['mystyle_data']['design_id'];
-        } else {
-            $session_data = self::get_cart_item_from_session( array(), null, $cart_item_key );
-            if( isset( $session_data['mystyle_data']) ) {
-                $design_id = $session_data['mystyle_data']['design_id'];
-            }
-        }
-            
-        if( $design_id != null ) {
-            //see the function doc for why we set this to false here.
-            $new_permalink = false;
-        }
-	
-        return $new_permalink;
     }
     
     /**
