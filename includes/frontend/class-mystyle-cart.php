@@ -256,14 +256,14 @@ class MyStyle_Cart {
     
     /**
      * Override the cart item thumbnail image.
-     * @param string $get_image The current image tag (ex. <img.../>).
+     * @param string $product_img_tag The current image tag (ex. <img.../>).
      * @param string $cart_item The cart item that we are currently on.
      * @param string $cart_item_key The current cart_item_key.
      * @return string Returns the updated cart image tag.
      */
-    public function modify_cart_item_thumbnail( $get_image, $cart_item, $cart_item_key ) {
+    public function modify_cart_item_thumbnail( $product_img_tag, $cart_item, $cart_item_key ) {
         
-        $new_image_tag = $get_image;
+        $out = $product_img_tag;
         $design_id = null;
         
         //Try to get the design id, first from the cart_item and then from the session
@@ -289,30 +289,26 @@ class MyStyle_Cart {
 
             //overwrite the src attribute
             $new_src = 'src="' . $design->get_thumb_url() . '"';
-            $new_image_tag = preg_replace( '/src\=".*?"/', $new_src, $new_image_tag );
+            $product_img_tag = preg_replace( '/src\=".*?"/', $new_src, $product_img_tag );
             
             //remove the srcset attribute
-            $new_image_tag = preg_replace( '/srcset\=".*?"/', '', $new_image_tag );
+            $product_img_tag = preg_replace( '/srcset\=".*?"/', '', $product_img_tag );
             
             //prep the link to the design profile page for the design
             $design_profile_url = MyStyle_Design_Profile_Page::get_design_url( $design, $cart_item_key );
-            $design_profile_anchor = '<a href="' . $design_profile_url . '">%s</a>';
             
             //prep the link to reload the design in the customizer
             $customizer_url = MyStyle_Customize_Page::get_design_url( $design, $cart_item_key );
-            $customizer_anchor = '<a href="' . $customizer_url . '">%s</a>';
             
-            //add a figure and figcaption tag (with the design id)
-            $new_image_tag = '<figure>' .
-                                sprintf( $design_profile_anchor, $new_image_tag ) .
-                                '<figcaption style="font-size: 0.5em">' .
-                                    'Design Id: ' . sprintf( $design_profile_anchor, $design->get_design_id() ) . '</a><br/>' .
-                                    sprintf( $customizer_anchor, 'Edit' );
-                                '</figcaption>' . 
-                              '</figure>';
+            // ---------- Call the view layer ------------------------ //
+            ob_start();
+            require( MYSTYLE_TEMPLATES . 'cart-item_thumbnail.php' );
+            $out = ob_get_contents();
+            ob_end_clean();
+            // ------------------------------------------------------ //
         }
 	
-        return $new_image_tag;
+        return $out;
     }
     
     /**
