@@ -1,3 +1,9 @@
+= 2.1.1 =
+
+* Fixed an issue with the Design Profile Page Fix tool.
+* Updated readme.txt to reflect that the plugin has been tested with up to WP 4.8.0.
+* Updated readme.txt to reflect that the plugin has been tested with up to WooCommerce 3.1.1.
+
 = 2.1.0 =
 
 * Added a system for theming the output of the plugin.
