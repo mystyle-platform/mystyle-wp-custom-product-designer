@@ -108,6 +108,16 @@ class MyStyle_Options_Page {
                     mystyle_notice_add_to_queue( $fix_notice );
 
                     break;
+                case 'fix_design_profile_page' :
+
+                    //Attempt the fix
+                    $message = MyStyle_Design_Profile_Page::fix();
+
+                    //Post Fix Notice
+                    $fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
+                    mystyle_notice_add_to_queue( $fix_notice );
+
+                    break;
             }
         }
     }
