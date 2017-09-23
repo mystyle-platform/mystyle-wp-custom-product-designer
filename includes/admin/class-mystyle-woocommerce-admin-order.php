@@ -2,7 +2,7 @@
 
 /**
  * MyStyle WooCommerce Admin Order class.
- * 
+ *
  * The MyStyle WooCommerce Admin Order class hooks MyStyle into the WooCommerce
  * Order admin interace.
  *
@@ -10,28 +10,28 @@
  * @since 0.2.1
  */
 class MyStyle_WooCommerce_Admin_Order {
-    
+
     /**
      * Singleton instance
      * @var MyStyle_WooCommerce_Admin_Order
      */
     private static $instance;
-    
+
     /**
      * Constructor, constructs the class and registers hooks.
      */
     public function __construct() {
         add_action( 'admin_init', array( &$this, 'admin_init' ) );
     }
-    
+
     /**
      * Init the mystyle woocommerce admin
      */
     function admin_init() {
         add_action( 'woocommerce_admin_order_item_headers', array( &$this, 'add_order_item_header' ) );
-        add_action( 'woocommerce_admin_order_item_values', array( &$this, 'admin_order_item_values' ), 10, 3 );        
+        add_action( 'woocommerce_admin_order_item_values', array( &$this, 'admin_order_item_values' ), 10, 3 );
     }
-    
+
     /**
      * Add the mystyle column header to the order items table.
      */
@@ -40,14 +40,14 @@ class MyStyle_WooCommerce_Admin_Order {
             <th class="item-mystyle"><?php _e( 'MyStyle', 'woocommerce' ); ?></th>
         <?php
     }
-    
+
     /**
      * Add the mystyle column body to the order items table.
      */
     public function admin_order_item_values( $_product, $item, $item_id ) {
 
         $design = null;
-        if( isset( $item['mystyle_data'] ) ) {            
+        if( isset( $item['mystyle_data'] ) ) {
             /**
              * NOTE: We aught to be able to get the data by unserializing
              * $item['mystyle_data'], this however fails because the data comes
@@ -56,16 +56,16 @@ class MyStyle_WooCommerce_Admin_Order {
              * directly using a database call.
              */
             $mystyle_data = wc_get_order_item_meta( $item_id, 'mystyle_data' );
-            
+
             $design_id = $mystyle_data['design_id'];
-            
+
             /** @var \WP_User */
             $current_user = wp_get_current_user();
-            
+
             /** @var \MyStyle_Design */
             $design = MyStyle_DesignManager::get( $design_id, $current_user );
         }
-    
+
         ?>
         <td class="item-mystyle">
             <?php if( $design != null ) : ?>
@@ -85,26 +85,33 @@ class MyStyle_WooCommerce_Admin_Order {
                                     $file_name_extension = $matches[3];
                                     for( $i = 1; $i <= $print_file_count; $i++ ) {
                                         $curr_file_name = $file_name_base . $i . $file_name_extension;
-                                        echo '<a href="' . $curr_file_name . '" target="_blank">Print Image ' . $i . '</a><br/>';
+                                        if (strpos($curr_file_name, '.png') > 0 || strpos($curr_file_name, '.jpg') > 0 ){
+                                          echo '<a class="button btn btn-default" href="' . $curr_file_name . '" target="_blank">Print Image ' . $i . '</a><br/>';
+                                        }
                                     }
-                                } else { 
-                                    echo '<a href="' . $design->get_print_url() . '" target="_blank">Print Image</a><br/>';
+                                } else {
+                                    if (strpos($design->get_print_url(), '.png') > 0 || strpos($design->get_print_url(), '.jpg') > 0 ){
+                                      echo '<a class="button btn btn-default" href="' . $design->get_print_url() . '" target="_blank">Print Image</a><br/>';
+                                    }
                                 } ?>
                         <?php } ?>
-                        <a href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a><br/>
-                        <?php if( defined( 'MYSTYLE_RENDERER' )  &&  MYSTYLE_RENDERER ) { ?>
-                            <a href="http://mystyleplatform.com/tools/render/?design_url=<?php echo $design->get_design_url() ?>" target="_blank">Renderer</a><br/>
-                        <?php } ?>
+                        <a class="button btn btn-default" href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a><br/>
+                        <?php
+                        //
+                        /*if( defined( 'MYSTYLE_RENDERER' )  &&  MYSTYLE_RENDERER ) {*/ ?>
+                            <a class="button btn btn-primary" href="http://mystyleplatform.com/render/?design_url=<?php echo $design->get_design_url() ?>" target="_blank">Render Print Image</a><br/>
+                        <?php /*} */?>
                     </div>
+                    <hr>
                     <img src="<?php echo $design->get_thumb_url(); ?>"/>
- 
+
                 </div>
             <?php endif; ?>
         </td>
         <?php
 
     }
-    
+
     /**
      * Get the singleton instance.
      * @return MyStyle_WooCommerce_Admin_Order

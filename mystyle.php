@@ -4,7 +4,7 @@
 Plugin Name: MyStyle
 Plugin URI: http://www.mystyleplatform.com
 Description: The MyStyle Custom Product Designer is a simple plugin that allows your customers to customize products in WooCommerce.
-Version: 2.1.1
+Version: 2.1.2
 Author: mystyleplatform
 Author URI: www.mystyleplatform.com
 License: GPL v3
@@ -42,19 +42,19 @@ if ( ! class_exists( 'MyStyle' ) ) :
 final class MyStyle {
 
     public static $STANDARD_DATE_FORMAT = 'Y-m-d H:i:s';
-    
+
     /**
      * Singleton class instance
      * @var MyStyle
      */
     private static $instance;
-    
+
     /**
      * Our WooCommerce interface.
      * @var MyStyle_WC_Interface
      */
     private $wc;
-    
+
     /**
      * Constructor.
      */
@@ -64,7 +64,7 @@ final class MyStyle {
         $this->init_hooks();
         $this->init();
     }
-    
+
     /**
      * Define MYSTYLE Constants.
      */
@@ -82,7 +82,7 @@ final class MyStyle {
         }
 
         if( ! defined( 'MYSTYLE_SERVER' ) ) { define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' ); }
-        if( ! defined( 'MYSTYLE_VERSION' ) ) { define( 'MYSTYLE_VERSION', '2.1.1' ); }
+        if( ! defined( 'MYSTYLE_VERSION' ) ) { define( 'MYSTYLE_VERSION', '2.1.2' ); }
         if( ! defined( 'MYSTYLE_TEMPLATE_DEBUG_MODE' ) ) { define( 'MYSTYLE_TEMPLATE_DEBUG_MODE', false ); }
 
         define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
@@ -91,7 +91,7 @@ final class MyStyle {
         define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
         define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' );
     }
-    
+
     /**
      * Hook into actions and filters.
      */
@@ -100,25 +100,25 @@ final class MyStyle {
         register_activation_hook( __FILE__, array( 'MyStyle', 'activate' ) );
         register_deactivation_hook( __FILE__, array( 'MyStyle', 'deactivate' ) );
         register_uninstall_hook( __FILE__, array( 'MyStyle', 'uninstall' ) );
-        
+
         add_action( 'init', array( $this, 'check_version' ), 10, 0 );
     }
-    
+
     /**
      * Initialize the plugin.
      */
     public function init() {
         $this->init_singletons();
-        
+
         // Init action.
         do_action( 'mystyle_init' );
     }
-    
+
     /**
      * Include required core files used in admin and on the frontend.
      */
     private function includes() {
-   
+
         require_once( MYSTYLE_PATH . 'tests/qunit.php' );
         require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
         require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-forbidden-exception.php' );
@@ -157,16 +157,16 @@ final class MyStyle {
         require_once( MYSTYLE_INCLUDES . 'class-mystyle-order-listener.php' );
 
         require_once( MYSTYLE_PATH . 'functions.php' );
-        
+
         if( $this->is_request( 'admin' ) ) {
             $this->admin_includes();
         }
-        
+
         if( $this->is_request( 'frontend' ) ) {
             $this->frontend_includes();
         }
     }
-    
+
     /**
      * Include required admin files.
      */
@@ -178,7 +178,7 @@ final class MyStyle {
         require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php' );
         require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php' );
     }
-    
+
     /**
      * Include required frontend files.
      */
@@ -187,12 +187,12 @@ final class MyStyle {
         require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-cart.php' );
         require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
     }
-    
+
     /**
      * Init our singletons (registers hooks, etc).
      */
     private function init_singletons() {
-        
+
         if( ! defined('DOING_PHPUNIT') ) {
             //set up the third party interfaces
             $this->set_WC( new MyStyle_WC() );
@@ -227,7 +227,7 @@ final class MyStyle {
             }
 
         }
-        
+
         if( $this->is_request( 'frontend' ) ) {
             //---- FRONT END ----//
             if( ! defined( 'MYSTYLE_DESIGNS_PER_PAGE' ) ) { define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 ); }
@@ -236,7 +236,7 @@ final class MyStyle {
             MyStyle_FrontEnd::get_instance();
             MyStyle_Cart::get_instance();
             $mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
-            $mystyle_handoff = new MyStyle_Handoff( $mystyle_api ); 
+            $mystyle_handoff = new MyStyle_Handoff( $mystyle_api );
             MyStyle_Customize_Page::get_instance();
             MyStyle_Design_Profile_Page::get_instance();
         }
@@ -245,7 +245,7 @@ final class MyStyle {
         add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
         add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
     }
-    
+
     /**
      * Init the MyStyle interface.
      * @todo Add unit testing for this function.
@@ -263,28 +263,28 @@ final class MyStyle {
             }
         }
     }
-    
+
     /**
      * Activate function. Activates the plugin.
      */
     public static function activate() {
         MyStyle_Install::activate();
     }
-    
+
     /**
      * Deactivate function. Deactivates the plugin.
      */
     public static function deactivate() {
         MyStyle_Install::deactivate();
     }
-    
+
     /**
      * Uninstall function. Uninstalls the plugin.
      */
     public static function uninstall() {
         MyStyle_Install::uninstall();
     }
-    
+
     /**
      * Function that looks to see if any products are mystyle enabled.
      * @return boolean Returns true if at least one product is customizable.
@@ -298,23 +298,23 @@ final class MyStyle {
                 );
 
         $customizable_products = get_posts( $args );
-        
+
         if( ! empty( $customizable_products ) ) {
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
      * Sets the WooCommerce interface.
-     * @param MyStyle_WC_Interface $mystyle_wc_interface The WooCommerce 
+     * @param MyStyle_WC_Interface $mystyle_wc_interface The WooCommerce
      * interface.
      */
     public function set_WC( MyStyle_WC_Interface $mystyle_wc_interface ) {
         $this->wc = $mystyle_wc_interface;
     }
-    
+
     /**
      * Gets the WooCommerce interface.
      * @return MyStyle_WC_Interface Returns the value of template_id.
@@ -322,18 +322,18 @@ final class MyStyle {
     public function get_WC() {
         return $this->wc;
     }
-    
+
     /**
      * Gets the current MyStyle_Session.
-     * 
+     *
      * This is just a shortcut to make it easier to get the current session.
-     * 
+     *
      * @return MyStyle_Session Returns the current MyStyle_Session.
      */
     public function get_session() {
         return MyStyle_SessionHandler::get_instance()->get();
     }
-    
+
     /**
      * Gets the singleton instance.
      * @return MyStyle Returns the singleton instance of
@@ -346,7 +346,7 @@ final class MyStyle {
 
         return self::$instance;
     }
-    
+
     /**
      * What type of request is this?
      *

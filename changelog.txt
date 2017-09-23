@@ -1,3 +1,7 @@
+= 2.1.2 =
+* Changed renderer link to show for all lincensees
+* Changed links on former print image urls to only show if image data contains the correct file extension
+
 = 2.1.1 =
 
 * Fixed an issue with the Design Profile Page Fix tool.
@@ -347,4 +351,3 @@
 = 0.1.0 =
 
 * Initial Alpha version.
-
