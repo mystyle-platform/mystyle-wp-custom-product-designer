@@ -96,11 +96,7 @@ class MyStyle_WooCommerce_Admin_Order {
                                 } ?>
                         <?php } ?>
                         <a class="button" href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a><br/>
-                        <?php
-                        //
-                        /*if( defined( 'MYSTYLE_RENDERER' )  &&  MYSTYLE_RENDERER ) {*/ ?>
-                            <a class="button" href="http://mystyleplatform.com/render/?design_url=<?php echo $design->get_design_url() ?>" target="_blank">Render Print Image</a><br/>
-                        <?php /*} */?>
+                        <a class="button" href="http://mystyleplatform.com/render/?design_url=<?php echo $design->get_design_url() ?>" target="_blank">Render Print Image</a><br/>
                     </div>
                     <hr>
                     <img src="<?php echo $design->get_thumb_url(); ?>"/>
