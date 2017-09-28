@@ -86,20 +86,20 @@ class MyStyle_WooCommerce_Admin_Order {
                                     for( $i = 1; $i <= $print_file_count; $i++ ) {
                                         $curr_file_name = $file_name_base . $i . $file_name_extension;
                                         if (strpos($curr_file_name, '.png') > 0 || strpos($curr_file_name, '.jpg') > 0 ){
-                                          echo '<a class="button btn btn-default" href="' . $curr_file_name . '" target="_blank">Print Image ' . $i . '</a><br/>';
+                                          echo '<a class="button" href="' . $curr_file_name . '" target="_blank">Print Image ' . $i . '</a><br/>';
                                         }
                                     }
                                 } else {
                                     if (strpos($design->get_print_url(), '.png') > 0 || strpos($design->get_print_url(), '.jpg') > 0 ){
-                                      echo '<a class="button btn btn-default" href="' . $design->get_print_url() . '" target="_blank">Print Image</a><br/>';
+                                      echo '<a class="button" href="' . $design->get_print_url() . '" target="_blank">Print Image</a><br/>';
                                     }
                                 } ?>
                         <?php } ?>
-                        <a class="button btn btn-default" href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a><br/>
+                        <a class="button" href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a><br/>
                         <?php
                         //
                         /*if( defined( 'MYSTYLE_RENDERER' )  &&  MYSTYLE_RENDERER ) {*/ ?>
-                            <a class="button btn btn-primary" href="http://mystyleplatform.com/render/?design_url=<?php echo $design->get_design_url() ?>" target="_blank">Render Print Image</a><br/>
+                            <a class="button" href="http://mystyleplatform.com/render/?design_url=<?php echo $design->get_design_url() ?>" target="_blank">Render Print Image</a><br/>
                         <?php /*} */?>
                     </div>
                     <hr>
