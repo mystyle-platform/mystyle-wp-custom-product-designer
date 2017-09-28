@@ -85,12 +85,12 @@ class MyStyle_WooCommerce_Admin_Order {
                                     $file_name_extension = $matches[3];
                                     for( $i = 1; $i <= $print_file_count; $i++ ) {
                                         $curr_file_name = $file_name_base . $i . $file_name_extension;
-                                        if (strpos($curr_file_name, '.png') > 0 || strpos($curr_file_name, '.jpg') > 0 ){
+                                        if ( in_array( pathinfo( $curr_file_name , PATHINFO_EXTENSION ), array( 'png', 'jpg' ) ) ) {
                                           echo '<a class="button" href="' . $curr_file_name . '" target="_blank">Print Image ' . $i . '</a><br/>';
                                         }
                                     }
                                 } else {
-                                    if (strpos($design->get_print_url(), '.png') > 0 || strpos($design->get_print_url(), '.jpg') > 0 ){
+                                    if ( in_array( pathinfo( $design->get_print_url() , PATHINFO_EXTENSION ), array( 'png', 'jpg' ) ) ) {
                                       echo '<a class="button" href="' . $design->get_print_url() . '" target="_blank">Print Image</a><br/>';
                                     }
                                 } ?>
