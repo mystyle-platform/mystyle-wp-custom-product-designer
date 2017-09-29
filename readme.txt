@@ -4,7 +4,7 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: customization, designer, personalization, product-preview, woocommerce, custom product, product designer, Post, plugin, admin, posts, shortcode, images, page, image
 Requires at least: 3.3
-Tested up to: 4.8.0
+Tested up to: 4.8.2
 WC tested up to: 3.1.1
 Stable tag: 2.1.2
 
