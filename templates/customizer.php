@@ -51,7 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
           ' hspace="0"' +
           ' vspace="0"' +
           ' scrolling="no"' +
-          ' src="<?php echo $mobile_customizer_url; ?>"' +
+          ' src="<?php echo $html5_customizer_url; ?>"' +
           ' width="100%"' +
           ' height="100%"></iframe>';
     }

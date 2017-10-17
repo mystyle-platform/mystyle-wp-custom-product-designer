@@ -105,7 +105,7 @@ abstract class MyStyle_Customizer_Shortcode {
 
         //---------- variables for use by the view layer ---------
         $customizer_url = 'http://customizer.ogmystyle.com/' . $customizer_query_string;
-        $mobile_customizer_url = '//customizer-js.ogmystyle.com/' . $customizer_query_string;
+        $html5_customizer_url = '//customizer-js.ogmystyle.com/' . $customizer_query_string;
 
         // force mobile from plugin admin settings?
         $enable_flash = MyStyle_Options::get_enable_flash();
