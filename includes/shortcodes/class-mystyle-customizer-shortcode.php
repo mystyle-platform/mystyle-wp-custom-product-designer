@@ -104,7 +104,7 @@ abstract class MyStyle_Customizer_Shortcode {
                         "&amp;passthru=h,$passthru";
 
         //---------- variables for use by the view layer ---------
-        $customizer_url = 'http://customizer.ogmystyle.com/' . $customizer_query_string;
+        $flash_customizer_url = 'http://customizer.ogmystyle.com/' . $customizer_query_string;
         $html5_customizer_url = '//customizer-js.ogmystyle.com/' . $customizer_query_string;
 
         // force mobile from plugin admin settings?

@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
           ' hspace="0"' +
           ' vspace="0"' +
           ' scrolling="no"' +
-          ' src="<?php echo $customizer_url ?>"' +
+          ' src="<?php echo $flash_customizer_url ?>"' +
           ' width="950"' +
           ' height="550"></iframe>';
     } else {
