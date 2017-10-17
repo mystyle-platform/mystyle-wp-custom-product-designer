@@ -6,7 +6,7 @@ Plugin URI: http://www.mystyleplatform.com
 Description: The MyStyle Custom Product Designer is a simple plugin that allows your customers to customize products in WooCommerce.
 Version: 2.1.3
 WC requires at least: 2.2.0
-WC tested up to: 3.1.2
+WC tested up to: 3.2.1
 Author: mystyleplatform
 Author URI: www.mystyleplatform.com
 License: GPL v3
