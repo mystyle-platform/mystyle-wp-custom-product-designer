@@ -108,11 +108,11 @@ abstract class MyStyle_Customizer_Shortcode {
         $mobile_customizer_url = '//customizer-js.ogmystyle.com/' . $customizer_query_string;
 
         // force mobile from plugin admin settings?
-        $force_mobile = MyStyle_Options::get_force_mobile();
+        $enable_flash = MyStyle_Options::get_enable_flash();
 
         // force mobile from GET var override?
-        if ( isset( $_GET['force_mobile'] ) ) {
-            $force_mobile = 1;
+        if ( isset( $_GET['enable_flash'] ) ) {
+            $enable_flash = 1;
         }
 
         // ---------- Call the view layer ------- //

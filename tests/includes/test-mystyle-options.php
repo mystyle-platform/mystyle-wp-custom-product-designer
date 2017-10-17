@@ -69,18 +69,18 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
     }
     
     /**
-     * Assert that get_force_mobile() returns the expected force_mobile value.
+     * Assert that get_enable_flash() returns the expected enable_flash value.
      */    
-    function test_get_force_mobile() {
-        //Set force_mobile
+    function test_get_enable_flash() {
+        //Set enable_flash
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
-        $options['force_mobile'] = 1;
+        $options['enable_flash'] = 1;
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         
-        $force_mobile = MyStyle_Options::get_force_mobile();
+        $enable_flash = MyStyle_Options::get_enable_flash();
 
-        $this->assertEquals( 1, $force_mobile );
+        $this->assertEquals( 1, $enable_flash );
     }
     
     /**
@@ -88,7 +88,7 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
      * customize_page_title_hide value.
      */    
     function test_get_customize_page_title_hide() {
-        //Set force_mobile
+        //Set enable_flash
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         $options['customize_page_title_hide'] = 1;
@@ -111,7 +111,7 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
         $options['api_key'] = $demo_key;
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         
-        $api_key = MyStyle_Options::get_api_key();
+        //$api_key = MyStyle_Options::get_api_key();
 
         if( defined( 'MYSTYLE_OVERRIDE_API_KEY' ) ) {
             echo 'Error, can\'t test.';

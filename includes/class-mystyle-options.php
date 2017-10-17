@@ -62,18 +62,18 @@ abstract class MyStyle_Options {
     }
 
     /**
-     * Function that gets the value of force_mobile setting.
-     * @return boolean Returns 1 if the force_mobile setting is enabled,
+     * Function that gets the value of enable_flash setting.
+     * @return boolean Returns 1 if the enable_flash setting is enabled,
      * otherwise returns false.
      */
-    static function get_force_mobile() {
-        $force_mobile = 0;
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        if ( ! empty( $options['force_mobile'] ) ) {
-            $force_mobile = $options['force_mobile'];
+    static function get_enable_flash() {
+        $enable_flash = 0;
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array());
+        if ( ! empty( $options['enable_flash'] ) ) {
+            $enable_flash = $options['enable_flash'];
         }
 
-        return $force_mobile;
+        return $enable_flash;
     }
 
     /**

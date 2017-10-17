@@ -15,20 +15,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div id="customizer-wrapper"></div>
 <script type="text/javascript">
+    //Does the browser support Flash?
     var testFlash = swfobject.getFlashPlayerVersion();
-    var isMobileBrowser = false;
-    var forceMobile = <?php echo $force_mobile; ?>;
-    if (testFlash && testFlash.hasOwnProperty('major') && testFlash.major == 0) {
-        isMobileBrowser = true;
+    var flashSupported = false;
+    if ( testFlash && testFlash.hasOwnProperty( 'major' ) && testFlash.major > 0 ) {
+        flashSupported = true;
     }
-    var elem = document.getElementById('customizer-wrapper');
+    
+    //Do we want Flash?
+    var enableFlash = <?php echo $enable_flash; ?>;
+    
+    //Show Flash customizer?
+    var showFlashCustomizer = false;
+    if ( flashSupported && enableFlash ) {
+        showFlashCustomizer = true;
+    }
+    
+    var elem = document.getElementById( 'customizer-wrapper' );
     var iframeCustomizer = '';
 
-    if (!isMobileBrowser && forceMobile) {
-        isMobileBrowser = true;
-    }
-
-    if (!isMobileBrowser) {
+    if ( showFlashCustomizer ) {
         iframeCustomizer = '<iframe' +
           ' id="customizer-iframe"' +
           ' frameborder="0"' +

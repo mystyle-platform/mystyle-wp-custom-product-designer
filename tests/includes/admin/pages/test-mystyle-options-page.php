@@ -131,8 +131,8 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $outbound = ob_get_contents();
         ob_end_clean();
         
-        //Assert that the force_mobile field is registered/rendered.
-        $this->assertContains( '<input type="checkbox" id="mystyle_force_mobile" name="mystyle_options[force_mobile]" value="1"  />', $outbound );
+        //Assert that the enable_flash field is registered/rendered.
+        $this->assertContains( '<input type="checkbox" id="mystyle_enable_flash" name="mystyle_options[enable_flash]" value="1"  />', $outbound );
     }
     
     /**
@@ -224,17 +224,17 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the render_force_mobile function.
+     * Test the render_enable_flash function.
      */    
-    public function test_render_force_mobile() {
+    public function test_render_enable_flash() {
         $mystyle_options_page = new MyStyle_Options_Page();
         
-        //Assert that the force_mobile field was rendered
+        //Assert that the enable_flash field was rendered
         ob_start();
-        $mystyle_options_page->render_force_mobile();
+        $mystyle_options_page->render_enable_flash();
         $outbound = ob_get_contents();
         ob_end_clean();
-        $this->assertContains( 'Always use the HTML5', $outbound );
+        $this->assertContains( 'Use the Flash version', $outbound );
     }
     
     /**
@@ -251,7 +251,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'not valid';
         $input['secret']  = 'validsecret';
-        $input['force_mobile'] = 0;
+        $input['enable_flash'] = 0;
         $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
@@ -282,7 +282,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = '"><script>alert(document.cookie)</script>';
         $input['secret'] = 'validsecret';
-        $input['force_mobile'] = 0;
+        $input['enable_flash'] = 0;
         $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
@@ -313,7 +313,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'A0000';
         $input['secret'] = 'validsecret';
-        $input['force_mobile']  = 0;
+        $input['enable_flash']  = 0;
         $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
@@ -350,7 +350,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'validapikey';
         $input['secret']  = 'not valid';
-        $input['force_mobile'] = 0;
+        $input['enable_flash'] = 0;
         $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
@@ -381,7 +381,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'validapikey';
         $input['secret']  = '"><script>alert(document.cookie)</script>';
-        $input['force_mobile'] = 0;
+        $input['enable_flash'] = 0;
         $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         
@@ -412,7 +412,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input = array();
         $input['api_key'] = 'validapikey';
         $input['secret']  = 'A0000';
-        $input['force_mobile'] = 0;
+        $input['enable_flash'] = 0;
         $input['customize_page_title_hide'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         

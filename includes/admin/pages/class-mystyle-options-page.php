@@ -59,11 +59,11 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings'
         );
 
-        /* DISABLE FLASH / FORCE MOBILE SETTING */
+        /* ENABLE FLASH SETTING */
         add_settings_field(
-                'force_mobile',
-                'Disable Flash (Not Recommended)',
-                array( &$this, 'render_force_mobile' ),
+                'enable_flash',
+                'Enable Flash (Not Recommended)',
+                array( &$this, 'render_enable_flash' ),
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
@@ -241,16 +241,16 @@ class MyStyle_Options_Page {
     }
 
     /**
-     * Function to render the Force Mobile field and description
+     * Function to render the Enable Flash field and description.
      */
-    public function render_force_mobile() {
+    public function render_enable_flash() {
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        $force_mobile = ( array_key_exists( 'force_mobile', $options ) ) ? $options['force_mobile'] : 0;
+        $enable_flash = ( array_key_exists( 'enable_flash', $options ) ) ? $options['enable_flash'] : 0;
      ?>
 
         <label class="description">
-            <input type="checkbox" id="mystyle_force_mobile" name="mystyle_options[force_mobile]" value="1" <?php echo checked( 1, $force_mobile, false ) ?> />
-            &nbsp; Always use the HTML5 (never use Flash) version of the MyStyle customizer.
+            <input type="checkbox" id="mystyle_enable_flash" name="mystyle_options[enable_flash]" value="1" <?php echo checked( 1, $enable_flash, false ) ?> />
+            &nbsp; Use the Flash version of the MyStyle customizer (when Flash is available).
         </label>
     <?php
 
@@ -340,13 +340,13 @@ class MyStyle_Options_Page {
             $new_options['secret'] = '';
         }
 
-        //Force Mobile
-        $new_options['force_mobile'] = ( isset( $input['force_mobile'] ) ) ? intval( $input['force_mobile'] ) : 0;
-        if( ! preg_match( '/^[01]$/', $new_options['force_mobile'] ) ) {
+        //Enable Flash
+        $new_options['enable_flash'] = ( isset( $input['enable_flash'] ) ) ? intval( $input['enable_flash'] ) : 0;
+        if( ! preg_match( '/^[01]$/', $new_options['enable_flash'] ) ) {
             $has_errors = true;
             $msg_type = 'error';
             $msg_message = 'Invalid HTML5 Customizer option';
-            $new_options['force_mobile'] = 0;
+            $new_options['enable_flash'] = 0;
         }
 
         //Hide Customize Page Title
