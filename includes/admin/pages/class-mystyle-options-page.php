@@ -85,8 +85,24 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
-
-
+        
+        /* ENABLE_ALTERNATE_DESIGN_COMPLETE_REDIRECT */
+        add_settings_field(
+                'enable_alternate_design_complete_redirect',
+                'Enable Alternate Design Complete Redirect',
+                array( &$this, 'render_enable_alternate_design_complete_redirect' ),
+                'mystyle_advanced_settings',
+                'mystyle_options_advanced_section'
+        );
+        
+        /* ALTERNATE_DESIGN_COMPLETE_REDIRECT_URL */
+        add_settings_field(
+                'alternate_design_complete_redirect_url',
+                'Alternate Design Complete Redirect URL',
+                array( &$this, 'render_alternate_design_complete_redirect_url' ),
+                'mystyle_advanced_settings',
+                'mystyle_options_advanced_section'
+        );
 
 
         // ************** TOOLS SECTION ******************//
@@ -279,10 +295,40 @@ class MyStyle_Options_Page {
     public function render_form_integration_config() {
 
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() ); // get WP Options table Key of this option
-        $currentVal = ( array_key_exists( 'mystyle_form_integration_config', $options ) ) ? $options['mystyle_form_integration_config'] : '';
+        $current_val = ( array_key_exists( 'mystyle_form_integration_config', $options ) ) ? $options['mystyle_form_integration_config'] : '';
      ?>
-        <textarea id="mystyle_form_integration_config" name="mystyle_options[mystyle_form_integration_config]" ><?php echo $currentVal; ?></textarea>
+        <textarea id="mystyle_form_integration_config" name="mystyle_options[mystyle_form_integration_config]" ><?php echo $current_val; ?></textarea>
         <p class="description">Configure advanced form integrations here (not recommended)</p>
+    <?php
+    }
+    
+    /**
+     * Function to render the Enable Alternate Design Complete Redirect option
+     * and checkbox.
+     */
+    public function render_enable_alternate_design_complete_redirect() {
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $enable_alternate_design_complete_redirect = ( array_key_exists( 'enable_alternate_design_complete_redirect', $options ) ) ? $options['enable_alternate_design_complete_redirect'] : 0;
+     ?>
+
+        <label class="description">
+            <input type="checkbox" id="enable_alternate_design_complete_redirect" name="mystyle_options[enable_alternate_design_complete_redirect]" value="1" <?php echo checked( 1, $enable_alternate_design_complete_redirect, false ) ?> />
+            &nbsp; Enable the alternate design complete redirect.
+        </label>
+    <?php
+
+    }
+
+    /**
+     * Function to render the alternate design complete redirect url field.
+     */
+    public function render_alternate_design_complete_redirect_url() {
+
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() ); // get WP Options table Key of this option
+        $current_val = ( array_key_exists( 'alternate_design_complete_redirect_url', $options ) ) ? $options['alternate_design_complete_redirect_url'] : '';
+     ?>
+        <input id="mystyle_alternate_design_complete_redirect_url" name="mystyle_options[alternate_design_complete_redirect_url]" size="60" type="text" value="<?php echo $current_val ?>" />
+        <p class="description">Specify an alternate URL to redirect to after the user completes their design. By default, the user will be redirected to the cart.</p>
     <?php
     }
 
@@ -367,6 +413,24 @@ class MyStyle_Options_Page {
             $msg_message = 'Please enter a valid API Key.';
             $new_options['mystyle_form_integration_config'] = '';
         }*/
+        
+        //Enable Alternate Design Complete Redirect.
+        $new_options['enable_alternate_design_complete_redirect'] = ( isset( $input['enable_alternate_design_complete_redirect'] ) ) ? intval( $input['enable_alternate_design_complete_redirect'] ) : 0;
+        if( ! preg_match( '/^[01]$/', $new_options['enable_alternate_design_complete_redirect'] ) ) {
+            $has_errors = true;
+            $msg_type = 'error';
+            $msg_message = 'Invalid Enable Alternate Design Complete Redirect option';
+            $new_options['enable_alternate_design_complete_redirect'] = 0;
+        }
+        
+        //Alternate Design Complete Redirect URL
+        $new_options['alternate_design_complete_redirect_url'] = trim( $input['alternate_design_complete_redirect_url'] );
+        if( ! filter_var( $new_options['alternate_design_complete_redirect_url'], FILTER_VALIDATE_URL ) !== false ) {
+            $has_errors = true;
+            $msg_type = 'error';
+            $msg_message = 'Please enter a valid Alternate Design Complete Redirect URL.';
+            $new_options['alternate_design_complete_redirect_url'] = '';
+        }
 
 
         if( ! $has_errors ) {
