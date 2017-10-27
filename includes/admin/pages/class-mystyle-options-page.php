@@ -370,7 +370,7 @@ class MyStyle_Options_Page {
 
         //API Key
         $new_options['api_key'] = trim( $input['api_key'] );
-        if(!preg_match( '/^[a-z0-9]*$/i', $new_options['api_key'] ) ) {
+        if( ! preg_match( '/^[a-z0-9]*$/i', $new_options['api_key'] ) ) {
             $has_errors = true;
             $msg_type = 'error';
             $msg_message = 'Please enter a valid API Key.';
@@ -425,7 +425,10 @@ class MyStyle_Options_Page {
         
         //Alternate Design Complete Redirect URL
         $new_options['alternate_design_complete_redirect_url'] = trim( $input['alternate_design_complete_redirect_url'] );
-        if( ! filter_var( $new_options['alternate_design_complete_redirect_url'], FILTER_VALIDATE_URL ) !== false ) {
+        if( 
+            ( ! empty( $new_options['alternate_design_complete_redirect_url'] ) ) &&
+            (filter_var( $new_options['alternate_design_complete_redirect_url'], FILTER_VALIDATE_URL ) == false )
+          ) {
             $has_errors = true;
             $msg_type = 'error';
             $msg_message = 'Please enter a valid Alternate Design Complete Redirect URL.';
