@@ -253,13 +253,21 @@ class MyStyle_Handoff {
                 //Send to Demo Mode Message
                 $html = $this->buildView('MyStyle Demo', $cart->get_cart_url(), false);
             } else {
-                //Redirect the user to the cart
-                $html = $this->buildView('Adding Product to Cart...', $cart->get_cart_url(), true);
+                if( 
+                    ( MyStyle_Options::enable_alternate_design_complete_redirect() ) &&
+                    ( MyStyle_Options::get_alternate_design_complete_redirect_url() != null )
+                ) {
+                    $link = MyStyle_Options::get_alternate_design_complete_redirect_url();
+                    $html = '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . $link . '"></head><body></body></html>';
+                } else {
+                    //Redirect the user to the cart
+                    $html = $this->buildView('Adding Product to Cart...', $cart->get_cart_url(), true);
+                }
             }
             
         }
         else { // GET Request
-            $html = '<!DOCTYPE html><html><head></head><body><h1>MyStyle</h1><h2>Access Denied</h2></body></head>';
+            $html = '<!DOCTYPE html><html><head></head><body><h1>MyStyle</h1><h2>Access Denied</h2></body></html>';
         }
         
         return $html;
