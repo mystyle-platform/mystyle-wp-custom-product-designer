@@ -28,7 +28,7 @@ abstract class MyStyle_Options {
     }
 
     /**
-     * Function that gets the active api_key
+     * Function that gets the active api_key.
      * @return string Returns the active api key.
      */
     static function get_api_key() {
@@ -45,7 +45,7 @@ abstract class MyStyle_Options {
     }
 
     /**
-     * Function that gets the active secret
+     * Function that gets the active secret.
      * @return string Returns the active secret.
      */
     static function get_secret() {
@@ -87,9 +87,9 @@ abstract class MyStyle_Options {
         if ( ! empty( $options['customize_page_title_hide'] ) ) {
             $customize_page_title_hide = $options['customize_page_title_hide'];
         }
+        
         return $customize_page_title_hide;
     }
-
 
 
     /**
@@ -103,6 +103,44 @@ abstract class MyStyle_Options {
         $ret = ($api_key == $demo_key);
 
         return $ret;
+    }
+    
+    /**
+     * Function that gets the enable_alternate_design_complete_redirect option.
+     * @return boolean Returns true if the 
+     * enable_alternate_design_complete_redirect setting is enabled, otherwise
+     * returns false.
+     */
+    static function enable_alternate_design_complete_redirect() {
+        $val = 0;
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if ( ! empty( $options['enable_alternate_design_complete_redirect'] ) ) {
+            $val = $options['enable_alternate_design_complete_redirect'];
+        }
+        
+        //convert to true boolean
+        if($val == 1 ) {
+            $ret = true;
+        } else {
+            $ret = false;
+        }
+        
+        return $ret;
+    }
+    
+    /**
+     * Function that gets the Alternate Design Complete Redirect URL.
+     * @return string|null Returns the Alternate Design Complete Redirect URL if one
+     * is set, otherwise returns null.
+     */
+    static function get_alternate_design_complete_redirect_url() {
+        $val = null;
+        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        if ( ! empty($options['alternate_design_complete_redirect_url'] ) ) {
+            $val = $options['alternate_design_complete_redirect_url'];
+        }
+
+        return $val;
     }
 
 }
