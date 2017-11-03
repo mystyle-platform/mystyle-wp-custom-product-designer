@@ -140,5 +140,37 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
             $this->assertFalse( MyStyle_Options::is_demo_mode() );
         }
     }
+    
+    /**
+     * Assert that enable_alternate_design_complete_redirect() returns the
+     * expected enable_alternate_design_complete_redirect value.
+     */    
+    function test_enable_alternate_design_complete_redirect() {
+        //Set enable_alternate_design_complete_redirect
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['enable_alternate_design_complete_redirect'] = 1;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $enable_alternate_design_complete_redirect = MyStyle_Options::enable_alternate_design_complete_redirect();
+
+        $this->assertEquals( 1, $enable_alternate_design_complete_redirect );
+    }
+    
+    /**
+     * Assert that get_get_alternate_design_complete_redirect_url() returns the
+     * expected URL.
+     */    
+    function test_get_get_alternate_design_complete_redirect_url() {
+        //Install the get_alternate_design_complete_redirect_url
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['alternate_design_complete_redirect_url'] = 'http://www.example.com';
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $url = MyStyle_Options::get_alternate_design_complete_redirect_url();
+
+        $this->assertEquals( 'http://www.example.com', $url );
+    }
 
 }
