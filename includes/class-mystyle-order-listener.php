@@ -34,10 +34,12 @@ class MyStyle_Order_Listener {
      */
     public function init() {
         //we hook these in the init event because we need to wait until WooCommerce is loaded so we know the version
-        if( WC()->version < 3.0 ) {
-            add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_mystyle_order_item_meta_legacy' ), 10, 2 );
-        } else {
-            add_action( 'woocommerce_checkout_create_order_line_item', array( &$this, 'add_mystyle_order_item_meta' ), 10, 4 );
+        if( MyStyle()->get_WC()->is_installed() ) {
+            if( MyStyle()->get_WC()->version_compare( '3.0', '<' ) ) {
+                add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_mystyle_order_item_meta_legacy' ), 10, 2 );
+            } else {
+                add_action( 'woocommerce_checkout_create_order_line_item', array( &$this, 'add_mystyle_order_item_meta' ), 10, 4 );
+            }
         }
     }
     

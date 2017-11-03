@@ -64,7 +64,7 @@ final class MyStyle {
         $this->define_constants();
         $this->includes();
         $this->init_hooks();
-        $this->init();
+        $this->init_singletons();
     }
 
     /**
@@ -104,16 +104,7 @@ final class MyStyle {
         register_uninstall_hook( __FILE__, array( 'MyStyle', 'uninstall' ) );
 
         add_action( 'init', array( $this, 'check_version' ), 10, 0 );
-    }
-
-    /**
-     * Initialize the plugin.
-     */
-    public function init() {
-        $this->init_singletons();
-
-        // Init action.
-        do_action( 'mystyle_init' );
+        add_action( 'admin_init', array( $this, 'check_woocommerce' ), 10, 0 );
     }
 
     /**
@@ -200,8 +191,10 @@ final class MyStyle {
             $this->set_WC( new MyStyle_WC() );
         }
 
-        MyStyle_User_Interface::get_instance();
-        MyStyle_Order_Listener::get_instance();
+        //if( $this->wc->is_woocommerce_installed() ) {
+            MyStyle_User_Interface::get_instance();
+            MyStyle_Order_Listener::get_instance();
+        //}
 
         if( $this->is_request( 'admin' ) ) {
             //---- ADMIN ----//
@@ -229,6 +222,12 @@ final class MyStyle {
             }
 
         }
+        
+        //if this is a frontend request and WooCommerce isn't installed, just
+        //return.
+        //if( ! $this->wc->is_woocommerce_installed() ) {
+        //    return;
+        //}
 
         if( $this->is_request( 'frontend' ) ) {
             //---- FRONT END ----//
@@ -249,11 +248,11 @@ final class MyStyle {
     }
 
     /**
-     * Init the MyStyle interface.
+     * Sets the current version against the version in the db and handles any
+     * updates.
      * @todo Add unit testing for this function.
      */
     public function check_version() {
-        // Set the current version and handle any updates
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         $data_version = ( array_key_exists( 'version', $options ) ) ? $options['version'] : null;
         if( $data_version != MYSTYLE_VERSION ) {
@@ -263,6 +262,17 @@ final class MyStyle {
                 //Run the upgrader
                 MyStyle_Install::upgrade( $data_version, MYSTYLE_VERSION );
             }
+        }
+    }
+    
+    /**
+     * Checks for WooCommerce. If it isn't found and we are in the admin,
+     * display a notice.
+     */
+    public function check_woocommerce() {
+        if( ! $this->wc->is_installed() ) {
+            $wc_missing_notice = MyStyle_Notice::create( 'notify_wc_missing', 'MyStyle requires WooCommerce but WooCommerce wasn\'t found. Please install and activate WooCommerce.' );
+            mystyle_notice_add_to_queue( $wc_missing_notice );
         }
     }
 

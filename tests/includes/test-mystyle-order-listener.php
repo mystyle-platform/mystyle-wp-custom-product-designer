@@ -27,6 +27,9 @@ class MyStyleOrderListenerTest extends WP_UnitTestCase {
         
         //Create the tables
         MyStyle_Install::create_tables();
+        
+        //Instantiate the MyStyle and MyStyle_WC object.
+        MyStyle::get_instance()->set_WC( new MyStyle_WC() );
     }
     
     /**

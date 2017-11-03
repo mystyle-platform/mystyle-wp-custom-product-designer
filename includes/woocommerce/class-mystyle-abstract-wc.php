@@ -20,6 +20,49 @@ abstract class MyStyle_AbstractWC {
     private static $instance;
     
     /**
+     * Checks to see if WooCommerce is installed and activated.
+     * @return boolean Returns true if WooCommerce is installed and activated,
+     * otherwise, returns false.
+     */
+    public function is_installed() {
+        $ret = false;
+        
+        if ( class_exists( 'WooCommerce' ) ) {
+            $ret = true;
+        }
+        
+        return $ret;
+    }
+    
+    /**
+     * Returns the version of WooCommerce that is installed. Returns null if
+     * WooCommerce isn't installed.
+     * @return string|null
+     */
+    public function get_version() {
+        $version = null;
+        
+        if ( defined( 'WC_VERSION' ) ) {
+            $version = WC_VERSION;
+        }
+        
+        return $version;
+    }
+    
+    /**
+     * Compares the past version with the currently installed version of
+     * WooCommerce using the passed operator.
+     * @param string $version The version to compare with (ex: "3.0").
+     * @param string $operator A comparison operator (ex: ">").
+     * @return boolean Returns the result of the comparison.
+     */
+    public function version_compare( $version, $operator ) {
+        $current_version = $this->get_version();
+        
+        return version_compare( $current_version, $version, $operator );
+    }
+    
+    /**
      * Wrapper for the global wc_get_page_id function.
      * @param string $page
      * @return int
@@ -42,7 +85,7 @@ abstract class MyStyle_AbstractWC {
                         $product_id, 
                         $variation ) 
     {
-        if( version_compare( WC_VERSION, '3.0', '<' ) ) {
+        if( MyStyle()->get_WC()->version_compare( '3.0', '<' ) ) {
             $variable_product = new \WC_Product_Variable( $product_id );
             return $variable_product->get_matching_variation( $variation );
         } else {

@@ -75,7 +75,7 @@ class MyStyle_Cart {
         
         if( isset( $_REQUEST['design_id'] ) ) {
             $handler = 'mystyle_add_to_cart';
-            if( version_compare( WC_VERSION, '2.3', '<' ) ) {
+            if( MyStyle()->get_WC()->version_compare( '2.3', '<' ) ) {
                 //old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
                 self::mystyle_add_to_cart_handler( false );
             }
@@ -84,7 +84,7 @@ class MyStyle_Cart {
             if( $mystyle_product->is_customizable() ) {
                 $handler = 'mystyle_customizer';
                 
-                if( version_compare( WC_VERSION, '2.3', '<' ) ) {    
+                if( MyStyle()->get_WC()->version_compare( '2.3', '<' ) ) {  
                     //old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
                     self::mystyle_add_to_cart_handler_customize( false );
                 }

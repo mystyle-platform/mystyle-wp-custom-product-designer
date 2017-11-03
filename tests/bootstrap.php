@@ -23,6 +23,8 @@ function wp_mail($to, $subject, $message) {
 
 function _manually_load_plugin() {
     require dirname( __FILE__ ) . '/../mystyle.php';
+    //Instantiate the MyStyle and MyStyle_WC object.
+    MyStyle::get_instance()->set_WC( new MyStyle_WC() );
 }
 tests_add_filter( 'plugins_loaded', '_manually_load_plugin' );
 

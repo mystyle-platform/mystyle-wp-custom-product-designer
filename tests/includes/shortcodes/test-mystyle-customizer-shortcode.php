@@ -17,7 +17,6 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
      */
     function setUp() {
         parent::setUp();
-        MyStyle::get_instance()->set_WC( new MyStyle_MockWC() );
     }
     
     /**
