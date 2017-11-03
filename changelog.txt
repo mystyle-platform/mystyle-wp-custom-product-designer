@@ -1,3 +1,10 @@
+= 3.1.0 =
+
+* Now gracefully handling no WooCommerce situations.
+* You can now set an alternate design complete url.
+* Updated the readme.txt to reflect that the plugin is tested with up to WP 4.8.3.
+* Updated the 'WC tested up to' field to 3.2.3.
+
 = 3.0.0 =
 
 * Plugin now uses the MyStyle HTML5 based customizer by default (previous versions used the Flash customizer by default).
