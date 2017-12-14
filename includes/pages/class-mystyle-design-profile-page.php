@@ -246,13 +246,15 @@ class MyStyle_Design_Profile_Page {
         //pager items
         $designs = MyStyle_DesignManager::get_designs(
                         $this->pager->get_items_per_page(),
-                        $this->pager->get_current_page_number()
+                        $this->pager->get_current_page_number(),
+                        $this->user
                     );
         $this->pager->set_items( $designs );
         
         //total items
-        $this->pager->set_total_item_count( 
-                        MyStyle_DesignManager::get_total_design_count()
+        $this->pager->set_total_item_count(
+                        MyStyle_DesignManager::get_total_design_count(),
+                        $this->user
                     );
         
         //validate the requested page

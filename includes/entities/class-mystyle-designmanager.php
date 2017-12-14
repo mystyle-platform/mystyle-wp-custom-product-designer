@@ -118,16 +118,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         $select = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ';
         $where  = 'WHERE ' . MyStyle_Design::get_primary_key() . ' < ' . $current_design_id . ' ';
         
-        if( ( $user == null ) || ( $user->ID == 0 ) ) {
-            //no user, get the next public design
-            $where .= 'AND ms_access = 0 '; 
-        } else {
-            if( ! $user->has_cap( 'read_private_posts' ) ) {
-                //user isn't admin, show public and their own private designs.
-                $where .= 'AND ms_access = 0 OR ( ( ms_access = 1 ) AND ( user_id = ' . $user->ID . ' ) ) ';   
-            }
-        }
-        //note: admin sees all designs.
+        //add security WHERE (AND) clause.
+        $where .= self::getSecurityWhereClause( 'AND' , $user );
         
         $order = 'ORDER BY ' . MyStyle_Design::get_primary_key() . ' DESC ';
         
@@ -165,16 +157,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         $select = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ';
         $where  = 'WHERE ' . MyStyle_Design::get_primary_key() . ' > ' . $current_design_id . ' ';
         
-        if( ( $user == null ) || ( $user->ID == 0 ) ) {
-            //no user, get the next public design
-            $where .= 'AND ms_access = 0 '; 
-        } else {
-            if( ! $user->has_cap( 'read_private_posts' ) ) {
-                //user isn't admin, show public and their own private designs.
-                $where .= 'AND ms_access = 0 OR ( ( ms_access = 1 ) AND ( user_id = ' . $user->ID . ' ) ) ';   
-            }
-        }
-        //note: admin sees all designs.
+        //add security WHERE (AND) clause.
+        $where .= self::getSecurityWhereClause( 'AND' , $user );
         
         $limit = 'LIMIT 1 ';
         
@@ -240,19 +224,34 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
     
     /**
      * Retrieve designs from the database.
+     * 
+     * The designs are filtered for the passed user based on these rules:
+     *  * If no user is specified, only public designs are returned. 
+     *  * If the passed user is an admin (or has the 'read_private_posts' 
+     *    capablility, all designs are returned).
+     *  * If the passed user is a regular user, all public designs are returned
+     *    allong with any private designs that the user owns.
      *
      * @param int $per_page 
      * @param int $page_number
-     *
+     * @param WP_User $user (optional) The current user.
      * @global $wpdb;
      * @return mixed Returns an array of MyStyle_Design objects or null if none
      * are found.
      */
-    public static function get_designs( $per_page = 250, $page_number = 1 ) {
+    public static function get_designs( 
+                                $per_page = 250, 
+                                $page_number = 1, 
+                                WP_User $user = null 
+                            ) 
+    {
         global $wpdb;
 
-        $sql = 'SELECT * FROM ' . MyStyle_Design::get_table_name();
+        $sql = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ';
 
+        //add security WHERE clause.
+        $sql .= self::getSecurityWhereClause( 'WHERE' , $user );
+        
         if ( ! empty( $_REQUEST['orderby'] ) ) {
             $sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
             $sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
@@ -280,22 +279,60 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
     }
     
     /**
-     * Retrieve the total number of designs from the db.
+     * Retrieve the total number of designs (filtered by security rules) from
+     * the db.
+     * 
+     * The designs are filtered for the passed user based on these rules:
+     *  * If no user is specified, only public designs are counted. 
+     *  * If the passed user is an admin (or has the 'read_private_posts' 
+     *    capablility, all designs are counted).
+     *  * If the passed user is a regular user, all public designs are counted
+     *    allong with any private designs that the user owns.
      *
+     * @param WP_User $user (optional) The current user.
      * @global $wpdb
      * @return integer
      */
-    public static function get_total_design_count( ) {
+    public static function get_total_design_count( WP_User $user = null ) {
         global $wpdb;
 
         $sql = 'SELECT COUNT(' . MyStyle_Design::get_primary_key() . ') ' .
                'FROM ' . MyStyle_Design::get_table_name();
+        
+        //add security WHERE clause.
+        $sql .= self::getSecurityWhereClause( 'WHERE' , $user );
 
         $count = $wpdb->get_var( $sql );
 
         return $count;
     }
 
+    /**
+     * Helper method that returns the security WHERE clause ( EX: ' WHERE
+     * ms_access = 0 ').
+     * @param string $exp The expression to use ('WHERE' or 'AND').
+     * @param WP_User $user The current user.
+     * @return Returns a WHERE clause for adding security to the design lookups.
+     * @todo This should really be private but this is an abstract class. We
+     * should probably make it into a singleton instead.
+     */
+    public static function getSecurityWhereClause($exp, WP_User $user = null ) {
+        $sql = '';
+        
+        //note: admin (and users with the read_private_posts capability) see all designs.
+        if( ( $user == null ) || ( $user->ID == 0 ) ) {
+            //no user, get public designs only
+            $sql = ' ' . $exp . ' ms_access = 0 '; 
+        } else { 
+            //user was passed
+            if( ! $user->has_cap( 'read_private_posts' ) ) {
+                //user isn't admin, show public and their own private designs.
+                $sql .= ' ' . $exp . ' ( ms_access = 0 OR ( ( ms_access = 1 ) AND ( user_id = ' . $user->ID . ' ) ) ) ';   
+            }
+        }
+        
+        return $sql;
+    }
 }
 
 

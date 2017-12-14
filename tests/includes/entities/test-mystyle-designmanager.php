@@ -449,9 +449,10 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the get_designs function.
+     * Test the get_designs function with a simple scenario (all designs are
+     * public, no user is passed).
      */    
-    function test_get_designs() {
+    function test_get_designs_simple() {
         
         //Create a design
         $design_1 = MyStyle_MockDesign::getMockDesign( 1 );
@@ -466,6 +467,102 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
         
         //Assert that the design design was found and has the expected id
         $this->assertEquals( 2, sizeof( $designs ) );
+    }
+    
+    /**
+     * Test that the get_designs function hides the private designs of 1 
+     * authenticated user from another authenticated user.
+     */    
+    function test_get_designs_hides_other_users_private_design() {
+        
+        //Create user_1
+        $user_1 = new WP_User();
+        $user_1->ID = 100;
+        
+        //Create user_2
+        $user_2 = new WP_User();
+        $user_2->ID = 200;
+
+        //Create a public design for user 1
+        /* @var $design_1 \MyStyle_Design */
+        $design_1 = MyStyle_MockDesign::getMockDesign( 1 );
+        $design_1->set_user_id( $user_1->ID );
+        MyStyle_DesignManager::persist( $design_1 );
+        
+        //Create a private design for user 2
+        /* @var $design_2 \MyStyle_Design  */
+        $design_2 = MyStyle_MockDesign::getMockDesign( 2 );
+        $design_2->set_user_id( $user_2->ID );
+        $design_2->set_access( MyStyle_Access::$PRIVATE );
+        MyStyle_DesignManager::persist( $design_2 );
+        
+        //call the function
+        $designs = MyStyle_DesignManager::get_designs( 250, 1, $user_1 );
+        
+        //Assert that the only 1 design was returned
+        $this->assertEquals( 1, sizeof( $designs ) );
+        
+        //Assert that the private design wasn't returned
+        /* @var $design \MyStyle_Design */
+        $design = $designs[0];
+        $this->assertEquals( $user_1->ID, $design->get_user_id() );
+    }
+    
+    /**
+     * Test that the get_designs function hides private designs from anonymous
+     * users.
+     */    
+    function test_get_designs_hides_private_design_from_anonymous_users() {
+        
+        //Create a user
+        $user = new WP_User();
+        $user->ID = 100;
+
+        //Create a private design for the user
+        /* @var $design \MyStyle_Design */
+        $design = MyStyle_MockDesign::getMockDesign( 1 );
+        $design->set_user_id( $user->ID );
+        $design->set_access( MyStyle_Access::$PRIVATE );
+        MyStyle_DesignManager::persist( $design );
+        
+        //call the function anonymously (with no user)
+        $designs = MyStyle_DesignManager::get_designs();
+        
+        //Assert that no designs were returned
+        $this->assertEquals( 0, sizeof( $designs ) );
+    }
+    
+    /**
+     * Test that the get_designs function shows private designs to admin users.
+     */    
+    function test_get_designs_shows_private_design_to_admin_user() {
+        
+        //Create a user
+        $user_1 = new WP_User();
+        $user_1->ID = 100;
+        
+        //Create a private design for the user
+        /* @var $design_1 \MyStyle_Design */
+        $design = MyStyle_MockDesign::getMockDesign( 1 );
+        $design->set_user_id( $user_1->ID );
+        $design->set_access( MyStyle_Access::$PRIVATE );
+        MyStyle_DesignManager::persist( $design );
+        
+        //Create an admin user
+        $admin_user = new WP_User();
+        $admin_user->ID = 200;
+        $admin_user->add_cap( 'read_private_posts' );
+        
+        //call the function as the admin user
+        $designs = MyStyle_DesignManager::get_designs( 250, 1, $admin_user );
+        
+        //Assert that the design was returned
+        $this->assertEquals( 1, sizeof( $designs ) );
+        
+        //Assert that the returned design was indeed marked private.
+        /* @var $returned_design \MyStyle_Design */
+        $returned_design = $designs[0];
+        $this->assertEquals( MyStyle_Access::$PRIVATE, $returned_design->get_access() );
     }
     
     /**
