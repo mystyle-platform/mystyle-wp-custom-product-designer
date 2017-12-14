@@ -1,3 +1,7 @@
+= 3.1.1 =
+
+* Security bug: Fixed a security bug where private designs were being listed on the design gallery/index.
+
 = 3.1.0 =
 
 * Now gracefully handling no WooCommerce situations.
