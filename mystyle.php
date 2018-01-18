@@ -104,6 +104,7 @@ final class MyStyle {
         register_uninstall_hook( __FILE__, array( 'MyStyle', 'uninstall' ) );
 
         add_action( 'init', array( $this, 'check_version' ), 10, 0 );
+        add_action( 'init', array( $this, 'register_shortcodes' ), 10, 0 );
         add_action( 'admin_init', array( $this, 'check_woocommerce' ), 10, 0 );
     }
 
@@ -241,10 +242,6 @@ final class MyStyle {
             MyStyle_Customize_Page::get_instance();
             MyStyle_Design_Profile_Page::get_instance();
         }
-
-        //Register shortcodes
-        add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
-        add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
     }
 
     /**
@@ -263,6 +260,19 @@ final class MyStyle {
                 MyStyle_Install::upgrade( $data_version, MYSTYLE_VERSION );
             }
         }
+    }
+    
+    /**
+     * Register our shortcodes.
+     * 
+     * This is run during init.
+     * 
+     * @todo Add unit testing for this function.
+     */
+    public function register_shortcodes() {
+        //Register shortcodes
+        add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
+        add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
     }
     
     /**

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div id="mystyle-design-profile-index-wrapper" class="woocommerce">
     <?php 
-        if( $pager->get_items() != null ) {
+        if( ( isset($pager) ) && ( $pager->get_items() != null ) ) {
     ?>
             <ul class="mystyle-designs">
                 <?php
