@@ -80,11 +80,29 @@ abstract class MyStyle_Customizer_Shortcode {
             $design_id = $default_design_id;
         }
 
-        // package up data in settings
-        $settings = array();
-        $settings['redirect_url'] = MyStyle_Handoff::get_url();
-        $settings['email_skip'] = 0;
-        $settings['print_type'] = $print_type;
+        //get any settings that were passed in via the url
+        $settings_param = ( isset( $_GET['settings'] ) ) ? $_GET['settings'] : null;
+        
+        if ( ! empty( $settings_param ) ) {
+            $settings = json_decode( base64_decode(  $settings_param ), true );
+        } else {
+            $settings = array();
+        }
+        
+        //set the redirect_url (if it wasn't passed in)
+        if ( ! array_key_exists( 'redirect_url', $settings ) ) {
+            $settings['redirect_url'] = MyStyle_Handoff::get_url();
+        }
+        
+        //set the email_skip (if it wasn't passed in)
+        if ( ! array_key_exists( 'email_skip', $settings ) ) {
+            $settings['email_skip'] = 0;
+        }
+        
+        //set the print_type (if it wasn't passed in)
+        if ( ! array_key_exists( 'print_type', $settings ) ) {
+            $settings['print_type'] = $print_type;
+        }
 
         //TODO: skip enter email step if logged in and email can be pulled from user acct
         //if ($CURRENT_USER) {

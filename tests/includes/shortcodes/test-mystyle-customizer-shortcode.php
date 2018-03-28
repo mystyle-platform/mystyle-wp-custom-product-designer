@@ -90,4 +90,32 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
         $this->assertContains( $expectedPassthru, $output );
     }
     
+    /**
+     * Test the output function with h and settings parameters.
+     */    
+    public function test_output_with_settings_param() {
+        
+        //mock the GET params
+        $_GET['product_id'] = 1;
+        $passthru = base64_encode( json_encode( array( 'post' => array( 'quantity' => 2, 'add-to-cart' => 1 ) ) ) );
+        $_GET['h'] = $passthru;
+        
+        $settings = base64_encode( json_encode( array( 'redirect_url' => 'https://www.example.com', 'email_skip' => '1', 'print_type' => 'fake' ) ) );
+        $_GET['settings'] = $settings;
+        
+        //call the function
+        $output = MyStyle_Customizer_Shortcode::output();
+        
+        //assert that the output includes an iframe tag
+        $this->assertContains( '<iframe', $output );
+        
+        //assert that the expected passthru is included
+        $expectedPassthru = 'passthru=h,' . $passthru;
+        $this->assertContains( $expectedPassthru, $output );
+        
+        //assert that the expected settings are included
+        $expectedSettings = 'settings=' . $settings;
+        $this->assertContains( $expectedSettings, $output );
+    }
+    
 }
