@@ -347,9 +347,9 @@ class MyStyle_Options_Page {
     public function render_redirect_url_whitelist() {
 
         $options = get_option( MYSTYLE_OPTIONS_NAME, array() ); // get WP Options table Key of this option
-        $current_val = ( array_key_exists( 'mystyle_redirect_url_whitelist', $options ) ) ? $options['mystyle_redirect_url_whitelist'] : '';
+        $current_val = ( array_key_exists( 'redirect_url_whitelist', $options ) ) ? $options['redirect_url_whitelist'] : '';
      ?>
-        <textarea id="mystyle_redirect_url_whitelist" name="mystyle_options[mystyle_redirect_url_whitelist]" ><?php echo $current_val; ?></textarea>
+        <textarea id="mystyle_redirect_url_whitelist" name="mystyle_options[redirect_url_whitelist]" ><?php echo $current_val; ?></textarea>
         <p class="description">White list domains that can be redirected to (one per line, ex: "www.example.com"). Contact MyStyle for details.</p>
     <?php
     }
@@ -458,7 +458,7 @@ class MyStyle_Options_Page {
         }
         
         // Redirect URL Whitelist
-        $new_options['mystyle_redirect_url_whitelist'] = trim( $input['mystyle_redirect_url_whitelist'] );
+        $new_options['redirect_url_whitelist'] = trim( $input['redirect_url_whitelist'] );
 
 
         if( ! $has_errors ) {
