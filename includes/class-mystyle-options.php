@@ -157,5 +157,24 @@ abstract class MyStyle_Options {
 
         return $val;
     }
+    
+    /**
+     * Function that determines whether or not the passed redirect url is
+     * permitted by the redirect_url_whitelist.
+     * @param $redirect_url The url that you want to check.
+     * @return boolean Returns true if the redirect_url is permitted, otherwise
+     * returns false.
+     */
+    static function is_redirect_url_permitted( $redirect_url ) {
+        $allowed = false;
+        $redirect_domain = parse_url( $redirect_url, PHP_URL_HOST );
+        $whitelist_array = self::get_redirect_url_whitelist();
+        
+        if( ! empty( $whitelist_array ) ) {
+            $allowed = in_array( $redirect_domain , $whitelist_array );
+        }
+        
+        return $allowed;
+    }
 
 }

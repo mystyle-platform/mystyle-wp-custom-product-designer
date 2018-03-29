@@ -177,7 +177,7 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
      * Assert that get_redirect_url_whitelist() returns the expected value.
      */    
     function test_get_redirect_url_whitelist() {
-        //Install the get_alternate_design_complete_redirect_url
+        //Install the redirect_url_whitelist
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         $options['redirect_url_whitelist'] = "www.example.com\nwww.example.net";
@@ -187,6 +187,59 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
 
         $this->assertEquals( 'www.example.com', $whitelist_array[0] );
         $this->assertEquals( 'www.example.net', $whitelist_array[1] );
+    }
+    
+    /**
+     * Assert that is_redirect_url_permitted() returns true when the domain is
+     * on the whitelist.
+     */    
+    function test_is_redirect_url_permitted_returns_true_when_domain_whitelisted() {
+        $whitelist = "www.example.com\nwww.example.net";
+        $redirect_url = 'https://www.example.com/somepage?somevar=someval';
+        $expected = true;
+        
+        //Install the redirect_url_whitelist
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['redirect_url_whitelist'] = $whitelist;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $permitted = MyStyle_Options::is_redirect_url_permitted( $redirect_url );
+
+        $this->assertEquals( $expected, $permitted );
+    }
+    
+    /**
+     * Assert that is_redirect_url_permitted() returns false when the domain is
+     * not on the whitelist.
+     */    
+    function test_is_redirect_url_permitted_returns_false_when_domain_not_whitelisted() {
+        $whitelist = "www.example.com\nwww.example.net";
+        $redirect_url = 'https://www.malware.com/somethingnasty';
+        $expected = false;
+        
+        //Install the redirect_url_whitelist
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['redirect_url_whitelist'] = $whitelist;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $permitted = MyStyle_Options::is_redirect_url_permitted( $redirect_url );
+
+        $this->assertEquals( $expected, $permitted );
+    }
+    
+    /**
+     * Assert that is_redirect_url_permitted() returns false when no whitelist
+     * exists.
+     */    
+    function test_is_redirect_url_permitted_returns_false_when_no_whitelist_exists() {
+        $redirect_url = 'https://www.example.com';
+        $expected = false;
+        
+        $permitted = MyStyle_Options::is_redirect_url_permitted( $redirect_url );
+
+        $this->assertEquals( $expected, $permitted );
     }
 
 }
