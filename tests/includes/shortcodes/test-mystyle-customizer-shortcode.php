@@ -91,9 +91,47 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the output function with h and settings parameters.
-     */    
-    public function test_output_with_settings_param() {
+     * Test the output function with h and settings parameters but with a
+     * redirect url that isn't permitted. This should throw a 
+     * MyStyle_Bad_Request_Exception.
+     */
+    public function test_output_with_settings_param_with_non_permitted_redirect_url() {
+        $this->setExpectedException( 'MyStyle_Bad_Request_Exception' );
+        
+        //mock the GET params
+        $_GET['product_id'] = 1;
+        $passthru = base64_encode( json_encode( array( 'post' => array( 'quantity' => 2, 'add-to-cart' => 1 ) ) ) );
+        $_GET['h'] = $passthru;
+        
+        $settings = base64_encode( json_encode( array( 'redirect_url' => 'https://www.example.com', 'email_skip' => '1', 'print_type' => 'fake' ) ) );
+        $_GET['settings'] = $settings;
+        
+        //call the function
+        $output = MyStyle_Customizer_Shortcode::output();
+        
+        //assert that the output includes an iframe tag
+        $this->assertContains( '<iframe', $output );
+        
+        //assert that the expected passthru is included
+        $expectedPassthru = 'passthru=h,' . $passthru;
+        $this->assertContains( $expectedPassthru, $output );
+        
+        //assert that the expected settings are included
+        $expectedSettings = 'settings=' . $settings;
+        $this->assertContains( $expectedSettings, $output );
+    }
+    
+    /**
+     * Test the output function with h and settings parameters and a permitted
+     * redirect url (domain is on the whitelist).
+     */
+    public function test_output_with_settings_param_with_permitted_redirect_url() {
+        
+        //Install the redirect_url_whitelist
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['redirect_url_whitelist'] = "www.example.com\nwww.example.net";
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
         
         //mock the GET params
         $_GET['product_id'] = 1;
