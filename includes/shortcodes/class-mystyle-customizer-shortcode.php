@@ -92,6 +92,11 @@ abstract class MyStyle_Customizer_Shortcode {
         //set the redirect_url (if it wasn't passed in)
         if ( ! array_key_exists( 'redirect_url', $settings ) ) {
             $settings['redirect_url'] = MyStyle_Handoff::get_url();
+        } else {
+            //an array key was passed in, validate it.
+            if ( ! MyStyle_Options::is_redirect_url_permitted( $settings['redirect_url'] ) ) {
+                throw new MyStyle_Bad_Request_Exception( 'The passed redirect url is not allowed. If you are the site admin, please add the domain to your MyStyle Redirect URL Whitelist.' );
+            }
         }
         
         //set the email_skip (if it wasn't passed in)

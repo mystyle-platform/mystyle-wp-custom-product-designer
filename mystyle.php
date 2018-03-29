@@ -115,6 +115,7 @@ final class MyStyle {
 
         require_once( MYSTYLE_PATH . 'tests/qunit.php' );
         require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
+        require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-bad-request-exception.php' );
         require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-forbidden-exception.php' );
         require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-not-found-exception.php' );
         require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-unauthorized-exception.php' );

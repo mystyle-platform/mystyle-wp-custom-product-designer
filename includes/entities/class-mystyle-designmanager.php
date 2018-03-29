@@ -60,7 +60,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
                     //check for wp user match
                     if( $design->get_user_id() != null ) {
                         if( ( $user == null ) || ( $user->ID == 0 ) ) {
-                            throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.');
+                            throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
                         }
                         if( $design->get_user_id() != $user->ID ) {
                             if( ! $user->has_cap( 'read_private_posts' ) ) {
