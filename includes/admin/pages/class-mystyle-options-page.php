@@ -103,6 +103,15 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
+        
+        /* REDIRECT URL WHITELIST */
+        add_settings_field(
+                'redirect_url_whitelist',
+                'Redirect URL Whitelist',
+                array( &$this, 'render_redirect_url_whitelist' ),
+                'mystyle_advanced_settings',
+                'mystyle_options_advanced_section'
+        );
 
 
         // ************** TOOLS SECTION ******************//
@@ -331,6 +340,19 @@ class MyStyle_Options_Page {
         <p class="description">Specify an alternate URL to redirect to after the user completes their design. By default, the user will be redirected to the cart.</p>
     <?php
     }
+    
+    /**
+     * Function to render the redirect url whitelist field
+     */
+    public function render_redirect_url_whitelist() {
+
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() ); // get WP Options table Key of this option
+        $current_val = ( array_key_exists( 'mystyle_redirect_url_whitelist', $options ) ) ? $options['mystyle_redirect_url_whitelist'] : '';
+     ?>
+        <textarea id="mystyle_redirect_url_whitelist" name="mystyle_options[mystyle_redirect_url_whitelist]" ><?php echo $current_val; ?></textarea>
+        <p class="description">White list domains that can be redirected to (one per line, ex: "www.example.com"). Contact MyStyle for details.</p>
+    <?php
+    }
 
     /**
      * Function to render the text for the tools section.
@@ -434,6 +456,9 @@ class MyStyle_Options_Page {
             $msg_message = 'Please enter a valid Alternate Design Complete Redirect URL.';
             $new_options['alternate_design_complete_redirect_url'] = '';
         }
+        
+        // Redirect URL Whitelist
+        $new_options['mystyle_redirect_url_whitelist'] = trim( $input['mystyle_redirect_url_whitelist'] );
 
 
         if( ! $has_errors ) {

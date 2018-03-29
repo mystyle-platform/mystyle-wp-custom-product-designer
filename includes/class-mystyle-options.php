@@ -142,5 +142,20 @@ abstract class MyStyle_Options {
 
         return $val;
     }
+    
+    /**
+     * Function that gets the Redirect URL Whitelist.
+     * @return array|null Returns the Redirect URL Whitelist as an array (if one
+     * is set), otherwise returns null.
+     */
+    static function get_redirect_url_whitelist() {
+        $val = null;
+        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        if ( ! empty($options['redirect_url_whitelist'] ) ) {
+            $val = explode("\n", $options['redirect_url_whitelist']);
+        }
+
+        return $val;
+    }
 
 }

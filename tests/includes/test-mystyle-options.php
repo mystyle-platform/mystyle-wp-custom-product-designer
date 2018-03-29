@@ -158,10 +158,10 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
     }
     
     /**
-     * Assert that get_get_alternate_design_complete_redirect_url() returns the
+     * Assert that get_alternate_design_complete_redirect_url() returns the
      * expected URL.
      */    
-    function test_get_get_alternate_design_complete_redirect_url() {
+    function test_get_alternate_design_complete_redirect_url() {
         //Install the get_alternate_design_complete_redirect_url
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
@@ -171,6 +171,22 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
         $url = MyStyle_Options::get_alternate_design_complete_redirect_url();
 
         $this->assertEquals( 'http://www.example.com', $url );
+    }
+    
+    /**
+     * Assert that get_redirect_url_whitelist() returns the expected value.
+     */    
+    function test_get_redirect_url_whitelist() {
+        //Install the get_alternate_design_complete_redirect_url
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['redirect_url_whitelist'] = "www.example.com\nwww.example.net";
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $whitelist_array = MyStyle_Options::get_redirect_url_whitelist();
+
+        $this->assertEquals( 'www.example.com', $whitelist_array[0] );
+        $this->assertEquals( 'www.example.net', $whitelist_array[1] );
     }
 
 }

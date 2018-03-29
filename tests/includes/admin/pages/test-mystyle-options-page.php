@@ -256,6 +256,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
+        $input['redirect_url_whitelist'] = '';
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -289,6 +290,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
+        $input['redirect_url_whitelist'] = '';
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -322,6 +324,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
+        $input['redirect_url_whitelist'] = '';
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -361,6 +364,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
+        $input['redirect_url_whitelist'] = '';
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
@@ -394,6 +398,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
+        $input['redirect_url_whitelist'] = '';
         
         //Run the function.
         $new_options = $mystyle_options_page->validate( $input );
@@ -427,6 +432,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
+        $input['redirect_url_whitelist'] = '';
         
         //Run the function.
         $new_options = $mystyle_options_page->validate($input);
