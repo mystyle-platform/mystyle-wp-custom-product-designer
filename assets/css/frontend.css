@@ -1,31 +1,51 @@
 /* MyStyle Customize Page */
-#customizer-wrapper { 
-    width: 950px;
-    height: 550px;
+
+body.mystyle-customize #customizer-wrapper { 
     padding: 0;
     text-align:center; 
     margin-left: auto;
     margin-right: auto;
 }
-body.mystyle-customize {
-    min-width: 950px;
-}
 
 body.mystyle-customize .entry-content,
 body.mystyle-customize article {
     max-width: none;
-    min-width: 950px;
 }
 
 body.mystyle-customize .entry-header {
-    min-width: 950px;
     margin-left: auto;
     margin-right: auto;
+}
+
+body.mystyle-customize #primary {
+    width: 100%;
 }
 
 body.mystyle-customize #secondary,
 body.mystyle-customize .site::before {
     display: none;
+}
+
+/* Medium to large devices */
+@media (min-width: 992px) {
+
+    body.mystyle-customize #customizer-iframe,
+    body.mobile-customizer #customizer-wrapper {
+	max-width: 500px;
+	min-width: 100%;
+	height: 500px;
+    }
+}
+
+/* Small Devices */
+@media (max-width: 992px) {
+
+    body.style-customize #customizer-iframe,
+    body.mystyle-customize #customizer-wrapper {
+	max-width: 100%;
+	min-width: 500px;
+	height: 1000px;
+    }
 }
 
 /* MyStyle Design Profile Page */
