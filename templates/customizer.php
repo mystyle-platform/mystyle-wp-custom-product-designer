@@ -13,48 +13,103 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div id="customizer-wrapper"></div>
 <script type="text/javascript">
-    //Does the browser support Flash?
-    var testFlash = swfobject.getFlashPlayerVersion();
-    var flashSupported = false;
-    if ( testFlash && testFlash.hasOwnProperty( 'major' ) && testFlash.major > 0 ) {
-        flashSupported = true;
+    var fullscreen = false;
+    
+    function toggleFullScreenElement(_el) {
+        var doc = window.document;
+        var docEl = _el;
+        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+        var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+        if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+            requestFullScreen.call(docEl);
+        }
+        else {
+            cancelFullScreen.call(doc);
+        }
     }
     
-    //Do we want Flash?
-    var enableFlash = <?php echo $enable_flash; ?>;
-    
-    //Show Flash customizer?
-    var showFlashCustomizer = false;
-    if ( flashSupported && enableFlash ) {
-        showFlashCustomizer = true;
+    var onClickFullScreen = function() {
+        if(!fullscreen) { //enable full screen mode
+            jQuery('#customizer-iframe').addClass('mystyle-fullscreen');
+            jQuery('#customizer-iframe').parents().addClass('mystyle-fullscreen');
+            jQuery(':not(.mystyle-fullscreen)').addClass('mystyle-fullscreen-hidden');
+            var closeButton = jQuery('<a id="customizer-close-button" onclick="onClickFullScreen();" class="button"><span class="dashicons dashicons-no"></span></a>');
+            jQuery('#customizer-wrapper').append(closeButton);
+            
+            //browser fullscreen
+            toggleFullScreenElement(jQuery('#customizer-wrapper')[0]);
+            
+            fullscreen = true;
+        } else { //disable full screen mode.
+            jQuery('#customizer-iframe').removeClass('mystyle-fullscreen');
+            jQuery('#customizer-iframe').parents().removeClass('mystyle-fullscreen');
+            jQuery('.mystyle-fullscreen-hidden').removeClass('mystyle-fullscreen-hidden');
+            jQuery('#customizer-close-button').remove();
+            
+            //browser fullscreen
+            toggleFullScreenElement(jQuery('#customizer-wrapper')[0]);
+            
+            fullscreen = false;
+        }
+        
+        return true;
     }
+</script>
+<div id="customizer-wrapper"></div>
+<div class="customizer-under-app-wrapper">
+    <a onclick="onClickFullScreen();" id="customizer-fullscreen-button" class="customizer-fullscreen-button button">
+        <span class="dashicons dashicons-editor-expand"></span>
+        <label>Full Screen</label>
+    </a>
+</div>
+<script type="text/javascript">
     
-    var elem = document.getElementById( 'customizer-wrapper' );
-    var iframeCustomizer = '';
+    (function () {
+        console.log('loading...');
+        //Does the browser support Flash?
+        var testFlash = swfobject.getFlashPlayerVersion();
+        var flashSupported = false;
+        if ( testFlash && testFlash.hasOwnProperty( 'major' ) && testFlash.major > 0 ) {
+            flashSupported = true;
+        }
 
-    if ( showFlashCustomizer ) {
-        iframeCustomizer = '<iframe' +
-          ' id="customizer-iframe"' +
-          ' frameborder="0"' +
-          ' hspace="0"' +
-          ' vspace="0"' +
-          ' scrolling="no"' +
-          ' src="<?php echo $flash_customizer_url ?>"' +
-          ' width="950"' +
-          ' height="550"></iframe>';
-    } else {
-        iframeCustomizer = '<iframe' +
-          ' id="customizer-iframe"' +
-          ' frameborder="0"' +
-          ' hspace="0"' +
-          ' vspace="0"' +
-          ' scrolling="no"' +
-          ' src="<?php echo $html5_customizer_url; ?>"' +
-          ' width="100%"' +
-          ' height="100%"></iframe>';
-    }
-    elem.innerHTML = iframeCustomizer;
+        //Do we want Flash?
+        var enableFlash = <?php echo $enable_flash; ?>;
+
+        //Show Flash customizer?
+        var showFlashCustomizer = false;
+        if ( flashSupported && enableFlash ) {
+            showFlashCustomizer = true;
+        }
+
+        var elem = document.getElementById( 'customizer-wrapper' );
+        var iframeCustomizer = '';
+
+        if ( showFlashCustomizer ) {
+            iframeCustomizer = '<iframe' +
+              ' id="customizer-iframe"' +
+              ' frameborder="0"' +
+              ' hspace="0"' +
+              ' vspace="0"' +
+              ' scrolling="no"' +
+              ' src="<?php echo $flash_customizer_url ?>"' +
+              ' width="950"' +
+              ' height="550"></iframe>';
+        } else {
+            iframeCustomizer = '<iframe' +
+              ' id="customizer-iframe"' +
+              ' frameborder="0"' +
+              ' hspace="0"' +
+              ' vspace="0"' +
+              ' scrolling="no"' +
+              ' src="<?php echo $html5_customizer_url; ?>"' +
+              ' width="100%"' +
+              ' height="100%"></iframe>';
+        }
+        elem.innerHTML = iframeCustomizer;
+    }());
+    
+    
 </script>
 

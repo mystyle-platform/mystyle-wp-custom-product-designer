@@ -32,6 +32,9 @@ class MyStyle_FrontEnd {
         //Add the MyStyle frontend stylesheet to the WP frontend head
         wp_register_style( 'myStyleFrontendStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css' );
         wp_enqueue_style( 'myStyleFrontendStylesheet' );
+
+        //Add the WordPress Dashicons icon font to the frontend.
+        wp_enqueue_style( 'dashicons' );
         
         //Add the swfobject.js file to the WP head
         wp_register_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js' );

@@ -7,6 +7,25 @@ body.mystyle-customize #customizer-wrapper {
     margin-right: auto;
 }
 
+body.mystyle-customize .customizer-under-app-wrapper {
+    position: relative;
+    display: block;
+    width: auto;
+    margin: auto;
+    max-width: 950px;
+    font-size: 12px;
+    padding: 15px;
+    min-height: 0;
+    margin-bottom: 15px;
+}
+body.mystyle-customize .customizer-under-app-wrapper a.button {
+    display: table;
+    margin: 0 auto;
+}
+body.mystyle-customize .customizer-under-app-wrapper a.button span {
+    margin-right: 0.25em;
+}
+
 body.mystyle-customize .entry-content,
 body.mystyle-customize article {
     max-width: none;
@@ -24,6 +43,26 @@ body.mystyle-customize #primary {
 body.mystyle-customize #secondary,
 body.mystyle-customize .site::before {
     display: none;
+}
+
+.mystyle-fullscreen {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999999;
+}
+
+.mystyle-fullscreen-hidden {
+    display: none;
+}
+
+body.mystyle-customize #customizer-close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000000;
 }
 
 /* Medium to large devices */
