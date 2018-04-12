@@ -88,7 +88,7 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
      * customize_page_title_hide value.
      */    
     function test_get_customize_page_title_hide() {
-        //Set enable_flash
+        //Set customize_page_title_hide
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         $options['customize_page_title_hide'] = 1;
@@ -97,6 +97,22 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
         $customize_page_title_hide = MyStyle_Options::get_customize_page_title_hide();
 
         $this->assertEquals( 1, $customize_page_title_hide );
+    }
+    
+    /**
+     * Assert that get_customize_page_disable_viewport_rewrite() returns the
+     * expected value.
+     */    
+    function test_get_customize_page_disable_viewport_rewrite() {
+        //Set customize_page_disable_viewport_rewrite
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['customize_page_disable_viewport_rewrite'] = 1;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $customize_page_disable_viewport_rewrite = MyStyle_Options::get_customize_page_disable_viewport_rewrite();
+
+        $this->assertEquals( 1, $customize_page_disable_viewport_rewrite );
     }
     
     /**

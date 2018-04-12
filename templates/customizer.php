@@ -16,15 +16,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div id="customizer-wrapper"></div>
 <script type="text/javascript">
     
+    var disableViewportRewrite = <?php echo ($disable_viewport_rewrite) ? 'true' : 'false'; ?>
+    
     /**
      * Rewrites the viewport meta tag for proper scaling of the MyStyle
      * Customizer.
      */
     var rewriteViewport = function() {
-        console.log('MyStyle: Overwriting the viewport');
+        if (disableViewportRewrite) {
+            console.log('MyStyle: Viewport rewrite disabled.');
+            return;
+        }
+        console.log('MyStyle: Rewriting the viewport');
         jQuery('meta[name="viewport"]').remove();
         jQuery('head').append('<meta name="viewport" content="maximum-scale=1.0" />');
     }
+    
     
     // ON READY
     jQuery(window).ready(function() {
