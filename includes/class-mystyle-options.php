@@ -90,6 +90,22 @@ abstract class MyStyle_Options {
         
         return $customize_page_title_hide;
     }
+    
+    /**
+     * Function that gets the value of the 
+     * customize_page_disable_viewport_rewrite setting.
+     * @return boolean Returns 1 if the customize_page_title_hide setting is 
+     * enabled, otherwise returns false.
+     */
+    static function get_customize_page_disable_viewport_rewrite() {
+        $customize_page_disable_viewport_rewrite = 0;
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if ( ! empty( $options['customize_page_disable_viewport_rewrite'] ) ) {
+            $customize_page_disable_viewport_rewrite = $options['customize_page_disable_viewport_rewrite'];
+        }
+        
+        return $customize_page_disable_viewport_rewrite;
+    }
 
 
     /**

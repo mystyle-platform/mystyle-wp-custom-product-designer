@@ -253,6 +253,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['secret']  = 'validsecret';
         $input['enable_flash'] = 0;
         $input['customize_page_title_hide'] = 0;
+        $input['customize_page_disable_viewport_rewrite'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
@@ -287,6 +288,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['secret'] = 'validsecret';
         $input['enable_flash'] = 0;
         $input['customize_page_title_hide'] = 0;
+        $input['customize_page_disable_viewport_rewrite'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
@@ -321,6 +323,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['secret'] = 'validsecret';
         $input['enable_flash']  = 0;
         $input['customize_page_title_hide'] = 0;
+        $input['customize_page_disable_viewport_rewrite'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
@@ -331,15 +334,9 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         
         //Get the messages
         $settings_errors = get_settings_errors();
-        $type = $settings_errors[0]['type'];
-        
+		
         //Assert that no errors were thrown.
-        foreach ( $settings_errors as $key => $details ) {
-            $this->assertNotEquals( 'error', $details['type'] );
-        }
-        
-        //Assert that the settings were saved.
-        $this->assertEquals( 'updated', $settings_errors[0]['type'] );
+        $this->assertEmpty( $settings_errors );
         
         //Assert that the settings were stored.
         $this->assertFalse( empty( $new_options['api_key'] ) );
@@ -361,6 +358,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['secret']  = 'not valid';
         $input['enable_flash'] = 0;
         $input['customize_page_title_hide'] = 0;
+        $input['customize_page_disable_viewport_rewrite'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
@@ -395,6 +393,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['secret']  = '"><script>alert(document.cookie)</script>';
         $input['enable_flash'] = 0;
         $input['customize_page_title_hide'] = 0;
+        $input['customize_page_disable_viewport_rewrite'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
@@ -429,6 +428,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $input['secret']  = 'A0000';
         $input['enable_flash'] = 0;
         $input['customize_page_title_hide'] = 0;
+        $input['customize_page_disable_viewport_rewrite'] = 0;
         $input['mystyle_form_integration_config'] = 0;
         $input['enable_alternate_design_complete_redirect'] = 0;
         $input['alternate_design_complete_redirect_url'] = '';
@@ -439,15 +439,9 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         
         //Get the messages
         $settings_errors = get_settings_errors();
-        $type = $settings_errors[0]['type'];
-        
+		
         //Assert that no errors were thrown.
-        foreach ( $settings_errors as $key => $details ) {
-            $this->assertNotEquals( 'error', $details['type'] );
-        }
-        
-        //Assert that the settings were saved.
-        $this->assertEquals( 'updated', $settings_errors[0]['type']);
+        $this->assertEmpty( $settings_errors );
         
         //Assert that the settings were stored.
         $this->assertFalse( empty( $new_options['secret'] ) );
@@ -465,5 +459,19 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertContains( 'Hide the page title', $output );
+    }
+    
+    /**
+     * Test the render_customize_page_disable_viewport_rewrite function.
+     */    
+    public function test_render_customize_page_disable_viewport_rewrite() {
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        //Assert that the force_mobile field was rendered
+        ob_start();
+        $mystyle_options_page->render_customize_page_disable_viewport_rewrite();
+        $output = ob_get_contents();
+        ob_end_clean();
+        $this->assertContains( 'control the viewport yourself', $output );
     }
 }
