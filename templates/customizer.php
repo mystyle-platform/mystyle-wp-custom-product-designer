@@ -15,6 +15,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div id="customizer-wrapper"></div>
 <script type="text/javascript">
+    
+    /**
+     * Rewrites the viewport meta tag for proper scaling of the MyStyle
+     * Customizer.
+     */
+    var rewriteViewport = function() {
+        console.log('MyStyle: Overwriting the viewport');
+        jQuery('meta[name="viewport"]').remove();
+        jQuery('head').append('<meta name="viewport" content="maximum-scale=1.0" />');
+    }
+    
+    // ON READY
+    jQuery(window).ready(function() {
+        rewriteViewport();
+    });
+    
+    // ON RESIZE
+    jQuery(window).resize(function() {
+        rewriteViewport();
+    });
+    
     //Does the browser support Flash?
     var testFlash = swfobject.getFlashPlayerVersion();
     var flashSupported = false;
@@ -56,5 +77,6 @@ if ( ! defined( 'ABSPATH' ) ) {
           ' height="100%"></iframe>';
     }
     elem.innerHTML = iframeCustomizer;
+    
 </script>
 
