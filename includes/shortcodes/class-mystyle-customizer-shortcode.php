@@ -137,6 +137,8 @@ abstract class MyStyle_Customizer_Shortcode {
         if ( isset( $_GET['enable_flash'] ) ) {
             $enable_flash = 1;
         }
+        
+        $disable_viewport_rewrite = MyStyle_Options::get_customize_page_disable_viewport_rewrite();
 
         // ---------- Call the view layer ------- //
         ob_start();

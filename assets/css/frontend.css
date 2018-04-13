@@ -1,5 +1,9 @@
 /* MyStyle Customize Page */
 
+body.mystyle-customize {
+    min-width: 550px;
+}
+
 body.mystyle-customize #customizer-wrapper { 
     padding: 0;
     text-align:center; 
@@ -70,9 +74,9 @@ body.mystyle-customize #customizer-close-button {
 
     body.mystyle-customize #customizer-iframe,
     body.mobile-customizer #customizer-wrapper {
-	max-width: 500px;
+	max-width: 550px;
 	min-width: 100%;
-	height: 500px;
+	height: 550px;
     }
 }
 
@@ -82,7 +86,7 @@ body.mystyle-customize #customizer-close-button {
     body.style-customize #customizer-iframe,
     body.mystyle-customize #customizer-wrapper {
 	max-width: 100%;
-	min-width: 500px;
+	min-width: 550px;
 	height: 1000px;
     }
 }

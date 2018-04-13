@@ -76,6 +76,15 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
+        
+        /* DISABLE_VIEWPORT_REWRITE */
+        add_settings_field(
+                'customize_page_disable_viewport_rewrite',
+                'Disable Viewport Rewrite',
+                array( &$this, 'render_customize_page_disable_viewport_rewrite' ),
+                'mystyle_advanced_settings',
+                'mystyle_options_advanced_section'
+        );
 
         /* FORM INTEGRATION CONFIG */
         add_settings_field(
@@ -112,7 +121,6 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
-
 
         // ************** TOOLS SECTION ******************//
         add_settings_section(
@@ -297,6 +305,30 @@ class MyStyle_Options_Page {
     <?php
 
     }
+    
+    /**
+     * Function to render the Disable Viewport Rewrite option and checkbox.
+     */
+    public function render_customize_page_disable_viewport_rewrite() {
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $customize_page_disable_viewport_rewrite = ( array_key_exists( 'customize_page_disable_viewport_rewrite', $options ) ) ? $options['customize_page_disable_viewport_rewrite'] : 0;
+     ?>
+
+        <label class="description">
+            <input 
+                type="checkbox" 
+                id="customize_page_disable_viewport_rewrite" 
+                name="mystyle_options[customize_page_disable_viewport_rewrite]" 
+                value="1" 
+                <?php echo checked( 1, $customize_page_disable_viewport_rewrite, false ) ?> 
+            />
+            &nbsp; The MyStyle plugin will rewrite the viewport tag on the
+            Customize page (only) for optimal display of the MyStyle Customizer.
+            Check this box if you would prefer to control the viewport yourself.
+        </label>
+    <?php
+
+    }
 
     /**
      * Function to render the form integration config field
@@ -385,7 +417,6 @@ class MyStyle_Options_Page {
         $new_options = $old_options;  //start with the old options.
 
         $has_errors = false;
-        $msg_type = null;
         $msg_message = null;
 
         //------------ process the new values ------------
@@ -394,7 +425,6 @@ class MyStyle_Options_Page {
         $new_options['api_key'] = trim( $input['api_key'] );
         if( ! preg_match( '/^[a-z0-9]*$/i', $new_options['api_key'] ) ) {
             $has_errors = true;
-            $msg_type = 'error';
             $msg_message = 'Please enter a valid API Key.';
             $new_options['api_key'] = '';
         }
@@ -403,7 +433,6 @@ class MyStyle_Options_Page {
         $new_options['secret'] = trim( $input['secret'] );
         if( ! preg_match( '/^[a-z0-9]*$/i', $new_options['secret'] ) ) {
             $has_errors = true;
-            $msg_type = 'error';
             $msg_message = 'Please enter a valid Secret.';
             $new_options['secret'] = '';
         }
@@ -412,7 +441,6 @@ class MyStyle_Options_Page {
         $new_options['enable_flash'] = ( isset( $input['enable_flash'] ) ) ? intval( $input['enable_flash'] ) : 0;
         if( ! preg_match( '/^[01]$/', $new_options['enable_flash'] ) ) {
             $has_errors = true;
-            $msg_type = 'error';
             $msg_message = 'Invalid HTML5 Customizer option';
             $new_options['enable_flash'] = 0;
         }
@@ -421,9 +449,16 @@ class MyStyle_Options_Page {
         $new_options['customize_page_title_hide'] = ( isset( $input['customize_page_title_hide'] ) ) ? intval( $input['customize_page_title_hide'] ) : 0;
         if( ! preg_match( '/^[01]$/', $new_options['customize_page_title_hide'] ) ) {
             $has_errors = true;
-            $msg_type = 'error';
             $msg_message = 'Invalid Hide Customize Page Title option';
             $new_options['customize_page_title_hide'] = 0;
+        }
+        
+        //Disable Viewport Rewrite
+        $new_options['customize_page_disable_viewport_rewrite'] = ( isset( $input['customize_page_disable_viewport_rewrite'] ) ) ? intval( $input['customize_page_disable_viewport_rewrite'] ) : 0;
+        if( ! preg_match( '/^[01]$/', $new_options['customize_page_disable_viewport_rewrite'] ) ) {
+            $has_errors = true;
+            $msg_message = 'Disable Viewport Rewrite';
+            $new_options['customize_page_disable_viewport_rewrite'] = 0;
         }
 
         // Form Integration Config
@@ -440,7 +475,6 @@ class MyStyle_Options_Page {
         $new_options['enable_alternate_design_complete_redirect'] = ( isset( $input['enable_alternate_design_complete_redirect'] ) ) ? intval( $input['enable_alternate_design_complete_redirect'] ) : 0;
         if( ! preg_match( '/^[01]$/', $new_options['enable_alternate_design_complete_redirect'] ) ) {
             $has_errors = true;
-            $msg_type = 'error';
             $msg_message = 'Invalid Enable Alternate Design Complete Redirect option';
             $new_options['enable_alternate_design_complete_redirect'] = 0;
         }
@@ -452,7 +486,6 @@ class MyStyle_Options_Page {
             (filter_var( $new_options['alternate_design_complete_redirect_url'], FILTER_VALIDATE_URL ) == false )
           ) {
             $has_errors = true;
-            $msg_type = 'error';
             $msg_message = 'Please enter a valid Alternate Design Complete Redirect URL.';
             $new_options['alternate_design_complete_redirect_url'] = '';
         }
@@ -460,18 +493,14 @@ class MyStyle_Options_Page {
         // Redirect URL Whitelist
         $new_options['redirect_url_whitelist'] = trim( $input['redirect_url_whitelist'] );
 
-
-        if( ! $has_errors ) {
-            $msg_type = 'updated';
-            $msg_message = 'Settings saved.';
+        if( $has_errors ) {
+            add_settings_error(
+                'MyStyleOptionsSaveMessage',
+                esc_attr( 'settings_updated' ),
+                $msg_message,
+                'error'
+            );
         }
-
-        add_settings_error(
-            'MyStyleOptionsSaveMessage',
-            esc_attr( 'settings_updated' ),
-            $msg_message,
-            $msg_type
-        );
 
         return $new_options;
     }
