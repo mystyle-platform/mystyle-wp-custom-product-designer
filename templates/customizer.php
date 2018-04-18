@@ -19,45 +19,28 @@ if ( ! defined( 'ABSPATH' ) ) {
     
     var fullscreen = false;
     
-    function toggleFullScreenElement(_el) {
-        var doc = window.document;
-        var docEl = _el;
-        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-        var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-        if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-            requestFullScreen.call(docEl);
-        }
-        else {
-            cancelFullScreen.call(doc);
-        }
-    }
-    
     var onClickFullScreen = function() {
         if(!fullscreen) { //enable full screen mode
+            console.log('enabling full screen mode');
             jQuery('#customizer-iframe').addClass('mystyle-fullscreen');
             jQuery('#customizer-iframe').parents().addClass('mystyle-fullscreen');
             jQuery(':not(.mystyle-fullscreen)').addClass('mystyle-fullscreen-hidden');
             var closeButton = jQuery('<a id="customizer-close-button" onclick="onClickFullScreen();" class="button"><span class="dashicons dashicons-no"></span></a>');
             jQuery('#customizer-wrapper').append(closeButton);
             
-            //browser fullscreen
-            toggleFullScreenElement(jQuery('#customizer-wrapper')[0]);
-            
             fullscreen = true;
         } else { //disable full screen mode.
+            console.log('disabling full screen mode');
             jQuery('#customizer-iframe').removeClass('mystyle-fullscreen');
             jQuery('#customizer-iframe').parents().removeClass('mystyle-fullscreen');
             jQuery('.mystyle-fullscreen-hidden').removeClass('mystyle-fullscreen-hidden');
             jQuery('#customizer-close-button').remove();
             
-            //browser fullscreen
-            toggleFullScreenElement(jQuery('#customizer-wrapper')[0]);
-            
             fullscreen = false;
         }
         
         return true;
-    }
+    };
 </script>
 <script type="text/javascript">
     // Code for viewport rewriting
@@ -65,29 +48,60 @@ if ( ! defined( 'ABSPATH' ) ) {
     var disableViewportRewrite = <?php echo ($disable_viewport_rewrite) ? 'true' : 'false'; ?>;
     
     /**
-     * Rewrites the viewport meta tag for proper scaling of the MyStyle
+     * Calculates the ideal orientation for the app (either "portrait" or
+     * "landscape").
+     * @returns {string} Returns the ideal orientation for the app ("portait" or
+     * "landscape").
+     */
+    var calculateOrientation = function() {
+        var orientation = 'landscape';
+        var winWidth = jQuery(window).width();
+        var winHeight = jQuery(window).height();
+        
+        if ( (winHeight > winWidth) ) {
+            orientation = 'portrait';
+        }
+        
+        //console.log(winWidth + ':' + winHeight + ' (' + orientation + ')');
+        
+        return orientation;
+    };
+    
+    /**
+     * Sets the orientation of the iframe and rewrites the viewport meta tag.
+     * This is done to ensure proper scaling and orientation of the MyStyle
      * Customizer.
      */
-    var rewriteViewport = function() {
+    var setOrientation = function() {
+        var orientation = calculateOrientation();
+        
         if (disableViewportRewrite) {
-            console.log('MyStyle: Viewport rewrite disabled.');
             return;
         }
-        console.log('MyStyle: Rewriting the viewport');
-        jQuery('meta[name="viewport"]').remove();
-        jQuery('head').append('<meta name="viewport" content="maximum-scale=1.0" />');
-    }
-    
+        
+        var viewportSettings;
+        if(orientation === 'landscape') { //landscape
+            
+            var scale = jQuery('body').width()/1000;
+                
+            viewportSettings = 'initial-scale=' + scale + ', maximum-scale=' + scale;
+
+        } else { //portrait
+            var scale = jQuery('body').width()/550;
+            
+            viewportSettings = 'initial-scale=' + scale + ', maximum-scale=' + scale;
+        }
+        
+        //set the viewport
+        jQuery('meta[name="viewport"]').attr('content', viewportSettings);
+       
+    };
     
     // ON READY
     jQuery(window).ready(function() {
-        rewriteViewport();
+        setOrientation('on ready');
     });
     
-    // ON RESIZE
-    jQuery(window).resize(function() {
-        rewriteViewport();
-    });
 </script>
 <div id="customizer-wrapper"></div>
 <div class="customizer-under-app-wrapper">
@@ -139,9 +153,12 @@ if ( ! defined( 'ABSPATH' ) ) {
               ' width="100%"' +
               ' height="100%"></iframe>';
         }
+        
         elem.innerHTML = iframeCustomizer;
+        
     }());
     
     
 </script>
+
 
