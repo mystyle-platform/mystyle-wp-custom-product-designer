@@ -178,7 +178,7 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
      * expected URL.
      */    
     function test_get_alternate_design_complete_redirect_url() {
-        //Install the get_alternate_design_complete_redirect_url
+        //Install the alternate_design_complete_redirect_url
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         $options['alternate_design_complete_redirect_url'] = 'http://www.example.com';
@@ -187,6 +187,50 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
         $url = MyStyle_Options::get_alternate_design_complete_redirect_url();
 
         $this->assertEquals( 'http://www.example.com', $url );
+    }
+    
+    /**
+     * Assert that build_alternate_design_complete_redirect_url() returns the
+     * expected URL when using a simple url.
+     */    
+    function test_build_alternate_design_complete_redirect_url_with_simple_url() {
+        //Install the alternate_design_complete_redirect_url
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['alternate_design_complete_redirect_url'] = 'http://www.example.com';
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( 1 );
+        
+        $url = MyStyle_Options::build_alternate_design_complete_redirect_url( $design );
+
+        $this->assertEquals( 
+                'http://www.example.com?design_id=1&design_complete=1',
+                $url 
+            );
+    }
+    
+    /**
+     * Assert that build_alternate_design_complete_redirect_url() returns the
+     * expected URL when using a url that already includes a query string.
+     */    
+    function test_build_alternate_design_complete_redirect_url_with_url_that_includes_a_query_string() {
+        //Install the alternate_design_complete_redirect_url
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['alternate_design_complete_redirect_url'] = 'http://www.example.com?foo=bar';
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( 1 );
+        
+        $url = MyStyle_Options::build_alternate_design_complete_redirect_url( $design );
+
+        $this->assertEquals( 
+                'http://www.example.com?foo=bar&design_id=1&design_complete=1',
+                $url
+            );
     }
     
     /**

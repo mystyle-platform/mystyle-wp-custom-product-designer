@@ -152,11 +152,34 @@ abstract class MyStyle_Options {
     static function get_alternate_design_complete_redirect_url() {
         $val = null;
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-        if ( ! empty($options['alternate_design_complete_redirect_url'] ) ) {
+        if ( ! empty( $options['alternate_design_complete_redirect_url'] ) ) {
             $val = $options['alternate_design_complete_redirect_url'];
         }
 
         return $val;
+    }
+    
+    /**
+     * Function that builds the Alternate Design Complete Redirect URL.
+     * @return string|null Returns the built Alternate Design Complete Redirect
+     * URL if one is set, otherwise returns null.
+     */
+    static function build_alternate_design_complete_redirect_url( 
+                                                        MyStyle_Design $design 
+                ) {
+        $url = self::get_alternate_design_complete_redirect_url();
+        
+        if ( ! empty( $url ) ) {
+            if ( strpos( $url, '?' ) == false ) {
+                $url .= '?';
+            } else {
+                $url .= '&';
+            }
+            $url .= 'design_id=' . $design->get_design_id();
+            $url .= '&design_complete=1';
+        }
+
+        return $url;
     }
     
     /**
