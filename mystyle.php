@@ -239,7 +239,11 @@ final class MyStyle {
             MyStyle_FrontEnd::get_instance();
             MyStyle_Cart::get_instance();
             $mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
-            $mystyle_handoff = new MyStyle_Handoff( $mystyle_api );
+            
+            /* @var $mystyle_handoff MyStyle_Handoff */
+            $mystyle_handoff = MyStyle_Handoff::get_instance();
+            $mystyle_handoff->set_mystyle_api( $mystyle_api );
+            
             MyStyle_Customize_Page::get_instance();
             MyStyle_Design_Profile_Page::get_instance();
         }

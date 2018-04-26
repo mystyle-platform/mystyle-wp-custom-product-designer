@@ -10,23 +10,28 @@ class MyStyle_Handoff {
     private static $SLUG = 'mystyle-handoff';
     
     /**
+     * Singleton class instance
+     * @var MyStyle_Notice_Controller
+     */
+    private static $instance;
+    
+    /**
      * @var MyStyle_Api_Interface 
      */
     private $mystyle_api;
     
     /**
      * Constructor, constructs the class and sets up the hooks.
+     * 
+     * Note: Call set_mystyle_api in addition to this constructor.
      */
-    public function __construct( MyStyle_API_Interface $mystyle_api ) {
-        //construct object
-        $this->mystyle_api = $mystyle_api;
-        
+    public function __construct( ) {
         //hooks
         add_action( 'wp_loaded', array( &$this, 'override' ) );
     }
     
     /**
-     * Gets the url for the handoff endpoint.
+     * Static function that gets the url for the handoff endpoint.
      * @return string Returns the url of the handoff endpoint
      */
     public static function get_url() {
@@ -314,6 +319,27 @@ class MyStyle_Handoff {
         $html = sprintf($format, $redirect, $title, $title, $link);
         
         return $html;
+    }
+    
+    /**
+     * Sets the mystyle_api.
+     * @param number $mystyle_api The mystyle_api that you want the class to
+     * use.
+     */
+    public function set_mystyle_api( MyStyle_Api_Interface $mystyle_api ) {
+        $this->mystyle_api = $mystyle_api;
+    }
+    
+    /**
+     * Gets the singleton instance.
+     * @return MyStyle_Handoff Returns the singleton instance of this class.
+     */
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
     
 }

@@ -53,7 +53,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         global $wp_filter;
         
         //Call the constructor
-        $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
+        $mystyle_handoff = new MyStyle_Handoff();
         
         //Assert that the init function is registered.
         $function_names = get_function_names( $wp_filter['wp_loaded'] );
@@ -81,7 +81,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $_SERVER['REQUEST_URI'] = 'non-matching-uri';
         
         //Init the MyStyle_Handoff
-        $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
+        $mystyle_handoff = new MyStyle_Handoff();
+        $mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
         
         //Call the function
         $ret = $mystyle_handoff->override();
@@ -99,7 +100,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $_SERVER['REQUEST_URI'] = 'http://localhost/wordpress/?mystyle-handoff';
         
         //Init the MyStyle_Handoff
-        $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
+        $mystyle_handoff = new MyStyle_Handoff();
+        $mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
         
         //Call the function
         $ret = $mystyle_handoff->override();
@@ -114,7 +116,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $GLOBALS['skip_ob_start'] = true;
         
         //Init the MyStyle_Handoff
-        $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
+        $mystyle_handoff = new MyStyle_Handoff();
+        $mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
         
         $_SERVER['REQUEST_METHOD'] = 'GET';
         
@@ -146,7 +149,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $woocommerce = new MyStyle_MockWooCommerce();
         
         //Init the MyStyle_Handoff
-        $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
+        $mystyle_handoff = new MyStyle_Handoff();
+        $mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
         
         //Mock the POST
         $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -235,7 +239,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         $size = $correct_variation['attribute_' . $attribute_name];
         
         //Init the MyStyle_Handoff
-        $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
+        $mystyle_handoff = new MyStyle_Handoff();
+        $mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
         
         //Mock the POST
         $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -317,7 +322,8 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         );
         
         //Init the MyStyle_Handoff
-        $mystyle_handoff = new MyStyle_Handoff( new MyStyle_MockAPI() );
+        $mystyle_handoff = new MyStyle_Handoff();
+        $mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
         
         //Mock the POST
         $_SERVER['REQUEST_METHOD'] = 'POST';
