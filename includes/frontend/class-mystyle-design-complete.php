@@ -22,17 +22,14 @@ class MyStyle_Design_Complete {
     public function __construct() {
         add_filter( 'query_vars', array( &$this, 'add_query_vars_filter' ), 10, 1 );
         
-        // Hook template_redirect instead of init to wait for query vars.
-        add_action( 'template_redirect', array( &$this, 'init' ), 10, 0 );
+        // Set the priority to 11 (instead of the default 10) so that our scripts load after jQuery
+        add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_scripts' ), 11, 0 );
     }
     
     /**
-     * Init hooks.
-     * 
-     * This function is being hooked into "template_redirect" instead of "init"
-     * because we want to wait until the query vars have been loaded.
+     * Enqueue scripts.
      */
-    public function init() {
+    public function enqueue_scripts() {
         $design_complete = ( intval( get_query_var( 'design_complete', '0' ) ) == 1 ) ? true : false;
         
         if( $design_complete ) {

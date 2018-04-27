@@ -26,15 +26,15 @@ class MyStyleDesignCompleteTest extends WP_UnitTestCase {
         $this->assertContains( 'add_query_vars_filter', $function_names );
         
         //Assert that the init function is registered.
-        $function_names = get_function_names( $wp_filter['template_redirect'] );
-        $this->assertContains( 'init', $function_names );
+        $function_names = get_function_names( $wp_filter['wp_enqueue_scripts'] );
+        $this->assertContains( 'enqueue_scripts', $function_names );
     }
     
     /**
-     * Test the init function.
+     * Test the enqueue_scripts function.
      * @global $wp_scripts
      */    
-    public function test_init() {
+    public function test_enqueue_scripts() {
         global $wp_scripts;
         
         //Instantiate the SUT (System Under Test) class.
@@ -44,7 +44,7 @@ class MyStyleDesignCompleteTest extends WP_UnitTestCase {
         set_query_var( 'design_complete', 1 );
         
         //Call the method
-        $mystyle_design_complete->init();
+        $mystyle_design_complete->enqueue_scripts();
         
         //Assert that the design-complete.js script is registered
         $this->assertContains( 
