@@ -262,7 +262,7 @@ class MyStyle_Handoff {
                     ( MyStyle_Options::enable_alternate_design_complete_redirect() ) &&
                     ( MyStyle_Options::get_alternate_design_complete_redirect_url() != null )
                 ) {
-                    $link = MyStyle_Options::get_alternate_design_complete_redirect_url();
+                    $link = MyStyle_Options::build_alternate_design_complete_redirect_url( $this->design );
                     $html = '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . $link . '"></head><body></body></html>';
                 } else {
                     //Redirect the user to the cart
@@ -323,11 +323,21 @@ class MyStyle_Handoff {
     
     /**
      * Sets the mystyle_api.
-     * @param number $mystyle_api The mystyle_api that you want the class to
-     * use.
+     * @param MyStyle_Api_Interface $mystyle_api The mystyle_api that you want
+     * the class to use.
      */
     public function set_mystyle_api( MyStyle_Api_Interface $mystyle_api ) {
         $this->mystyle_api = $mystyle_api;
+    }
+    
+    /**
+     * Sets the design. This is mostly just here for testing. Normally the
+     * design would be set by the handle() method.
+     * @param MyStyle_Design $design The design that you want the class to
+     * use.
+     */
+    public function set_design( MyStyle_Design $design ) {
+        $this->design = $design;
     }
     
     /**

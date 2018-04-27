@@ -267,7 +267,6 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         
         //Call the function
         $mystyle_handoff->handle();
-        $html = $mystyle_handoff->get_output();
         
         //Assert that the expected product variation was added to the cart.
         $added_to_cart = $woocommerce->cart->added_to_cart;
@@ -351,11 +350,106 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
         
         //Call the function
         $mystyle_handoff->handle();
-        $html = $mystyle_handoff->get_output();
         
         //Assert that the variation_id ws updated to the red one
         $added_to_cart = $woocommerce->cart->added_to_cart;
         $this->assertEquals( $red_variation_id, $added_to_cart['variation_id'] );
+    }
+    
+    /**
+     * Test the get_output method with GET request.
+     * @global $woocommerce
+     */
+    public function test_get_output_with_get_request() {
+        global $woocommerce;
+        
+        //Mock woocommerce
+        $woocommerce = new MyStyle_MockWooCommerce();
+        
+        //Set the REQUEST_METHOD to GET
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        
+        //Init the MyStyle_Handoff
+        $mystyle_handoff = new MyStyle_Handoff();
+        $mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
+        
+        //Call the function
+        $html = $mystyle_handoff->get_output();
+        
+        //Assert that the 'Access Denied' message is displayed
+        $this->assertContains( 'Access Denied', $html );
+    }
+    
+    /**
+     * Test the get_output method with POST request.
+     * @global $woocommerce
+     */
+    public function test_get_output_with_post_request() {
+        global $woocommerce;
+        
+        //Mock woocommerce
+        $woocommerce = new MyStyle_MockWooCommerce();
+        
+        //Set the REQUEST_METHOD to POST
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        
+        //Install the api_key
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['api_key'] = '0';
+        $options['secret'] = 'fake-secret';
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        //Init the MyStyle_Handoff
+        $mystyle_handoff = new MyStyle_Handoff();
+        $mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
+        
+        //Call the function
+        $html = $mystyle_handoff->get_output();
+        
+        //Assert that the 'product added to cart' message is displayed
+        $this->assertContains( 'Product added to cart', $html );
+    }
+    
+    /**
+     * Test the get_output method with an 
+     * alternate_design_complete_redirect_url.
+     * @global $woocommerce
+     */
+    public function test_get_output_with_alternate_design_complete_redirect_url() {
+        global $woocommerce;
+        
+        //Mock woocommerce
+        $woocommerce = new MyStyle_MockWooCommerce();
+        
+        //Create a design
+        $design = MyStyle_MockDesign::getMockDesign( 1 );
+        
+        //Set the REQUEST_METHOD to POST
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        
+        //Install the api_key and alternate_design_complete_redirect_url
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['api_key'] = '0';
+        $options['secret'] = 'fake-secret';
+        $options['enable_alternate_design_complete_redirect'] = 1;
+        $options['alternate_design_complete_redirect_url'] = 'http://www.example.com?foo=bar';
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        //Init the MyStyle_Handoff
+        $mystyle_handoff = new MyStyle_Handoff();
+        $mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
+        $mystyle_handoff->set_design( $design );
+        
+        //Call the function
+        $html = $mystyle_handoff->get_output();
+        
+        //Assert that the redirect url is included in the returned html
+        $this->assertContains( 
+                'http://www.example.com?foo=bar&design_id=1&design_complete=1',
+                $html 
+            );
     }
     
 }
