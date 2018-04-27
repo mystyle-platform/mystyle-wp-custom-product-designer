@@ -180,6 +180,7 @@ final class MyStyle {
     private function frontend_includes() {
         require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
         require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-cart.php' );
+        require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-design-complete.php' );
         require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
     }
 
@@ -193,10 +194,8 @@ final class MyStyle {
             $this->set_WC( new MyStyle_WC() );
         }
 
-        //if( $this->wc->is_woocommerce_installed() ) {
-            MyStyle_User_Interface::get_instance();
-            MyStyle_Order_Listener::get_instance();
-        //}
+        MyStyle_User_Interface::get_instance();
+        MyStyle_Order_Listener::get_instance();
 
         if( $this->is_request( 'admin' ) ) {
             //---- ADMIN ----//
@@ -224,12 +223,6 @@ final class MyStyle {
             }
 
         }
-        
-        //if this is a frontend request and WooCommerce isn't installed, just
-        //return.
-        //if( ! $this->wc->is_woocommerce_installed() ) {
-        //    return;
-        //}
 
         if( $this->is_request( 'frontend' ) ) {
             //---- FRONT END ----//
@@ -238,6 +231,7 @@ final class MyStyle {
             MyStyle_SessionHandler::get_instance();
             MyStyle_FrontEnd::get_instance();
             MyStyle_Cart::get_instance();
+            MyStyle_Design_Complete::get_instance();
             $mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
             
             /* @var $mystyle_handoff MyStyle_Handoff */
