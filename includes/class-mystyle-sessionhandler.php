@@ -1,7 +1,7 @@
 <?php
 
 /**
- * MyStyle Session Hanlder class. 
+ * MyStyle Session Handler class. 
  * 
  * The MyStyle Session Handler class handles MyStyle Sessions.
  *

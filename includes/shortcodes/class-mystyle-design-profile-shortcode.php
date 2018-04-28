@@ -52,7 +52,7 @@ abstract class MyStyle_Design_Profile_Shortcode {
     
     /**
      * Returns the output for a design profile.
-     * @return type
+     * @return string
      */
     public static function output_design_profile() {
         $design_profile_page = MyStyle_Design_Profile_Page::get_instance();

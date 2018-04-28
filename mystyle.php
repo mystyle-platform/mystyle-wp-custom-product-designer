@@ -143,6 +143,7 @@ final class MyStyle {
         require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
         require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-design-profile-page.php' );
         require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php' );
+        require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php' );
         require_once( MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php' );
         require_once( MYSTYLE_INCLUDES . 'class-mystyle-install.php' );
         require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
@@ -272,6 +273,7 @@ final class MyStyle {
         //Register shortcodes
         add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
         add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
+        add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
     }
     
     /**
