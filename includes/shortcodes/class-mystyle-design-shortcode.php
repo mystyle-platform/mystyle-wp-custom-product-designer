@@ -52,6 +52,11 @@ abstract class MyStyle_Design_Shortcode {
         // ------------- set the template variables -------------------//
         $design = $mystyle_frontend->get_design();
         
+        $renderer_url = 
+            'https://www.mystyleplatform.com/' . 
+            'tools/render/?mode=customerpreview' . 
+            '&design_url=' . $design->get_design_url();
+        
         // ---------- Call the view layer ------------------------ //
         ob_start();
         require( MYSTYLE_TEMPLATES . 'design.php' );

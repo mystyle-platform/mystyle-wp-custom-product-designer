@@ -1,3 +1,21 @@
+/* MyStyle Global Frontend Styles */
+
+ul.mystyle-button-group {
+    list-style: none;
+    text-align: center;
+    margin: 0;
+}
+ul.mystyle-button-group li {display: inline-block;}
+
+.mystyle-centered {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mystyle-renderer-wrapper {
+    margin: 1em 0;
+}
+
 /* MyStyle Customize Page */
 
 body.mystyle-customize #customizer-wrapper { 
@@ -103,11 +121,6 @@ body.mystyle-design-profile img#mystyle-design-profile-img {
     margin: auto;
     margin-bottom: 1em;
 }
-body.mystyle-design-profile ul.mystyle-button-group {
-    list-style: none;
-    text-align: center;
-}
-body.mystyle-design-profile ul.mystyle-button-group li {display: inline-block;}
 
 body.mystyle-design-profile img#mystyle-design-profile-img {
     display: block;
