@@ -61,18 +61,20 @@ class MyStyleDesignShortcodeTest extends WP_UnitTestCase {
     }
     
     /**
-     * Test the output function with no design loaded. Should throw an 
-     * exception.
+     * Test the output function with no design loaded. Should exit without
+     * throwing an exception.
      */    
     public function test_output_with_no_design() {
         
-        $this->setExpectedException( 'MyStyle_Bad_Request_Exception' );
+        //$this->setExpectedException( 'MyStyle_Bad_Request_Exception' );
         
         //Reset the MyStyle_FrontEnd
         MyStyle_FrontEnd::reset_instance();
 
         //call the function (should throw a MyStyle_Bad_Request_Exception)
         $output = MyStyle_Design_Shortcode::output();
+        
+        $this->assertEquals( '', $output );
     }
     
     /**

@@ -33,9 +33,11 @@ abstract class MyStyle_Design_Shortcode {
             if( $mystyle_frontend->get_design() != null ) {
                 $out = self::output_design();
             } else {
-                throw new MyStyle_Bad_Request_Exception(
-                        'Design not found'
-                    );
+                // Fail silently. This can happen in the admin or if the
+                // design_id isn't set in the url.
+                //throw new MyStyle_Bad_Request_Exception(
+                //        'Design not found'
+                //    );
             }
         }
         

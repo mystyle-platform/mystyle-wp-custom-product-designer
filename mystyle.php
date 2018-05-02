@@ -140,10 +140,7 @@ final class MyStyle {
         require_once( MYSTYLE_INCLUDES . 'api/interface-mystyle-api.php' );
         require_once( MYSTYLE_INCLUDES . 'api/class-mystyle-api.php' );
         require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
-        require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
         require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-design-profile-page.php' );
-        require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php' );
-        require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php' );
         require_once( MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php' );
         require_once( MYSTYLE_INCLUDES . 'class-mystyle-install.php' );
         require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
@@ -151,6 +148,15 @@ final class MyStyle {
         require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
         require_once( MYSTYLE_INCLUDES . 'class-mystyle-user-interface.php' );
         require_once( MYSTYLE_INCLUDES . 'class-mystyle-order-listener.php' );
+        
+        // We include this frontend class here because it is used by our
+        // shortcode classes (which are used botn on the frontend and the admin.
+        require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
+        
+        // Shortcode includes
+        require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php' );
+        require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php' );
+        require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
 
         require_once( MYSTYLE_PATH . 'functions.php' );
 
@@ -179,7 +185,6 @@ final class MyStyle {
      * Include required frontend files.
      */
     private function frontend_includes() {
-        require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
         require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-cart.php' );
         require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-design-complete.php' );
         require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );

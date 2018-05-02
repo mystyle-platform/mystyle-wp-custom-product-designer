@@ -32,8 +32,8 @@ MyStyleDesignComplete = function() {
         // Pull the designId from the current url
         self.designId = self._getQueryVariable( 'design_id' );
 
-        // Add hidden fields to the forms.
-        self._addHiddenFields();
+        // Set the value of any design_id fields.
+        self._setDesignIdFields();
     };
 
     /**
@@ -82,12 +82,24 @@ MyStyleDesignComplete = function() {
     };
     
     /**
-     * Private helper method that sets the design_id as a hidden field on any
-     * forms on the page.
+     * Private helper method that sets the value of any design_id fields.
      */
-    self._addHiddenFields = function() { 
-        jQuery( 'form' ).each( function ( index, value ) { 
-            jQuery( this ).append( '<input type="hidden" name="design_id" value="' + self.designId + '" />' );
+    self._setDesignIdFields = function() {
+        
+        jQuery( 'input' ).each( function ( index, value ) {
+            
+            // Any field with 'design_id' in the id.
+            var id = jQuery( this ).attr( 'id' );
+            if ( ( typeof id !== 'undefined' ) && ( id.indexOf( 'design_id' ) !== -1 ) ) {
+                jQuery( this ).val( self.designId );
+                return true;
+            }
+
+            // Any field with 'design_id' in the name attribute.
+            var name = jQuery( this ).attr( 'name' );
+            if ( ( typeof name !== 'undefined' ) && ( name.indexOf( 'design_id' ) !== -1 ) ) {
+                jQuery( this ).val( self.designId );
+            }
         });
     };
     

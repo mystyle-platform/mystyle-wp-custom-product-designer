@@ -27,8 +27,15 @@ if ( ! defined( 'ABSPATH' ) ) {
     <?php } else { ?>
         <ul class="mystyle-button-group">
             <li>
-                <a onclick="jQuery('#mystyle-renderer-wrapper-<?php echo $design->get_design_id();?>').append('<iframe src=\'<?php echo $renderer_url ?>\' width=\'100%\' height=\'300\'></iframe>'); return true;" class="button">
-                    Render
+                <a 
+                    onclick="
+                        jQuery('#mystyle-renderer-wrapper-<?php echo $design->get_design_id();?>:not(:has(>iframe))')
+                            .append('<iframe src=\'<?php echo $renderer_url ?>\' width=\'100%\' height=\'300\'></iframe>'); 
+                        return true;
+                    "
+                    class="button"
+                >
+                    Render Print File
                 </a>
             </li>
         </ul>
