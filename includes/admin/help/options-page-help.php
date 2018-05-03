@@ -43,11 +43,26 @@ function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
         user to the Customize page.</li>
     </ol>
     ';
-    /*
-    $use_content = '
-    <h2>Using MyStyle</h2>
-    <p>Once you have MyStyle set up and working...';
-     */
+    
+    $shortcodes_content = '
+    <h2>Shortcodes</h2>
+    <p>
+        The MyStyle Custom Product Designer adds several Wordpresss
+        <a href="https://codex.wordpress.org/shortcode" target="_blank" title="Shortcodes">shortcodes</a>.
+        These shortcodes can be inserted within your content, theme files, 
+        widgets, etc.
+    </p>
+    <h3>The [mystyle_design] Shortcode</h3>
+    <p>
+        The [mystyle_design] Shortcode adds a MyStyle design to the page.
+        The shortcode expects there to be a design_id parameter in the url. It
+        uses the design_id parameter to know which design to show. An example
+        url might look like "https://www.example.com/somepage?design_id=12345".
+    </p>
+        Note that the design_id parameter is automatically added to the 
+        Alternate Design Complete URL (see the Advanced Settings).
+    </p>
+    ';
 
     $troubleshooting_content = '
     <h2>Troubleshooting</h2>
@@ -71,27 +86,25 @@ function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
     <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a><br/>
     ';
 
-    //overview tab
+    // Overview tab
     $screen->add_help_tab( array(
         'id' => 'mystyle_overview',
         'title' => 'Overview',
         'content' => $overview_content
     ) );
-    //installation tab
+    // Installation tab
     $screen->add_help_tab( array(
         'id' => 'mystyle_installation',
         'title' => 'Installation',
         'content' => $installation_content
     ) );
-    //use tab
-    /*
+    // Shortcodes tab
     $screen->add_help_tab( array(
-        'id' => 'mystyle_use',
-        'title' => 'Using MyStyle',
-        'content' => $use_content
-    ));
-     */
-    //installation tab
+        'id' => 'mystyle_shortcodes',
+        'title' => 'Shortcodes',
+        'content' => $shortcodes_content
+    ) );
+    // Troubleshooting tab
     $screen->add_help_tab( array(
         'id' => 'mystyle_troubleshooting',
         'title' => 'Troubleshooting',
