@@ -1,3 +1,10 @@
+= 3.4.0 =
+
+* Now tacks `design_complete=1` and `design_id=<new design id>` onto the Alternate Design Complete Redirect URL.
+* Includes a design_complete.js file. This file will set the value of any design_id form fields.
+* Adds the design_complete.js file on pages with the design_complete=1 url param.
+* Adds a [mystyle_design] shortcode that will display a design and link to a print file (or the Renderer).
+
 = 3.3.0 =
 
 * Added full-screen mode.
