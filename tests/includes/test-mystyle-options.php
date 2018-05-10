@@ -80,9 +80,9 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
         $options['enable_flash'] = 1;
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         
-        $enable_flash = MyStyle_Options::get_enable_flash();
+        $enable_flash = MyStyle_Options::enable_flash();
 
-        $this->assertEquals( 1, $enable_flash );
+        $this->assertTrue( $enable_flash );
     }
     
     /**

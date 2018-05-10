@@ -63,17 +63,11 @@ abstract class MyStyle_Options {
 
     /**
      * Function that gets the value of enable_flash setting.
-     * @return boolean Returns 1 if the enable_flash setting is enabled,
+     * @return boolean Returns true if the enable_flash setting is enabled,
      * otherwise returns false.
      */
-    static function get_enable_flash() {
-        $enable_flash = 0;
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array());
-        if ( ! empty( $options['enable_flash'] ) ) {
-            $enable_flash = $options['enable_flash'];
-        }
-
-        return $enable_flash;
+    static function enable_flash() {
+        return self::is_option_enabled(MYSTYLE_OPTIONS_NAME, 'enable_flash');
     }
 
     /**

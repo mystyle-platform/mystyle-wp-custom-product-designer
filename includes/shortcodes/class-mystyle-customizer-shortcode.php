@@ -131,11 +131,11 @@ abstract class MyStyle_Customizer_Shortcode {
         $html5_customizer_url = '//customizer-js.ogmystyle.com/' . $customizer_query_string;
 
         // force mobile from plugin admin settings?
-        $enable_flash = MyStyle_Options::get_enable_flash();
+        $enable_flash = MyStyle_Options::enable_flash();
 
         // force mobile from GET var override?
         if ( isset( $_GET['enable_flash'] ) ) {
-            $enable_flash = 1;
+            $enable_flash = true;
         }
         
         $disable_viewport_rewrite = MyStyle_Options::get_customize_page_disable_viewport_rewrite();
