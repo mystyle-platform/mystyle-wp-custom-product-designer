@@ -69,18 +69,6 @@ abstract class MyStyle_Options {
     static function enable_flash() {
         return self::is_option_enabled(MYSTYLE_OPTIONS_NAME, 'enable_flash');
     }
-
-    /**
-     * Function that gets the value of the customize_page_title_hide setting.
-     * @return boolean Returns true if the customize_page_title_hide setting is
-     * enabled, otherwise returns false.
-     */
-    static function hide_customize_page_title() {
-        return self::is_option_enabled(
-                        MYSTYLE_OPTIONS_NAME, 
-                        'customize_page_title_hide'
-                    );
-    }
     
     /**
      * Function that gets the value of the design_profile_page_show_add_to_cart

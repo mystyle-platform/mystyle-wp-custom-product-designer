@@ -86,22 +86,6 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
     }
     
     /**
-     * Assert that hide_customize_page_title() returns the expected 
-     * customize_page_title_hide value.
-     */
-    function test_hide_customize_page_title() {
-        //Set customize_page_title_hide
-        $options = array();
-        update_option( MYSTYLE_OPTIONS_NAME, $options );
-        $options['customize_page_title_hide'] = 1;
-        update_option( MYSTYLE_OPTIONS_NAME, $options );
-        
-        $customize_page_title_hide = MyStyle_Options::hide_customize_page_title();
-
-        $this->assertTrue( $customize_page_title_hide );
-    }
-    
-    /**
      * Assert that get_design_profile_page_show_add_to_cart() returns the 
      * expected get_design_profile_page_show_add_to_cart value.
      */    

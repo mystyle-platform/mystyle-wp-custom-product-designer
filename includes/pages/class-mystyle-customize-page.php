@@ -145,7 +145,7 @@ class MyStyle_Customize_Page {
             if( 
                 ( ! empty( $id ) ) &&
                 ( $id == MyStyle_Customize_Page::get_id() ) &&
-                ( MyStyle_Options::hide_customize_page_title() ) &&
+                ( self::hide_title() ) &&
                 ( $id == get_the_ID() ) &&
                 ( in_the_loop() )
               )
@@ -186,6 +186,18 @@ class MyStyle_Customize_Page {
         }
 
 	return $classes;
+    }
+    
+    /**
+     * Function that gets the value of the customize_page_title_hide setting.
+     * @return boolean Returns true if the customize_page_title_hide setting is
+     * enabled, otherwise returns false.
+     */
+    static function hide_title() {
+        return MyStyle_Options::is_option_enabled(
+                        MYSTYLE_OPTIONS_NAME, 
+                        'customize_page_title_hide'
+                    );
     }
     
     /**

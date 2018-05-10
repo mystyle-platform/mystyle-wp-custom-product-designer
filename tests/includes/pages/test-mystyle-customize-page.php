@@ -199,4 +199,19 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
         //Assert that the mystyle-customize class is added to the classes array.
         $this->assertEquals( 'mystyle-customize', $returned_classes[0] );
     }
+    
+    /**
+     * Assert that hide_title() function.
+     */
+    function test_hide_title() {
+        //Set customize_page_title_hide setting.
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['customize_page_title_hide'] = 1;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $hide_title = MyStyle_Customize_Page::hide_title();
+
+        $this->assertTrue( $hide_title );
+    }
 }
