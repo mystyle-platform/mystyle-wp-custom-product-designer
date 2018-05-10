@@ -1,5 +1,7 @@
 <?php
 
+require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-design.php' );
+
 /**
  * The MyStyleOptionsTest class includes tests for testing the MyStyle_Options
  * class.
@@ -316,6 +318,91 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
         $permitted = MyStyle_Options::is_redirect_url_permitted( $redirect_url );
 
         $this->assertEquals( $expected, $permitted );
+    }
+    
+    /**
+     * Assert that the is_option_enabled function returns true when the value 
+     * equals 1.
+     */    
+    function test_is_option_enabled_returns_true_when_val_equals_1() {
+        // Set up the test data.
+        $option_name = 'test_option';
+        $option_key = 'test_key';
+        
+        // Set the option.
+        $options = array();
+        update_option( $option_name, $options );
+        $options[$option_key] = 1;
+        update_option( $option_name, $options );
+        
+        // Call the function.
+        $enabled = MyStyle_Options::is_option_enabled($option_name, $option_key);
+        
+        // Assert that the method returned true as expected.
+        $this->assertTrue( $enabled );
+    }
+    
+    /**
+     * Assert that the is_option_enabled function returns false when the value 
+     * equals 0.
+     */    
+    function test_is_option_enabled_returns_false_when_val_equals_0() {
+        // Set up the test data.
+        $option_name = 'test_option';
+        $option_key = 'test_key';
+        
+        // Set the option.
+        $options = array();
+        update_option( $option_name, $options );
+        $options[$option_key] = 0;
+        update_option( $option_name, $options );
+        
+        // Call the function.
+        $enabled = MyStyle_Options::is_option_enabled($option_name, $option_key);
+        
+        // Assert that the method returned false as expected.
+        $this->assertFalse( $enabled );
+    }
+    
+    /**
+     * Assert that the is_option_enabled function returns false when the value 
+     * isn't set.
+     */    
+    function test_is_option_enabled_returns_false_when_val_not_set() {
+        // Set up the test data.
+        $option_name = 'test_option';
+        $option_key = 'test_key';
+        
+        // Don't set the option.
+        
+        // Call the function.
+        $enabled = MyStyle_Options::is_option_enabled($option_name, $option_key);
+        
+        // Assert that the method returned false as expected.
+        $this->assertFalse( $enabled );
+    }
+    
+    /**
+     * Assert that the is_option_enabled function returns true when the value 
+     * isn't set but the default is set to true.
+     */    
+    function test_is_option_enabled_returns_true_when_val_not_set_and_default_set_to_true() {
+        // Set up the test data.
+        $option_name = 'test_option';
+        $option_key = 'test_key';
+        $default = true;
+        
+        // Don't set the option.
+        
+        // Call the function.
+        $enabled = MyStyle_Options::is_option_enabled(
+                                        $option_name, 
+                                        $option_key,
+                                        $default
+                                    );
+        
+        // Assert that the method returned true as expected.
+        $this->assertTrue( $enabled );
     }
 
 }

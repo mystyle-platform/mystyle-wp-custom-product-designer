@@ -231,5 +231,36 @@ abstract class MyStyle_Options {
         
         return $allowed;
     }
+    
+    /**
+     * Determines whether or not the passed option is enabled.
+     * @param string $option_name The name of the option. This is passed to
+     * WordPress's get_option function.
+     * @param string $option_key It is assumed that get_option will return an
+     * array. This is the key of the array that you are checking.
+     * @param boolean $default If the option isn't set, this method will return
+     * false (not enabled). If you want, you can have it default to true
+     * instead.
+     * @return boolean Returns true if the option is enabled, otherwise, returns
+     * false.
+     */
+    static function is_option_enabled( 
+                        $option_name, 
+                        $option_key,
+                        $default = false
+                    ) {
+        $enabled = $default;
+        $options = get_option( $option_name, array() );
+        if ( isset( $options[$option_key] ) ) {
+            $val = $options[$option_key];
+            if($val == 1 ) {
+                $enabled = true;
+            } else {
+                $enabled = false;
+            }
+        }
+        
+        return $enabled;
+    }
 
 }
