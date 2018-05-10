@@ -77,6 +77,15 @@ class MyStyle_Options_Page {
                 'mystyle_options_advanced_section'
         );
         
+        /* SHOW ADD TO CART BUTTON ON DESIGN PROFILE PAGES */
+        add_settings_field(
+                'design_profile_page_show_add_to_cart',
+                'Show Add to Cart Button on Design Profile Pages',
+                array( &$this, 'render_design_profile_page_show_add_to_cart' ),
+                'mystyle_advanced_settings',
+                'mystyle_options_advanced_section'
+        );
+        
         /* DISABLE_VIEWPORT_REWRITE */
         add_settings_field(
                 'customize_page_disable_viewport_rewrite',
@@ -307,6 +316,25 @@ class MyStyle_Options_Page {
     }
     
     /**
+     * Function to render the Show Add to Cart Button on Design Profile Pages
+     * option and checkbox.
+     */
+    public function render_design_profile_page_show_add_to_cart() {
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $design_profile_page_show_add_to_cart = ( array_key_exists( 'design_profile_page_show_add_to_cart', $options ) ) ? $options['design_profile_page_show_add_to_cart'] : 1;
+        //echo $design_profile_page_show_add_to_cart;
+        //exit();
+     ?>
+
+        <label class="description">
+            <input type="checkbox" id="design_profile_page_show_add_to_cart" name="mystyle_options[design_profile_page_show_add_to_cart]" value="1" <?php echo checked( 1, $design_profile_page_show_add_to_cart, false ) ?> />
+            &nbsp; Show the Add to Cart button on Design Profile pages.
+        </label>
+    <?php
+
+    }
+    
+    /**
      * Function to render the Disable Viewport Rewrite option and checkbox.
      */
     public function render_customize_page_disable_viewport_rewrite() {
@@ -444,13 +472,21 @@ class MyStyle_Options_Page {
             $msg_message = 'Invalid HTML5 Customizer option';
             $new_options['enable_flash'] = 0;
         }
-
+        
         //Hide Customize Page Title
         $new_options['customize_page_title_hide'] = ( isset( $input['customize_page_title_hide'] ) ) ? intval( $input['customize_page_title_hide'] ) : 0;
         if( ! preg_match( '/^[01]$/', $new_options['customize_page_title_hide'] ) ) {
             $has_errors = true;
             $msg_message = 'Invalid Hide Customize Page Title option';
             $new_options['customize_page_title_hide'] = 0;
+        }
+        
+        //Show Add to Cart Button on Design Profile Pages
+        $new_options['design_profile_page_show_add_to_cart'] = ( isset( $input['design_profile_page_show_add_to_cart'] ) ) ? intval( $input['design_profile_page_show_add_to_cart'] ) : 0;
+        if( ! preg_match( '/^[01]$/', $new_options['design_profile_page_show_add_to_cart'] ) ) {
+            $has_errors = true;
+            $msg_message = 'Show Add to Cart Button on Design Profile Pages option';
+            $new_options['design_profile_page_show_add_to_cart'] = 1;
         }
         
         //Disable Viewport Rewrite

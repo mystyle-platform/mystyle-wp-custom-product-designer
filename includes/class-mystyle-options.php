@@ -92,6 +92,22 @@ abstract class MyStyle_Options {
     }
     
     /**
+     * Function that gets the value of the design_profile_page_show_add_to_cart
+     * setting.
+     * @return boolean Returns 1 if the design_profile_page_show_add_to_cart is
+     * enabled, otherwise returns false. Defaults to enabled (1).
+     */
+    static function get_design_profile_page_show_add_to_cart() {
+        $design_profile_page_show_add_to_cart = 1;
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        if ( isset( $options['design_profile_page_show_add_to_cart'] ) ) {
+            $design_profile_page_show_add_to_cart = $options['design_profile_page_show_add_to_cart'];
+        }
+        
+        return $design_profile_page_show_add_to_cart;
+    }
+    
+    /**
      * Function that gets the value of the 
      * customize_page_disable_viewport_rewrite setting.
      * @return boolean Returns 1 if the customize_page_title_hide setting is 

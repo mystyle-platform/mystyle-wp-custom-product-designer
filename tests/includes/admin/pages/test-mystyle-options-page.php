@@ -462,6 +462,23 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
     }
     
     /**
+     * Test the render_design_profile_page_show_add_to_cart function.
+     */    
+    public function test_render_design_profile_page_show_add_to_cart() {
+        $mystyle_options_page = new MyStyle_Options_Page();
+        
+        //Assert that the force_mobile field was rendered
+        ob_start();
+        $mystyle_options_page->render_design_profile_page_show_add_to_cart();
+        $output = ob_get_contents();
+        ob_end_clean();
+        $this->assertContains( 
+                'Show the Add to Cart button on Design Profile pages', 
+                $output 
+            );
+    }
+    
+    /**
      * Test the render_customize_page_disable_viewport_rewrite function.
      */    
     public function test_render_customize_page_disable_viewport_rewrite() {
