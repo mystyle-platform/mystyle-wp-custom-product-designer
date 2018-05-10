@@ -72,17 +72,14 @@ abstract class MyStyle_Options {
 
     /**
      * Function that gets the value of the customize_page_title_hide setting.
-     * @return boolean Returns 1 if the customize_page_title_hide setting is enabled,
-     * otherwise returns false.
+     * @return boolean Returns true if the customize_page_title_hide setting is
+     * enabled, otherwise returns false.
      */
-    static function get_customize_page_title_hide() {
-        $customize_page_title_hide = 0;
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        if ( ! empty( $options['customize_page_title_hide'] ) ) {
-            $customize_page_title_hide = $options['customize_page_title_hide'];
-        }
-        
-        return $customize_page_title_hide;
+    static function hide_customize_page_title() {
+        return self::is_option_enabled(
+                        MYSTYLE_OPTIONS_NAME, 
+                        'customize_page_title_hide'
+                    );
     }
     
     /**

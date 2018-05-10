@@ -145,7 +145,7 @@ class MyStyle_Customize_Page {
             if( 
                 ( ! empty( $id ) ) &&
                 ( $id == MyStyle_Customize_Page::get_id() ) &&
-                ( MyStyle_Options::get_customize_page_title_hide() ) &&
+                ( MyStyle_Options::hide_customize_page_title() ) &&
                 ( $id == get_the_ID() ) &&
                 ( in_the_loop() )
               )
