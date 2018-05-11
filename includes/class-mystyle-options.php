@@ -90,20 +90,10 @@ abstract class MyStyle_Options {
      * returns false.
      */
     static function enable_alternate_design_complete_redirect() {
-        $val = 0;
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        if ( ! empty( $options['enable_alternate_design_complete_redirect'] ) ) {
-            $val = $options['enable_alternate_design_complete_redirect'];
-        }
-        
-        //convert to true boolean
-        if($val == 1 ) {
-            $ret = true;
-        } else {
-            $ret = false;
-        }
-        
-        return $ret;
+        return self::is_option_enabled(
+                        MYSTYLE_OPTIONS_NAME,
+                        'enable_alternate_design_complete_redirect'
+                    );
     }
     
     /**
