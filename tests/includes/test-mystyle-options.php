@@ -86,22 +86,6 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
     }
     
     /**
-     * Assert that get_customize_page_disable_viewport_rewrite() returns the
-     * expected value.
-     */    
-    function test_get_customize_page_disable_viewport_rewrite() {
-        //Set customize_page_disable_viewport_rewrite
-        $options = array();
-        update_option( MYSTYLE_OPTIONS_NAME, $options );
-        $options['customize_page_disable_viewport_rewrite'] = 1;
-        update_option( MYSTYLE_OPTIONS_NAME, $options );
-        
-        $customize_page_disable_viewport_rewrite = MyStyle_Options::get_customize_page_disable_viewport_rewrite();
-
-        $this->assertEquals( 1, $customize_page_disable_viewport_rewrite );
-    }
-    
-    /**
      * Assert that is_demo_mode() returns true if api key is a demo key.
      */    
     function test_is_demo_mode_for_demo_key() {

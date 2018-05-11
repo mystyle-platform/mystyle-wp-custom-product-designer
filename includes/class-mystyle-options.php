@@ -69,23 +69,6 @@ abstract class MyStyle_Options {
     static function enable_flash() {
         return self::is_option_enabled( MYSTYLE_OPTIONS_NAME, 'enable_flash' );
     }
-    
-    /**
-     * Function that gets the value of the 
-     * customize_page_disable_viewport_rewrite setting.
-     * @return boolean Returns 1 if the customize_page_title_hide setting is 
-     * enabled, otherwise returns false.
-     */
-    static function get_customize_page_disable_viewport_rewrite() {
-        $customize_page_disable_viewport_rewrite = 0;
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        if ( ! empty( $options['customize_page_disable_viewport_rewrite'] ) ) {
-            $customize_page_disable_viewport_rewrite = $options['customize_page_disable_viewport_rewrite'];
-        }
-        
-        return $customize_page_disable_viewport_rewrite;
-    }
-
 
     /**
      * Function that determines if the plugin is in demo mode.

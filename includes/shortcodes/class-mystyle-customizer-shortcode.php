@@ -138,7 +138,7 @@ abstract class MyStyle_Customizer_Shortcode {
             $enable_flash = true;
         }
         
-        $disable_viewport_rewrite = MyStyle_Options::get_customize_page_disable_viewport_rewrite();
+        $disable_viewport_rewrite = MyStyle_Customize_Page::disable_viewport_rewrite();
 
         // ---------- Call the view layer ------- //
         ob_start();

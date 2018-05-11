@@ -201,7 +201,7 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
     }
     
     /**
-     * Assert that hide_title() function.
+     * Assert the hide_title() function.
      */
     function test_hide_title() {
         //Set customize_page_title_hide setting.
@@ -213,5 +213,20 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
         $hide_title = MyStyle_Customize_Page::hide_title();
 
         $this->assertTrue( $hide_title );
+    }
+    
+    /**
+     * Assert the disable_viewport_rewrite() function.
+     */    
+    function test_disable_viewport_rewrite() {
+        //Set customize_page_disable_viewport_rewrite
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['customize_page_disable_viewport_rewrite'] = 1;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $disable_viewport_rewrite = MyStyle_Customize_Page::disable_viewport_rewrite();
+
+        $this->assertTrue( $disable_viewport_rewrite );
     }
 }

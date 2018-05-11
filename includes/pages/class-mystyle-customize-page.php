@@ -201,6 +201,19 @@ class MyStyle_Customize_Page {
     }
     
     /**
+     * Function that gets the value of the 
+     * customize_page_disable_viewport_rewrite setting.
+     * @return boolean Returns true if the customize_page_title_hide setting is 
+     * enabled, otherwise returns false.
+     */
+    static function disable_viewport_rewrite() {
+        return MyStyle_Options::is_option_enabled(
+                        MYSTYLE_OPTIONS_NAME, 
+                        'customize_page_disable_viewport_rewrite'
+                    );
+    }
+    
+    /**
      * Attempt to fix the Customize page. This may involve creating, re-creating
      * or repairing it.
      * @return Returns a message describing the outcome of fix operation.
