@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     }
                 ?>
                 <input type="hidden" name="design_id" value="<?php echo $design->get_design_id(); ?>" />
-                <?php if ( MyStyle_Options::get_design_profile_page_show_add_to_cart() == 1 ) { ?>
+                <?php if ( MyStyle_Design_Profile_Page::show_add_to_cart_button() ) { ?>
                     <button type="submit" class="button">Add to Cart</a>
                 <?php } ?>
             </form>

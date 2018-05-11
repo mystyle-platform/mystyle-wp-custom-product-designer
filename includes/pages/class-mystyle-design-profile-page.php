@@ -539,6 +539,20 @@ class MyStyle_Design_Profile_Page {
     }
     
     /**
+     * Function that gets the value of the design_profile_page_show_add_to_cart
+     * setting.
+     * @return boolean Returns true if the design_profile_page_show_add_to_cart 
+     * is enabled, otherwise returns false. Defaults to enabled (1).
+     */
+    static function show_add_to_cart_button() {
+        return MyStyle_Options::is_option_enabled( 
+                                    MYSTYLE_OPTIONS_NAME, 
+                                    'design_profile_page_show_add_to_cart',
+                                    true // default to true
+                    );
+    }
+    
+    /**
      * Attempt to fix the Design Profile page. This may involve creating, 
      * re-creating or repairing it.
      * @return Returns a message describing the outcome of fix operation.

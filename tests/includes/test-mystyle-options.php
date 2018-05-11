@@ -86,22 +86,6 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
     }
     
     /**
-     * Assert that get_design_profile_page_show_add_to_cart() returns the 
-     * expected get_design_profile_page_show_add_to_cart value.
-     */    
-    function test_get_design_profile_page_show_add_to_cart() {
-        //Set customize_page_title_hide
-        $options = array();
-        update_option( MYSTYLE_OPTIONS_NAME, $options );
-        $options['design_profile_page_show_add_to_cart'] = 1;
-        update_option( MYSTYLE_OPTIONS_NAME, $options );
-        
-        $design_profile_page_show_add_to_cart = MyStyle_Options::get_design_profile_page_show_add_to_cart();
-
-        $this->assertEquals( 1, $design_profile_page_show_add_to_cart );
-    }
-    
-    /**
      * Assert that get_customize_page_disable_viewport_rewrite() returns the
      * expected value.
      */    

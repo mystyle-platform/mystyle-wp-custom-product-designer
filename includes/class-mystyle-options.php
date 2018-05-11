@@ -18,7 +18,7 @@ abstract class MyStyle_Options {
      * otherwise returns false.
      */
     static function are_keys_installed() {
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 
         if ( ( ! empty($options['api_key'] ) ) && ( ! empty($options['secret'] ) ) ) {
             return true;
@@ -33,7 +33,7 @@ abstract class MyStyle_Options {
      */
     static function get_api_key() {
         $api_key = null;
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         if ( ! empty($options['api_key'] ) ) {
             $api_key = $options['api_key'];
         }
@@ -50,7 +50,7 @@ abstract class MyStyle_Options {
      */
     static function get_secret() {
         $secret = null;
-        $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
         if ( ! empty( $options['secret'] ) ) {
             $secret = $options['secret'];
         }
@@ -67,23 +67,7 @@ abstract class MyStyle_Options {
      * otherwise returns false.
      */
     static function enable_flash() {
-        return self::is_option_enabled(MYSTYLE_OPTIONS_NAME, 'enable_flash');
-    }
-    
-    /**
-     * Function that gets the value of the design_profile_page_show_add_to_cart
-     * setting.
-     * @return boolean Returns 1 if the design_profile_page_show_add_to_cart is
-     * enabled, otherwise returns false. Defaults to enabled (1).
-     */
-    static function get_design_profile_page_show_add_to_cart() {
-        $design_profile_page_show_add_to_cart = 1;
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        if ( isset( $options['design_profile_page_show_add_to_cart'] ) ) {
-            $design_profile_page_show_add_to_cart = $options['design_profile_page_show_add_to_cart'];
-        }
-        
-        return $design_profile_page_show_add_to_cart;
+        return self::is_option_enabled( MYSTYLE_OPTIONS_NAME, 'enable_flash' );
     }
     
     /**

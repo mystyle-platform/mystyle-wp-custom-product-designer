@@ -513,4 +513,19 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
         $this->assertEquals( 'mystyle-design-profile', $returned_classes[0] );
     }
     
+    /**
+     * Assert that show_add_to_cart_button() function.
+     */    
+    function test_show_add_to_cart() {
+        //Set customize_page_title_hide
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['design_profile_page_show_add_to_cart'] = 1;
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $show_add_to_cart = MyStyle_Design_Profile_Page::show_add_to_cart_button();
+
+        $this->assertTrue( $show_add_to_cart );
+    }
+    
 }
