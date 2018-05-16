@@ -6,7 +6,7 @@ Tags: customization, designer, personalization, product-preview, woocommerce, cu
 Requires at least: 3.3
 Tested up to: 4.9.5
 Requires PHP: 5.3
-Stable tag: 3.4.0
+Stable tag: 3.5.0
 
 The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
@@ -79,6 +79,11 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 5. Example of a Smart Car with a background image applied
 
 == Changelog ==
+
+= 3.5.0 =
+* Fixed a bug with the MyStyle Handoff when using the Alternate Design Complete URL option.
+* Added a switch to hide/show the Add to Cart button on the Design Profile page.
+* Refactored the option retrieval functions.
 
 = 3.4.0 =
 * Now tacks `design_complete=1` and `design_id=<new design id>` onto the Alternate Design Complete Redirect URL.

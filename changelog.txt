@@ -1,3 +1,9 @@
+= 3.5.0 =
+
+* Fixed a bug with the MyStyle Handoff when using the Alternate Design Complete URL option.
+* Added a switch to hide/show the Add to Cart button on the Design Profile page.
+* Refactored the option retrieval functions.
+
 = 3.4.0 =
 
 * Now tacks `design_complete=1` and `design_id=<new design id>` onto the Alternate Design Complete Redirect URL.
