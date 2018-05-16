@@ -121,7 +121,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         }
 
         //Do we want Flash?
-        var enableFlash = <?php echo $enable_flash; ?>;
+        var enableFlash = <?php echo ( $enable_flash ) ? 'true' : 'false'; ?>;
 
         //Show Flash customizer?
         var showFlashCustomizer = false;
