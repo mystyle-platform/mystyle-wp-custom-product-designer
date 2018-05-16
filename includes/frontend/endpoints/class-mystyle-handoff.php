@@ -23,7 +23,7 @@ class MyStyle_Handoff {
     /**
      * @var MyStyle_Design 
      */
-    private $mystyle_design;
+    private $design;
     
     /**
      * Constructor, constructs the class and sets up the hooks.
