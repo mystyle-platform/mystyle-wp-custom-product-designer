@@ -21,6 +21,11 @@ class MyStyle_Handoff {
     private $mystyle_api;
     
     /**
+     * @var MyStyle_Design 
+     */
+    private $mystyle_design;
+    
+    /**
      * Constructor, constructs the class and sets up the hooks.
      * 
      * Note: Call set_mystyle_api in addition to this constructor.
@@ -90,8 +95,7 @@ class MyStyle_Handoff {
             global $woocommerce;
             
             //Create a Design from the post
-            /* @var $design \MyStyle_Design */
-            $design = MyStyle_Design::create_from_post( $_POST );
+            $this->design = MyStyle_Design::create_from_post( $_POST );
             
             //Get and persist the Design
             $session_handler = MyStyle_SessionHandler::get_instance();
@@ -99,43 +103,43 @@ class MyStyle_Handoff {
             $session_handler->persist( $session );
             
             //Add the session id to the design
-            $design->set_session_id( $session->get_session_id() );
+            $this->design->set_session_id( $session->get_session_id() );
             
             //Add data from api call
-            $design = $this->mystyle_api->add_api_data_to_design( $design );
+            $this->design = $this->mystyle_api->add_api_data_to_design( $this->design );
             
             //Get the mystyle user from the API
             /* @var $user \MyStyle_User */
-            $mystyle_user = $this->mystyle_api->get_user( $design->get_designer_id() );
+            $mystyle_user = $this->mystyle_api->get_user( $this->design->get_designer_id() );
             
             //Add data from the user to the design
-            $design->set_email( $mystyle_user->get_email() );
+            $this->design->set_email( $mystyle_user->get_email() );
             
             //If the user is logged in to WordPress, store their user id with their design
             $wp_user_id = get_current_user_id();
             if( $wp_user_id !== 0 ) {
-                $design->set_user_id( $wp_user_id );
+                $this->design->set_user_id( $wp_user_id );
             } else {
                 //if the user isn't logged in, see if their email matches an existing user and store that id with the design
                 $user = get_user_by( 'email', $mystyle_user->get_email() );
                 if( $user !== false ) {
-                    $design->set_user_id( $user->ID );
+                    $this->design->set_user_id( $user->ID );
                 }
             }
             
             //Persist the design to the database
-            $design = MyStyle_DesignManager::persist( $design );
+            $this->design = MyStyle_DesignManager::persist( $this->design );
             
             //Get the passthru data
             $passthru = json_decode( base64_decode( $_POST['h'] ), true );
             
             // ------------------- Send email to user ---------------
-            //$design_complete_email = new MyStyle_Email_Design_Complete( $design );
+            //$design_complete_email = new MyStyle_Email_Design_Complete( $this->design );
             //$design_complete_email->send();
             
             if ( has_action( 'mystyle_send_design_complete_email' ) ) {
                 //custom email
-                do_action( 'mystyle_send_design_complete_email', $design, $passthru );
+                do_action( 'mystyle_send_design_complete_email', $this->design, $passthru );
             } else {
                 //basic email
                 $site_title = get_bloginfo( 'name' );
@@ -145,12 +149,12 @@ class MyStyle_Handoff {
                         "Design Created!\n\n" .
                         "This email is to confirm that your design was successfully " .
                         "saved. Thanks for using our site!\n\n" .
-                        "Your design id is " . $design->get_design_id() . ".\n\n" .
+                        "Your design id is " . $this->design->get_design_id() . ".\n\n" .
                         "You can access your design at any time from the following " .
                         "url:\n\n" . 
-                        MyStyle_Design_Profile_Page::get_design_url( $design ) . "\n\n".
+                        MyStyle_Design_Profile_Page::get_design_url( $this->design ) . "\n\n".
                         "Reload and edit your design at any time here:\n\n".
-                        MyStyle_Customize_Page::get_design_url( $design, null, $passthru ) . "\n".
+                        MyStyle_Customize_Page::get_design_url( $this->design, null, $passthru ) . "\n".
                 $admin_email = get_option( 'admin_email' );
                 $blogname = get_option( 'blogname' );
                 $headers = '';
@@ -203,18 +207,18 @@ class MyStyle_Handoff {
             
             if( $cart_item_key != null ) { //existing cart item
                 //update the mystyle data
-                $cart->cart_contents[$cart_item_key]['mystyle_data'] = $design->get_meta();
+                $cart->cart_contents[$cart_item_key]['mystyle_data'] = $this->design->get_meta();
                 
                 //commit our change to the session
                 $cart->set_session();
             } else { //new cart item
                 //Add the mystyle meta data to the cart item
                 $cart_item_data = array();
-                $cart_item_data['mystyle_data'] = $design->get_meta();
+                $cart_item_data['mystyle_data'] = $this->design->get_meta();
                 
                 //Add the product and meta data to the cart
                 $cart_item_key = $cart->add_to_cart(
-                                            $design->get_product_id(), //WooCommerce product id
+                                            $this->design->get_product_id(), //WooCommerce product id
                                             $quantity, //quantity
                                             $variation_id, //variation id
                                             $variation, //variation attribute values
