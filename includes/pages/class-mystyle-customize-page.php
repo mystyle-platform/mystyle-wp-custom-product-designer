@@ -134,6 +134,34 @@ class MyStyle_Customize_Page {
     }
     
     /**
+     * Gets the url for the customizer for the passed product.
+     * @param string $product The product whose customizer URL you want to get.
+     * This product should be marked customizable.
+     * @return string Returns the customizer url for the product.
+     */
+    public static function get_product_url( $product ) {
+        //var_dump($product);
+        
+        $mystyle_product = new \MyStyle_Product( $product );
+        $product_id = $mystyle_product->get_id();
+        
+        $customize_page_id = self::get_id();
+            
+        //build the url to the customizer including the poduct_id
+        $customizer_url = add_query_arg( 'product_id', $product_id, get_permalink( $customize_page_id ) );
+            
+        //Add the passthru data to the url
+        $passthru = array();
+        $passthru['post'] = array();
+        $passthru['post']['quantity'] = 1;
+        $passthru['post']['add-to-cart'] = $product_id;
+        $passthru_encoded = base64_encode( json_encode( $passthru ) );
+        $customizer_url = add_query_arg( 'h', $passthru_encoded, $customizer_url );
+        
+        return $customizer_url;
+    }
+    
+    /**
      * Filter the post title. Hide the title if on the Customize page and the
      * customize_page_title_hide setting is set to true. 
      * @param string $title The title of the post.

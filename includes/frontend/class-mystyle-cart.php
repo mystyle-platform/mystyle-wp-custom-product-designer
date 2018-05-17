@@ -24,6 +24,7 @@ class MyStyle_Cart {
         add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'get_cart_item_from_session' ), 10, 3 );
         
         add_action( 'init', array( &$this, 'init' ) );
+        add_action( 'woocommerce_product_add_to_cart_url', array( &$this, 'filter_add_to_cart_url' ), 10, 2 );
         add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
         add_action( 'woocommerce_add_to_cart_handler_mystyle_customizer', array( &$this, 'mystyle_add_to_cart_handler_customize' ), 10, 1 );
         add_action( 'woocommerce_add_to_cart_handler_mystyle_add_to_cart', array( &$this, 'mystyle_add_to_cart_handler' ), 10, 1 );
@@ -95,6 +96,30 @@ class MyStyle_Cart {
     }
     
     /**
+     * Filter the add to cart url for custom products.
+     * @param string $url The "Add to Cart" url (html)
+     * @param string $product The current product.
+     * @return string Returns the url to be outputted.
+     */
+    public function filter_add_to_cart_url( $url, $product ) {
+        //var_dump($product);
+        
+        $mystyle_product = new \MyStyle_Product( $product );
+        $product_type = $mystyle_product->get_type();
+        
+        if( ( $mystyle_product->is_customizable() ) && ( $product_type != 'variable') ) {
+            
+            //build the url to the customizer including the poduct_id
+            $ret = MyStyle_Customize_Page::get_product_url( $product );
+	
+        } else {
+            $ret = $url;
+        }
+        
+        return $ret;
+    }
+    
+    /**
      * Modify the add to cart link for product listings
      * @param type $link The "Add to Cart" link (html)
      * @param type $product The current product.
@@ -108,18 +133,8 @@ class MyStyle_Cart {
         $product_type = $mystyle_product->get_type();
         
         if( ( $mystyle_product->is_customizable() ) && ( $product_type != 'variable') ) {
-            $customize_page_id = MyStyle_Customize_Page::get_id();
-            
             //build the url to the customizer including the poduct_id
-            $customizer_url = add_query_arg( 'product_id', $product_id, get_permalink( $customize_page_id ) );
-            
-            //Add the passthru data to the url
-            $passthru = array();
-            $passthru['post'] = array();
-            $passthru['post']['quantity'] = 1;
-            $passthru['post']['add-to-cart'] = $product_id;
-            $passthru_encoded = base64_encode( json_encode( $passthru ) );
-            $customizer_url = add_query_arg( 'h', $passthru_encoded, $customizer_url );
+            $customizer_url = MyStyle_Customize_Page::get_product_url( $product );
             
             //Build the link (a tag) to the customizer
             $customize_link = sprintf( 
@@ -138,7 +153,8 @@ class MyStyle_Cart {
         } else {
             $ret = $link;
         }
-        
+        echo $link;
+        exit();
         return $ret;
     }
     
