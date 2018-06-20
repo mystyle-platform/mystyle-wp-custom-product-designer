@@ -210,6 +210,23 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
         //Install the redirect_url_whitelist
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
+        $options['redirect_url_whitelist'] = "www.example.com\r\nwww.example.net";
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
+        
+        $whitelist_array = MyStyle_Options::get_redirect_url_whitelist();
+
+        $this->assertEquals( 'www.example.com', $whitelist_array[0] );
+        $this->assertEquals( 'www.example.net', $whitelist_array[1] );
+    }
+    
+    /**
+     * Assert that get_redirect_url_whitelist() returns the expected array when
+     * values get stored with alternate line endings (\n instead of \r\n).
+     */    
+    function test_get_redirect_url_whitelist_with_alternate_line_endings() {
+        //Install the redirect_url_whitelist
+        $options = array();
+        update_option( MYSTYLE_OPTIONS_NAME, $options );
         $options['redirect_url_whitelist'] = "www.example.com\nwww.example.net";
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         
@@ -224,8 +241,8 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
      * on the whitelist.
      */    
     function test_is_redirect_url_permitted_returns_true_when_domain_whitelisted() {
-        $whitelist = "www.example.com\nwww.example.net";
-        $redirect_url = 'https://www.example.com/somepage?somevar=someval';
+        $whitelist = "www.example.com\r\nwww.example.net";
+        $redirect_url = 'https://www.example.net/somepage?somevar=someval';
         $expected = true;
         
         //Install the redirect_url_whitelist

@@ -143,7 +143,7 @@ abstract class MyStyle_Options {
         $val = null;
         $options = get_option(MYSTYLE_OPTIONS_NAME, array());
         if ( ! empty($options['redirect_url_whitelist'] ) ) {
-            $val = explode("\n", $options['redirect_url_whitelist']);
+            $val = preg_split("/\r\n|\n|\r/", $options['redirect_url_whitelist']);
         }
 
         return $val;

@@ -130,7 +130,7 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
         //Install the redirect_url_whitelist
         $options = array();
         update_option( MYSTYLE_OPTIONS_NAME, $options );
-        $options['redirect_url_whitelist'] = "www.example.com\nwww.example.net";
+        $options['redirect_url_whitelist'] = "www.example.com\r\nwww.example.net";
         update_option( MYSTYLE_OPTIONS_NAME, $options );
         
         //mock the GET params
