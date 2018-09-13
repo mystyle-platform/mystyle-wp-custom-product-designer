@@ -148,11 +148,12 @@ final class MyStyle {
         require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
         require_once( MYSTYLE_INCLUDES . 'class-mystyle-user-interface.php' );
         require_once( MYSTYLE_INCLUDES . 'class-mystyle-order-listener.php' );
-        
+        require_once( MYSTYLE_INCLUDES . 'integrations/tm-extra-product-options/class-mystyle-tm-extra-product-options.php' );
+
         // We include this frontend class here because it is used by our
-        // shortcode classes (which are used botn on the frontend and the admin.
+        // shortcode classes (which are used both on the frontend and the admin).
         require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
-        
+
         // Shortcode includes
         require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php' );
         require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php' );
@@ -202,6 +203,7 @@ final class MyStyle {
 
         MyStyle_User_Interface::get_instance();
         MyStyle_Order_Listener::get_instance();
+        MyStyle_Tm_Extra_Product_Options::get_instance();
 
         if( $this->is_request( 'admin' ) ) {
             //---- ADMIN ----//
@@ -239,11 +241,11 @@ final class MyStyle {
             MyStyle_Cart::get_instance();
             MyStyle_Design_Complete::get_instance();
             $mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
-            
+
             /* @var $mystyle_handoff MyStyle_Handoff */
             $mystyle_handoff = MyStyle_Handoff::get_instance();
             $mystyle_handoff->set_mystyle_api( $mystyle_api );
-            
+
             MyStyle_Customize_Page::get_instance();
             MyStyle_Design_Profile_Page::get_instance();
         }
@@ -266,12 +268,12 @@ final class MyStyle {
             }
         }
     }
-    
+
     /**
      * Register our shortcodes.
-     * 
+     *
      * This is run during init.
-     * 
+     *
      * @todo Add unit testing for this function.
      */
     public function register_shortcodes() {
@@ -280,7 +282,7 @@ final class MyStyle {
         add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
         add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
     }
-    
+
     /**
      * Checks for WooCommerce. If it isn't found and we are in the admin,
      * display a notice.
