@@ -1,3 +1,9 @@
+= 3.5.3 =
+
+* Fixed a bug where pagination wasn't showing on the Customize page for WC 3.2 and up when there were more than 12 customizable products.
+* Updated the readme.txt to reflect that the plugin has been tested with up to WP 4.9.8.
+* Updated the 'WC tested up to' variable to reflect that the plugin has been tested with up to WooCommerce 3.4.5.
+
 = 3.5.2 =
 
 * Fixed a bug where the redirect whitelist code was expecting different line endings.
