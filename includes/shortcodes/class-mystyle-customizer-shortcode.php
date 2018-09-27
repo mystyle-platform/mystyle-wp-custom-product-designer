@@ -35,7 +35,7 @@ abstract class MyStyle_Customizer_Shortcode {
         if( ! isset( $_GET['product_id'] ) ) {
             $out = '';
             add_filter( 'woocommerce_shortcode_products_query', array( 'MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query' ), 10, 1 );
-            $out = do_shortcode('[products per_page="12"]');
+            $out = do_shortcode('[products per_page="12" limit="12" paginate="true"]');
 
             if( strlen( $out ) < 50 ) {
                 $out = '<p>Sorry, no products are currently available for customization.</p>';
@@ -63,7 +63,7 @@ abstract class MyStyle_Customizer_Shortcode {
         $customizer_ux       = get_post_meta( $product_id, '_mystyle_customizer_ux', true );
         $print_type          = get_post_meta( $product_id, '_mystyle_print_type', true );
         $passthru            = ( isset( $_GET['h'] ) ) ? $_GET['h'] : null;
-        
+
         //if no passthru (h) data was received in the GET vars, build some
         //defaults to keep things working.
         if( $passthru == null ) {
@@ -82,13 +82,13 @@ abstract class MyStyle_Customizer_Shortcode {
 
         //get any settings that were passed in via the url
         $settings_param = ( isset( $_GET['settings'] ) ) ? $_GET['settings'] : null;
-        
+
         if ( ! empty( $settings_param ) ) {
             $settings = json_decode( base64_decode(  $settings_param ), true );
         } else {
             $settings = array();
         }
-        
+
         //set the redirect_url (if it wasn't passed in)
         if ( ! array_key_exists( 'redirect_url', $settings ) ) {
             $settings['redirect_url'] = MyStyle_Handoff::get_url();
@@ -98,12 +98,12 @@ abstract class MyStyle_Customizer_Shortcode {
                 throw new MyStyle_Bad_Request_Exception( 'The passed redirect url is not allowed. If you are the site admin, please add the domain to your MyStyle Redirect URL Whitelist.' );
             }
         }
-        
+
         //set the email_skip (if it wasn't passed in)
         if ( ! array_key_exists( 'email_skip', $settings ) ) {
             $settings['email_skip'] = 0;
         }
-        
+
         //set the print_type (if it wasn't passed in)
         if ( ! array_key_exists( 'print_type', $settings ) ) {
             $settings['print_type'] = $print_type;
@@ -137,7 +137,7 @@ abstract class MyStyle_Customizer_Shortcode {
         if ( isset( $_GET['enable_flash'] ) ) {
             $enable_flash = true;
         }
-        
+
         $disable_viewport_rewrite = MyStyle_Customize_Page::disable_viewport_rewrite();
 
         // ---------- Call the view layer ------- //
