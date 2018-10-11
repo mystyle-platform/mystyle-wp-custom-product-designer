@@ -563,10 +563,10 @@ class MyStyle_Options_Page {
 
 		// Enable Configur8
         $new_options['enable_configur8'] = ( isset( $input['enable_configur8'] ) ) ? intval( $input['enable_configur8'] ) : 0;
-        if( ! preg_match( '/^[01]$/', $new_options['enable_alternate_design_complete_redirect'] ) ) {
+        if( ! preg_match( '/^[01]$/', $new_options['enable_configur8'] ) ) {
             $has_errors = true;
-            $msg_message = 'Invalid Enable Alternate Design Complete Redirect option';
-            $new_options['enable_alternate_design_complete_redirect'] = 0;
+            $msg_message = 'Invalid Enable Configur8 option';
+            $new_options['enable_configur8'] = 0;
         }
 
         if( $has_errors ) {

@@ -188,6 +188,7 @@ final class MyStyle {
         require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-cart.php' );
         require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-design-complete.php' );
         require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
+		require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-configur8.php' );
     }
 
     /**
@@ -246,6 +247,7 @@ final class MyStyle {
 
             MyStyle_Customize_Page::get_instance();
             MyStyle_Design_Profile_Page::get_instance();
+			MyStyle_Configur8::get_instance();
         }
     }
 
