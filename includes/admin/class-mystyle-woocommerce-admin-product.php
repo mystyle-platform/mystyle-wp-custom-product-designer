@@ -153,7 +153,7 @@ class MyStyle_WooCommerce_Admin_Product {
 									'id' => '_mystyle_configur8_enabled',
 									'label' => __( 'Enable Configur8?', 'mystyle' ),
 									'desc_tip'    => 'true',
-									'description' => __( 'Enable this option to turn the Configur8 feature on for this product.', 'mystyle' ),
+									'description' => __( 'Enable this option to turn the Configur8 feature on for this product. The "Enable Configure8" setting works independently of the "Make Customizable" setting.', 'mystyle' ),
 									'value'       => $mystyle_configur8_enabled,
 								)
 							);
