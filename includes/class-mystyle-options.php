@@ -82,10 +82,10 @@ abstract class MyStyle_Options {
 
         return $ret;
     }
-    
+
     /**
      * Function that gets the enable_alternate_design_complete_redirect option.
-     * @return boolean Returns true if the 
+     * @return boolean Returns true if the
      * enable_alternate_design_complete_redirect setting is enabled, otherwise
      * returns false.
      */
@@ -95,7 +95,7 @@ abstract class MyStyle_Options {
                         'enable_alternate_design_complete_redirect'
                     );
     }
-    
+
     /**
      * Function that gets the Alternate Design Complete Redirect URL.
      * @return string|null Returns the Alternate Design Complete Redirect URL if one
@@ -110,17 +110,17 @@ abstract class MyStyle_Options {
 
         return $val;
     }
-    
+
     /**
      * Function that builds the Alternate Design Complete Redirect URL.
      * @return string|null Returns the built Alternate Design Complete Redirect
      * URL if one is set, otherwise returns null.
      */
-    static function build_alternate_design_complete_redirect_url( 
-                                                        MyStyle_Design $design 
+    static function build_alternate_design_complete_redirect_url(
+                                                        MyStyle_Design $design
                 ) {
         $url = self::get_alternate_design_complete_redirect_url();
-        
+
         if ( ! empty( $url ) ) {
             if ( strpos( $url, '?' ) == false ) {
                 $url .= '?';
@@ -133,7 +133,7 @@ abstract class MyStyle_Options {
 
         return $url;
     }
-    
+
     /**
      * Function that gets the Redirect URL Whitelist.
      * @return array|null Returns the Redirect URL Whitelist as an array (if one
@@ -148,7 +148,7 @@ abstract class MyStyle_Options {
 
         return $val;
     }
-    
+
     /**
      * Function that determines whether or not the passed redirect url is
      * permitted by the redirect_url_whitelist.
@@ -160,14 +160,26 @@ abstract class MyStyle_Options {
         $allowed = false;
         $redirect_domain = parse_url( $redirect_url, PHP_URL_HOST );
         $whitelist_array = self::get_redirect_url_whitelist();
-        
+
         if( ! empty( $whitelist_array ) ) {
             $allowed = in_array( $redirect_domain , $whitelist_array );
         }
-        
+
         return $allowed;
     }
-    
+
+	/**
+     * Function that gets the value of the enable_configur8 option.
+     * @return boolean Returns true if the enable_configur8 option is enabled,
+	 * otherwise returns false.
+     */
+    static function enable_configur8() {
+        return self::is_option_enabled(
+                        MYSTYLE_OPTIONS_NAME,
+                        'enable_configur8'
+                    );
+    }
+
     /**
      * Determines whether or not the passed option is enabled.
      * @param string $option_name The name of the option. This is passed to
@@ -180,8 +192,8 @@ abstract class MyStyle_Options {
      * @return boolean Returns true if the option is enabled, otherwise, returns
      * false.
      */
-    static function is_option_enabled( 
-                        $option_name, 
+    static function is_option_enabled(
+                        $option_name,
                         $option_key,
                         $default = false
                     ) {
@@ -195,7 +207,7 @@ abstract class MyStyle_Options {
                 $enabled = false;
             }
         }
-        
+
         return $enabled;
     }
 

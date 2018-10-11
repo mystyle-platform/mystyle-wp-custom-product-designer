@@ -13,7 +13,7 @@ class MyStyle_Options_Page {
      * @var MyStyle_Options_Page
      */
     private static $instance;
-    
+
     /**
      * Constructor, constructs the options page and adds it to the Settings
      * menu.
@@ -76,7 +76,7 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
-        
+
         /* SHOW ADD TO CART BUTTON ON DESIGN PROFILE PAGES */
         add_settings_field(
                 'design_profile_page_show_add_to_cart',
@@ -85,7 +85,7 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
-        
+
         /* DISABLE_VIEWPORT_REWRITE */
         add_settings_field(
                 'customize_page_disable_viewport_rewrite',
@@ -103,7 +103,7 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
-        
+
         /* ENABLE_ALTERNATE_DESIGN_COMPLETE_REDIRECT */
         add_settings_field(
                 'enable_alternate_design_complete_redirect',
@@ -112,7 +112,7 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
-        
+
         /* ALTERNATE_DESIGN_COMPLETE_REDIRECT_URL */
         add_settings_field(
                 'alternate_design_complete_redirect_url',
@@ -121,12 +121,21 @@ class MyStyle_Options_Page {
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
-        
+
         /* REDIRECT URL WHITELIST */
         add_settings_field(
                 'redirect_url_whitelist',
                 'Redirect URL Whitelist',
                 array( &$this, 'render_redirect_url_whitelist' ),
+                'mystyle_advanced_settings',
+                'mystyle_options_advanced_section'
+        );
+
+		/* ENABLE_CONFIGUR8 */
+        add_settings_field(
+                'enable_configur8',
+                'Enable Configur8',
+                array( &$this, 'render_enable_configur8' ),
                 'mystyle_advanced_settings',
                 'mystyle_options_advanced_section'
         );
@@ -314,7 +323,7 @@ class MyStyle_Options_Page {
     <?php
 
     }
-    
+
     /**
      * Function to render the Show Add to Cart Button on Design Profile Pages
      * option and checkbox.
@@ -333,7 +342,7 @@ class MyStyle_Options_Page {
     <?php
 
     }
-    
+
     /**
      * Function to render the Disable Viewport Rewrite option and checkbox.
      */
@@ -343,12 +352,12 @@ class MyStyle_Options_Page {
      ?>
 
         <label class="description">
-            <input 
-                type="checkbox" 
-                id="customize_page_disable_viewport_rewrite" 
-                name="mystyle_options[customize_page_disable_viewport_rewrite]" 
-                value="1" 
-                <?php echo checked( 1, $customize_page_disable_viewport_rewrite, false ) ?> 
+            <input
+                type="checkbox"
+                id="customize_page_disable_viewport_rewrite"
+                name="mystyle_options[customize_page_disable_viewport_rewrite]"
+                value="1"
+                <?php echo checked( 1, $customize_page_disable_viewport_rewrite, false ) ?>
             />
             &nbsp; The MyStyle plugin will rewrite the viewport tag on the
             Customize page (only) for optimal display of the MyStyle Customizer.
@@ -370,7 +379,7 @@ class MyStyle_Options_Page {
         <p class="description">Configure advanced form integrations here (not recommended)</p>
     <?php
     }
-    
+
     /**
      * Function to render the Enable Alternate Design Complete Redirect option
      * and checkbox.
@@ -400,7 +409,7 @@ class MyStyle_Options_Page {
         <p class="description">Specify an alternate URL to redirect to after the user completes their design. By default, the user will be redirected to the cart.</p>
     <?php
     }
-    
+
     /**
      * Function to render the redirect url whitelist field
      */
@@ -412,6 +421,29 @@ class MyStyle_Options_Page {
         <textarea id="mystyle_redirect_url_whitelist" name="mystyle_options[redirect_url_whitelist]" ><?php echo $current_val; ?></textarea>
         <p class="description">White list domains that can be redirected to (one per line, ex: "www.example.com"). Contact MyStyle for details.</p>
     <?php
+    }
+
+	/**
+     * Function to render the Enable Configur8 option
+     * and checkbox.
+     */
+    public function render_enable_configur8() {
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        $enable_configur8 = ( array_key_exists( 'enable_configur8', $options ) ) ? $options['enable_configur8'] : 0;
+     ?>
+
+        <label class="description">
+            <input type="checkbox" id="enable_configur8" name="mystyle_options[enable_configur8]" value="1" <?php echo checked( 1, $enable_configur8, false ) ?> />
+            &nbsp; Enable the Configur8 feature.
+			<p class="description">
+				Configur8 works on the product
+				info page to make the product image change based on user input.
+				To use, first enable this setting and then turn Configur8 on in
+				the settings for each individual product as well.
+			</p>
+        </label>
+    <?php
+
     }
 
     /**
@@ -435,12 +467,12 @@ class MyStyle_Options_Page {
      * @return array Returns the new options to be stored in the database.
      */
     public function validate( $input ) {
-        
+
         //Return without doing any validation if a tools/action button pressed
         if ( ( ! empty( $_GET['action'] ) ) && ( $_SERVER['REQUEST_METHOD'] == 'POST' ) ) {
             return $input;
         }
-        
+
         $old_options = get_option( MYSTYLE_OPTIONS_NAME );
         $new_options = $old_options;  //start with the old options.
 
@@ -472,7 +504,7 @@ class MyStyle_Options_Page {
             $msg_message = 'Invalid HTML5 Customizer option';
             $new_options['enable_flash'] = 0;
         }
-        
+
         //Hide Customize Page Title
         $new_options['customize_page_title_hide'] = ( isset( $input['customize_page_title_hide'] ) ) ? intval( $input['customize_page_title_hide'] ) : 0;
         if( ! preg_match( '/^[01]$/', $new_options['customize_page_title_hide'] ) ) {
@@ -480,7 +512,7 @@ class MyStyle_Options_Page {
             $msg_message = 'Invalid Hide Customize Page Title option';
             $new_options['customize_page_title_hide'] = 0;
         }
-        
+
         //Show Add to Cart Button on Design Profile Pages
         $new_options['design_profile_page_show_add_to_cart'] = ( isset( $input['design_profile_page_show_add_to_cart'] ) ) ? intval( $input['design_profile_page_show_add_to_cart'] ) : 0;
         if( ! preg_match( '/^[01]$/', $new_options['design_profile_page_show_add_to_cart'] ) ) {
@@ -488,7 +520,7 @@ class MyStyle_Options_Page {
             $msg_message = 'Show Add to Cart Button on Design Profile Pages option';
             $new_options['design_profile_page_show_add_to_cart'] = 1;
         }
-        
+
         //Disable Viewport Rewrite
         $new_options['customize_page_disable_viewport_rewrite'] = ( isset( $input['customize_page_disable_viewport_rewrite'] ) ) ? intval( $input['customize_page_disable_viewport_rewrite'] ) : 0;
         if( ! preg_match( '/^[01]$/', $new_options['customize_page_disable_viewport_rewrite'] ) ) {
@@ -506,7 +538,7 @@ class MyStyle_Options_Page {
             $msg_message = 'Please enter a valid API Key.';
             $new_options['mystyle_form_integration_config'] = '';
         }*/
-        
+
         //Enable Alternate Design Complete Redirect.
         $new_options['enable_alternate_design_complete_redirect'] = ( isset( $input['enable_alternate_design_complete_redirect'] ) ) ? intval( $input['enable_alternate_design_complete_redirect'] ) : 0;
         if( ! preg_match( '/^[01]$/', $new_options['enable_alternate_design_complete_redirect'] ) ) {
@@ -514,10 +546,10 @@ class MyStyle_Options_Page {
             $msg_message = 'Invalid Enable Alternate Design Complete Redirect option';
             $new_options['enable_alternate_design_complete_redirect'] = 0;
         }
-        
+
         //Alternate Design Complete Redirect URL
         $new_options['alternate_design_complete_redirect_url'] = trim( $input['alternate_design_complete_redirect_url'] );
-        if( 
+        if(
             ( ! empty( $new_options['alternate_design_complete_redirect_url'] ) ) &&
             (filter_var( $new_options['alternate_design_complete_redirect_url'], FILTER_VALIDATE_URL ) == false )
           ) {
@@ -525,9 +557,17 @@ class MyStyle_Options_Page {
             $msg_message = 'Please enter a valid Alternate Design Complete Redirect URL.';
             $new_options['alternate_design_complete_redirect_url'] = '';
         }
-        
+
         // Redirect URL Whitelist
         $new_options['redirect_url_whitelist'] = trim( $input['redirect_url_whitelist'] );
+
+		// Enable Configur8
+        $new_options['enable_configur8'] = ( isset( $input['enable_configur8'] ) ) ? intval( $input['enable_configur8'] ) : 0;
+        if( ! preg_match( '/^[01]$/', $new_options['enable_alternate_design_complete_redirect'] ) ) {
+            $has_errors = true;
+            $msg_message = 'Invalid Enable Alternate Design Complete Redirect option';
+            $new_options['enable_alternate_design_complete_redirect'] = 0;
+        }
 
         if( $has_errors ) {
             add_settings_error(
@@ -540,7 +580,7 @@ class MyStyle_Options_Page {
 
         return $new_options;
     }
-    
+
     /**
      * Get the singleton instance
      * @return MyStyle_Addons_Page
