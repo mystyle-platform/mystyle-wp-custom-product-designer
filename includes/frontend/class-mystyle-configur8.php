@@ -33,7 +33,11 @@ class MyStyle_Configur8 {
 		$mystyle_product = new \MyStyle_Product( $product );
 
 		// Drop the configur8 script (if enabled)
-		if ( MyStyle_Options::enable_configur8() && $mystyle_product->configur8_enabled() ) {
+		if (
+			MyStyle_Options::are_keys_installed() &&
+			MyStyle_Options::enable_configur8() &&
+			$mystyle_product->configur8_enabled()
+		   ) {
 	 ?>
 
 	<!-- MyStyle Configur8 - MyStyle Custom Product Designer v<?php echo MYSTYLE_VERSION; ?> - https://www.mystyleplatform.com -->
@@ -51,7 +55,7 @@ class MyStyle_Configur8 {
 
 	<?php
 
-		} //end if access_code
+		} //end if configur8 enabled
 
 	}
 

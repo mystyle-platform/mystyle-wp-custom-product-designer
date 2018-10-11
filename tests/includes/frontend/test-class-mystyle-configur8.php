@@ -104,8 +104,8 @@ class Test_MyStyle_Configur8 extends WP_UnitTestCase {
 
 		// Set the global configur8_enabled setting.
         $options = array();
-        $options['api_key'] = '0';
-		$options['secret'] = 'fake-secret';
+        $options['api_key'] = 'test_key';
+        $options['secret'] = 'test_secret';
 		$options['enable_configur8'] = true;
         update_option( MYSTYLE_OPTIONS_NAME, $options );
 
