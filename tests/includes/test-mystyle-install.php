@@ -1,86 +1,86 @@
 <?php
 
 /**
- * The MystyleAdminTest class includes tests for testing the MyStyle_Admin 
+ * The MystyleAdminTest class includes tests for testing the MyStyle_Admin
  * class.
  *
  * @package MyStyle
  * @since 0.5.3
  */
 class MyStyleInstallTest extends WP_UnitTestCase {
-    
-    /**
-     * Overrwrite the setUp function so that our custom tables will be persisted
-     * to the test database.
-     */
-    function setUp() {
-        // Perform the actual task according to parent class.
-        parent::setUp();
-        // Remove filters that will create temporary tables. So that permanent tables will be created.
-        remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
-        remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
-    }
-    
-    /**
-     * Overrwrite the tearDown function to remove our custom tables
-     */
-    function tearDown() {
-        global $wpdb;
-        // Perform the actual task according to parent class.
-        parent::tearDown();
-        
-        //Drop the tables that we created
-        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
-        $wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Session::get_table_name());
-    }
-    
-    /**
-     * Test the create_tables function successfully creates the tables.
-     */    
-    public function test_create_tables() {
-        global $wpdb;
-        
-        $table_name = $wpdb->get_var( "SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'" );
-        
-        //Assert that the table doesn't yet exist.
-        $this->assertNotEquals( MyStyle_Design::get_table_name(), $table_name );
-        
-        //Create the tables
-        MyStyle_Install::create_tables();
-        
-        $table_name = $wpdb->get_var( "SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'" );
-        
-        //Assert that the table now exists.
-        $this->assertEquals( MyStyle_Design::get_table_name(), $table_name );
-    }
-    
-    /**
-     * Test the delta_tables function successfully creates the tables.
-     */    
-    public function test_delta_tables() {
-        global $wpdb;
-        
-        $table_name = $wpdb->get_var( "SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'" );
-        
-        //Assert that the table doesn't yet exist.
-        $this->assertNotEquals( MyStyle_Design::get_table_name(), $table_name );
-        
-        //Create the tables
-        MyStyle_Install::delta_tables();
-        
-        $table_name = $wpdb->get_var( "SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'" );
-        
-        //Assert that the table now exists.
-        $this->assertEquals( MyStyle_Design::get_table_name(), $table_name );
-    }
-    
-    /**
-     * Test the get_schema function
-     */    
-    public function test_get_schema() {
-        global $wpdb;
-        
-        $expected_schema = "
+
+	/**
+	 * Overrwrite the setUp function so that our custom tables will be persisted
+	 * to the test database.
+	 */
+	function setUp() {
+		// Perform the actual task according to parent class.
+		parent::setUp();
+		// Remove filters that will create temporary tables. So that permanent tables will be created.
+		remove_filter('query', array($this, '_create_temporary_tables'));
+		remove_filter('query', array($this, '_drop_temporary_tables'));
+	}
+
+	/**
+	 * Overrwrite the tearDown function to remove our custom tables
+	 */
+	function tearDown() {
+		global $wpdb;
+		// Perform the actual task according to parent class.
+		parent::tearDown();
+
+		//Drop the tables that we created
+		$wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Design::get_table_name());
+		$wpdb->query("DROP TABLE IF EXISTS " . MyStyle_Session::get_table_name());
+	}
+
+	/**
+	 * Test the create_tables function successfully creates the tables.
+	 */
+	public function test_create_tables() {
+		global $wpdb;
+
+		$table_name = $wpdb->get_var("SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'");
+
+		//Assert that the table doesn't yet exist.
+		$this->assertNotEquals(MyStyle_Design::get_table_name(), $table_name);
+
+		//Create the tables
+		MyStyle_Install::create_tables();
+
+		$table_name = $wpdb->get_var("SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'");
+
+		//Assert that the table now exists.
+		$this->assertEquals(MyStyle_Design::get_table_name(), $table_name);
+	}
+
+	/**
+	 * Test the delta_tables function successfully creates the tables.
+	 */
+	public function test_delta_tables() {
+		global $wpdb;
+
+		$table_name = $wpdb->get_var("SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'");
+
+		//Assert that the table doesn't yet exist.
+		$this->assertNotEquals(MyStyle_Design::get_table_name(), $table_name);
+
+		//Create the tables
+		MyStyle_Install::delta_tables();
+
+		$table_name = $wpdb->get_var("SHOW TABLES LIKE '" . MyStyle_Design::get_table_name() . "'");
+
+		//Assert that the table now exists.
+		$this->assertEquals(MyStyle_Design::get_table_name(), $table_name);
+	}
+
+	/**
+	 * Test the get_schema function
+	 */
+	public function test_get_schema() {
+		global $wpdb;
+
+		$expected_schema = "
             CREATE TABLE wptests_mystyle_designs (
                 ms_design_id bigint(32) NOT NULL,
                 ms_product_id bigint(20) NOT NULL,
@@ -114,59 +114,58 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 session_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 PRIMARY KEY  (session_id)
             ) DEFAULT CHARACTER SET $wpdb->charset COLLATE $wpdb->collate;";
-        
-        $schema = MyStyle_Install::get_schema();
-        
-        $this->assertEquals( $expected_schema, $schema );
-    }
-    
-    /**
-     * Test the activate function.
-     */    
-    public function test_activate() {
-        MyStyle_Install::activate();
-        
-        $customize_page_id = MyStyle_Customize_Page::get_id();
-        
-        //assert that the Customize page was created
-        $this->assertNotNull( $customize_page_id );
-        
-        $design_profile_page_id = MyStyle_Design_Profile_Page::get_id();
-        
-        //assert that the Design Profile page was created
-        $this->assertNotNull( $design_profile_page_id );
-    }
-    
-    /**
-     * Test the deactivate function.
-     */    
-    public function test_deactivate() {
-        //activate the plugin so that we can then deactivate it
-        MyStyle_Install::activate();
-        
-        MyStyle_Install::deactivate();
-        
-        //Assert that Customize page remains.
-        $this->assertTrue(MyStyle_Customize_Page::exists());
-    }
-        
-     /**
-     * Test the uninstall function.
-     */    
-    public function test_uninstall() {
-        //init the plugin so that we can then uninstall it
-        //MyStyle::init();
-        
-        //assert that there are options
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        $this->assertNotEmpty( $options );
-        
-        //uninstall the plugin
-        MyStyle_Install::uninstall();
-        
-        //assert that the options are still there
-        $options_new = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        $this->assertNotEmpty( $options_new );
-    }
-    
+
+		$schema = MyStyle_Install::get_schema();
+
+		$this->assertEquals($expected_schema, $schema);
+	}
+
+	/**
+	 * Test the activate function.
+	 */
+	public function test_activate() {
+		MyStyle_Install::activate();
+
+		$customize_page_id = MyStyle_Customize_Page::get_id();
+
+		//assert that the Customize page was created
+		$this->assertNotNull($customize_page_id);
+
+		$design_profile_page_id = MyStyle_Design_Profile_Page::get_id();
+
+		//assert that the Design Profile page was created
+		$this->assertNotNull($design_profile_page_id);
+	}
+
+	/**
+	 * Test the deactivate function.
+	 */
+	public function test_deactivate() {
+		//activate the plugin so that we can then deactivate it
+		MyStyle_Install::activate();
+
+		MyStyle_Install::deactivate();
+
+		//Assert that Customize page remains.
+		$this->assertTrue(MyStyle_Customize_Page::exists());
+	}
+
+	/**
+	 * Test the uninstall function.
+	 */
+	public function test_uninstall() {
+		//init the plugin so that we can then uninstall it
+		//MyStyle::init();
+		//assert that there are options
+		$options = get_option(MYSTYLE_OPTIONS_NAME, array());
+		$this->assertNotEmpty($options);
+
+		//uninstall the plugin
+		MyStyle_Install::uninstall();
+
+		//assert that the options are still there
+		$options_new = get_option(MYSTYLE_OPTIONS_NAME, array());
+		$this->assertNotEmpty($options_new);
+	}
+
 }

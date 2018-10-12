@@ -102,14 +102,14 @@ iframe#customizer-iframe {
 @media all and (orientation:portrait) {
     body.mystyle-customize #customizer-iframe,
     body.mystyle-customizer #customizer-wrapper {
-	height: 1000px;
+        height: 1000px;
     }
 }
 
 @media all and (orientation:landscape) {
     body.mystyle-customize #customizer-iframe,
     body.mystyle-customizer #customizer-wrapper {
-	height: 550px;
+        height: 550px;
     }
 }
 

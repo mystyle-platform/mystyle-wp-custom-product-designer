@@ -7,7 +7,9 @@
  * @since 1.5.0
  */
 class WC_Product {
-    public function __construct() {
-        //
-    }
+
+	public function __construct() {
+		//
+	}
+
 }
