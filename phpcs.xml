@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Coding Standards">
+	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/blob/develop/WordPress-Core/ruleset.xml -->
+	
+	<description>MyStyle dev PHP_CodeSniffer ruleset.</description>
+	
+	<!-- Exclude paths -->
+	<exclude-pattern>vendor/*</exclude-pattern>
+
+	<!-- Rules -->
+	<rule ref="PHPCompatibility">
+		<exclude name="PHPCompatibility.PHP.NewFunctions.hash_equalsFound" />
+		<exclude name="PHPCompatibility.PHP.NewInterfaces.jsonserializableFound" />
+		<exclude name="PHPCompatibility.PHP.NewKeywords.t_namespaceFound" />
+		<exclude-pattern>tests/</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress">
+		<exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
+		<exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery" />
+		<exclude name="WordPress.VIP.DirectDatabaseQuery.SchemaChange" />
+		<exclude name="WordPress.VIP.FileSystemWritesDisallow.file_ops_fwrite" />
+		<exclude name="WordPress.VIP.OrderByRand" />
+		<exclude name="WordPress.VIP.RestrictedFunctions" />
+		<exclude name="WordPress.VIP.RestrictedVariables.user_meta__wpdb__usermeta" />
+		<exclude name="WordPress.VIP.PostsPerPage.posts_per_page_posts_per_page" />
+		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE" />
+	</rule>
+	
+	<rule ref="WordPress.Security.ValidatedSanitizedInput" />
+	<rule ref="WordPress.XSS.EscapeOutput" />
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array" value="mystyle" />
+		</properties>
+	</rule>
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>includes/**/abstract-*.php</exclude-pattern>
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
+	<rule ref="Generic.Commenting">
+		<exclude-pattern>tests/</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting">
+		<exclude-pattern>tests/</exclude-pattern>
+		<exclude name="Squiz.Commenting.LongConditionClosingComment" />
+		<exclude name="Squiz.Commenting.PostStatementComment" />
+	</rule>
+	<rule ref="PEAR.Functions.FunctionCallSignature.EmptyLine" />
+	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase" />
+	<rule ref="PHPCompatibility.PHP.NewLanguageConstructs.t_ns_separatorFound" />
+	<rule ref="PHPCompatibility.PHP.NewFunctions.array_columnFound" />
+	<rule ref="PHPCompatibility.PHP.NewClosure.Found" />
+	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase" />
+	
+</ruleset>
