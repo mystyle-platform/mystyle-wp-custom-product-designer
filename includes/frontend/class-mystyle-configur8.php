@@ -50,7 +50,7 @@ class MyStyle_Configur8 {
 					js = d.createElement(s);
 					js.id = id;
 					js.async = 1;
-					js.src = '//static2.ogmystyle.com/configur8/mystyle-configur8.min.js';
+					js.src = '//static2.ogmystyle.com/configur8/js/mystyle-configur8.min.js';
 					fjs.parentNode.insertBefore(js, fjs);
 				}());
 			</script>
