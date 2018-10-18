@@ -315,9 +315,9 @@ class MyStyle_Options_Page {
 	public function render_form_integration_config() {
 
 		$options = get_option(MYSTYLE_OPTIONS_NAME, array()); // get WP Options table Key of this option
-		$current_val = ( array_key_exists('mystyle_form_integration_config', $options) ) ? $options['mystyle_form_integration_config'] : '';
+		$current_val = ( array_key_exists( 'form_integration_config', $options) ) ? $options['form_integration_config'] : '';
 		?>
-		<textarea id="mystyle_form_integration_config" name="mystyle_options[mystyle_form_integration_config]" ><?php echo $current_val; ?></textarea>
+		<textarea id="mystyle_form_integration_config" name="mystyle_options[form_integration_config]" ><?php echo $current_val; ?></textarea>
 		<p class="description">Configure advanced form integrations here (not recommended)</p>
 		<?php
 	}
@@ -469,14 +469,7 @@ class MyStyle_Options_Page {
 		}
 
 		// Form Integration Config
-		$new_options['mystyle_form_integration_config'] = trim($input['mystyle_form_integration_config']);
-		// example valdation (not needed)
-		/* if( !preg_match( '/^[a-z0-9]*$/i', $new_options['mystyle_form_integration_config'] ) ) {
-		  $has_errors = true;
-		  $msg_type = 'error';
-		  $msg_message = 'Please enter a valid API Key.';
-		  $new_options['mystyle_form_integration_config'] = '';
-		  } */
+		$new_options['form_integration_config'] = trim( $input['form_integration_config'] );
 
 		//Enable Alternate Design Complete Redirect.
 		$new_options['enable_alternate_design_complete_redirect'] = ( isset($input['enable_alternate_design_complete_redirect']) ) ? intval($input['enable_alternate_design_complete_redirect']) : 0;

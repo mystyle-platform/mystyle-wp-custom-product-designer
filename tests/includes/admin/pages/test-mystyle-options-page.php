@@ -253,7 +253,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['enable_flash'] = 0;
 		$input['customize_page_title_hide'] = 0;
 		$input['customize_page_disable_viewport_rewrite'] = 0;
-		$input['mystyle_form_integration_config'] = 0;
+		$input['form_integration_config'] = '';
 		$input['enable_alternate_design_complete_redirect'] = 0;
 		$input['alternate_design_complete_redirect_url'] = '';
 		$input['redirect_url_whitelist'] = '';
@@ -289,7 +289,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['enable_flash'] = 0;
 		$input['customize_page_title_hide'] = 0;
 		$input['customize_page_disable_viewport_rewrite'] = 0;
-		$input['mystyle_form_integration_config'] = 0;
+		$input['form_integration_config'] = '';
 		$input['enable_alternate_design_complete_redirect'] = 0;
 		$input['alternate_design_complete_redirect_url'] = '';
 		$input['redirect_url_whitelist'] = '';
@@ -325,7 +325,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['enable_flash'] = 0;
 		$input['customize_page_title_hide'] = 0;
 		$input['customize_page_disable_viewport_rewrite'] = 0;
-		$input['mystyle_form_integration_config'] = 0;
+		$input['form_integration_config'] = '';
 		$input['enable_alternate_design_complete_redirect'] = 0;
 		$input['alternate_design_complete_redirect_url'] = '';
 		$input['redirect_url_whitelist'] = '';
@@ -361,7 +361,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['enable_flash'] = 0;
 		$input['customize_page_title_hide'] = 0;
 		$input['customize_page_disable_viewport_rewrite'] = 0;
-		$input['mystyle_form_integration_config'] = 0;
+		$input['form_integration_config'] = '';
 		$input['enable_alternate_design_complete_redirect'] = 0;
 		$input['alternate_design_complete_redirect_url'] = '';
 		$input['redirect_url_whitelist'] = '';
@@ -397,7 +397,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['enable_flash'] = 0;
 		$input['customize_page_title_hide'] = 0;
 		$input['customize_page_disable_viewport_rewrite'] = 0;
-		$input['mystyle_form_integration_config'] = 0;
+		$input['form_integration_config'] = '';
 		$input['enable_alternate_design_complete_redirect'] = 0;
 		$input['alternate_design_complete_redirect_url'] = '';
 		$input['redirect_url_whitelist'] = '';
@@ -433,7 +433,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['enable_flash'] = 0;
 		$input['customize_page_title_hide'] = 0;
 		$input['customize_page_disable_viewport_rewrite'] = 0;
-		$input['mystyle_form_integration_config'] = 0;
+		$input['form_integration_config'] = '';
 		$input['enable_alternate_design_complete_redirect'] = 0;
 		$input['alternate_design_complete_redirect_url'] = '';
 		$input['redirect_url_whitelist'] = '';

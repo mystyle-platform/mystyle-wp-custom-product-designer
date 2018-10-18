@@ -128,6 +128,26 @@ class MyStyleOptionsTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Assert that get_form_integration_config() returns the expected
+	 * form_integration_config value.
+	 */
+	function test_get_form_integration_config() {
+		$test_val = 'test';
+
+		// Set form_integration_config
+		$options = array();
+		update_option( MYSTYLE_OPTIONS_NAME, $options );
+		$options['form_integration_config'] = $test_val;
+		update_option( MYSTYLE_OPTIONS_NAME, $options );
+
+		// Call the function.
+		$form_integration_config = MyStyle_Options::get_form_integration_config();
+
+		// Assert that the expected value is returned.
+		$this->assertEquals( $test_val, $form_integration_config );
+	}
+
+	/**
 	 * Assert that enable_alternate_design_complete_redirect() returns the
 	 * expected enable_alternate_design_complete_redirect value.
 	 */

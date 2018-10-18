@@ -57,10 +57,11 @@ class MyStyle_FrontEnd {
 	 * Constructor, constructs the class and sets up the hooks.
 	 */
 	public function __construct() {
-		add_filter('query_vars', array(&$this, 'add_query_vars_filter'), 10, 1);
+		add_filter( 'query_vars', array( &$this, 'add_query_vars_filter' ), 10, 1 );
+		add_filter( 'wp_head', array( &$this, 'render_form_integration_config' ), 0 );
 
-		add_action('init', array(&$this, 'init'), 10, 0);
-		add_action('template_redirect', array(&$this, 'init_vars'), 10, 0);
+		add_action( 'init', array( &$this, 'init' ), 10, 0 );
+		add_action( 'template_redirect', array( &$this, 'init_vars' ), 10, 0 );
 	}
 
 	/**
@@ -129,6 +130,15 @@ class MyStyle_FrontEnd {
 				$this->http_response_code = $response_code;
 			}
 		}
+	}
+
+	/**
+	 * Renders the form_integration_config to the page.
+	 */
+	public function render_form_integration_config() {
+		$form_integration_config = MyStyle_Options::get_form_integration_config();
+
+		echo $form_integration_config;
 	}
 
 	/**

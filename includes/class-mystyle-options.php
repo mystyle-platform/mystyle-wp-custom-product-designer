@@ -84,6 +84,21 @@ abstract class MyStyle_Options {
 	}
 
 	/**
+	 * Function that gets the Form Integration Config.
+	 * @return array|null Returns the Form Integration Config as a string (if
+	 * it is set), otherwise returns null.
+	 */
+	static function get_form_integration_config() {
+		$val = null;
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		if ( ! empty( $options['form_integration_config'] ) ) {
+			$val = $options['form_integration_config'];
+		}
+
+		return $val;
+	}
+
+	/**
 	 * Function that gets the enable_alternate_design_complete_redirect option.
 	 * @return boolean Returns true if the
 	 * enable_alternate_design_complete_redirect setting is enabled, otherwise
