@@ -1,8 +1,5 @@
 <?php
-
 /**
- * MyStyle Forbidden Exception class.
- *
  * The MyStyle Forbidden Exception class is a class for throwing exceptions
  * when the user isn't authenticated and needs to be for the particular request.
  *
@@ -10,6 +7,10 @@
  *
  * @package MyStyle
  * @since 1.4.2
+ */
+
+/**
+ * MyStyle_Forbidden_Exception class.
  */
 class MyStyle_Forbidden_Exception extends MyStyle_Exception {
 
