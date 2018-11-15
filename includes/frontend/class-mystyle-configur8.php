@@ -19,7 +19,7 @@ class MyStyle_Configur8 {
 	 * Constructor, constructs the class and registers filters and actions.
 	 */
 	public function __construct() {
-		add_filter('woocommerce_before_single_product', array($this, 'drop_configur8_script'), 0);
+		add_filter( 'woocommerce_before_single_product', array( $this, 'drop_configur8_script' ), 0 );
 	}
 
 	/**
@@ -30,9 +30,9 @@ class MyStyle_Configur8 {
 	public function drop_configur8_script() {
 		global $product;
 
-		$mystyle_product = new \MyStyle_Product($product);
+		$mystyle_product = new \MyStyle_Product( $product );
 
-		// Drop the configur8 script (if enabled)
+		// Drop the configur8 script ( if enabled )
 		if (
 				MyStyle_Options::are_keys_installed() &&
 				MyStyle_Options::enable_configur8() &&
@@ -40,18 +40,18 @@ class MyStyle_Configur8 {
 		) {
 			?>
 
-							<!-- MyStyle Configur8 - MyStyle Custom Product Designer v<?php echo MYSTYLE_VERSION; ?> - https://www.mystyleplatform.com -->
+			<!-- MyStyle Configur8 - MyStyle Custom Product Designer v<?php echo MYSTYLE_VERSION; ?> - https://www.mystyleplatform.com -->
 			<script>
-				(function () {
+				( function ( ) {
 					var d = document, s = 'script', id = 'configur8';
-					var js, fjs = d.getElementsByTagName(s)[0];
-					if (d.getElementById(id))
+					var js, fjs = d.getElementsByTagName( s )[0];
+					if ( d.getElementById( id ) )
 						return;
 					js = d.createElement(s);
 					js.id = id;
 					js.async = 1;
 					js.src = '//static2.ogmystyle.com/configur8/js/mystyle-configur8.min.js';
-					fjs.parentNode.insertBefore(js, fjs);
+					fjs.parentNode.insertBefore( js, fjs );
 				}());
 			</script>
 			<!-- / MyStyle Configur8 -->
@@ -62,11 +62,12 @@ class MyStyle_Configur8 {
 
 	/**
 	 * Gets the singleton instance.
+	 *
 	 * @return \MyStyle_Configur8 Returns the singleton instance of this
 	 * class.
 	 */
 	public static function get_instance() {
-		if (!isset(self::$instance)) {
+		if ( ! isset( self::$instance ) ) {
 			self::$instance = new self();
 		}
 

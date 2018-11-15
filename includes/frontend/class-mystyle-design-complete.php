@@ -20,30 +20,31 @@ class MyStyle_Design_Complete {
 	 * Constructor, constructs the class and sets up the hooks.
 	 */
 	public function __construct() {
-		add_filter('query_vars', array(&$this, 'add_query_vars_filter'), 10, 1);
+		add_filter( 'query_vars', array( &$this, 'add_query_vars_filter' ), 10, 1 );
 
-		// Set the priority to 11 (instead of the default 10) so that our scripts load after jQuery
-		add_action('wp_enqueue_scripts', array(&$this, 'enqueue_scripts'), 11, 0);
+		// Set the priority to 11 ( instead of the default 10 ) so that our scripts load after jQuery
+		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_scripts' ), 11, 0 );
 	}
 
 	/**
 	 * Enqueue scripts.
 	 */
 	public function enqueue_scripts() {
-		$design_complete = ( intval(get_query_var('design_complete', '0')) == 1 ) ? true : false;
+		$design_complete = ( intval( get_query_var( 'design_complete', '0' ) ) == 1 ) ? true : false;
 
-		if ($design_complete) {
-			wp_register_script('mystyle-design-complete', MYSTYLE_ASSETS_URL . 'js/design-complete.js');
-			wp_enqueue_script('mystyle-design-complete');
+		if ( $design_complete ) {
+			wp_register_script( 'mystyle-design-complete', MYSTYLE_ASSETS_URL . 'js/design-complete.js' );
+			wp_enqueue_script( 'mystyle-design-complete' );
 		}
 	}
 
 	/**
 	 * Add design_complete as a custom query var.
+	 *
 	 * @param array $vars
 	 * @return string
 	 */
-	public function add_query_vars_filter($vars) {
+	public function add_query_vars_filter( $vars ) {
 		$vars[] = 'design_complete';
 
 		return $vars;
@@ -52,6 +53,7 @@ class MyStyle_Design_Complete {
 	/**
 	 * Resets the singleton instance. This is used during testing if we want to
 	 * clear out the existing singleton instance.
+	 *
 	 * @return MyStyle_Cart Returns the singleton instance of
 	 * this class.
 	 */
@@ -68,7 +70,7 @@ class MyStyle_Design_Complete {
 	 * this class.
 	 */
 	public static function get_instance() {
-		if (!isset(self::$instance)) {
+		if ( ! isset(self::$instance ) ) {
 			self::$instance = new self();
 		}
 

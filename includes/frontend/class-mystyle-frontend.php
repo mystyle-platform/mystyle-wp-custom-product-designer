@@ -17,7 +17,7 @@ class MyStyle_FrontEnd {
 	private static $instance;
 
 	/**
-	 * Stores the current user (when the class is instantiated as a singleton).
+	 * Stores the current user ( when the class is instantiated as a singleton ).
 	 * @var WP_User
 	 */
 	private $user;
@@ -38,14 +38,14 @@ class MyStyle_FrontEnd {
 	private $design;
 
 	/**
-	 * Stores the currently thrown exception (if any) (when the class is
+	 * Stores the currently thrown exception ( if any ) (when the class is
 	 * instantiated as a singleton).
 	 * @var MyStyle_Exception
 	 */
 	private $exception;
 
 	/**
-	 * Stores the current (when the class is instantiated as a singleton) status
+	 * Stores the current ( when the class is instantiated as a singleton ) status
 	 * code.  We store it here since php's http_response_code() function wasn't
 	 * added until php 5.4.
 	 * see: http://php.net/manual/en/function.http-response-code.php
@@ -69,15 +69,15 @@ class MyStyle_FrontEnd {
 	 */
 	public function init() {
 		//Add the MyStyle frontend stylesheet to the WP frontend head
-		wp_register_style('myStyleFrontendStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css');
-		wp_enqueue_style('myStyleFrontendStylesheet');
+		wp_register_style( 'myStyleFrontendStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css' );
+		wp_enqueue_style( 'myStyleFrontendStylesheet' );
 
 		//Add the WordPress Dashicons icon font to the frontend.
-		wp_enqueue_style('dashicons');
+		wp_enqueue_style( 'dashicons' );
 
 		//Add the swfobject.js file to the WP head
-		wp_register_script('swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js');
-		wp_enqueue_script('swfobject');
+		wp_register_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js' );
+		wp_enqueue_script( 'swfobject' );
 	}
 
 	/**
@@ -89,10 +89,10 @@ class MyStyle_FrontEnd {
 
 		$this->session = MyStyle()->get_session();
 
-		//get the design from the url
-		$design_id = intval(get_query_var('design_id', null));
+		// Get the design from the url.
+		$design_id = intval( get_query_var( 'design_id', null ) );
 
-		if ($design_id != null) {
+		if ( $design_id != null ) {
 			//get the design.  If the user doesn't have access, an exception
 			//is thrown.
 			try {
@@ -101,30 +101,30 @@ class MyStyle_FrontEnd {
 								$design_id, $this->user, $this->session
 				);
 
-				if ($this->design == null) {
-					throw new MyStyle_Not_Found_Exception('Design \'' . $design_id . '\' not found.');
+				if ( $this->design == null ) {
+					throw new MyStyle_Not_Found_Exception( 'Design \'' . $design_id . '\' not found.' );
 				}
 
 				// When an exception is thrown, set the status code and set the
 				// exception in the singleton instance, it will later be used by
 				// the shortcode and view layer
-			} catch (MyStyle_Not_Found_Exception $ex) {
+			} catch ( MyStyle_Not_Found_Exception $ex ) {
 				$response_code = 404;
-				status_header($response_code);
+				status_header( $response_code );
 
 				$this->exception = $ex;
 				$this->http_response_code = $response_code;
-			} catch (MyStyle_Unauthorized_Exception $ex) { //unauthenticated
+			} catch ( MyStyle_Unauthorized_Exception $ex ) { //unauthenticated
 				//$response_code = 401;
 				$response_code = 200;
-				status_header($response_code);
+				status_header( $response_code );
 
 				$this->exception = $ex;
 				$this->http_response_code = $response_code;
-			} catch (MyStyle_Forbidden_Exception $ex) {
+			} catch ( MyStyle_Forbidden_Exception $ex ) {
 				//$response_code = 403;
 				$response_code = 200;
-				status_header($response_code);
+				status_header( $response_code );
 
 				$this->exception = $ex;
 				$this->http_response_code = $response_code;
@@ -146,7 +146,7 @@ class MyStyle_FrontEnd {
 	 * @param array $vars
 	 * @return string
 	 */
-	public function add_query_vars_filter($vars) {
+	public function add_query_vars_filter( $vars ) {
 		$vars[] = 'design_id';
 
 		return $vars;
@@ -172,7 +172,7 @@ class MyStyle_FrontEnd {
 	 * Sets the current design. This is just here for testing purposes.
 	 * @param MyStyle_Design $design The design to set as the current design.
 	 */
-	public function set_design(MyStyle_Design $design) {
+	public function set_design( MyStyle_Design $design ) {
 		$this->design = $design;
 	}
 
@@ -212,7 +212,7 @@ class MyStyle_FrontEnd {
 	 * this class.
 	 */
 	public static function get_instance() {
-		if (!isset(self::$instance)) {
+		if ( ! isset( self::$instance ) ) {
 			self::$instance = new self();
 		}
 

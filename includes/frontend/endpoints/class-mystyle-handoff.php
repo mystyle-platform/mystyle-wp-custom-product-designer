@@ -31,8 +31,8 @@ class MyStyle_Handoff {
 	 * Note: Call set_mystyle_api in addition to this constructor.
 	 */
 	public function __construct() {
-		//hooks
-		add_action('wp_loaded', array(&$this, 'override'));
+		// Hooks.
+		add_action( 'wp_loaded', array( &$this, 'override' ) );
 	}
 
 	/**
@@ -40,7 +40,7 @@ class MyStyle_Handoff {
 	 * @return string Returns the url of the handoff endpoint
 	 */
 	public static function get_url() {
-		return site_url('?' . self::$SLUG);
+		return site_url( '?' . self::$SLUG );
 	}
 
 	/**
@@ -51,15 +51,15 @@ class MyStyle_Handoff {
 	public function override() {
 
 		$url = $_SERVER['REQUEST_URI'];
-		//echo $url;
-		if (strpos($url, self::$SLUG) !== FALSE) {
-			if (isset($GLOBALS['skip_ob_start'])) { //Used by our PHPUnit tests
+		// Echo $url;.
+		if ( strpos( $url, self::$SLUG ) !== FALSE) {
+			if ( isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
 				return true;
 			} else {
 				$this->handle();
 			}
 		} else {
-			if (isset($GLOBALS['skip_ob_start'])) { //Used by our PHPUnit tests
+			if ( isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests
 				return false;
 			}
 		}
@@ -77,12 +77,12 @@ class MyStyle_Handoff {
 	 * @todo Break this long function up.
 	 */
 	public function handle() {
-		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
 			/*
-			  //------ Output the POST variables to the screen (for debugging) --------//
+			  //------ Output the POST variables to the screen ( for debugging ) --------//
 			  $html = "<!DOCTYPE html><html><head></head><body>";
-			  foreach($_POST as $key => $value) {
+			  foreach( $_POST as $key => $value ) {
 			  $html .= "<strong>" . $key . ":</strong>" . $value. "<br/>";
 			  }
 			  $html .= "<hr/>";
@@ -94,70 +94,70 @@ class MyStyle_Handoff {
 			global $woocommerce;
 
 			//Create a Design from the post
-			$this->design = MyStyle_Design::create_from_post($_POST);
+			$this->design = MyStyle_Design::create_from_post( $_POST );
 
 			//Get and persist the Design
 			$session_handler = MyStyle_SessionHandler::get_instance();
 			$session = $session_handler->get();
-			$session_handler->persist($session);
+			$session_handler->persist( $session );
 
 			//Add the session id to the design
-			$this->design->set_session_id($session->get_session_id());
+			$this->design->set_session_id( $session->get_session_id() );
 
 			//Add data from api call
-			$this->design = $this->mystyle_api->add_api_data_to_design($this->design);
+			$this->design = $this->mystyle_api->add_api_data_to_design( $this->design );
 
 			//Get the mystyle user from the API
 			/* @var $user \MyStyle_User */
-			$mystyle_user = $this->mystyle_api->get_user($this->design->get_designer_id());
+			$mystyle_user = $this->mystyle_api->get_user( $this->design->get_designer_id() );
 
 			//Add data from the user to the design
-			$this->design->set_email($mystyle_user->get_email());
+			$this->design->set_email( $mystyle_user->get_email() );
 
 			//If the user is logged in to WordPress, store their user id with their design
 			$wp_user_id = get_current_user_id();
-			if ($wp_user_id !== 0) {
-				$this->design->set_user_id($wp_user_id);
+			if ( $wp_user_id !== 0 ) {
+				$this->design->set_user_id( $wp_user_id );
 			} else {
-				//if the user isn't logged in, see if their email matches an existing user and store that id with the design
-				$user = get_user_by('email', $mystyle_user->get_email());
-				if ($user !== false) {
-					$this->design->set_user_id($user->ID);
+				// If the user isn't logged in, see if their email matches an existing user and store that id with the design.
+				$user = get_user_by( 'email', $mystyle_user->get_email() );
+				if ( $user !== false ) {
+					$this->design->set_user_id( $user->ID );
 				}
 			}
 
 			//Persist the design to the database
-			$this->design = MyStyle_DesignManager::persist($this->design);
+			$this->design = MyStyle_DesignManager::persist( $this->design );
 
 			//Get the passthru data
-			$passthru = json_decode(base64_decode($_POST['h']), true);
+			$passthru = json_decode( base64_decode($_POST['h'] ), true);
 
 			// ------------------- Send email to user ---------------
 			//$design_complete_email = new MyStyle_Email_Design_Complete( $this->design );
 			//$design_complete_email->send();
 
-			if (has_action('mystyle_send_design_complete_email')) {
-				//custom email
-				do_action('mystyle_send_design_complete_email', $this->design, $passthru);
+			if ( has_action( 'mystyle_send_design_complete_email' ) ) {
+				// Custom email.
+				do_action( 'mystyle_send_design_complete_email', $this->design, $passthru );
 			} else {
-				//basic email
-				$site_title = get_bloginfo('name');
-				$site_url = network_site_url('/');
-				$site_description = get_bloginfo('description');
+				// Basic email.
+				$site_title = get_bloginfo( 'name' );
+				$site_url = network_site_url( '/' );
+				$site_description = get_bloginfo( 'description' );
 				$message = "Design Created!\n\n" .
 						"This email is to confirm that your design was successfully " .
 						"saved. Thanks for using our site!\n\n" .
 						"Your design id is " . $this->design->get_design_id() . ".\n\n" .
 						"You can access your design at any time from the following " .
 						"url:\n\n" .
-						MyStyle_Design_Profile_Page::get_design_url($this->design) . "\n\n" .
+						MyStyle_Design_Profile_Page::get_design_url( $this->design ) . "\n\n" .
 						"Reload and edit your design at any time here:\n\n" .
-						MyStyle_Customize_Page::get_design_url($this->design, null, $passthru) . "\n" .
-						$admin_email = get_option('admin_email');
-				$blogname = get_option('blogname');
+						MyStyle_Customize_Page::get_design_url( $this->design, null, $passthru ) . "\n" .
+						$admin_email = get_option( 'admin_email' );
+				$blogname = get_option( 'blogname' );
 				$headers = '';
-				if ($admin_email && $blogname) {
-					$headers = array('From: ' . $blogname . ' <' . $admin_email . '>');
+				if ( $admin_email && $blogname ) {
+					$headers = array( 'From: ' . $blogname . ' <' . $admin_email . '>' );
 				}
 
 				wp_mail(
@@ -169,17 +169,17 @@ class MyStyle_Handoff {
 			$passthru_post = $passthru['post'];
 			$quantity = $passthru_post['quantity'];
 			$product_id = $passthru_post['add-to-cart'];
-			$cart_item_key = ( array_key_exists('cart_item_key', $passthru) ) ? $passthru['cart_item_key'] : null;
+			$cart_item_key = ( array_key_exists( 'cart_item_key', $passthru ) ) ? $passthru['cart_item_key'] : null;
 
 			//Set the $_POST to the post data that passed through.
 			$_POST = $passthru_post;
 
-			$variation_id = ( isset($passthru_post['variation_id']) ) ? $passthru_post['variation_id'] : '';
+			$variation_id = ( isset( $passthru_post['variation_id'] ) ) ? $passthru_post['variation_id'] : '';
 
-			//get the variations (they should all be in the passthru post and start with "attribute_")
+			// Get the variations ( they should all be in the passthru post and start with "attribute_" ).
 			$variation = array();
-			foreach ($passthru_post as $key => $value) {
-				if (substr($key, 0, 10) === "attribute_") {
+			foreach ( $passthru_post as $key => $value ) {
+				if ( substr( $key, 0, 10 ) === 'attribute_' ) {
 					$variation[$key] = $value;
 				}
 			}
@@ -187,8 +187,8 @@ class MyStyle_Handoff {
 			//The customizer may change the attributes but doesn't ever change
 			//the variation_id.  Here we update the variation_id to match the
 			//passed attributes.
-			if (!empty($variation_id)) {
-				$variation_id = MyStyle_WC()->get_matching_variation($product_id, $variation);
+			if ( ! empty( $variation_id ) ) {
+				$variation_id = MyStyle_WC()->get_matching_variation( $product_id, $variation );
 			}
 
 			//echo $quantity . ':' . $variation_id;
@@ -196,14 +196,14 @@ class MyStyle_Handoff {
 			//Get the woocommerce cart
 			/* @var $cart \WC_Cart */
 			$cart = $woocommerce->cart;
-			//init the cart contents (pull from memory, etc)
+			// Init the cart contents ( pull from memory, etc ).
 			$cart->get_cart();
 
-			if ($cart_item_key != null) { //existing cart item
-				//update the mystyle data
+			if ( $cart_item_key != null ) { //existing cart item
+				// Update the mystyle data.
 				$cart->cart_contents[$cart_item_key]['mystyle_data'] = $this->design->get_meta();
 
-				//commit our change to the session
+				// Commit our change to the session.
 				$cart->set_session();
 			} else { //new cart item
 				//Add the mystyle meta data to the cart item
@@ -221,15 +221,15 @@ class MyStyle_Handoff {
 
 				// ---------------------- Fix for WC 2.2-----------------------
 				// Set a session variable with our data that can later be retrieved if necessary
-				if (isset($woocommerce->session)) {
-					$woocommerce->session->set('mystyle_' . $cart_item_key, $cart_item_data);
+				if ( isset( $woocommerce->session ) ) {
+					$woocommerce->session->set( 'mystyle_' . $cart_item_key, $cart_item_data );
 				}
 				// ------------------------------------------------------------
 			}
 		}
 
-		if (!isset($GLOBALS['skip_ob_start'])) { //Used by our PHPUnit tests to skip the ob_start line
-			ob_start(array(&$this, 'get_output'));
+		if ( ! isset( $GLOBALS['skip_ob_start'] ) ) { //Used by our PHPUnit tests to skip the ob_start line
+			ob_start( array( &$this, 'get_output' ) );
 		}
 	}
 
@@ -244,7 +244,7 @@ class MyStyle_Handoff {
 	 * @return string Returns the html to output to the browser.
 	 */
 	public function get_output() {
-		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 			//- Add the product to the cart along with the mystyle variables -//
 			global $woocommerce;
 
@@ -252,19 +252,19 @@ class MyStyle_Handoff {
 			//Get the woocommerce cart
 			$cart = $woocommerce->cart;
 
-			if (MyStyle_Options::is_demo_mode()) {
+			if ( MyStyle_Options::is_demo_mode() ) {
 				//Send to Demo Mode Message
-				$html = $this->buildView('MyStyle Demo', $cart->get_cart_url(), false);
+				$html = $this->buildView( 'MyStyle Demo', $cart->get_cart_url(), false );
 			} else {
 				if (
 						( MyStyle_Options::enable_alternate_design_complete_redirect() ) &&
 						( MyStyle_Options::get_alternate_design_complete_redirect_url() != null )
 				) {
-					$link = MyStyle_Options::build_alternate_design_complete_redirect_url($this->design);
+					$link = MyStyle_Options::build_alternate_design_complete_redirect_url( $this->design );
 					$html = '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . $link . '"></head><body></body></html>';
 				} else {
 					//Redirect the user to the cart
-					$html = $this->buildView('Adding Product to Cart...', $cart->get_cart_url(), true);
+					$html = $this->buildView( 'Adding Product to Cart...', $cart->get_cart_url(), true );
 				}
 			}
 		} else { // GET Request
@@ -282,7 +282,7 @@ class MyStyle_Handoff {
 	 * @param string $enable_redirect Whether or not to redirect.
 	 * @return string Returns a string of html.
 	 */
-	public function buildView($title, $link, $enable_redirect) {
+	public function buildView( $title, $link, $enable_redirect ) {
 
 		$redirect = ( $enable_redirect ) ? '<META http-equiv="refresh" content="0;URL=' . $link . '">' : '';
 
@@ -293,7 +293,7 @@ class MyStyle_Handoff {
                         h1, h2, p {color: #515151; font-family: "Noto Sans",sans-serif;}
                         h1 {font-size: 3em}
                         body {background-color: #E6E6E6;}
-                        div.container {width: 600px; background: white; box-shadow: 0 2px 6px rgba(100, 100, 100, 0.3); margin: 30px auto 0px auto;}
+                        div.container {width: 600px; background: white; box-shadow: 0 2px 6px rgba( 100, 100, 100, 0.3 ); margin: 30px auto 0px auto;}
                         section {padding: 10px 30px 30px 30px; text-align: center;}
                     </style>
                     %s
@@ -310,7 +310,7 @@ class MyStyle_Handoff {
                     </div>
                 </body>
             </html>';
-		$html = sprintf($format, $redirect, $title, $title, $link);
+		$html = sprintf( $format, $redirect, $title, $title, $link );
 
 		return $html;
 	}
@@ -320,7 +320,7 @@ class MyStyle_Handoff {
 	 * @param MyStyle_Api_Interface $mystyle_api The mystyle_api that you want
 	 * the class to use.
 	 */
-	public function set_mystyle_api(MyStyle_Api_Interface $mystyle_api) {
+	public function set_mystyle_api( MyStyle_Api_Interface $mystyle_api ) {
 		$this->mystyle_api = $mystyle_api;
 	}
 
@@ -330,7 +330,7 @@ class MyStyle_Handoff {
 	 * @param MyStyle_Design $design The design that you want the class to
 	 * use.
 	 */
-	public function set_design(MyStyle_Design $design) {
+	public function set_design( MyStyle_Design $design ) {
 		$this->design = $design;
 	}
 
@@ -339,7 +339,7 @@ class MyStyle_Handoff {
 	 * @return MyStyle_Handoff Returns the singleton instance of this class.
 	 */
 	public static function get_instance() {
-		if (!isset(self::$instance)) {
+		if ( !isset(self::$instance )) {
 			self::$instance = new self();
 		}
 
