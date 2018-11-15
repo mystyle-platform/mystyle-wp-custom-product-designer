@@ -1,8 +1,5 @@
 <?php
-
 /**
- * MyStyle Product class.
- *
  * The MyStyle Product class is used to wrap the WC_Product class to allow us to
  * support multiple versions of WooCommerce.
  *
@@ -16,23 +13,38 @@
  * @since 1.7.0
  * @todo Add unit testing
  */
+
+/**
+ * MyStyle_Product class.
+ */
 class MyStyle_Product {
 
-	public static $MYSTYLE_DATA_KEY = 'mystyle_data';
+	/**
+	 * The key for the mystyle data in the db.
+	 *
+	 * @var string
+	 */
+	const MYSTYLE_DATA_KEY = 'mystyle_data';
 
-	/** @var \WC_Product */
+	/**
+	 * The WC_Product that this class wraps.
+	 *
+	 * @var \WC_Product
+	 */
 	private $product;
 
 	/**
 	 * Constructor.
+	 *
 	 * @param \WC_Product $product The WC_Product that we are wrapping.
 	 */
-	public function __construct(\WC_Product $product) {
+	public function __construct( \WC_Product $product ) {
 		$this->product = $product;
 	}
 
 	/**
 	 * Returns the underlying WC_Product.
+	 *
 	 * @return \WC_Product The WC_Product that this class wraps.
 	 */
 	public function get_product() {
@@ -47,7 +59,7 @@ class MyStyle_Product {
 	 * @return number Returns the product id.
 	 */
 	public function get_id() {
-		if (method_exists($this->product, 'get_id')) {
+		if ( method_exists( $this->product, 'get_id' ) ) {
 			$id = $this->product->get_id();
 		} else {
 			$id = $this->product->ID;
@@ -64,7 +76,7 @@ class MyStyle_Product {
 	 * @return string Returns the product type.
 	 */
 	public function get_type() {
-		if (method_exists($this->product, 'get_type')) {
+		if ( method_exists( $this->product, 'get_type' ) ) {
 			$product_type = $this->product->get_type();
 		} else {
 			$product_type = $this->product->product_type;
@@ -82,7 +94,7 @@ class MyStyle_Product {
 	 * ids).
 	 */
 	public function get_children() {
-		if (method_exists($this->product, 'get_children')) {
+		if ( method_exists( $this->product, 'get_children' ) ) {
 			$product_type = $this->product->get_children();
 		} else {
 			$product_type = $this->product->children;
@@ -93,14 +105,15 @@ class MyStyle_Product {
 
 	/**
 	 * Function that looks to see if the product is mystyle enabled.
+	 *
 	 * @return boolean Returns true if the product is customizable, otherwise,
 	 * returns false.
 	 */
 	public function is_customizable() {
 		$is_customizable = false;
-		$mystyle_enabled = get_post_meta($this->get_id(), '_mystyle_enabled', true);
+		$mystyle_enabled = get_post_meta( $this->get_id(), '_mystyle_enabled', true );
 
-		if ($mystyle_enabled == 'yes') {
+		if ( 'yes' === $mystyle_enabled ) {
 			$is_customizable = true;
 		}
 
@@ -109,14 +122,15 @@ class MyStyle_Product {
 
 	/**
 	 * Function that looks to see if the product has configur8 enabled.
+	 *
 	 * @return boolean Returns true if the product has configur8 enabled,
 	 * otherwise, returns false.
 	 */
 	public function configur8_enabled() {
-		$configur8_enabled = false;
-		$configur8_option_value = get_post_meta($this->get_id(), '_mystyle_configur8_enabled', true);
+		$configur8_enabled      = false;
+		$configur8_option_value = get_post_meta( $this->get_id(), '_mystyle_configur8_enabled', true );
 
-		if ($configur8_option_value == 'yes') {
+		if ( 'yes' === $configur8_option_value ) {
 			$configur8_enabled = true;
 		}
 

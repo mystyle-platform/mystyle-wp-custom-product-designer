@@ -86,7 +86,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 
 		//Create a private design
 		$design = MyStyle_MockDesign::getMockDesign($design_id);
-		$design->set_access(MyStyle_Access::$PRIVATE);
+		$design->set_access(MyStyle_Access::ACCESS_PRIVATE);
 		$design->set_user_id($user_id);
 
 		//Persist the design
@@ -108,7 +108,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 
 		//Create a private design
 		$design = MyStyle_MockDesign::getMockDesign($design_id);
-		$design->set_access(MyStyle_Access::$PRIVATE);
+		$design->set_access(MyStyle_Access::ACCESS_PRIVATE);
 		$design->set_user_id($user_id);
 
 		//Persist the design
@@ -134,7 +134,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 
 		//Create a private design
 		$design = MyStyle_MockDesign::getMockDesign($design_id);
-		$design->set_access(MyStyle_Access::$PRIVATE);
+		$design->set_access(MyStyle_Access::ACCESS_PRIVATE);
 		$design->set_user_id($user_id);
 
 		//Persist the design
@@ -165,7 +165,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 
 		//Create a private design
 		$design = MyStyle_MockDesign::getMockDesign($design_id);
-		$design->set_access(MyStyle_Access::$PRIVATE);
+		$design->set_access(MyStyle_Access::ACCESS_PRIVATE);
 		$design->set_session_id($session->get_session_id());
 
 		//Persist the design
@@ -187,7 +187,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 
 		//Create a private design
 		$design = MyStyle_MockDesign::getMockDesign($design_id);
-		$design->set_access(MyStyle_Access::$PRIVATE);
+		$design->set_access(MyStyle_Access::ACCESS_PRIVATE);
 
 		//Persist the design
 		MyStyle_DesignManager::persist($design);
@@ -493,7 +493,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		/* @var $design_2 \MyStyle_Design  */
 		$design_2 = MyStyle_MockDesign::getMockDesign(2);
 		$design_2->set_user_id($user_2->ID);
-		$design_2->set_access(MyStyle_Access::$PRIVATE);
+		$design_2->set_access(MyStyle_Access::ACCESS_PRIVATE);
 		MyStyle_DesignManager::persist($design_2);
 
 		//call the function
@@ -522,7 +522,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		/* @var $design \MyStyle_Design */
 		$design = MyStyle_MockDesign::getMockDesign(1);
 		$design->set_user_id($user->ID);
-		$design->set_access(MyStyle_Access::$PRIVATE);
+		$design->set_access(MyStyle_Access::ACCESS_PRIVATE);
 		MyStyle_DesignManager::persist($design);
 
 		//call the function anonymously (with no user)
@@ -545,7 +545,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		/* @var $design_1 \MyStyle_Design */
 		$design = MyStyle_MockDesign::getMockDesign(1);
 		$design->set_user_id($user_1->ID);
-		$design->set_access(MyStyle_Access::$PRIVATE);
+		$design->set_access(MyStyle_Access::ACCESS_PRIVATE);
 		MyStyle_DesignManager::persist($design);
 
 		//Create an admin user
@@ -562,7 +562,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		//Assert that the returned design was indeed marked private.
 		/* @var $returned_design \MyStyle_Design */
 		$returned_design = $designs[0];
-		$this->assertEquals(MyStyle_Access::$PRIVATE, $returned_design->get_access());
+		$this->assertEquals(MyStyle_Access::ACCESS_PRIVATE, $returned_design->get_access());
 	}
 
 	/**

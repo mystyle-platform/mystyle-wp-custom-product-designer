@@ -49,7 +49,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		// -------------- SECURITY CHECK ------------ //
 		if ( null !== $design ) {
-			if ( $design->get_access() === MyStyle_Access::$PRIVATE ) {
+			if ( $design->get_access() === MyStyle_Access::ACCESS_PRIVATE ) {
 				// Check if created by current/passed session.
 				if (
 						( null !== $session ) &&
