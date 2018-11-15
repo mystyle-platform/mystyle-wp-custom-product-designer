@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The MyStyle Configur8 class has functions for adding the Configur8 feature to
  * the WordPress front end.
@@ -7,10 +6,15 @@
  * @package MyStyle
  * @since 3.6.0
  */
+
+/**
+ * MyStyle_Configur8 class.
+ */
 class MyStyle_Configur8 {
 
 	/**
 	 * Singleton instance of the class.
+	 *
 	 * @var MyStyle_Configur8
 	 */
 	private static $instance;
@@ -32,11 +36,11 @@ class MyStyle_Configur8 {
 
 		$mystyle_product = new \MyStyle_Product( $product );
 
-		// Drop the configur8 script ( if enabled )
+		// Drop the configur8 script (if enabled).
 		if (
-				MyStyle_Options::are_keys_installed() &&
-				MyStyle_Options::enable_configur8() &&
-				$mystyle_product->configur8_enabled()
+			MyStyle_Options::are_keys_installed() &&
+			MyStyle_Options::enable_configur8() &&
+			$mystyle_product->configur8_enabled()
 		) {
 			?>
 
@@ -57,7 +61,7 @@ class MyStyle_Configur8 {
 			<!-- / MyStyle Configur8 -->
 
 			<?php
-		} //end if configur8 enabled
+		} // End if configur8 enabled.
 	}
 
 	/**

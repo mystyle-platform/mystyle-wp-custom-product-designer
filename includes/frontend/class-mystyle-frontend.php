@@ -1,23 +1,27 @@
 <?php
-
 /**
- * MyStyle FrontEnd class.
  * The MyStyle FrontEnd class sets up and controls the MyStyle front end
  * interface.
  *
  * @package MyStyle
  * @since 0.2.1
  */
+
+/**
+ * MyStyle_FrontEnd class.
+ */
 class MyStyle_FrontEnd {
 
 	/**
-	 * Singleton class instance
+	 * Singleton class instance.
+	 *
 	 * @var MyStyle_Frontend
 	 */
 	private static $instance;
 
 	/**
-	 * Stores the current user ( when the class is instantiated as a singleton ).
+	 * Stores the current user (when the class is instantiated as a singleton).
+	 *
 	 * @var WP_User
 	 */
 	private $user;
@@ -25,6 +29,7 @@ class MyStyle_FrontEnd {
 	/**
 	 * Stores the current session (when the class is instantiated as a
 	 * singleton).
+	 *
 	 * @var MyStyle_Session
 	 */
 	private $session;
@@ -33,6 +38,7 @@ class MyStyle_FrontEnd {
 	 * The current MyStyle_Design. This is retrieved via the design_id query
 	 * variable in the url. If there isn't a design_id in the url, it will be
 	 * null.
+	 *
 	 * @var MyStyle_Design
 	 */
 	private $design;
@@ -40,6 +46,7 @@ class MyStyle_FrontEnd {
 	/**
 	 * Stores the currently thrown exception ( if any ) (when the class is
 	 * instantiated as a singleton).
+	 *
 	 * @var MyStyle_Exception
 	 */
 	private $exception;
@@ -49,6 +56,7 @@ class MyStyle_FrontEnd {
 	 * code.  We store it here since php's http_response_code() function wasn't
 	 * added until php 5.4.
 	 * see: http://php.net/manual/en/function.http-response-code.php
+	 *
 	 * @var int
 	 */
 	private $http_response_code;
@@ -68,20 +76,23 @@ class MyStyle_FrontEnd {
 	 * Init the MyStyle front end.
 	 */
 	public function init() {
-		//Add the MyStyle frontend stylesheet to the WP frontend head
+		// Add the MyStyle frontend stylesheet to the WP frontend head.
 		wp_register_style( 'myStyleFrontendStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css' );
 		wp_enqueue_style( 'myStyleFrontendStylesheet' );
 
-		//Add the WordPress Dashicons icon font to the frontend.
+		// Add the WordPress Dashicons icon font to the frontend.
 		wp_enqueue_style( 'dashicons' );
 
-		//Add the swfobject.js file to the WP head
+		// Add the swfobject.js file to the WP head.
 		wp_register_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js' );
 		wp_enqueue_script( 'swfobject' );
 	}
 
 	/**
 	 * Init the MyStyle front end variables.
+	 *
+	 * @throws MyStyle_Not_Found_Exception Throws a MyStyle_Not_Found_Exception
+	 * if the design isn't found.
 	 */
 	public function init_vars() {
 
@@ -92,41 +103,45 @@ class MyStyle_FrontEnd {
 		// Get the design from the url.
 		$design_id = intval( get_query_var( 'design_id', null ) );
 
-		if ( $design_id != null ) {
-			//get the design.  If the user doesn't have access, an exception
-			//is thrown.
+		if ( null !== $design_id ) {
+			// Get the design. If the user doesn't have access, an exception
+			// is thrown.
 			try {
 
 				$this->design = MyStyle_DesignManager::get(
-								$design_id, $this->user, $this->session
+					$design_id,
+					$this->user,
+					$this->session
 				);
 
-				if ( $this->design == null ) {
+				if ( null === $this->design ) {
 					throw new MyStyle_Not_Found_Exception( 'Design \'' . $design_id . '\' not found.' );
 				}
 
 				// When an exception is thrown, set the status code and set the
 				// exception in the singleton instance, it will later be used by
-				// the shortcode and view layer
+				// the shortcode and view layer.
 			} catch ( MyStyle_Not_Found_Exception $ex ) {
 				$response_code = 404;
 				status_header( $response_code );
 
-				$this->exception = $ex;
+				$this->exception          = $ex;
 				$this->http_response_code = $response_code;
-			} catch ( MyStyle_Unauthorized_Exception $ex ) { //unauthenticated
-				//$response_code = 401;
+			} catch ( MyStyle_Unauthorized_Exception $ex ) { // unauthenticated.
+				// Note: we would ideally return a 401 but WordPress seems to work best
+				// with 200.
 				$response_code = 200;
 				status_header( $response_code );
 
-				$this->exception = $ex;
+				$this->exception          = $ex;
 				$this->http_response_code = $response_code;
 			} catch ( MyStyle_Forbidden_Exception $ex ) {
-				//$response_code = 403;
+				// Note: we would ideally return a 403 but WordPress seems to work best
+				// with 200.
 				$response_code = 200;
 				status_header( $response_code );
 
-				$this->exception = $ex;
+				$this->exception          = $ex;
 				$this->http_response_code = $response_code;
 			}
 		}
@@ -143,8 +158,9 @@ class MyStyle_FrontEnd {
 
 	/**
 	 * Add design_id as a custom query var.
-	 * @param array $vars
-	 * @return string
+	 *
+	 * @param array $vars The original query vars.
+	 * @return array Returns the query vars with 'design_id' added.
 	 */
 	public function add_query_vars_filter( $vars ) {
 		$vars[] = 'design_id';
@@ -154,6 +170,7 @@ class MyStyle_FrontEnd {
 
 	/**
 	 * Gets the current WP_User.
+	 *
 	 * @return WP_User Returns the current WordPress user, if any.
 	 */
 	public function get_user() {
@@ -162,6 +179,7 @@ class MyStyle_FrontEnd {
 
 	/**
 	 * Gets the current MyStyle_Session.
+	 *
 	 * @return MyStyle_Session Returns the current MyStyle_Session.
 	 */
 	public function get_session() {
@@ -170,6 +188,7 @@ class MyStyle_FrontEnd {
 
 	/**
 	 * Sets the current design. This is just here for testing purposes.
+	 *
 	 * @param MyStyle_Design $design The design to set as the current design.
 	 */
 	public function set_design( MyStyle_Design $design ) {
@@ -178,6 +197,7 @@ class MyStyle_FrontEnd {
 
 	/**
 	 * Gets the current design.
+	 *
 	 * @return MyStyle_Design Returns the currently loaded MyStyle_Design.
 	 */
 	public function get_design() {
@@ -186,6 +206,7 @@ class MyStyle_FrontEnd {
 
 	/**
 	 * Gets the current exception.
+	 *
 	 * @return MyStyle_Exception Returns the currently thrown MyStyle_Exception
 	 * if any. This is used by the shortcode and view layer.
 	 */
@@ -196,6 +217,7 @@ class MyStyle_FrontEnd {
 	/**
 	 * Resets the singleton instance. This is used during testing if we want to
 	 * clear out the existing singleton instance.
+	 *
 	 * @return MyStyle_Design_Profile_Page Returns the singleton instance of
 	 * this class.
 	 */
@@ -208,6 +230,7 @@ class MyStyle_FrontEnd {
 
 	/**
 	 * Gets the singleton instance.
+	 *
 	 * @return MyStyle_Design_Profile_Page Returns the singleton instance of
 	 * this class.
 	 */
