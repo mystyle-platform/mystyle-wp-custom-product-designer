@@ -126,7 +126,7 @@ if (!class_exists('MyStyle')) :
 			require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-not-found-exception.php' );
 			require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-unauthorized-exception.php' );
 			require_once( MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-wc-interface.php' );
-			require_once( MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-abstract-wc.php' );
+			require_once( MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-abstractwc.php' );
 			require_once( MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-wc.php' );
 			require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-access.php' );
 			require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-pager.php' );
