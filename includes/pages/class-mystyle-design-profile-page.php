@@ -405,7 +405,7 @@ class MyStyle_Design_Profile_Page {
 			$post = get_post( self::get_id() );
 			$slug = $post->post_name;
 
-			$pattern = '/^.*\/' . $slug . '\/( [\d]+ )/';
+			$pattern = '/^.*\/' . $slug . '\/([\d]+)/';
 			if ( preg_match( $pattern, $path, $matches ) ) {
 				$design_id = $matches[1];
 			} else {

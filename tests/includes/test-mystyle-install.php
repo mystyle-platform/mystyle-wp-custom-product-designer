@@ -104,7 +104,7 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 design_purchase_count bigint(20) NULL DEFAULT '0',
                 session_id varchar(100) NULL DEFAULT NULL,
                 cart_data TEXT NULL DEFAULT NULL,
-                PRIMARY KEY  (ms_design_id)
+                PRIMARY KEY (ms_design_id)
             ) DEFAULT CHARACTER SET $wpdb->charset COLLATE $wpdb->collate;
             CREATE TABLE wptests_mystyle_sessions (
                 session_id varchar(100) NOT NULL,
@@ -112,7 +112,7 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 session_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 session_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 session_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-                PRIMARY KEY  (session_id)
+                PRIMARY KEY (session_id)
             ) DEFAULT CHARACTER SET $wpdb->charset COLLATE $wpdb->collate;";
 
 		$schema = MyStyle_Install::get_schema();

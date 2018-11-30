@@ -149,7 +149,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
                 design_purchase_count bigint(20) NULL DEFAULT '0',
                 session_id varchar(100) NULL DEFAULT NULL,
                 cart_data TEXT NULL DEFAULT NULL,
-                PRIMARY KEY  (ms_design_id)
+                PRIMARY KEY (ms_design_id)
             )";
 
 		$schema = MyStyle_Design::get_schema();

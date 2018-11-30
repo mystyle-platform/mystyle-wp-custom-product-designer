@@ -241,7 +241,7 @@ class MyStyle_Session implements MyStyle_Entity {
                 session_created_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 session_modified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
                 session_modified_gmt datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-                PRIMARY KEY  (session_id)
+                PRIMARY KEY (session_id)
             )";
 	}
 
