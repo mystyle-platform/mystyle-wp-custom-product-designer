@@ -24,7 +24,7 @@ function MyStyle_WC() {
  *    yourtheme/$template_name
  *    $default_path/$template_name
  *
- * This function is based off of the wc_get_template function.
+ * This function is bsed off of the wc_get_template function.
  *
  * @access public
  * @param string $template_name
