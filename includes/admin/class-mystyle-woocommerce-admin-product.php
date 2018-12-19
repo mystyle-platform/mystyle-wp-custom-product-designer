@@ -131,7 +131,7 @@ class MyStyle_WooCommerce_Admin_Product {
 								'label' => __('Alternate Customizer Redirect URL ', 'mystyle'),
 								'placeholder' => '',
 								'desc_tip' => 'true',
-								'description' => __('There is already a global setting that does this for all products, we want to override that optionally.If this is set here '),
+								'description' => __('There is also a global setting that controls this for all products. This setting will override the global setting optionally if it is set here. Leave blank to disable (default).'),
 								'value' => $customizer_redirect,
 							)
 					);
