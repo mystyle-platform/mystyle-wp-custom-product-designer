@@ -60,7 +60,6 @@ abstract class MyStyle_Customizer_Shortcode {
 		$default_design_id = get_post_meta($product_id, '_mystyle_design_id', true);
 		$mystyle_template_id = get_post_meta($product_id, '_mystyle_template_id', true);
 		$customizer_ux = get_post_meta($product_id, '_mystyle_customizer_ux', true);
-		$customizer_redirect = get_post_meta($product_id, '_mystyle_customizer_redirect', true);
 		$print_type = get_post_meta($product_id, '_mystyle_print_type', true);
 		$passthru = ( isset($_GET['h']) ) ? $_GET['h'] : null;
 
@@ -97,11 +96,6 @@ abstract class MyStyle_Customizer_Shortcode {
 			if (!MyStyle_Options::is_redirect_url_permitted($settings['redirect_url'])) {
 				throw new MyStyle_Bad_Request_Exception('The passed redirect url is not allowed. If you are the site admin, please add the domain to your MyStyle Redirect URL Whitelist.');
 			}
-		}
-
-		// Override redirection url
-		if ( !empty($customizer_redirect) ) {
-			$settings['override_url'] = $customizer_redirect;
 		}
 		
 		//set the email_skip (if it wasn't passed in)
