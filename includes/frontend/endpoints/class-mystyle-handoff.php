@@ -169,13 +169,11 @@ class MyStyle_Handoff {
 			$passthru_post = $passthru['post'];
 			$quantity = $passthru_post['quantity'];
 			$product_id = $passthru_post['add-to-cart'];
-			$override = get_post_meta($product_id, '_mystyle_customizer_redirect', true);
 
 			$cart_item_key = ( array_key_exists('cart_item_key', $passthru) ) ? $passthru['cart_item_key'] : null;
 
 			//Set the $_POST to the post data that passed through.
 			$_POST = $passthru_post;
-			$_POST['override'] = $override;
 
 			$variation_id = ( isset($passthru_post['variation_id']) ) ? $passthru_post['variation_id'] : '';
 
@@ -263,11 +261,6 @@ class MyStyle_Handoff {
 						( MyStyle_Options::enable_alternate_design_complete_redirect() ) &&
 						( MyStyle_Options::get_alternate_design_complete_redirect_url() != null )
 				) {
-					
-					$override = '';
-					if ( isset($_POST['override']) && $_POST['override'] !='' ) {
-						$override = $_POST['override'];
-					}
 
 					// $link = MyStyle_Options::build_alternate_design_complete_redirect_url($this->design,$override);
 					$link = MyStyle_Design_Complete::get_redirect_url($this->design);
