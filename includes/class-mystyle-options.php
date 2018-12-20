@@ -131,15 +131,10 @@ abstract class MyStyle_Options {
 	 * URL if one is set, otherwise returns null.
 	 */
 	static function build_alternate_design_complete_redirect_url(
-	MyStyle_Design $design,
-	$isOverride = ''
+	MyStyle_Design $design
 	) {
 
 		$url = self::get_alternate_design_complete_redirect_url();
-		if ($isOverride != '') {
-			$url = $isOverride;
-		}
-
 		if (!empty($url)) {
 			if (strpos($url, '?') == false) {
 				$url .= '?';
