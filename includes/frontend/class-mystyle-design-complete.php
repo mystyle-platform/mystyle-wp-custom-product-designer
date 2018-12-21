@@ -82,13 +82,9 @@ class MyStyle_Design_Complete {
 	 */
 	static function get_redirect_url( MyStyle_Design $design ) {
 
-		$url = '';
 		$product_id = $design->get_product_id();
 		$overrideRedirectUrl = get_post_meta($product_id, '_mystyle_customizer_redirect', true);
-		$options = get_option(MYSTYLE_OPTIONS_NAME, array());
-		if (!empty($options['alternate_design_complete_redirect_url'])) {
-			$url = $options['alternate_design_complete_redirect_url'];
-		}
+		$url = MyStyle_Options::get_alternate_design_complete_redirect_url( $design );
 
 		if ($overrideRedirectUrl != '') {
 			$url = $overrideRedirectUrl;

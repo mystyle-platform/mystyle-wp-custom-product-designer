@@ -262,7 +262,7 @@ class MyStyle_Handoff {
 						( MyStyle_Options::get_alternate_design_complete_redirect_url() != null )
 				) {
 
-					// $link = MyStyle_Options::build_alternate_design_complete_redirect_url($this->design,$override);
+					// $link = MyStyle_Options::build_alternate_design_complete_redirect_url($this->design);
 					$link = MyStyle_Design_Complete::get_redirect_url($this->design);
 					$html = '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . $link . '"></head><body></body></html>';
 				} else {
