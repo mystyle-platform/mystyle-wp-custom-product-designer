@@ -169,6 +169,7 @@ class MyStyle_Handoff {
 			$passthru_post = $passthru['post'];
 			$quantity = $passthru_post['quantity'];
 			$product_id = $passthru_post['add-to-cart'];
+
 			$cart_item_key = ( array_key_exists('cart_item_key', $passthru) ) ? $passthru['cart_item_key'] : null;
 
 			//Set the $_POST to the post data that passed through.
@@ -260,7 +261,9 @@ class MyStyle_Handoff {
 						( MyStyle_Options::enable_alternate_design_complete_redirect() ) &&
 						( MyStyle_Options::get_alternate_design_complete_redirect_url() != null )
 				) {
-					$link = MyStyle_Options::build_alternate_design_complete_redirect_url($this->design);
+
+					// $link = MyStyle_Options::build_alternate_design_complete_redirect_url($this->design);
+					$link = MyStyle_Design_Complete::get_redirect_url($this->design);
 					$html = '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . $link . '"></head><body></body></html>';
 				} else {
 					//Redirect the user to the cart

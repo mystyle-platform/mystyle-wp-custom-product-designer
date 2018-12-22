@@ -97,7 +97,7 @@ abstract class MyStyle_Customizer_Shortcode {
 				throw new MyStyle_Bad_Request_Exception('The passed redirect url is not allowed. If you are the site admin, please add the domain to your MyStyle Redirect URL Whitelist.');
 			}
 		}
-
+		
 		//set the email_skip (if it wasn't passed in)
 		if (!array_key_exists('email_skip', $settings)) {
 			$settings['email_skip'] = 0;

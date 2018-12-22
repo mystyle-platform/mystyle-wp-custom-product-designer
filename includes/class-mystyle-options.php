@@ -133,8 +133,8 @@ abstract class MyStyle_Options {
 	static function build_alternate_design_complete_redirect_url(
 	MyStyle_Design $design
 	) {
-		$url = self::get_alternate_design_complete_redirect_url();
 
+		$url = self::get_alternate_design_complete_redirect_url();
 		if (!empty($url)) {
 			if (strpos($url, '?') == false) {
 				$url .= '?';

@@ -75,4 +75,32 @@ class MyStyle_Design_Complete {
 		return self::$instance;
 	}
 
+	/**
+	 * Function that builds the Get Redirect Url.
+	 * @return string|null Returns the built Get Redirect Url
+	 * URL if one is set, otherwise returns null.
+	 */
+	static function get_redirect_url( MyStyle_Design $design ) {
+
+		$product_id = $design->get_product_id();
+		$overrideRedirectUrl = get_post_meta($product_id, '_mystyle_customizer_redirect', true);
+		$url = MyStyle_Options::get_alternate_design_complete_redirect_url( $design );
+
+		if ($overrideRedirectUrl != '') {
+			$url = $overrideRedirectUrl;
+		}
+
+		if (!empty($url)) {
+			if (strpos($url, '?') == false) {
+				$url .= '?';
+			} else {
+				$url .= '&';
+			}
+			$url .= 'design_id=' . $design->get_design_id();
+			$url .= '&design_complete=1';
+		}
+
+		return $url;
+	}
+
 }

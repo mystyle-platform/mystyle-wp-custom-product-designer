@@ -56,6 +56,7 @@ class MyStyle_WooCommerce_Admin_Product {
 		$mystyle_enabled = get_post_meta($post->ID, '_mystyle_enabled', true);
 		$template_id = get_post_meta($post->ID, '_mystyle_template_id', true);
 		$customizer_ux = get_post_meta($post->ID, '_mystyle_customizer_ux', true);
+		$customizer_redirect = get_post_meta($post->ID, '_mystyle_customizer_redirect', true);
 		$mystyle_design_id = get_post_meta($post->ID, '_mystyle_design_id', true);
 		$mystyle_print_type = get_post_meta($post->ID, '_mystyle_print_type', true);
 		$mystyle_configur8_enabled = get_post_meta($post->ID, '_mystyle_configur8_enabled', true);
@@ -124,7 +125,16 @@ class MyStyle_WooCommerce_Admin_Product {
 								'value' => $customizer_ux,
 							)
 					);
-
+					woocommerce_wp_text_input(
+							array(
+								'id' => '_mystyle_customizer_redirect',
+								'label' => __('Alternate Customizer Redirect URL ', 'mystyle'),
+								'placeholder' => '',
+								'desc_tip' => 'true',
+								'description' => __('There is also a global setting that controls this for all products. This setting will override the global setting optionally if it is set here. Leave blank to disable (default).'),
+								'value' => $customizer_redirect,
+							)
+					);
 					// print output dropdown
 					woocommerce_wp_select(
 							array(
@@ -168,10 +178,11 @@ class MyStyle_WooCommerce_Admin_Product {
 	 * @param integer $post_id The id of the post that is being saved.
 	 */
 	public function process_mystyle_data_panel($post_id) {
-
+		
 		$mystyle_enabled = ( isset($_POST['_mystyle_enabled']) && $_POST['_mystyle_enabled'] ) ? 'yes' : 'no';
 		$template_id = $_POST['_mystyle_template_id'];
 		$customizer_ux = $_POST['_mystyle_customizer_ux'];
+		$customizer_redirect =$_POST['_mystyle_customizer_redirect'];
 		$mystyle_design_id = $_POST['_mystyle_design_id'];
 		$mystyle_print_type = $_POST['_mystyle_print_type'];
 		$mystyle_configur8_enabled = ( isset($_POST['_mystyle_configur8_enabled']) && $_POST['_mystyle_configur8_enabled'] ) ? 'yes' : 'no';
@@ -181,12 +192,14 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta($post_id, '_mystyle_template_id', $template_id);
 				update_post_meta($post_id, '_mystyle_customizer_ux', $customizer_ux);
 				update_post_meta($post_id, '_mystyle_design_id', $mystyle_design_id);
+				update_post_meta($post_id, '_mystyle_customizer_redirect',$customizer_redirect);
 				update_post_meta($post_id, '_mystyle_print_type', $mystyle_print_type);
 			} else { //enabled but no template id (store data, disable and notify)
 				update_post_meta($post_id, '_mystyle_enabled', 'no');
 				update_post_meta($post_id, '_mystyle_template_id', $template_id);
 				update_post_meta($post_id, '_mystyle_customizer_ux', $customizer_ux);
 				update_post_meta($post_id, '_mystyle_design_id', $mystyle_design_id);
+				update_post_meta($post_id, '_mystyle_customizer_redirect',$customizer_redirect);
 				update_post_meta($post_id, '_mystyle_print_type', $mystyle_print_type);
 				$validation_notice = MyStyle_Notice::create(
 								'invalid_product_options', 'You must choose a Template Id in order to make the product customizable.', 'error'
@@ -198,9 +211,9 @@ class MyStyle_WooCommerce_Admin_Product {
 			update_post_meta($post_id, '_mystyle_template_id', $template_id);
 			update_post_meta($post_id, '_mystyle_customizer_ux', $customizer_ux);
 			update_post_meta($post_id, '_mystyle_design_id', $mystyle_design_id);
+			update_post_meta($post_id, '_mystyle_customizer_redirect', $customizer_redirect);
 			update_post_meta($post_id, '_mystyle_print_type', $mystyle_print_type);
 		}
-
 		// Store the Enable Configur8 setting regardless of other settings.
 		update_post_meta($post_id, '_mystyle_configur8_enabled', $mystyle_configur8_enabled);
 	}
