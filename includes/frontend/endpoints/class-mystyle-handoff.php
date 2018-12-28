@@ -114,6 +114,12 @@ class MyStyle_Handoff {
 			//Add data from the user to the design
 			$this->design->set_email($mystyle_user->get_email());
 
+			$design_id = $this->design->get_design_id();
+			$product_id = $this->design->get_product_id();
+			$product = wc_get_product( $product_id );
+			$product_title =  $product->get_title();
+			$this->design->set_design_title("Custom ". $product_title .' '. $design_id);
+
 			//If the user is logged in to WordPress, store their user id with their design
 			$wp_user_id = get_current_user_id();
 			if ($wp_user_id !== 0) {
@@ -262,7 +268,7 @@ class MyStyle_Handoff {
 						( MyStyle_Options::get_alternate_design_complete_redirect_url() != null )
 				) {
 
-					// $link = MyStyle_Options::build_alternate_design_complete_redirect_url($this->design);
+					// $link = MyStyle_Options::build_alternate_design_complete_redirect_url($this->design,$override);
 					$link = MyStyle_Design_Complete::get_redirect_url($this->design);
 					$html = '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . $link . '"></head><body></body></html>';
 				} else {
