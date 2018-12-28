@@ -48,5 +48,14 @@ if (!defined('ABSPATH')) {
             </form>
         </li>
     </ul>
+
+    <div class="product_description">
+    	<?php 
+			$product_id = $design->get_product_id();
+			$product = wc_get_product( $product_id ); ?>
+			<h2 class='linked_title'><?php echo $product->get_title(); ?></h2>
+			<div class='linked_desc'><?php echo ( $product->get_description() ) ?: 'No description.'; ?></div>
+    </div>
+
 </div>
 
