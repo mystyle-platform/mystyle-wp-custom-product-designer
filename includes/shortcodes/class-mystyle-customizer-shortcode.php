@@ -109,9 +109,9 @@ abstract class MyStyle_Customizer_Shortcode {
 		}
 
 		//TODO: skip enter email step if logged in and email can be pulled from user acct
-		//if ($CURRENT_USER) {
-		//$settings['email_skip'] = 1;
-		//}
+		if ( is_user_logged_in() ) {
+			$settings['email_skip'] = 1;
+		}
 		// base64 encode settings
 		$encoded_settings = base64_encode(json_encode($settings));
 

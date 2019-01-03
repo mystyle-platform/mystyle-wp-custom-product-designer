@@ -23,7 +23,6 @@ class MyStyle_Design implements MyStyle_Entity {
 	private $thumb_url;
 	private $design_url;
 	private $template_id; //this is the MyStyle product id
-	private $design_title; //this is the MyStyle product Title
 	private $product_id; //this is the local product id
 	private $user_id; //this is the local (WordPress) user id (if the user designer has one)
 	private $designer_id; //the mystyle user id
@@ -69,7 +68,6 @@ class MyStyle_Design implements MyStyle_Entity {
 		$instance->design_id = (int) htmlspecialchars($post_data['design_id']);
 		$instance->template_id = (int) htmlspecialchars($post_data['product_id']); //mapping product_id to template_id
 		$instance->designer_id = (int) htmlspecialchars($post_data['user_id']);
-		$instance->design_title = htmlspecialchars($post_data['design_title']);
 		$instance->cart_data = json_encode($passthru_post);
 
 		//these aren't always passed (or may be deprecated)
@@ -99,7 +97,6 @@ class MyStyle_Design implements MyStyle_Entity {
 
 		$instance->design_id = (int) htmlspecialchars($result_object->ms_design_id);
 		$instance->template_id = (int) htmlspecialchars($result_object->ms_product_id);
-		$instance->design_title = htmlspecialchars($result_object->ms_design_title);
 		$instance->designer_id = (int) htmlspecialchars($result_object->ms_user_id);
 		$instance->email = htmlspecialchars($result_object->ms_email);
 		$instance->description = htmlspecialchars($result_object->ms_description);
@@ -143,7 +140,6 @@ class MyStyle_Design implements MyStyle_Entity {
 
 		$instance->design_id = (int) htmlspecialchars($result_array['ms_design_id']);
 		$instance->template_id = (int) htmlspecialchars($result_array['ms_product_id']);
-		$instance->design_title = htmlspecialchars($result_array['ms_design_title']);
 		$instance->designer_id = (int) htmlspecialchars($result_array['ms_user_id']);
 		$instance->email = htmlspecialchars($result_array['ms_email']);
 		$instance->description = htmlspecialchars($result_array['ms_description']);
@@ -324,23 +320,6 @@ class MyStyle_Design implements MyStyle_Entity {
 	 */
 	public function get_template_id() {
 		return $this->template_id;
-	}
-
-
-	/**
-	 * Sets the value of design_title.
-	 * @param number $design_title The new value for design_title.
-	 */
-	public function set_design_title($design_title) {
-		$this->design_title = $design_title;
-	}
-
-	/**
-	 * Gets the value of design_title.
-	 * @return number Returns the value of design_title.
-	 */
-	public function get_design_title() {
-		return $this->design_title;
 	}
 
 	/**
@@ -557,7 +536,6 @@ class MyStyle_Design implements MyStyle_Entity {
 		return "
             CREATE TABLE $table_name (
                 ms_design_id bigint(32) NOT NULL,
-                ms_design_title varchar(255) NULL,
                 ms_product_id bigint(20) NOT NULL,
                 ms_user_id bigint(20) NULL,
                 ms_email varchar(255) NULL,
@@ -611,7 +589,6 @@ class MyStyle_Design implements MyStyle_Entity {
 
 		$data['ms_design_id'] = $this->design_id;
 		$data['ms_product_id'] = $this->template_id;
-		$data['ms_design_title'] = $this->design_title;
 		$data['ms_user_id'] = $this->designer_id;
 		$data['ms_email'] = $this->email;
 		$data['ms_description'] = $this->description;

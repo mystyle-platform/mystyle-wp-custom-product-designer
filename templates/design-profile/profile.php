@@ -51,11 +51,12 @@ if (!defined('ABSPATH')) {
 
     <div class="product_description">
     	<?php 
-			$product_id = $design->get_product_id();
-			$product = wc_get_product( $product_id ); ?>
-			<h2 class='linked_title'><?php echo $product->get_title(); ?></h2>
-			<div class='linked_desc'><?php echo ( $product->get_description() ) ?: 'No description.'; ?></div>
-    </div>
+		$product_id = $design->get_product_id();
+		$product_link = get_permalink( $product_id );
+		$product = wc_get_product( $product_id ); ?>
+		<h2 class='linked_title'><a href="<?php echo $product_link; ?>"><?php echo "Custom ".$product->get_title(); ?></a></h2>
+		<div class='linked_desc'><?php echo ( $product->get_description() ) ?: 'No description.'; ?></div>
+	</div>
 
 </div>
 
