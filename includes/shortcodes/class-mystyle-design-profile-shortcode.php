@@ -23,18 +23,18 @@ abstract class MyStyle_Design_Profile_Shortcode {
 		if ( null !== $ex ) {
 			if ( null !== $design_profile_page->get_pager() ) {
 				// Index.
-				$template_name = 'design-profile/index_error-general.php';
+				$template_name = 'design-profile/index-error-general.php';
 			} else {
 				// Design profile page.
 				switch ( get_class( $ex ) ) {
 					case 'MyStyle_Unauthorized_Exception':
-						$template_name = 'design-profile/profile_error-unauthorized.php';
+						$template_name = 'design-profile/profile-error-unauthorized.php';
 						break;
 					case 'MyStyle_Forbidden_Exception':
-						$template_name = 'design-profile/profile_error-forbidden.php';
+						$template_name = 'design-profile/profile-error-forbidden.php';
 						break;
 					default:
-						$template_name = 'design-profile/profile_error-general.php';
+						$template_name = 'design-profile/profile-error-general.php';
 				}
 			}
 

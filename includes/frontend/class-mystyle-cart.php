@@ -307,7 +307,7 @@ class MyStyle_Cart {
 
 			// Call the view/template layer.
 			$out = mystyle_get_template_html(
-				'cart/cart-item_thumbnail.php',
+				'cart/cart-item-thumbnail.php',
 				array(
 					'product_img_tag'    => $product_img_tag,
 					'design'             => $design,

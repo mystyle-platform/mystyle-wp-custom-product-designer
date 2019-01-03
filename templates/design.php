@@ -7,17 +7,18 @@
  * @package MyStyle
  * @since 3.4.0
  */
-if (!defined('ABSPATH')) {
-	exit; // Exit if accessed directly
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
 }
 ?>
 <p>
-	<img class="mystyle-centered" src="<?php echo $design->get_web_url(); ?>"/>
+	<img class="mystyle-centered" src="<?php echo esc_attr( $design->get_web_url() ); ?>"/>
 </p>
-<?php if ($design->get_print_url() != null) { ?>
+<?php if ( null !== $design->get_print_url() ) { ?>
 	<ul class="mystyle-button-group">
 		<li>
-			<a target="_blank" href="<?php echo $design->get_print_url(); ?>" class="button">
+			<a target="_blank" href="<?php echo esc_attr( $design->get_print_url() ); ?>" class="button">
 				Print
 			</a>
 		</li>
@@ -27,9 +28,9 @@ if (!defined('ABSPATH')) {
 		<li>
 			<a
 				onclick="
-	                        jQuery('#mystyle-renderer-wrapper-<?php echo $design->get_design_id(); ?>:not(:has(>iframe))')
-	                                .append('<iframe src=\'<?php echo $renderer_url ?>\' width=\'100%\' height=\'300\'></iframe>');
-	                        return true;
+							jQuery( '#mystyle-renderer-wrapper-<?php echo esc_attr( $design->get_design_id() ); ?>:not(:has(>iframe))')
+								.append( '<iframe src=\'<?php echo esc_attr( $renderer_url ); ?>\' width=\'100%\' height=\'300\'></iframe>' );
+							return true;
 				"
 				class="button"
 				>
@@ -37,7 +38,7 @@ if (!defined('ABSPATH')) {
 			</a>
 		</li>
 	</ul>
-	<div id="mystyle-renderer-wrapper-<?php echo $design->get_design_id(); ?>" class="mystyle-renderer-wrapper"></div>
+	<div id="mystyle-renderer-wrapper-<?php echo esc_attr( $design->get_design_id() ); ?>" class="mystyle-renderer-wrapper"></div>
 <?php } ?>
 
 </div>
