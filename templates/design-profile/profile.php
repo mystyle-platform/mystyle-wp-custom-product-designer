@@ -56,7 +56,7 @@ if (!defined('ABSPATH')) {
 			$product_id = $design->get_product_id();
 			$product_link = get_permalink( $product_id );
 			$product = wc_get_product( $product_id ); 
-			$get_layout_views = MyStyle_Options::get_layout_views();
+			$get_layout_views = MyStyle_Options::get_layout_view();
 			if( !empty( $get_layout_views ) ){
 				$class = $get_layout_views;
 			}else{
