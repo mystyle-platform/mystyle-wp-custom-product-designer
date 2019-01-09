@@ -200,8 +200,8 @@ abstract class MyStyle_Options {
 	 */
 	static function get_layout_view() {
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-		if ( ! empty( $options['layout_views'] ) ) {
-			$val = $options['layout_views'];
+		if ( ! empty( $options['layout_view'] ) ) {
+			$val = $options['layout_view'];
 		}else{
 			$val = 'list_view';
 		}
