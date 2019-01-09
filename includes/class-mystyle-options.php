@@ -199,10 +199,11 @@ abstract class MyStyle_Options {
 	 * otherwise returns list.
 	 */
 	static function get_layout_view() {
-		$val = null;
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		if ( ! empty( $options['layout_views'] ) ) {
 			$val = $options['layout_views'];
+		}else{
+			$val = 'list_view';
 		}
 		return $val;
 	}

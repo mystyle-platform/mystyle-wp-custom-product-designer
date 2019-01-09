@@ -56,13 +56,7 @@ if (!defined('ABSPATH')) {
 			$product_id = $design->get_product_id();
 			$product_link = get_permalink( $product_id );
 			$product = wc_get_product( $product_id ); 
-			$get_layout_views = MyStyle_Options::get_layout_view();
-			if( !empty( $get_layout_views ) ){
-				$class = $get_layout_views;
-			}else{
-				$class = '';
-			}
-		?>
+			$layout_view = MyStyle_Options::get_layout_view(); ?>
 			<h2 class='linked_title'><a href="<?php echo $product_link; ?>"><?php echo "Custom ".$product->get_title(); ?></a></h2>
 			<div class='linked_desc'><?php echo ( $product->get_description() ) ?: 'No description.'; ?></div>
     </div>

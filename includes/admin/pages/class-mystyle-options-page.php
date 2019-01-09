@@ -400,7 +400,7 @@ class MyStyle_Options_Page {
 		<label class="description">
 			<select name="mystyle_options[layout_view]">
 			<?php 
-				$select  = array('grid_view' => 'Grid View' ,'list_view' => 'List View');
+				$select  = array('list_view' => 'List View', 'grid_view' => 'Grid View');
 				foreach ( $select as $key => $value ) {
 					if( $key  == $layout_view ) {
 						$selected = "selected";
