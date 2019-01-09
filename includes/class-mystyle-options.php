@@ -194,6 +194,20 @@ abstract class MyStyle_Options {
 	}
 
 	/**
+	 * Function that gets the value of the layout_view option.
+	 * @return grid if Grid vew selected,
+	 * otherwise returns list.
+	 */
+	static function get_layout_view() {
+		$val = null;
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		if ( ! empty( $options['layout_views'] ) ) {
+			$val = $options['layout_views'];
+		}
+		return $val;
+	}
+
+	/**
 	 * Determines whether or not the passed option is enabled.
 	 * @param string $option_name The name of the option. This is passed to
 	 * WordPress's get_option function.

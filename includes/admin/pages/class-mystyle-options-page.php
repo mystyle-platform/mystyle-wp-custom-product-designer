@@ -91,9 +91,9 @@ class MyStyle_Options_Page {
 		);
 
 		add_settings_field(
-			'layout_view', 'Layout Views', array(&$this, 'render_layout_view'), 'mystyle_advanced_settings', 'mystyle_options_advanced_section'
+			'layout_view', 'Layout View', array(&$this, 'render_layout_view'), 'mystyle_advanced_settings', 'mystyle_options_advanced_section'
 		);
-				
+
 		// ************** TOOLS SECTION ******************//
 		add_settings_section(
 				'mystyle_options_tools_section', 'MyStyle Tools', array(&$this, 'render_tools_section_text'), 'mystyle_tools'
