@@ -155,32 +155,33 @@ body.mystyle-design-profile ul.mystyle-designs li a:hover {
 body.mystyle-design-profile ul.mystyle-designs li span.mystyle-design-id {
     display: block;
 }
+
 /*list/grid styling code start*/
 .product_description {
     margin-bottom: 60px;
 }
-.customize_products.list_view ul.products.columns-3 li img {
+.customize_products.list_view ul.products li img {
     display: none;
 }
-.customize_products.list_view ul.products.columns-3 li {
+.customize_products.list_view ul.products li {
     display: block;
     width: 100% !important;
     text-align: left;
 }
-.customize_products.list_view ul.products.columns-3 li h2 {
+.customize_products.list_view ul.products li h2 {
     float: left;
 }
-.customize_products.list_view ul.products.columns-3 li .price {
+.customize_products.list_view ul.products li .price {
     display: inline-block;
     margin-left: 10px;
 }  
-.customize_products.list_view ul.products.columns-3 li span.onsale {
+.customize_products.list_view ul.products li span.onsale {
     display: none;
 }
-.customize_products.list_view ul.products.columns-3 li a {
+.customize_products.list_view ul.products li a {
     float: left;
 }
-.customize_products.list_view ul.products.columns-3 li a.button.add_to_cart_button {
+.customize_products.list_view ul.products li a.button.add_to_cart_button {
     margin-left: 10px;
     position: relative;
     bottom: 7px;
