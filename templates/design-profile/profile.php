@@ -27,11 +27,10 @@ if (!defined('ABSPATH')) {
     </ul>
     <img id="mystyle-design-profile-img" src="<?php echo $design->get_web_url(); ?>"/>
     <ul class="mystyle-button-group">
-        <li><a onclick="location.href = '<?php echo $design->get_reload_url(); ?>';" class="button">Customize</a></li>
         <li>
             <form enctype="multipart/form-data" method="post" action="<?php echo get_permalink($design->get_product_id()); ?>">
 				<?php
-//if we have the cart_data (older versions of the plugin don't) through it all into hidden fields
+				//if we have the cart_data (older versions of the plugin don't) through it all into hidden fields
 				if ($design->get_cart_data_array() != null) {
 					foreach ($design->get_cart_data_array() AS $key => $value) {
 						echo '<input type="hidden" name="' . $key . '" value="' . sanitize_title($value) . '" />';
@@ -47,16 +46,43 @@ if (!defined('ABSPATH')) {
 					<?php } ?>
             </form>
         </li>
+        <li><a href="<?php echo $design->get_reload_url(); ?>" class="button">Customize</a></li>
+        <li><a href="<?php echo $design->get_scratch_url(); ?>" class="button">Design from scratch</a></li>
+
     </ul>
 
     <div class="product_description">
     	<?php 
-		$product_id = $design->get_product_id();
-		$product_link = get_permalink( $product_id );
-		$product = wc_get_product( $product_id ); ?>
-		<h2 class='linked_title'><a href="<?php echo $product_link; ?>"><?php echo "Custom ".$product->get_title(); ?></a></h2>
-		<div class='linked_desc'><?php echo ( $product->get_description() ) ?: 'No description.'; ?></div>
-	</div>
+			$product_id = $design->get_product_id();
+			$product_link = get_permalink( $product_id );
+			$product = wc_get_product( $product_id ); 
+			$get_layout_views = MyStyle_Options::get_layout_views();
+			if( !empty( $get_layout_views ) ){
+				$class = $get_layout_views;
+			}else{
+				$class = '';
+			}
+		?>
+			<h2 class='linked_title'><a href="<?php echo $product_link; ?>"><?php echo "Custom ".$product->get_title(); ?></a></h2>
+			<div class='linked_desc'><?php echo ( $product->get_description() ) ?: 'No description.'; ?></div>
+    </div>
+    <div class="customize_products <?php echo $class; ?>">
+    	<h2>Load design on another product:</h2>
+    	<?php 
+			$mystyle_app_id = MyStyle_Options::get_api_key();
+			$out = '';
+			add_filter('woocommerce_shortcode_products_query', array('MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query'), 10, 1);
+	      	remove_action( 'woocommerce_after_shop_loop',  'woocommerce_catalog_ordering', 10 );
+	      	remove_action( 'woocommerce_after_shop_loop',  'woocommerce_result_count', 20 );
+	      	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 10 );
+			remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
 
+			$out = do_shortcode('[products per_page="12" limit="12" paginate="true"]');
+
+			if (strlen($out) < 50) {
+				$out = '<p>Sorry, no products are currently available for customization.</p>';
+			}
+			echo $out;
+    	?>
+    </div>
 </div>
-

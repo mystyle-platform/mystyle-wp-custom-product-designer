@@ -90,6 +90,10 @@ class MyStyle_Options_Page {
 				'enable_configur8', 'Enable Configur8', array(&$this, 'render_enable_configur8'), 'mystyle_advanced_settings', 'mystyle_options_advanced_section'
 		);
 
+		add_settings_field(
+			'layout_view', 'Layout Views', array(&$this, 'render_layout_view'), 'mystyle_advanced_settings', 'mystyle_options_advanced_section'
+		);
+				
 		// ************** TOOLS SECTION ******************//
 		add_settings_section(
 				'mystyle_options_tools_section', 'MyStyle Tools', array(&$this, 'render_tools_section_text'), 'mystyle_tools'
@@ -387,6 +391,32 @@ class MyStyle_Options_Page {
 	}
 
 	/**
+	 * Function to render the Layout View option
+	 * and select.
+	 */
+	public function render_layout_view() {
+		$options = get_option(MYSTYLE_OPTIONS_NAME, array());
+		$layout_view = ( array_key_exists('layout_view', $options) ) ? $options['layout_view'] :""; ?>
+		<label class="description">
+			<select name="mystyle_options[layout_view]">
+			<?php 
+				$select  = array('grid_view' => 'Grid View' ,'list_view' => 'List View');
+				foreach ( $select as $key => $value ) {
+					if( $key  == $layout_view ) {
+						$selected = "selected";
+					}else{
+						$selected = "";
+					}
+					echo '<option value="'.$key.'"'.$selected.' >'.$value.'</option>';	
+				}
+			?>
+			</select>
+		</label>
+		<p class="description"></p>
+		<?php
+	}
+
+	/**
 	 * Function to render the text for the tools section.
 	 */
 	public function render_tools_section_text() {
@@ -478,6 +508,10 @@ class MyStyle_Options_Page {
 			$msg_message = 'Invalid Enable Alternate Design Complete Redirect option';
 			$new_options['enable_alternate_design_complete_redirect'] = 0;
 		}
+
+		//Grid/List layout option.
+		$new_options['layout_view'] = trim( $input['layout_view'] );
+
 
 		//Alternate Design Complete Redirect URL
 		$new_options['alternate_design_complete_redirect_url'] = trim($input['alternate_design_complete_redirect_url']);

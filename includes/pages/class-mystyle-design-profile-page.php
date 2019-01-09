@@ -390,10 +390,10 @@ class MyStyle_Design_Profile_Page {
 	}
 
 	/**
-	 * Get the product title.
-	 * @param MyStyle_Design $design The design to set as the current design.
+	 * Get the product titleas the current design.
 	 */
-	public function get_product_title( $product_id ) {
+	public function get_product_title( $product_id ) {.
+	 * @param MyStyle_Design $design The design to set 
 		$product = wc_get_product( $product_id );
 		$product_title = $product->get_title();
 

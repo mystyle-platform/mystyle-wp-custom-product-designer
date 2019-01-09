@@ -681,6 +681,35 @@ class MyStyle_Design implements MyStyle_Entity {
 	}
 
 	/**
+	 * Build the scratch url to the customizer for the design.
+	 */
+	public function get_scratch_url() {
+		$customize_page_id = MyStyle_Customize_Page::get_id();
+
+		$passthru = array();
+		$passthru['post'] = null;
+
+		if ($this->cart_data != null) {
+			$post_data = json_decode($this->cart_data, true);
+		} else {
+			//set some default post/cart data
+			$post_data = array(
+				'quantity' => 1,
+				'add-to-cart' => $this->product_id,
+			);
+		}
+		$passthru['post'] = $post_data;
+		$passthru_encoded = base64_encode(json_encode($passthru));
+		$customize_args = array(
+			'product_id' => $this->product_id,
+			'h' => $passthru_encoded,
+		);
+		$customizer_url = add_query_arg($customize_args, get_permalink($customize_page_id));
+
+		return $customizer_url;
+	}
+	
+	/**
 	 * Get URL that will add the design to the cart and then show the cart. This
 	 * is used for adding designs from the design profile page to the cart.
 	 * @global type $woocommerce
