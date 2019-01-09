@@ -89,10 +89,10 @@ class MyStyle_Session implements MyStyle_Entity {
 	 * a Design.
 	 */
 	public function __construct() {
-		$this->created      = date( MyStyle::$STANDARD_DATE_FORMAT );
-		$this->created_gmt  = gmdate( MyStyle::$STANDARD_DATE_FORMAT );
-		$this->modified     = date( MyStyle::$STANDARD_DATE_FORMAT );
-		$this->modified_gmt = gmdate( MyStyle::$STANDARD_DATE_FORMAT );
+		$this->created      = date( MyStyle::STANDARD_DATE_FORMAT );
+		$this->created_gmt  = gmdate( MyStyle::STANDARD_DATE_FORMAT );
+		$this->modified     = date( MyStyle::STANDARD_DATE_FORMAT );
+		$this->modified_gmt = gmdate( MyStyle::STANDARD_DATE_FORMAT );
 		$this->persistent   = false;
 	}
 

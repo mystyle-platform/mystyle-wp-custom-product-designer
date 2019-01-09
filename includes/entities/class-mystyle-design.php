@@ -189,10 +189,10 @@ class MyStyle_Design implements MyStyle_Entity {
 	 * a Design.
 	 */
 	public function __construct() {
-		$this->created        = date( MyStyle::$STANDARD_DATE_FORMAT );
-		$this->created_gmt    = gmdate( MyStyle::$STANDARD_DATE_FORMAT );
-		$this->modified       = date( MyStyle::$STANDARD_DATE_FORMAT );
-		$this->modified_gmt   = date( MyStyle::$STANDARD_DATE_FORMAT );
+		$this->created        = date( MyStyle::STANDARD_DATE_FORMAT );
+		$this->created_gmt    = gmdate( MyStyle::STANDARD_DATE_FORMAT );
+		$this->modified       = date( MyStyle::STANDARD_DATE_FORMAT );
+		$this->modified_gmt   = date( MyStyle::STANDARD_DATE_FORMAT );
 		$this->mobile         = 0;
 		$this->access         = 0;
 		$this->view_count     = 0;
