@@ -60,7 +60,7 @@ if (!defined('ABSPATH')) {
 			<h2 class='linked_title'><a href="<?php echo $product_link; ?>"><?php echo "Custom ".$product->get_title(); ?></a></h2>
 			<div class='linked_desc'><?php echo ( $product->get_description() ) ?: 'No description.'; ?></div>
     </div>
-    <div class="customize_products <?php echo $class; ?>">
+    <div class="customize_products <?php echo $layout_view; ?>">
     	<h2>Load design on another product:</h2>
     	<?php 
 			$mystyle_app_id = MyStyle_Options::get_api_key();
