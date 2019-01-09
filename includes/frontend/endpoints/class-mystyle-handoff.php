@@ -118,7 +118,6 @@ class MyStyle_Handoff {
 			$product_id = $this->design->get_product_id();
 			$product = wc_get_product( $product_id );
 			$product_title =  $product->get_title();
-			$this->design->set_design_title("Custom ". $product_title .' '. $design_id);
 
 			//If the user is logged in to WordPress, store their user id with their design
 			$wp_user_id = get_current_user_id();
