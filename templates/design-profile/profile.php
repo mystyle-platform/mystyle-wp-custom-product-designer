@@ -71,7 +71,7 @@ if (!defined('ABSPATH')) {
 	      	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 10 );
 			remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
 
-			$out = do_shortcode('[products per_page="12" limit="12" paginate="true"]');
+			$out = do_shortcode('[products per_page="12" limit="12" pagination="true"]');
 
 			if (strlen($out) < 50) {
 				$out = '<p>Sorry, no products are currently available for customization.</p>';
