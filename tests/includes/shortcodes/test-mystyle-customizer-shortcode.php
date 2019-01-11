@@ -1,8 +1,4 @@
 <?php
-
-require_once( MYSTYLE_PATH . 'tests/mocks/mock-mystyle-wc.php' );
-require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
-
 /**
  * The MyStyleCustomizerShortcodeTest class includes tests for testing the
  * MyStyle_Customizer_Shortcode class.
@@ -10,28 +6,32 @@ require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' 
  * @package MyStyle
  * @since 0.2.1
  */
+
+/**
+ * Test requirements.
+ */
+require_once MYSTYLE_PATH . 'tests/mocks/mock-mystyle-wc.php';
+require_once MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php';
+
+/**
+ * MyStyleCustomizerShortcodeTest class.
+ */
 class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 
 	/**
-	 * Override the setUp function.
-	 */
-	function setUp() {
-		parent::setUp();
-	}
-
-	/**
-	 * Test the modify_woocommerce_shortcode_products_query function with valid parameters.
+	 * Test the modify_woocommerce_shortcode_products_query function with valid
+	 * parameters.
 	 */
 	public function test_modify_woocommerce_shortcode_products_query() {
 
-		//Mock the args
-		$args = array();
+		// Mock the args.
+		$args               = array();
 		$args['meta_query'] = array();
 
-		$modified_args = MyStyle_Customizer_Shortcode::modify_woocommerce_shortcode_products_query($args);
+		$modified_args = MyStyle_Customizer_Shortcode::modify_woocommerce_shortcode_products_query( $args );
 
-		//assert that the modified args include the mystyle_enabled meta key
-		$this->assertContains('_mystyle_enabled', $modified_args['meta_query'][0]['key']);
+		// Assert that the modified args include the mystyle_enabled meta key.
+		$this->assertContains( '_mystyle_enabled', $modified_args['meta_query'][0]['key'] );
 	}
 
 	/**
@@ -39,20 +39,29 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 	 */
 	public function test_output_with_valid_params() {
 
-		//mock the GET params
+		// Mock the GET params.
 		$_GET['product_id'] = 1;
-		$passthru = base64_encode(json_encode(array('post' => array('quantity' => 2, 'add-to-cart' => 1))));
-		$_GET['h'] = $passthru;
+		$passthru           = base64_encode(
+			wp_json_encode(
+				array(
+					'post' => array(
+						'quantity'    => 2,
+						'add-to-cart' => 1,
+					),
+				)
+			)
+		);
+		$_GET['h']          = $passthru;
 
-		//call the function
+		// Call the function.
 		$output = MyStyle_Customizer_Shortcode::output();
 
-		//assert that the output includes an iframe tag
-		$this->assertContains('<iframe', $output);
+		// Assert that the output includes an iframe tag.
+		$this->assertContains( '<iframe', $output );
 
-		//assert that the expected passthru is included
-		$expectedPassthru = 'passthru=h,' . $passthru;
-		$this->assertContains($expectedPassthru, $output);
+		// Assert that the expected passthru is included.
+		$expected_passthru = 'passthru=h,' . $passthru;
+		$this->assertContains( $expected_passthru, $output );
 	}
 
 	/**
@@ -60,11 +69,11 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 	 */
 	public function test_output_with_no_params() {
 
-		//call the function
+		// Call the function.
 		$output = MyStyle_Customizer_Shortcode::output();
 
-		//assert that the output includes an iframe tag
-		$this->assertContains('Sorry, no products are currently available for customization.', $output);
+		// Assert that the output includes an iframe tag.
+		$this->assertContains( 'Sorry, no products are currently available for customization.', $output );
 	}
 
 	/**
@@ -73,21 +82,30 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 	 */
 	public function test_output_with_no_h_param() {
 
-		//mock the GET params
+		// Mock the GET params.
 		$_GET['product_id'] = 1;
 
-		//call the function
+		// Call the function.
 		$output = MyStyle_Customizer_Shortcode::output();
 
-		//assert that the output includes an iframe tag
-		$this->assertContains('<iframe', $output);
+		// Assert that the output includes an iframe tag.
+		$this->assertContains( '<iframe', $output );
 
-		//build the expected passthru
-		$passthru = base64_encode(json_encode(array('post' => array('quantity' => 1, 'add-to-cart' => 1))));
-		$expectedPassthru = 'passthru=h,' . $passthru;
+		// Build the expected passthru.
+		$passthru          = base64_encode(
+			wp_json_encode(
+				array(
+					'post' => array(
+						'quantity'    => 1,
+						'add-to-cart' => 1,
+					),
+				)
+			)
+		);
+		$expected_passthru = 'passthru=h,' . $passthru;
 
-		//assert that the expected passthru is included
-		$this->assertContains($expectedPassthru, $output);
+		// Assert that the expected passthru is included.
+		$this->assertContains( $expected_passthru, $output );
 	}
 
 	/**
@@ -96,64 +114,98 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 	 * MyStyle_Bad_Request_Exception.
 	 */
 	public function test_output_with_settings_param_with_non_permitted_redirect_url() {
-		$this->setExpectedException('MyStyle_Bad_Request_Exception');
+		$this->setExpectedException( 'MyStyle_Bad_Request_Exception' );
 
-		//mock the GET params
+		// Mock the GET params.
 		$_GET['product_id'] = 1;
-		$passthru = base64_encode(json_encode(array('post' => array('quantity' => 2, 'add-to-cart' => 1))));
-		$_GET['h'] = $passthru;
+		$passthru           = base64_encode(
+			wp_json_encode(
+				array(
+					'post' => array(
+						'quantity'    => 2,
+						'add-to-cart' => 1,
+					),
+				)
+			)
+		);
+		$_GET['h']          = $passthru;
 
-		$settings = base64_encode(json_encode(array('redirect_url' => 'https://www.example.com', 'email_skip' => '1', 'print_type' => 'fake')));
+		$settings         = base64_encode(
+			wp_json_encode(
+				array(
+					'redirect_url' => 'https://www.example.com',
+					'email_skip'   => '1',
+					'print_type'   => 'fake',
+				)
+			)
+		);
 		$_GET['settings'] = $settings;
 
-		//call the function
+		// Call the function.
 		$output = MyStyle_Customizer_Shortcode::output();
 
-		//assert that the output includes an iframe tag
-		$this->assertContains('<iframe', $output);
+		// Assert that the output includes an iframe tag.
+		$this->assertContains( '<iframe', $output );
 
-		//assert that the expected passthru is included
-		$expectedPassthru = 'passthru=h,' . $passthru;
-		$this->assertContains($expectedPassthru, $output);
+		// Assert that the expected passthru is included.
+		$expected_passthru = 'passthru=h,' . $passthru;
+		$this->assertContains( $expected_passthru, $output );
 
-		//assert that the expected settings are included
-		$expectedSettings = 'settings=' . $settings;
-		$this->assertContains($expectedSettings, $output);
+		// Assert that the expected settings are included.
+		$expected_settings = 'settings=' . $settings;
+		$this->assertContains( $expected_settings, $output );
 	}
 
 	/**
 	 * Test the output function with h and settings parameters and a permitted
-	 * redirect url (domain is on the whitelist).
+	 * redirect url ( domain is on the whitelist ).
 	 */
 	public function test_output_with_settings_param_with_permitted_redirect_url() {
 
-		//Install the redirect_url_whitelist
+		// Install the redirect_url_whitelist.
 		$options = array();
-		update_option(MYSTYLE_OPTIONS_NAME, $options);
+		update_option( MYSTYLE_OPTIONS_NAME, $options );
 		$options['redirect_url_whitelist'] = "www.example.com\r\nwww.example.net";
-		update_option(MYSTYLE_OPTIONS_NAME, $options);
+		update_option( MYSTYLE_OPTIONS_NAME, $options );
 
-		//mock the GET params
+		// Mock the GET params.
 		$_GET['product_id'] = 1;
-		$passthru = base64_encode(json_encode(array('post' => array('quantity' => 2, 'add-to-cart' => 1))));
-		$_GET['h'] = $passthru;
+		$passthru           = base64_encode(
+			wp_json_encode(
+				array(
+					'post' => array(
+						'quantity'    => 2,
+						'add-to-cart' => 1,
+					),
+				)
+			)
+		);
+		$_GET['h']          = $passthru;
 
-		$settings = base64_encode(json_encode(array('redirect_url' => 'https://www.example.com', 'email_skip' => '1', 'print_type' => 'fake')));
+		$settings         = base64_encode(
+			wp_json_encode(
+				array(
+					'redirect_url' => 'https://www.example.com',
+					'email_skip'   => '1',
+					'print_type'   => 'fake',
+				)
+			)
+		);
 		$_GET['settings'] = $settings;
 
-		//call the function
+		// Call the function.
 		$output = MyStyle_Customizer_Shortcode::output();
 
-		//assert that the output includes an iframe tag
-		$this->assertContains('<iframe', $output);
+		// Assert that the output includes an iframe tag.
+		$this->assertContains( '<iframe', $output );
 
-		//assert that the expected passthru is included
-		$expectedPassthru = 'passthru=h,' . $passthru;
-		$this->assertContains($expectedPassthru, $output);
+		// Assert that the expected passthru is included.
+		$expected_passthru = 'passthru=h,' . $passthru;
+		$this->assertContains( $expected_passthru, $output );
 
-		//assert that the expected settings are included
-		$expectedSettings = 'settings=' . $settings;
-		$this->assertContains($expectedSettings, $output);
+		// Assert that the expected settings are included.
+		$expected_settings = 'settings=' . $settings;
+		$this->assertContains( $expected_settings, $output );
 	}
 
 }

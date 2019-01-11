@@ -177,11 +177,13 @@ class MyStyle_Cart {
 		);
 
 		$customizer_url = add_query_arg( $args, get_permalink( $customize_page_id ) );
-		wp_safe_redirect( $customizer_url );
 
-		// Exit ( unless called by phpunit ).
+		// Redirect and Exit ( unless called by phpunit ).
 		if ( ! defined( 'DOING_PHPUNIT' ) ) {
+			wp_safe_redirect( $customizer_url );
 			exit;
+		} else {
+			return true;
 		}
 	}
 
@@ -229,11 +231,13 @@ class MyStyle_Cart {
 
 		if ( $cart_item_key ) {
 			wc_add_to_cart_message( array( $product_id => $quantity ), true );
-			wp_redirect( wc_get_page_permalink( 'cart' ) );
 
-			// Exit ( unless called by phpunit ).
+			// Redirect and exit ( unless called by phpunit ).
 			if ( ! defined( 'DOING_PHPUNIT' ) ) {
+				wp_redirect( wc_get_page_permalink( 'cart' ) );
 				exit();
+			} else {
+				return true;
 			}
 		}
 	}

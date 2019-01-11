@@ -18,14 +18,14 @@ class MyStyle_Design implements MyStyle_Entity {
 	 *
 	 * @var string
 	 */
-	private static $TABLE_NAME  = 'mystyle_designs';
+	const TABLE_NAME  = 'mystyle_designs';
 
 	/**
 	 * The primary key column for the table.
 	 *
 	 * @var string
 	 */
-	private static $PRIMARY_KEY = 'ms_design_id';
+	const PRIMARY_KEY = 'ms_design_id';
 
 	/**
 	 * The primary key.
@@ -721,7 +721,7 @@ class MyStyle_Design implements MyStyle_Entity {
 	public static function get_schema() {
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . self::$TABLE_NAME;
+		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		return "
             CREATE TABLE $table_name (
                 ms_design_id bigint(32) NOT NULL,
@@ -759,7 +759,7 @@ class MyStyle_Design implements MyStyle_Entity {
 	public static function get_table_name() {
 		global $wpdb;
 
-		return $wpdb->prefix . self::$TABLE_NAME;
+		return $wpdb->prefix . self::TABLE_NAME;
 	}
 
 	/**
@@ -768,7 +768,7 @@ class MyStyle_Design implements MyStyle_Entity {
 	 * @return string Returns the name of the primary key column for the table.
 	 */
 	public static function get_primary_key() {
-		return self::$PRIMARY_KEY;
+		return self::PRIMARY_KEY;
 	}
 
 	/**

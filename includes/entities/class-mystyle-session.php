@@ -17,14 +17,14 @@ class MyStyle_Session implements MyStyle_Entity {
 	 *
 	 * @var string
 	 */
-	public static $SESSION_KEY = 'mystyle';
+	const SESSION_KEY = 'mystyle';
 
 	/**
 	 * The name of the cookie that tracks the session.
 	 *
 	 * @var string
 	 */
-	public static $COOKIE_NAME = 'mystyle_session_id';
+	const COOKIE_NAME = 'mystyle_session_id';
 
 	/**
 	 * The name of the database table where sessions are stored.
@@ -33,14 +33,14 @@ class MyStyle_Session implements MyStyle_Entity {
 	 *
 	 * @var string
 	 */
-	private static $TABLE_NAME = 'mystyle_sessions';
+	const TABLE_NAME = 'mystyle_sessions';
 
 	/**
 	 * The name of the primary key column in the database.
 	 *
 	 * @var string
 	 */
-	private static $PRIMARY_KEY = 'session_id';
+	const PRIMARY_KEY = 'session_id';
 
 	/**
 	 * The primary key. An alphanumeric string. Also the cookie.
@@ -233,7 +233,7 @@ class MyStyle_Session implements MyStyle_Entity {
 	public static function get_schema() {
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . self::$TABLE_NAME;
+		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		return "
             CREATE TABLE $table_name (
                 session_id varchar(100) NOT NULL,
@@ -254,7 +254,7 @@ class MyStyle_Session implements MyStyle_Entity {
 	public static function get_table_name() {
 		global $wpdb;
 
-		return $wpdb->prefix . self::$TABLE_NAME;
+		return $wpdb->prefix . self::TABLE_NAME;
 	}
 
 	/**
@@ -263,7 +263,7 @@ class MyStyle_Session implements MyStyle_Entity {
 	 * @return string Returns the name of the primary key column for the table.
 	 */
 	public static function get_primary_key() {
-		return self::$PRIMARY_KEY;
+		return self::PRIMARY_KEY;
 	}
 
 	/**

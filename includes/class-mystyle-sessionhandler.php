@@ -91,14 +91,14 @@ class MyStyle_SessionHandler {
 
 		try {
 			// First look in the session variables.
-			if ( isset( $_SESSION[ MyStyle_Session::$SESSION_KEY ] ) ) {
-				$session = $_SESSION[ MyStyle_Session::$SESSION_KEY ];
+			if ( isset( $_SESSION[ MyStyle_Session::SESSION_KEY ] ) ) {
+				$session = $_SESSION[ MyStyle_Session::SESSION_KEY ];
 			} else {
 				// Next look in their cookies.
-				if ( isset( $_COOKIE[ MyStyle_Session::$COOKIE_NAME ] ) ) {
-					$session_id                                = wp_unslash( $_COOKIE[ MyStyle_Session::$COOKIE_NAME ] );
+				if ( isset( $_COOKIE[ MyStyle_Session::COOKIE_NAME ] ) ) {
+					$session_id                                = wp_unslash( $_COOKIE[ MyStyle_Session::COOKIE_NAME ] );
 					$session                                   = MyStyle_SessionManager::get( $session_id );
-					$_SESSION[ MyStyle_Session::$SESSION_KEY ] = $session;
+					$_SESSION[ MyStyle_Session::SESSION_KEY ] = $session;
 				}
 			}
 		} catch ( \Exception $ex ) {
@@ -119,10 +119,10 @@ class MyStyle_SessionHandler {
 		// If no session is found, create a new one and set the cookie.
 		if ( null === $session ) {
 			$session                                   = MyStyle_Session::create();
-			$_SESSION[ MyStyle_Session::$SESSION_KEY ] = $session;
+			$_SESSION[ MyStyle_Session::SESSION_KEY ] = $session;
 			if ( ( $this->use_cookies ) && ( ! headers_sent() ) ) {
 				setcookie(
-					MyStyle_Session::$COOKIE_NAME,
+					MyStyle_Session::COOKIE_NAME,
 					$session->get_session_id(),
 					time() + ( 60 * 60 * 24 * 365 * 10 )
 				);
