@@ -26,9 +26,10 @@ if (!defined('ABSPATH')) {
 				<li>
 					<a href="<?php echo $design_url ?>">
 						<img src="<?php echo $design->get_thumb_url(); ?>" />
-						<span class="mystyle-design-id">
-							<?php echo 'Custom '.$product_title.' '.$design->get_design_id(); ?>
-						</span>
+						<h3 class="mystyle-design-id">
+							<?php 
+							echo 'Custom '.$product_title.' <span>'.$design->get_design_id().'</span>'; ?>
+						</h3>
 					</a>
 				</li>
 				<?php

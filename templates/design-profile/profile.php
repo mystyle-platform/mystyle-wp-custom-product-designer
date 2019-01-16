@@ -60,23 +60,25 @@ if (!defined('ABSPATH')) {
 			<h2 class='linked_title'><a href="<?php echo $product_link; ?>"><?php echo "Custom ".$product->get_title(); ?></a></h2>
 			<div class='linked_desc'><?php echo ( $product->get_description() ) ?: 'No description.'; ?></div>
     </div>
-    <div class="customize_products <?php echo $layout_view; ?>">
-    	<h2>Load design on another product:</h2>
-    	<?php 
-			$mystyle_app_id = MyStyle_Options::get_api_key();
-			$out = '';
-			add_filter('woocommerce_shortcode_products_query', array('MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query'), 10, 1);
-	      	remove_action( 'woocommerce_after_shop_loop',  'woocommerce_catalog_ordering', 10 );
-	      	remove_action( 'woocommerce_after_shop_loop',  'woocommerce_result_count', 20 );
-	      	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 10 );
-			remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
+    <?php if ($layout_view != 'disabled') { ?>
+		    <div class="customize_products <?php echo $layout_view; ?>">
+		    	<h2>Load design on another product:</h2>
+		    	<?php 
+					$mystyle_app_id = MyStyle_Options::get_api_key();
+					$out = '';
+					add_filter('woocommerce_shortcode_products_query', array('MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query'), 10, 1);
+			      	remove_action( 'woocommerce_after_shop_loop',  'woocommerce_catalog_ordering', 10 );
+			      	remove_action( 'woocommerce_after_shop_loop',  'woocommerce_result_count', 20 );
+			      	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 10 );
+					remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
 
-			$out = do_shortcode('[products per_page="12" limit="12" paginate="true"]');
+					$out = do_shortcode('[products]');
 
-			if (strlen($out) < 50) {
-				$out = '<p>Sorry, no products are currently available for customization.</p>';
-			}
-			echo $out;
+					if (strlen($out) < 50) {
+						$out = '<p>Sorry, no products are currently available for customization.</p>';
+					}
+				echo $out;
+		    }
     	?>
     </div>
 </div>

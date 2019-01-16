@@ -91,7 +91,7 @@ class MyStyle_Options_Page {
 		);
 
 		add_settings_field(
-			'layout_view', 'Layout View', array(&$this, 'render_layout_view'), 'mystyle_advanced_settings', 'mystyle_options_advanced_section'
+				'layout_view', 'Reload-To-Other-Product Menu Style', array(&$this, 'render_layout_view'), 'mystyle_advanced_settings', 'mystyle_options_advanced_section'
 		);
 
 		// ************** TOOLS SECTION ******************//
@@ -400,7 +400,7 @@ class MyStyle_Options_Page {
 		<label class="description">
 			<select name="mystyle_options[layout_view]">
 			<?php 
-				$select  = array('list_view' => 'List View', 'grid_view' => 'Grid View');
+				$select  = array('list_view' => 'List View', 'grid_view' => 'Grid View' , 'disabled' => 'Disabled');
 				foreach ( $select as $key => $value ) {
 					if( $key  == $layout_view ) {
 						$selected = "selected";
@@ -411,9 +411,10 @@ class MyStyle_Options_Page {
 				}
 			?>
 			</select>
+			<p class="description">The menu on the design profile page listing all custom products to reload the design on.</p>
 		</label>
-		<p class="description"></p>
 		<?php
+
 	}
 
 	/**
