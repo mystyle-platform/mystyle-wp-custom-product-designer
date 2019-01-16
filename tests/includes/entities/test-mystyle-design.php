@@ -116,11 +116,11 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 
 		$export = $design->get_meta();
 
-		$serialized_export = serialize( $export );
+		$serialized_export = serialize( $export ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 
 		$meta              = array();
 		$meta['design_id'] = $design_id;
-		$serialized_meta   = serialize( $meta );
+		$serialized_meta   = serialize( $meta ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 
 		// Assert that the expected meta is returned.
 		$this->assertEquals( $serialized_meta, $serialized_export );

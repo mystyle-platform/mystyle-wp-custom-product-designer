@@ -83,10 +83,10 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
 		MyStyle_Frontend::get_instance()->init();
 
 		// Assert that our scripts are registered.
-		$this->assertContains( 'swfobject', serialize( $wp_scripts ) );
+		$this->assertContains( 'swfobject', serialize( $wp_scripts ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 
 		// Assert that our stylesheets are registered.
-		$this->assertContains( 'myStyleFrontendStylesheet', serialize( $wp_styles ) );
+		$this->assertContains( 'myStyleFrontendStylesheet', serialize( $wp_styles ) );  // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 	}
 
 	/**

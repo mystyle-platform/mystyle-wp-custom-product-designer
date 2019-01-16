@@ -119,7 +119,7 @@ abstract class MyStyle_AbstractWC {
 
 		if ( array_key_exists( 'mystyle_data', $item_meta->meta ) ) {
 			if ( isset( $item_meta->meta['mystyle_data'][0] ) ) { // WC < 3.0.
-				$mystyle_data = unserialize( $item_meta->meta['mystyle_data'][0] );
+				$mystyle_data = unserialize( $item_meta->meta['mystyle_data'][0] ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 			} else { // WC >= 3.0.
 				$mystyle_data = $item_meta->meta['mystyle_data'];
 			}

@@ -57,7 +57,7 @@ class MyStyleDesignCompleteTest extends WP_UnitTestCase {
 		// Assert that the design-complete.js script is registered.
 		$this->assertContains(
 			'mystyle-design-complete',
-			serialize( $wp_scripts )
+			serialize( $wp_scripts ) // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		);
 	}
 

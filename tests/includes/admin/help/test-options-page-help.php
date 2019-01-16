@@ -33,7 +33,7 @@ class OptionsPageHelpTest extends WP_UnitTestCase {
 		// Asset that the MyStyle help is now in the screen.
 		$this->assertContains(
 			'MyStyle Custom Product Designer Help',
-			serialize( $screen )
+			serialize( $screen ) // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		);
 	}
 
