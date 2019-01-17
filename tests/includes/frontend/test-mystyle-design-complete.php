@@ -74,4 +74,48 @@ class MyStyleDesignCompleteTest extends WP_UnitTestCase {
 		$this->assertTrue( in_array( 'design_complete', $ret_vars, true ) );
 	}
 
+	/**
+	 * Assert that get_redirect_url() returns the expected URL when using a
+	 * simple URL.
+	 */
+	public function test_get_redirect_url_with_simple_url() {
+		// Install the alternate_design_complete_redirect_url.
+		$options = array();
+		update_option( MYSTYLE_OPTIONS_NAME, $options );
+		$options['alternate_design_complete_redirect_url'] = 'http://www.example.com';
+		update_option( MYSTYLE_OPTIONS_NAME, $options );
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( 1 );
+
+		$url = MyStyle_Design_Complete::get_redirect_url( $design );
+
+		$this->assertEquals(
+			'http://www.example.com?design_id=1&design_complete=1',
+			$url
+		);
+	}
+
+	/**
+	 * Assert that get_redirect_url() returns the expected URL when using a URL
+	 * that already includes a query string.
+	 */
+	public function test_get_redirect_url_with_url_that_includes_a_query_string() {
+		// Install the alternate_design_complete_redirect_url.
+		$options = array();
+		update_option( MYSTYLE_OPTIONS_NAME, $options );
+		$options['alternate_design_complete_redirect_url'] = 'http://www.example.com?foo=bar';
+		update_option( MYSTYLE_OPTIONS_NAME, $options );
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( 1 );
+
+		$url = MyStyle_Design_Complete::get_redirect_url( $design );
+
+		$this->assertEquals(
+			'http://www.example.com?foo=bar&design_id=1&design_complete=1',
+			$url
+		);
+	}
+
 }

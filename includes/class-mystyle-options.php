@@ -136,32 +136,6 @@ abstract class MyStyle_Options {
 	}
 
 	/**
-	 * Function that builds the Alternate Design Complete Redirect URL.
-	 *
-	 * @param MyStyle_Design $design The design that you want to use when
-	 * building the url.
-	 * @return string|null Returns the built Alternate Design Complete Redirect
-	 * URL if one is set, otherwise returns null.
-	 */
-	public static function build_alternate_design_complete_redirect_url(
-		MyStyle_Design $design
-	) {
-		$url = self::get_alternate_design_complete_redirect_url();
-
-		if ( ! empty( $url ) ) {
-			if ( false === strpos( $url, '?' ) ) {
-				$url .= '?';
-			} else {
-				$url .= '&';
-			}
-			$url .= 'design_id=' . $design->get_design_id();
-			$url .= '&design_complete=1';
-		}
-
-		return $url;
-	}
-
-	/**
 	 * Function that gets the Redirect URL Whitelist.
 	 *
 	 * @return array|null Returns the Redirect URL Whitelist as an array (if one

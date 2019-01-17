@@ -256,11 +256,9 @@ class MyStyle_Handoff {
 				// Send to Demo Mode Message.
 				$html = $this->build_view( 'MyStyle Demo', $cart->get_cart_url(), false );
 			} else {
-				if (
-						( MyStyle_Options::enable_alternate_design_complete_redirect() ) &&
-						( null !== MyStyle_Options::get_alternate_design_complete_redirect_url() )
-				) {
-					$link = MyStyle_Design_Complete::get_redirect_url( $this->design );
+				$link = MyStyle_Design_Complete::get_redirect_url( $this->design );
+				if ( null !== $link ) {
+					// Redirect to the redirect url.
 					$html = '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . $link . '"></head><body></body></html>';
 				} else {
 					// Redirect the user to the cart.

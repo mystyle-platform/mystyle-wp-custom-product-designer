@@ -401,6 +401,9 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 		// Mock woocommerce.
 		$woocommerce = new MyStyle_MockWooCommerce();
 
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( 1 );
+
 		// Set the REQUEST_METHOD to POST.
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 
@@ -414,6 +417,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 		// Init the MyStyle_Handoff.
 		$mystyle_handoff = new MyStyle_Handoff();
 		$mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
+		$mystyle_handoff->set_design( $design );
 
 		// Call the function.
 		$html = $mystyle_handoff->get_output();
