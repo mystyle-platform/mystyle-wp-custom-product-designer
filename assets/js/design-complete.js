@@ -1,5 +1,6 @@
 /**
  * Script for the MyStyle Design Complete functionality.
+ *
  * @package MyStyle
  * @since 3.4.0
  */
@@ -8,7 +9,7 @@ MyStyleDesignComplete = function() {
 
 	/**
 	 * Private object for attaching private properties and methods.
-	 * 
+	 *
 	 * @var {object}
 	 */
 	var self = {};
@@ -17,12 +18,11 @@ MyStyleDesignComplete = function() {
 
 	/**
 	 * EXPOSED (as 'init')
-	 * 
+	 *
 	 * Initializes the design complete page.
-	 * 
+	 *
 	 * Does the following:
 	 *  * Finds any forms and adds the design_id as a hidden field.
-	 *  
 	 */
 	self._init = function() {
 
@@ -41,14 +41,14 @@ MyStyleDesignComplete = function() {
 	 * Private helper method that gets a variable from the current query string
 	 * (via window.location).
 	 * Source: https://css-tricks.com/snippets/javascript/get-url-variables/
-	 * 
+	 *
 	 * @param {string} variable The name of the variable that you want to get.
 	 * @returns {mixed} Returns the variable value or false if the variable isn't
 	 * found.
 	 */
 	self._getQueryVariable = function( variable ) {
 		var query = window.location.search.substring( 1 );
-		var vars = query.split( '&' );
+		var vars  = query.split( '&' );
 		for ( var i = 0; i < vars.length; i++ ) {
 			var pair = vars[i].split( '=' );
 			if ( pair[0] === variable ) {
@@ -61,7 +61,7 @@ MyStyleDesignComplete = function() {
 
 	/**
 	 * Private helper method that validates the query args.
-	 * 
+	 *
 	 * @returns {boolean} Returns true if the query args are valid, otherwise,
 	 * returns false.
 	 */
@@ -89,21 +89,23 @@ MyStyleDesignComplete = function() {
 	 */
 	self._setDesignIdFields = function() {
 
-		jQuery( 'input' ).each( function ( index, value ) {
+		jQuery( 'input' ).each(
+			function ( index, value ) {
 
-			// Any field with 'design_id' in the id.
-			var id = jQuery( this ).attr( 'id' );
-			if ( ( typeof id !== 'undefined' ) && ( id.indexOf( 'design_id' ) !== -1 ) ) {
-				jQuery( this ).val( self.designId );
-				return true;
-			}
+					// Any field with 'design_id' in the id.
+					var id = jQuery( this ).attr( 'id' );
+				if ( ( typeof id !== 'undefined' ) && ( id.indexOf( 'design_id' ) !== -1 ) ) {
+					  jQuery( this ).val( self.designId );
+					  return true;
+				}
 
-			// Any field with 'design_id' in the name attribute.
-			var name = jQuery( this ).attr( 'name' );
-			if ( ( typeof name !== 'undefined' ) && ( name.indexOf( 'design_id' ) !== -1 ) ) {
-				jQuery( this ).val( self.designId );
+					// Any field with 'design_id' in the name attribute.
+					var name = jQuery( this ).attr( 'name' );
+				if ( ( typeof name !== 'undefined' ) && ( name.indexOf( 'design_id' ) !== -1 ) ) {
+					  jQuery( this ).val( self.designId );
+				}
 			}
-		});
+		);
 	};
 
 	/**
@@ -119,7 +121,8 @@ MyStyleDesignComplete = function() {
 
 }();
 // End MyStyleDesignComplete class.
-
-jQuery( window ).ready( function () {
-	MyStyleDesignComplete.init();
-});
+jQuery( window ).ready(
+	function () {
+			MyStyleDesignComplete.init();
+	}
+);

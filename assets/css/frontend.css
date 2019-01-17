@@ -1,159 +1,157 @@
 /* MyStyle Global Frontend Styles */
 
 ul.mystyle-button-group {
-    list-style: none;
-    text-align: center;
-    margin: 0;
+	list-style: none;
+	text-align: center;
+	margin: 0;
 }
 ul.mystyle-button-group li {display: inline-block;}
 
 .mystyle-centered {
-    margin-left: auto;
-    margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .mystyle-renderer-wrapper {
-    margin: 1em 0;
+	margin: 1em 0;
 }
 
 /* MyStyle Customize Page */
 
-body.mystyle-customize #customizer-wrapper { 
-    padding: 0;
-    text-align:center; 
-    margin-left: auto;
-    margin-right: auto;
+body.mystyle-customize #customizer-wrapper {
+	padding: 0;
+	text-align:center;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 body.mystyle-customize .customizer-under-app-wrapper {
-    position: relative;
-    display: block;
-    width: auto;
-    margin: auto;
-    max-width: 950px;
-    font-size: 12px;
-    padding: 15px;
-    min-height: 0;
-    margin-bottom: 15px;
+	position: relative;
+	display: block;
+	width: auto;
+	margin: auto;
+	max-width: 950px;
+	font-size: 12px;
+	padding: 15px;
+	min-height: 0;
+	margin-bottom: 15px;
 }
 body.mystyle-customize .customizer-under-app-wrapper a.button {
-    display: table;
-    margin: 0 auto;
+	display: table;
+	margin: 0 auto;
 }
 body.mystyle-customize .customizer-under-app-wrapper a.button span {
-    margin-right: 0.25em;
+	margin-right: 0.25em;
 }
 
 body.mystyle-customize .entry-content,
 body.mystyle-customize article {
-    max-width: none;
+	max-width: none;
 }
 
 body.mystyle-customize .entry-header {
-    margin-left: auto;
-    margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 body.mystyle-customize #primary {
-    width: 100%;
+	width: 100%;
 }
 
 body.mystyle-customize #secondary,
 body.mystyle-customize .site::before {
-    display: none;
+	display: none;
 }
 
 div.mystyle-fullscreen#customizer-wrapper {
-    width: 100% !important;
-    height: 100% !important;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
+	width: 100% !important;
+	height: 100% !important;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
 }
 
 iframe.mystyle-fullscreen#customizer-iframe {
-    width: 100% !important;
-    height: 100% !important;
+	width: 100% !important;
+	height: 100% !important;
 }
 
 body.mystyle-customize #customizer-close-button {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 10001;
+	position: fixed;
+	top: 0;
+	right: 0;
+	z-index: 10001;
 }
 
 #customizer-close-button,
 #customizer-fullscreen-button,
 #customizer-fullscreen-button label {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .mystyle-fullscreen-hidden {
-    display: none;
+	display: none;
 }
 
 iframe#customizer-iframe {
-    width: 100%;
-    min-height: 550px;
+	width: 100%;
+	min-height: 550px;
 }
 
 @media all and (orientation:portrait) {
-    body.mystyle-customize #customizer-iframe,
-    body.mystyle-customizer #customizer-wrapper {
-        height: 1000px;
-    }
+	body.mystyle-customize #customizer-iframe,
+	body.mystyle-customizer #customizer-wrapper {
+		height: 1000px;
+	}
 }
 
 @media all and (orientation:landscape) {
-    body.mystyle-customize #customizer-iframe,
-    body.mystyle-customizer #customizer-wrapper {
-        height: 550px;
-    }
+	body.mystyle-customize #customizer-iframe,
+	body.mystyle-customizer #customizer-wrapper {
+		height: 550px;
+	}
 }
 
 /* MyStyle Design Profile Page */
 body.mystyle-design-profile img#mystyle-design-profile-img {
-    display: block;
-    max-width: 100%;
-    width: auto;
-    margin: auto;
-    margin-bottom: 1em;
+	display: block;
+	max-width: 100%;
+	width: auto;
+	margin: auto;
+	margin-bottom: 1em;
 }
 
 body.mystyle-design-profile img#mystyle-design-profile-img {
-    display: block;
+	display: block;
 }
 
 body.mystyle-design-profile ul.mystyle-design-nav li {
-    margin: 5em;
+	margin: 5em;
 }
 
 /* MyStyle Design Profile Index */
 body.mystyle-design-profile ul.mystyle-designs {
-    list-style: none;
+	list-style: none;
 }
 body.mystyle-design-profile ul.mystyle-designs li {
-    display: inline-block;
-    margin: 1em;
+	display: inline-block;
+	margin: 1em;
 }
 
 body.mystyle-design-profile ul.mystyle-designs li a {
-    display: block;
-    padding: 2em;
-    text-decoration: none;
-    box-shadow: none;
+	display: block;
+	padding: 2em;
+	text-decoration: none;
+	box-shadow: none;
 }
 
 body.mystyle-design-profile ul.mystyle-designs li a:hover {
-    -webkit-box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
-    -moz-box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
-    box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
+	-webkit-box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
+	-moz-box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
+	box-shadow: 2px 2px 8px -3px rgba(0,0,0,0.50);
 }
 
 body.mystyle-design-profile ul.mystyle-designs li span.mystyle-design-id {
-    display: block;
+	display: block;
 }
-
-

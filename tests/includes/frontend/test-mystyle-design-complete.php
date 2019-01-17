@@ -136,8 +136,8 @@ class MyStyleDesignCompleteTest extends WP_UnitTestCase {
 		$design = MyStyle_MockDesign::get_mock_design( 1 );
 
 		// Create a product and set the product specific redirect url.
-		$product_id      = create_wc_test_product();
-		$product         = new \WC_Product_Simple( $product_id );
+		$product_id = create_wc_test_product();
+		$product    = new \WC_Product_Simple( $product_id );
 		add_post_meta(
 			$product_id,
 			'_mystyle_customizer_redirect',
@@ -168,7 +168,6 @@ class MyStyleDesignCompleteTest extends WP_UnitTestCase {
 		$design = MyStyle_MockDesign::get_mock_design( 1 );
 
 		// Set a redirect url on the design's product.
-
 
 		$url = MyStyle_Design_Complete::get_redirect_url( $design );
 

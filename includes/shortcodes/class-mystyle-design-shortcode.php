@@ -40,9 +40,7 @@ abstract class MyStyle_Design_Shortcode {
 			} else {
 				// Fail silently. This can happen in the admin or if the
 				// design_id isn't set in the url.
-				//throw new MyStyle_Bad_Request_Exception(
-				//        'Design not found'
-				//    );
+				// throw new MyStyle_Bad_Request_Exception('Design not found');
 			}
 		}
 

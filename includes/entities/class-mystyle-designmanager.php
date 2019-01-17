@@ -73,7 +73,6 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			}
 		}
 		// ------------ END SECURITY CHECK ------------ //
-
 		return $design;
 	}
 

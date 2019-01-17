@@ -13,7 +13,7 @@
     "squizlabs/php_codesniffer": "*",
     "wp-coding-standards/wpcs": "^0.14",
     "phpunit/phpunit": "6.*",
-	"wimg/php-compatibility": "^8.0",
+    "wimg/php-compatibility": "^8.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
   },
   "scripts": {
@@ -24,7 +24,7 @@
       "phpcs -s -p ."
     ],
     "phpcbf": [
-      "phpcbf -p"
+      "phpcbf -p ."
     ]
   },
   "extra": {

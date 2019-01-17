@@ -2,187 +2,187 @@
 h2.mystyle-admin-title,
 h2.mytyle-admin-title /* typoed version (for backwards compatibilty with mystyle addons) */
 {
-    background-color: #2288CC;
-    padding: 10px !important;
-    border-left: 5px solid #12486C;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0,0,0,.3);
-    font-weight: bolder !important;
-    margin-top: 35px !important;
-    margin-bottom: 15px !important;
+	background-color: #2288CC;
+	padding: 10px !important;
+	border-left: 5px solid #12486C;
+	color: white;
+	box-shadow: 0 2px 6px rgba(0,0,0,.3);
+	font-weight: bolder !important;
+	margin-top: 35px !important;
+	margin-bottom: 15px !important;
 }
 
 div#icon-options-general.icon100, /* for backwards compatibility */
 span#mystyle-icon-general.icon100 {
-    background: url( '../images/mystyle-logo-v2-100x100.png' );
-    display: inline-block;
-    height: 100px;
-    width: 100px;
-    position: relative;
-    margin-top: -35px;
-    margin-bottom: -26px;
-    margin-left: -10px;
+	background: url( '../images/mystyle-logo-v2-100x100.png' );
+	display: inline-block;
+	height: 100px;
+	width: 100px;
+	position: relative;
+	margin-top: -35px;
+	margin-bottom: -26px;
+	margin-left: -10px;
 }
 
 .mystyle-notice {
-    background: #fff;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-    margin: 5px 0 2px;
-    padding: 1px 12px;
+	background: #fff;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	margin: 5px 0 2px;
+	padding: 1px 12px;
 }
 .mystyle-notice p {
-    margin: 0.5em 0;
-    padding: 2px;
+	margin: 0.5em 0;
+	padding: 2px;
 }
 
 /* MyStyle Toggle/Panel Rules */
 .mystyle-toggle {
-    cursor: pointer;
-    white-space: nowrap;
-    min-width: 130px;
+	cursor: pointer;
+	white-space: nowrap;
+	min-width: 130px;
 }
 
 .mystyle-toggle.section-title,
 #mystyle_product_data .mystyle-toggle.section-title {
-    display: block;
+	display: block;
 }
 
 .mystyle-toggle:hover {
-    white-space: nowrap;
-    min-width: 130px;
+	white-space: nowrap;
+	min-width: 130px;
 }
 .mystyle-toggle-link {
-    display: inline-block;
-    height: 2em;
-    float: left;
-    width: 80px;
+	display: inline-block;
+	height: 2em;
+	float: left;
+	width: 80px;
 }
 .mystyle-toggle-handle {
-    font-family: inherit;
-    color: red;
-    display: inline-block;
-    float: left;
-    margin-left: 2em;
-    width: 10px;
+	font-family: inherit;
+	color: red;
+	display: inline-block;
+	float: left;
+	margin-left: 2em;
+	width: 10px;
 }
 .mystyle-toggle-handle:after {
-    font-family: dashicons;
-    font-weight: 400;
-    font-size: 20px;
-    color: #a0a5aa;
-    content: '\f140';
+	font-family: dashicons;
+	font-weight: 400;
+	font-size: 20px;
+	color: #a0a5aa;
+	content: '\f140';
 }
 .mystyle-toggle-handle.mystyle-closed::after {content: '\f142';}
 .mystyle-panel {clear: both;}
 
 .mystyle-clear {
-    clear:both;
+	clear:both;
 }
 
 .mystyle-spacer {
-    height: 40px;
-    display: block;
+	height: 40px;
+	display: block;
 }
 
 /* WooCommerce Product Admin Page */
 #mystyle_product_data h3 {
-    text-indent: 15px;
+	text-indent: 15px;
 }
 
 #mystyle_product_data.woocommerce_options_panel p.form-field,
 #mystyle_product_data.woocommerce_options_panel fieldset.form-field,
 #mystyle_product_data.woocommerce_options_panel p,
 #mystyle_product_data.woocommerce_options_panel fieldset {
-    margin-left: 20px;
+	margin-left: 20px;
 }
 
 #mystyle_product_data.woocommerce_options_panel p.description {
-    text-align: center;
-    display: block;
+	text-align: center;
+	display: block;
 }
 
 #mystyle_product_data .mystyle-toggle {
-    margin: 0 1em;
-    padding: 0 1em;
-    background-color: #F2F2F2;
-    overflow: hidden;
-    height: 2em;
+	margin: 0 1em;
+	padding: 0 1em;
+	background-color: #F2F2F2;
+	overflow: hidden;
+	height: 2em;
 }
 #mystyle_product_data .mystyle-toggle-link {
-    line-height: 2;
+	line-height: 2;
 }
 #mystyle_product_data .mystyle-toggle-handle {
-    line-height: 1.2;
-    float: right;
+	line-height: 1.2;
+	float: right;
 }
 
 .mystyle-admin-box {
-    padding: 20px 50px;
-    background-color: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,.3);
-    border-top: 5px solid #2288CC;
+	padding: 20px 50px;
+	background-color: white;
+	box-shadow: 0 2px 8px rgba(0,0,0,.3);
+	border-top: 5px solid #2288CC;
 }
 
 .mystyle-admin-box.warning {
-    border-top-color: #ffb900;
+	border-top-color: #ffb900;
 }
 
 /* MyStyle Add-Ons Page */
 .mystyle_page_mystyle_addons ul.products {
-    overflow: hidden;
+	overflow: hidden;
 }
 .mystyle_page_mystyle_addons ul.products li {
-    width: 300px;
-    float: left;
-    margin-right: 1em;
+	width: 300px;
+	float: left;
+	margin-right: 1em;
 }
 .mystyle_page_mystyle_addons li a h3 {
-    background: #fff none repeat scroll 0 0;
-    margin: 0 !important;
-    padding: 20px !important;
-    color: #23282d;
-    font-size: 1.3em;
-    margin: 1em 0;
-    border-bottom: 1px solid #f1f1f1;
+	background: #fff none repeat scroll 0 0;
+	margin: 0 !important;
+	padding: 20px !important;
+	color: #23282d;
+	font-size: 1.3em;
+	margin: 1em 0;
+	border-bottom: 1px solid #f1f1f1;
 }
 
 .mystyle_page_mystyle_addons li a:hover,
 .mystyle_page_mystyle_addons li a:hover h3 {
-    color: #2288CC;
+	color: #2288CC;
 }
 
 .mystyle_page_mystyle_addons ul.products li a {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    background: #f5f5f5 none repeat scroll 0 0;
-    border: 1px solid #ddd;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	background: #f5f5f5 none repeat scroll 0 0;
+	border: 1px solid #ddd;
 }
 .mystyle_page_mystyle_addons ul.products li a:hover {
-    background: #ffffff none repeat scroll 0 0;
+	background: #ffffff none repeat scroll 0 0;
 }
 .mystyle_page_mystyle_addons ul.products li a img,
 .mystyle_page_mystyle_addons ul.products li a p {
-    margin: 1em;
+	margin: 1em;
 }
 
 .mystyle_page_mystyle_addons ul.products li a img {
-    margin: 0;
-    padding: 5%;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 5%;
+	box-sizing: border-box;
 }
 
 .mystyle_page_mystyle_addons ul.products li a p {
-    font-family: "Open Sans",sans-serif;
-    color: #444;
-    border-top: 1px solid #f1f1f1;
-    margin-top: 0;
-    padding-top: 1em;
-    min-height: 8em;
+	font-family: "Open Sans",sans-serif;
+	color: #444;
+	border-top: 1px solid #f1f1f1;
+	margin-top: 0;
+	padding-top: 1em;
+	min-height: 8em;
 }
 .mystyle_page_mystyle_addons ul.products li img {
-    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
-    max-width: 100%;
+	box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
+	max-width: 100%;
 }
