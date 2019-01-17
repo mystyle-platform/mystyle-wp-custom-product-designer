@@ -14,11 +14,15 @@
     "wp-coding-standards/wpcs": "^0.14",
     "phpunit/phpunit": "6.*",
     "wimg/php-compatibility": "^8.0",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
+    "phpunit/php-code-coverage": "^5.3"
   },
   "scripts": {
     "test": [
       "phpunit"
+    ],
+	"code-coverage": [
+      "phpunit --coverage-html coverage/"
     ],
     "phpcs": [
       "phpcs -s -p ."
@@ -30,6 +34,7 @@
   "extra": {
     "scripts-description": {
       "test": "Run unit tests",
+	  "code-coverage": "Analyze code coverage.",
       "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
       "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
     }

@@ -5,8 +5,9 @@ nbproject
 # OSX
 .DS_Store
 
-# Config
+# MyStyle
 config.php
+/coverage
 
 # Composer
 /vendor/
