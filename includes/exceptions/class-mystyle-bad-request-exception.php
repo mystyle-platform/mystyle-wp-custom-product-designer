@@ -1,8 +1,5 @@
 <?php
-
 /**
- * MyStyle_Bad_Request_Exception class.
- *
  * The MyStyle_Bad_Request_Exception class is a class for throwing exceptions
  * when the plugin receives bad or invalid input.
  *
@@ -10,6 +7,10 @@
  *
  * @package MyStyle
  * @since 3.1.3
+ */
+
+/**
+ * MyStyle_Bad_Request_Exception class.
  */
 class MyStyle_Bad_Request_Exception extends MyStyle_Exception {
 

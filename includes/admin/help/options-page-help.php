@@ -1,21 +1,22 @@
 <?php
-
 /**
  * Functions for rendering the MyStyle contextual help for the options page
  * within the WordPress Administrator.
+ *
  * @package MyStyle
  * @since 0.1.0
  */
 
 /**
  * Add help for the mystyle options page into the WordPress admin help system.
+ *
  * @param string $contextual_help The default contextual help that our
  * function is going to replace.
  * @param string $screen_id Used to identify the page that we are on.
  * @param string $screen Used to access the elements of the current page.
  * @return string The new contextual help.
  */
-function mystyle_options_page_help($contextual_help, $screen_id, $screen) {
+function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
 	$overview_content = '
     <h1>MyStyle Custom Product Designer Help</h1>
     <p>Need help using the MyStyle Custom Product Designer plugin? Use the tabs
@@ -48,7 +49,7 @@ function mystyle_options_page_help($contextual_help, $screen_id, $screen) {
 	$shortcodes_content = '
     <h2>Shortcodes</h2>
     <p>
-        The MyStyle Custom Product Designer adds several Wordpresss
+        The MyStyle Custom Product Designer adds several WordPress
         <a href="https://codex.wordpress.org/shortcode" target="_blank" title="Shortcodes">shortcodes</a>.
         These shortcodes can be inserted within your content, theme files,
         widgets, etc.
@@ -87,32 +88,40 @@ function mystyle_options_page_help($contextual_help, $screen_id, $screen) {
     <a href="http://www.mystyleplatform.com/mystyle-personalization-plugin-wordpress-woo-commerce/" target="_blank" title="mystyleplatform.com">mystyleplatform.com</a><br/>
     ';
 
-	// Overview tab
-	$screen->add_help_tab(array(
-		'id' => 'mystyle_overview',
-		'title' => 'Overview',
-		'content' => $overview_content
-	));
-	// Installation tab
-	$screen->add_help_tab(array(
-		'id' => 'mystyle_installation',
-		'title' => 'Installation',
-		'content' => $installation_content
-	));
-	// Shortcodes tab
-	$screen->add_help_tab(array(
-		'id' => 'mystyle_shortcodes',
-		'title' => 'Shortcodes',
-		'content' => $shortcodes_content
-	));
-	// Troubleshooting tab
-	$screen->add_help_tab(array(
-		'id' => 'mystyle_troubleshooting',
-		'title' => 'Troubleshooting',
-		'content' => $troubleshooting_content
-	));
+	// Overview tab.
+	$screen->add_help_tab(
+		array(
+			'id'      => 'mystyle_overview',
+			'title'   => 'Overview',
+			'content' => $overview_content,
+		)
+	);
+	// Installation tab.
+	$screen->add_help_tab(
+		array(
+			'id'      => 'mystyle_installation',
+			'title'   => 'Installation',
+			'content' => $installation_content,
+		)
+	);
+	// Shortcodes tab.
+	$screen->add_help_tab(
+		array(
+			'id'      => 'mystyle_shortcodes',
+			'title'   => 'Shortcodes',
+			'content' => $shortcodes_content,
+		)
+	);
+	// Troubleshooting tab.
+	$screen->add_help_tab(
+		array(
+			'id'      => 'mystyle_troubleshooting',
+			'title'   => 'Troubleshooting',
+			'content' => $troubleshooting_content,
+		)
+	);
 
-	$screen->set_help_sidebar($sidebar_content);
+	$screen->set_help_sidebar( $sidebar_content );
 
 	return $contextual_help;
 }

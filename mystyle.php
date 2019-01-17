@@ -1,58 +1,63 @@
 <?php
-
-/*
-  Plugin Name: MyStyle
-  Plugin URI: http://www.mystyleplatform.com
-  Description: The MyStyle Custom Product Designer is a simple plugin that allows your customers to customize products in WooCommerce.
-  Version: 3.7.0
-  WC requires at least: 2.2.0
-  WC tested up to: 3.4.5
-  Author: mystyleplatform
-  Author URI: www.mystyleplatform.com
-  License: GPL v3
-
-  MyStyle Custom Product Designer
-  Copyright (c) 2015 MyStyle <contact@mystyleplatform.com>
-
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
+ * Plugin Name: MyStyle
+ * Plugin URI: http://www.mystyleplatform.com
+ * Description: The MyStyle Custom Product Designer is a simple plugin that allows your customers to customize products in WooCommerce.
+ * Version: 3.7.0
+ * WC requires at least: 2.2.0
+ * WC tested up to: 3.4.5
+ * Author: mystyleplatform
+ * Author URI: www.mystyleplatform.com
+ * License: GPL v3
+ *
+ * MyStyle Custom Product Designer
+ * Copyright (c) 2019 MyStyle <contact@mystyleplatform.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
  * @package MyStyle
  * @since 0.1.0
  */
-if (!defined('ABSPATH')) {
+
+if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-if (!class_exists('MyStyle')) :
+if ( ! class_exists( 'MyStyle' ) ) :
 
 	/**
 	 * Main MyStyle Class.
 	 */
 	final class MyStyle {
 
-		public static $STANDARD_DATE_FORMAT = 'Y-m-d H:i:s';
+		/**
+		 * The standard date format for the plugin.
+		 *
+		 * @var string
+		 */
+		const STANDARD_DATE_FORMAT = 'Y-m-d H:i:s';
 
 		/**
-		 * Singleton class instance
+		 * Singleton class instance.
+		 *
 		 * @var MyStyle
 		 */
 		private static $instance;
 
 		/**
 		 * Our WooCommerce interface.
+		 *
 		 * @var MyStyle_WC_Interface
 		 */
 		private $wc;
@@ -71,47 +76,47 @@ if (!class_exists('MyStyle')) :
 		 * Define MYSTYLE Constants.
 		 */
 		private function define_constants() {
-			define('MYSTYLE_PATH', plugin_dir_path(__FILE__));
-			define('MYSTYLE_INCLUDES', MYSTYLE_PATH . 'includes/');
-			define('MYSTYLE_BASENAME', plugin_basename(__FILE__));
-			define('MYSTYLE_URL', plugins_url('/', __FILE__));
-			define('MYSTYLE_ASSETS_URL', MYSTYLE_URL . 'assets/');
-			define('MYSTYLE_TEMPLATES', MYSTYLE_PATH . 'templates/');
+			define( 'MYSTYLE_PATH', plugin_dir_path( __FILE__ ) );
+			define( 'MYSTYLE_INCLUDES', MYSTYLE_PATH . 'includes/' );
+			define( 'MYSTYLE_BASENAME', plugin_basename( __FILE__ ) );
+			define( 'MYSTYLE_URL', plugins_url( '/', __FILE__ ) );
+			define( 'MYSTYLE_ASSETS_URL', MYSTYLE_URL . 'assets/' );
+			define( 'MYSTYLE_TEMPLATES', MYSTYLE_PATH . 'templates/' );
 
-			// Include the optional config.php file
-			if (file_exists(MYSTYLE_PATH . 'config.php')) {
-				include_once( MYSTYLE_PATH . 'config.php');
-			}
-
-			if (!defined('MYSTYLE_SERVER')) {
-				define('MYSTYLE_SERVER', 'http://api.ogmystyle.com/');
-			}
-			if (!defined('MYSTYLE_VERSION')) {
-				define('MYSTYLE_VERSION', '3.7.0');
-			}
-			if (!defined('MYSTYLE_TEMPLATE_DEBUG_MODE')) {
-				define('MYSTYLE_TEMPLATE_DEBUG_MODE', false);
+			// Include the optional config.php file.
+			if ( file_exists( MYSTYLE_PATH . 'config.php' ) ) {
+				include_once MYSTYLE_PATH . 'config.php';
 			}
 
-			define('MYSTYLE_OPTIONS_NAME', 'mystyle_options');
-			define('MYSTYLE_NOTICES_NAME', 'mystyle_notices');
-			define('MYSTYLE_NOTICES_DISMISSED_NAME', 'mystyle_notices_dismissed');
-			define('MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id');
-			define('MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id');
+			if ( ! defined( 'MYSTYLE_SERVER' ) ) {
+				define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' );
+			}
+			if ( ! defined( 'MYSTYLE_VERSION' ) ) {
+				define( 'MYSTYLE_VERSION', '3.7.0' );
+			}
+			if ( ! defined( 'MYSTYLE_TEMPLATE_DEBUG_MODE' ) ) {
+				define( 'MYSTYLE_TEMPLATE_DEBUG_MODE', false );
+			}
+
+			define( 'MYSTYLE_OPTIONS_NAME', 'mystyle_options' );
+			define( 'MYSTYLE_NOTICES_NAME', 'mystyle_notices' );
+			define( 'MYSTYLE_NOTICES_DISMISSED_NAME', 'mystyle_notices_dismissed' );
+			define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
+			define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' );
 		}
 
 		/**
 		 * Hook into actions and filters.
 		 */
 		private function init_hooks() {
-			//plugin setup and registrations
-			register_activation_hook(__FILE__, array('MyStyle', 'activate'));
-			register_deactivation_hook(__FILE__, array('MyStyle', 'deactivate'));
-			register_uninstall_hook(__FILE__, array('MyStyle', 'uninstall'));
+			// Plugin setup and registrations.
+			register_activation_hook( __FILE__, array( 'MyStyle', 'activate' ) );
+			register_deactivation_hook( __FILE__, array( 'MyStyle', 'deactivate' ) );
+			register_uninstall_hook( __FILE__, array( 'MyStyle', 'uninstall' ) );
 
-			add_action('init', array($this, 'check_version'), 10, 0);
-			add_action('init', array($this, 'register_shortcodes'), 10, 0);
-			add_action('admin_init', array($this, 'check_woocommerce'), 10, 0);
+			add_action( 'init', array( $this, 'check_version' ), 10, 0 );
+			add_action( 'init', array( $this, 'register_shortcodes' ), 10, 0 );
+			add_action( 'admin_init', array( $this, 'check_woocommerce' ), 10, 0 );
 		}
 
 		/**
@@ -119,58 +124,58 @@ if (!class_exists('MyStyle')) :
 		 */
 		private function includes() {
 
-			require_once( MYSTYLE_PATH . 'tests/qunit.php' );
-			require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php' );
-			require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-bad-request-exception.php' );
-			require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-forbidden-exception.php' );
-			require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-not-found-exception.php' );
-			require_once( MYSTYLE_INCLUDES . 'exceptions/class-mystyle-unauthorized-exception.php' );
-			require_once( MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-wc-interface.php' );
-			require_once( MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-abstract-wc.php' );
-			require_once( MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-wc.php' );
-			require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-access.php' );
-			require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-pager.php' );
-			require_once( MYSTYLE_INCLUDES . 'class-mystyle-options.php' );
+			require_once MYSTYLE_PATH . 'tests/qunit.php';
+			require_once MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php';
+			require_once MYSTYLE_INCLUDES . 'exceptions/class-mystyle-bad-request-exception.php';
+			require_once MYSTYLE_INCLUDES . 'exceptions/class-mystyle-forbidden-exception.php';
+			require_once MYSTYLE_INCLUDES . 'exceptions/class-mystyle-not-found-exception.php';
+			require_once MYSTYLE_INCLUDES . 'exceptions/class-mystyle-unauthorized-exception.php';
+			require_once MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-wc-interface.php';
+			require_once MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-abstractwc.php';
+			require_once MYSTYLE_INCLUDES . 'woocommerce/class-mystyle-wc.php';
+			require_once MYSTYLE_INCLUDES . 'model/class-mystyle-access.php';
+			require_once MYSTYLE_INCLUDES . 'model/class-mystyle-pager.php';
+			require_once MYSTYLE_INCLUDES . 'class-mystyle-options.php';
 
-			//Entities
-			require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entity.php' );
-			require_once( MYSTYLE_INCLUDES . 'db/class-mystyle-entitymanager.php' );
-			require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-session.php' );
-			require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionmanager.php' );
-			require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php' );
-			require_once( MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php' );
+			// Entities.
+			require_once MYSTYLE_INCLUDES . 'db/class-mystyle-entity.php';
+			require_once MYSTYLE_INCLUDES . 'db/class-mystyle-entitymanager.php';
+			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-session.php';
+			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionmanager.php';
+			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php';
+			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php';
 
-			require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-user.php' );
-			require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-product.php' );
-			require_once( MYSTYLE_INCLUDES . 'model/class-mystyle-order.php' );
-			require_once( MYSTYLE_INCLUDES . 'api/interface-mystyle-api.php' );
-			require_once( MYSTYLE_INCLUDES . 'api/class-mystyle-api.php' );
-			require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php' );
-			require_once( MYSTYLE_INCLUDES . 'pages/class-mystyle-design-profile-page.php' );
-			require_once( MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php' );
-			require_once( MYSTYLE_INCLUDES . 'class-mystyle-install.php' );
-			require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php' );
-			require_once( MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php' );
-			require_once( MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php' );
-			require_once( MYSTYLE_INCLUDES . 'class-mystyle-user-interface.php' );
-			require_once( MYSTYLE_INCLUDES . 'class-mystyle-order-listener.php' );
+			require_once MYSTYLE_INCLUDES . 'model/class-mystyle-user.php';
+			require_once MYSTYLE_INCLUDES . 'model/class-mystyle-product.php';
+			require_once MYSTYLE_INCLUDES . 'model/class-mystyle-order.php';
+			require_once MYSTYLE_INCLUDES . 'api/interface-mystyle-api.php';
+			require_once MYSTYLE_INCLUDES . 'api/class-mystyle-api.php';
+			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php';
+			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-profile-page.php';
+			require_once MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php';
+			require_once MYSTYLE_INCLUDES . 'class-mystyle-install.php';
+			require_once MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php';
+			require_once MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice-controller.php';
+			require_once MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php';
+			require_once MYSTYLE_INCLUDES . 'class-mystyle-user-interface.php';
+			require_once MYSTYLE_INCLUDES . 'class-mystyle-order-listener.php';
 
 			// We include this frontend class here because it is used by our
 			// shortcode classes (which are used botn on the frontend and the admin.
-			require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php' );
+			require_once MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php';
 
-			// Shortcode includes
-			require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php' );
-			require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php' );
-			require_once( MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php' );
+			// Shortcode includes.
+			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php';
+			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php';
+			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php';
 
-			require_once( MYSTYLE_PATH . 'functions.php' );
+			require_once MYSTYLE_PATH . 'functions.php';
 
-			if ($this->is_request('admin')) {
+			if ( $this->is_request( 'admin' ) ) {
 				$this->admin_includes();
 			}
 
-			if ($this->is_request('frontend')) {
+			if ( $this->is_request( 'frontend' ) ) {
 				$this->frontend_includes();
 			}
 		}
@@ -179,22 +184,22 @@ if (!class_exists('MyStyle')) :
 		 * Include required admin files.
 		 */
 		private function admin_includes() {
-			require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php' );
-			require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php' );
-			require_once( MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php' );
-			require_once( MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php' );
-			require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php' );
-			require_once( MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php' );
+			require_once MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php';
+			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php';
+			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php';
+			require_once MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php';
+			require_once MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php';
+			require_once MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php';
 		}
 
 		/**
 		 * Include required frontend files.
 		 */
 		private function frontend_includes() {
-			require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-cart.php' );
-			require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-design-complete.php' );
-			require_once( MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php' );
-			require_once( MYSTYLE_INCLUDES . 'frontend/class-mystyle-configur8.php' );
+			require_once MYSTYLE_INCLUDES . 'frontend/class-mystyle-cart.php';
+			require_once MYSTYLE_INCLUDES . 'frontend/class-mystyle-design-complete.php';
+			require_once MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php';
+			require_once MYSTYLE_INCLUDES . 'frontend/class-mystyle-configur8.php';
 		}
 
 		/**
@@ -202,54 +207,54 @@ if (!class_exists('MyStyle')) :
 		 */
 		private function init_singletons() {
 
-			if (!defined('DOING_PHPUNIT')) {
-				//set up the third party interfaces
-				$this->set_WC(new MyStyle_WC());
+			if ( ! defined( 'DOING_PHPUNIT' ) ) {
+				// Set up the third party interfaces.
+				$this->set_WC( new MyStyle_WC() );
 			}
 
 			MyStyle_User_Interface::get_instance();
 			MyStyle_Order_Listener::get_instance();
 
-			if ($this->is_request('admin')) {
-				//---- ADMIN ----//
-				//set up the notifications system.
+			if ( $this->is_request( 'admin' ) ) {
+				// ---- ADMIN ---- //
+				// Set up the notifications system.
 				MyStyle_Notice_Controller::get_instance();
 
-				//set up the main admin class.
+				// Set up the main admin class.
 				MyStyle_Admin::get_instance();
 
-				//set up the options page
+				// Set up the options page.
 				MyStyle_Options_Page::get_instance();
-				add_filter('contextual_help', 'mystyle_help_dispatch', 10, 3);
+				add_filter( 'contextual_help', 'mystyle_help_dispatch', 10, 3 );
 
-				//set up the addons page
+				// Set up the addons page.
 				MyStyle_Addons_Page::get_instance();
 
-				//hook into the WooCommerce admin
+				// Hook into the WooCommerce admin.
 				MyStyle_WooCommerce_Admin_Product::get_instance();
 				MyStyle_WooCommerce_Admin_Order::get_instance();
 
-				//load qunit
-				if (( defined('MYSTYLE_LOAD_QUNIT') ) && ( MYSTYLE_LOAD_QUNIT == true )) {
-					add_action('admin_footer', 'mystyle_load_qunit');
+				// Load qunit.
+				if ( ( defined( 'MYSTYLE_LOAD_QUNIT' ) ) && ( true === MYSTYLE_LOAD_QUNIT ) ) {
+					add_action( 'admin_footer', 'mystyle_load_qunit' );
 				}
 			}
 
-			if ($this->is_request('frontend')) {
-				//---- FRONT END ----//
-				if (!defined('MYSTYLE_DESIGNS_PER_PAGE')) {
-					define('MYSTYLE_DESIGNS_PER_PAGE', 25);
+			if ( $this->is_request( 'frontend' ) ) {
+				// ---- FRONT END ---- //
+				if ( ! defined( 'MYSTYLE_DESIGNS_PER_PAGE' ) ) {
+					define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 );
 				}
 
 				MyStyle_SessionHandler::get_instance();
 				MyStyle_FrontEnd::get_instance();
 				MyStyle_Cart::get_instance();
 				MyStyle_Design_Complete::get_instance();
-				$mystyle_api = new MyStyle_API(MYSTYLE_SERVER);
+				$mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
 
-				/* @var $mystyle_handoff MyStyle_Handoff */
+				/* @var $mystyle_handoff MyStyle_Handoff The MyStyle_Handoff singleton. */
 				$mystyle_handoff = MyStyle_Handoff::get_instance();
-				$mystyle_handoff->set_mystyle_api($mystyle_api);
+				$mystyle_handoff->set_mystyle_api( $mystyle_api );
 
 				MyStyle_Customize_Page::get_instance();
 				MyStyle_Design_Profile_Page::get_instance();
@@ -260,17 +265,18 @@ if (!class_exists('MyStyle')) :
 		/**
 		 * Sets the current version against the version in the db and handles any
 		 * updates.
+		 *
 		 * @todo Add unit testing for this function.
 		 */
 		public function check_version() {
-			$options = get_option(MYSTYLE_OPTIONS_NAME, array());
-			$data_version = ( array_key_exists('version', $options) ) ? $options['version'] : null;
-			if ($data_version != MYSTYLE_VERSION) {
+			$options      = get_option( MYSTYLE_OPTIONS_NAME, array() );
+			$data_version = ( array_key_exists( 'version', $options ) ) ? $options['version'] : null;
+			if ( MYSTYLE_VERSION !== $data_version ) {
 				$options['version'] = MYSTYLE_VERSION;
-				update_option(MYSTYLE_OPTIONS_NAME, $options);
-				if (!is_null($data_version)) {  //skip if not an upgrade
-					//Run the upgrader
-					MyStyle_Install::upgrade($data_version, MYSTYLE_VERSION);
+				update_option( MYSTYLE_OPTIONS_NAME, $options );
+				if ( ! is_null( $data_version ) ) {  // Skip if not an upgrade.
+					// Run the upgrader.
+					MyStyle_Install::upgrade( $data_version, MYSTYLE_VERSION );
 				}
 			}
 		}
@@ -283,10 +289,9 @@ if (!class_exists('MyStyle')) :
 		 * @todo Add unit testing for this function.
 		 */
 		public function register_shortcodes() {
-			//Register shortcodes
-			add_shortcode('mystyle_customizer', array('MyStyle_Customizer_Shortcode', 'output'));
-			add_shortcode('mystyle_design_profile', array('MyStyle_Design_Profile_Shortcode', 'output'));
-			add_shortcode('mystyle_design', array('MyStyle_Design_Shortcode', 'output'));
+			add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
+			add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
+			add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
 		}
 
 		/**
@@ -294,9 +299,9 @@ if (!class_exists('MyStyle')) :
 		 * display a notice.
 		 */
 		public function check_woocommerce() {
-			if (!$this->wc->is_installed()) {
-				$wc_missing_notice = MyStyle_Notice::create('notify_wc_missing', 'MyStyle requires WooCommerce but WooCommerce wasn\'t found. Please install and activate WooCommerce.');
-				mystyle_notice_add_to_queue($wc_missing_notice);
+			if ( ! $this->wc->is_installed() ) {
+				$wc_missing_notice = MyStyle_Notice::create( 'notify_wc_missing', 'MyStyle requires WooCommerce but WooCommerce wasn\'t found. Please install and activate WooCommerce.' );
+				mystyle_notice_add_to_queue( $wc_missing_notice );
 			}
 		}
 
@@ -322,20 +327,21 @@ if (!class_exists('MyStyle')) :
 		}
 
 		/**
-		 * Function that looks to see if any products are mystyle enabled.
+		 * Function that looks to see if any products are MyStyle enabled.
+		 *
 		 * @return boolean Returns true if at least one product is customizable.
 		 */
 		public static function site_has_customizable_products() {
 			$args = array(
-				'post_type' => 'product',
+				'post_type'   => 'product',
 				'numberposts' => 1,
-				'meta_key' => '_mystyle_enabled',
-				'meta_value' => 'yes',
+				'meta_key'    => '_mystyle_enabled',
+				'meta_value'  => 'yes',
 			);
 
-			$customizable_products = get_posts($args);
+			$customizable_products = get_posts( $args );
 
-			if (!empty($customizable_products)) {
+			if ( ! empty( $customizable_products ) ) {
 				return true;
 			} else {
 				return false;
@@ -344,15 +350,17 @@ if (!class_exists('MyStyle')) :
 
 		/**
 		 * Sets the WooCommerce interface.
+		 *
 		 * @param MyStyle_WC_Interface $mystyle_wc_interface The WooCommerce
 		 * interface.
 		 */
-		public function set_WC(MyStyle_WC_Interface $mystyle_wc_interface) {
+		public function set_WC( MyStyle_WC_Interface $mystyle_wc_interface ) {
 			$this->wc = $mystyle_wc_interface;
 		}
 
 		/**
 		 * Gets the WooCommerce interface.
+		 *
 		 * @return MyStyle_WC_Interface Returns the value of template_id.
 		 */
 		public function get_WC() {
@@ -372,11 +380,12 @@ if (!class_exists('MyStyle')) :
 
 		/**
 		 * Gets the singleton instance.
+		 *
 		 * @return MyStyle Returns the singleton instance of
 		 * this class.
 		 */
 		public static function get_instance() {
-			if (!isset(self::$instance)) {
+			if ( ! isset( self::$instance ) ) {
 				self::$instance = new self();
 			}
 
@@ -389,16 +398,18 @@ if (!class_exists('MyStyle')) :
 		 * @param  string $type admin, ajax, cron or frontend.
 		 * @return bool
 		 */
-		private function is_request($type) {
-			switch ($type) {
-				case 'admin' :
+		private function is_request( $type ) {
+			switch ( $type ) {
+				case 'admin':
 					return is_admin();
-				case 'ajax' :
-					return defined('DOING_AJAX');
-				case 'cron' :
-					return defined('DOING_CRON');
-				case 'frontend' :
-					return (!is_admin() || defined('DOING_AJAX') ) && !defined('DOING_CRON') && !defined('DOING_PHPUNIT');
+				case 'ajax':
+					return defined( 'DOING_AJAX' );
+				case 'cron':
+					return defined( 'DOING_CRON' );
+				case 'frontend':
+					return ( ! is_admin() || defined( 'DOING_AJAX' ) ) &&
+						( ! defined( 'DOING_CRON' ) ) &&
+						( ! defined( 'DOING_PHPUNIT' ) );
 			}
 		}
 
@@ -417,5 +428,5 @@ function MyStyle() {
 	return MyStyle::get_instance();
 }
 
-//Init the MyStyle singleton
+// Init the MyStyle singleton.
 MyStyle();
