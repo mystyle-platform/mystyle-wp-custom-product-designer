@@ -1,0 +1,37 @@
+{
+  "name": "mystyle-platform/mystyle-wp-custom-product-designer",
+  "description": "A simple plugin that allows your customers to customize your WooCommerce products.",
+  "homepage": "https://www.mystyleplatform.com",
+  "type": "wordpress-plugin",
+  "license": "GPL-3.0-or-later",
+  "prefer-stable": true,
+  "minimum-stability": "dev",
+  "require": {
+    "composer/installers": "~1.2"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "*",
+    "wp-coding-standards/wpcs": "^0.14",
+    "phpunit/phpunit": "6.*",
+	"wimg/php-compatibility": "^8.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
+  },
+  "scripts": {
+    "test": [
+      "phpunit"
+    ],
+    "phpcs": [
+      "phpcs -s -p ."
+    ],
+    "phpcbf": [
+      "phpcbf -p"
+    ]
+  },
+  "extra": {
+    "scripts-description": {
+      "test": "Run unit tests",
+      "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
+      "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
+    }
+  }
+}

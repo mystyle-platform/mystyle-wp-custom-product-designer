@@ -1,4 +1,12 @@
+# Editors
 nbproject
-.DS_Store
-config.php
 .idea
+
+# OSX
+.DS_Store
+
+# Config
+config.php
+
+# Composer
+/vendor/

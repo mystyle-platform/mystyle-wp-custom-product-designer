@@ -178,31 +178,6 @@ class MyStyleCartTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the filter_add_to_cart_handler function when product is mystyle enabled.
-	 *
-	 * @global $product
-	 */
-	public function test_filter_add_to_cart_handler_modifies_handler_when_mystyle_enabled() {
-		global $product;
-
-		// Mock the global $post variable.
-		$product_id      = create_wc_test_product();
-		$product         = new \WC_Product_Simple( $product_id );
-		$GLOBALS['post'] = $product;
-
-		// Mock the mystyle_metadata.
-		add_filter( 'get_post_metadata', array( &$this, 'mock_mystyle_metadata' ), true, 4 );
-
-		if ( MyStyle()->get_WC()->version_compare( '2.3', '<' ) ) { // We intercept the filter and call the the handler in old versions of WC, so this test always fails.
-			// Call the function.
-			$text = MyStyle_Cart::get_instance()->filter_add_to_cart_handler( 'test_handler', $product );
-
-			// Assert that the expected text is returned.
-			$this->assertContains( 'mystyle_customizer', $text );
-		}
-	}
-
-	/**
 	 * Test the loop_add_to_cart_link function for a regular ( uncustomizable )
 	 * product.
 	 */

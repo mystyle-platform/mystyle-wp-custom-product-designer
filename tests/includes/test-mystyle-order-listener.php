@@ -88,14 +88,4 @@ class MyStyleOrderListenerTest extends WP_UnitTestCase {
 	public function mock_mystyle_metadata( $metadata, $object_id, $meta_key, $single ) {
 		return 'yes';
 	}
-
-	/**
-	 * Test the add_mystyle_order_item_meta function.
-	 *
-	 * @todo Get this test to work.  See the notes in Google Docs.
-	 */
-	public function test_add_mystyle_order_item_meta() {
-		// TODO.
-	}
-
 }
