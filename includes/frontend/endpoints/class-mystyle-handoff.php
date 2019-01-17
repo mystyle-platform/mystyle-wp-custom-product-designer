@@ -257,7 +257,7 @@ class MyStyle_Handoff {
 				$html = $this->build_view( 'MyStyle Demo', $cart->get_cart_url(), false );
 			} else {
 				$link = MyStyle_Design_Complete::get_redirect_url( $this->design );
-				if ( null !== $link ) {
+				if ( ! empty( $link ) ) {
 					// Redirect to the redirect url.
 					$html = '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . $link . '"></head><body></body></html>';
 				} else {
