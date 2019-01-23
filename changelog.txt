@@ -1,3 +1,13 @@
+= 3.8.0 =
+
+* Fixed all code style issues flagged by PHPCS.
+* Fixed numerous security issues flagged by PHPCS.
+* Added code coverage analysis tools.
+* Added the ability to set per-product design complete redirect urls (@webbninja)
+* Added contributing and issue submission guidelines for GitHub.
+* Updated the readme.txt to reflect that the plugin has been tested with up to WP 5.0.3.
+* Updated the 'WC tested up to' variable to reflect that the plugin has been tested with up to WooCommerce 3.5.4.
+
 = 3.7.0 =
 
 * Form Integration Config feature is now functional.
