@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <figure>
 	<a href="<?php echo esc_attr( $design_profile_url ); ?>">
-		<?php echo esc_html( $product_img_tag ); ?>
+		<?php echo $product_img_tag; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 	</a>
 
 	<figcaption style="font-size: 0.5em">
