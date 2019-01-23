@@ -222,7 +222,7 @@ class MyStyle_Options_Page {
 					<?php do_settings_sections( 'mystyle_advanced_settings' ); ?>
 				</div>
 				<p class="submit">
-d					<input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Save Changes' ); ?>" />
+					<input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Save Changes' ); ?>" />
 				</p>
 			</form>
 			<br/>
