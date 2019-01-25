@@ -1,5 +1,5 @@
 /**
- * Toggles a panel so that it's contents can be seen or hidden.
+ * Toggles a panel so that its contents can be seen or hidden.
  *
  * @param {integer} id The id of the panel being toggled.
  * @returns {Boolean} Returns false;
