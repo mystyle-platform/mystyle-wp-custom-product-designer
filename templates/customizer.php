@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <script type="text/javascript">
 	// Code for fullscreen functionality.
-
 	var fullscreen = false;
 
 	var onClickFullScreen = function () {
@@ -43,12 +42,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 </script>
 <script type="text/javascript">
 	// Code for viewport rewriting.
+	// Note that this only seems to work for mobile browsers and emulators.
 	var disableViewportRewrite = <?php echo ( $disable_viewport_rewrite ) ? 'true' : 'false'; ?>;
+	var settingOrientation = false;
+
+	var noLongerSettingOrientation = function() {
+		window.settingOrientation = false;
+	};
 
 	/**
 	 * Calculates the ideal orientation for the app (either "portrait" or
 	 * "landscape").
-	 * 
+	 *
 	 * @returns {string} Returns the ideal orientation for the app ("portait" or
 	 * "landscape").
 	 */
@@ -61,8 +66,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			orientation = 'portrait';
 		}
 
-		// Console.log( winWidth + ':' + winHeight + ' (' + orientation + ' )');.
-
 		return orientation;
 	};
 
@@ -72,21 +75,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	 * Customizer.
 	 */
 	var setOrientation = function () {
+		window.settingOrientation = true;
 		var orientation = calculateOrientation();
 
-		if ( disableViewportRewrite ) {
+		if ( disableViewportRewrite || ( jQuery( window ).width() > 550 ) ) {
 			return;
 		}
 
 		var viewportSettings;
 		if ( orientation === 'landscape' ) { // Landscape.
 
-			var scale = jQuery( 'body' ).width() / 1000;
+			var scale = jQuery( window ).width() / 1000;
 
 			viewportSettings = 'initial-scale=' + scale + ', maximum-scale=' + scale;
 
 		} else { // Portrait.
-			var scale = jQuery( 'body' ).width() / 550;
+			var scale = jQuery( window ).width() / 550;
 
 			viewportSettings = 'initial-scale=' + scale + ', maximum-scale=' + scale;
 		}
@@ -94,11 +98,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 		// Set the viewport.
 		jQuery( 'meta[name="viewport"]' ).attr('content', viewportSettings);
 
+		setTimeout(
+			window.noLongerSettingOrientation,
+			1000
+		);
 	};
 
 	// ON READY.
 	jQuery( window ).ready(function () {
-		setOrientation( 'on ready' );
+		setOrientation();
+	});
+	jQuery( window ).resize(function () {
+		if ( ! window.settingOrientation ) {
+			setOrientation();
+		}
 	});
 
 </script>
