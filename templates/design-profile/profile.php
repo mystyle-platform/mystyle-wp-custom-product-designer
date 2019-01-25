@@ -66,6 +66,9 @@ if (!defined('ABSPATH')) {
 		    	<?php 
 					$mystyle_app_id = MyStyle_Options::get_api_key();
 					$out = '';
+					remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 );
+        			add_action( 'woocommerce_before_shop_loop_item', array('MyStyle_Customizer_Shortcode', 'modify_link_for_product_link'), 10, 1);
+
 					add_filter('woocommerce_shortcode_products_query', array('MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query'), 10, 1);
 			      	remove_action( 'woocommerce_after_shop_loop',  'woocommerce_catalog_ordering', 10 );
 			      	remove_action( 'woocommerce_after_shop_loop',  'woocommerce_result_count', 20 );

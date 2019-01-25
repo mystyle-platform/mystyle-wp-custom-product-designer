@@ -25,6 +25,29 @@ abstract class MyStyle_Customizer_Shortcode {
 	}
 
 	/**
+	 * Modify the WooCommerce products link to only include MyStyle
+	 */
+	public static function modify_link_for_product_link() {
+		global $product;
+		$customize_page_id = MyStyle_Customize_Page::get_id();
+
+	    $product_id = $product->get_id();
+		$post_data = array(
+			'quantity' => 1,
+			'add-to-cart' => $product_id,
+		);
+
+		$passthru['post'] = $post_data;
+		$passthru_encoded = base64_encode(json_encode($passthru));
+		$customize_args = array(
+			'product_id' => $product_id,
+			'h' => $passthru_encoded,
+		);
+		$customizer_url = add_query_arg($customize_args, get_permalink($customize_page_id));
+	    echo '<a href="' . $customizer_url . '" class="woocommerce-LoopProduct-link">';
+	}
+
+	/**
 	 * Output the customizer shortcode.
 	 */
 	public static function output() {
