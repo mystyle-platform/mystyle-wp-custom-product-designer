@@ -113,6 +113,13 @@ iframe#customizer-iframe {
 	}
 }
 
+/* Fixes the margins for the Customize page for Divi on mobile. */
+@media (max-width: 600px) {
+    body.mystyle-customize #et-main-area > #main-content > .container {
+        width: calc(100vw - 10px);
+    }
+}
+
 /* MyStyle Design Profile Page */
 body.mystyle-design-profile img#mystyle-design-profile-img {
 	display: block;
