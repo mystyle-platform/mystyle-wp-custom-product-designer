@@ -56,8 +56,8 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 		// Call the function.
 		$output = MyStyle_Customizer_Shortcode::output();
 
-		// Assert that the output includes an iframe tag.
-		$this->assertContains( '<iframe', $output );
+		// Assert that the output includes the customizer-wrapper.
+		$this->assertContains( '<div id="customizer-wrapper">', $output );
 
 		// Assert that the expected passthru is included.
 		$expected_passthru = 'passthru=h,' . $passthru;
@@ -88,8 +88,8 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 		// Call the function.
 		$output = MyStyle_Customizer_Shortcode::output();
 
-		// Assert that the output includes an iframe tag.
-		$this->assertContains( '<iframe', $output );
+		// Assert that the output includes the customizer-wrapper.
+		$this->assertContains( '<div id="customizer-wrapper">', $output );
 
 		// Build the expected passthru.
 		$passthru          = base64_encode(
@@ -144,8 +144,8 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 		// Call the function.
 		$output = MyStyle_Customizer_Shortcode::output();
 
-		// Assert that the output includes an iframe tag.
-		$this->assertContains( '<iframe', $output );
+		// Assert that the output includes the customizer-wrapper.
+		$this->assertContains( '<div id="customizer-wrapper">', $output );
 
 		// Assert that the expected passthru is included.
 		$expected_passthru = 'passthru=h,' . $passthru;
@@ -196,8 +196,8 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 		// Call the function.
 		$output = MyStyle_Customizer_Shortcode::output();
 
-		// Assert that the output includes an iframe tag.
-		$this->assertContains( '<iframe', $output );
+		// Assert that the output includes the customizer-wrapper.
+		$this->assertContains( '<div id="customizer-wrapper">', $output );
 
 		// Assert that the expected passthru is included.
 		$expected_passthru = 'passthru=h,' . $passthru;

@@ -24,6 +24,9 @@ class MyStyle_Customize_Page {
 	public function __construct() {
 		add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
+
+		// Set the priority to 11 ( instead of the default 10 ) so that our scripts load after jQuery.
+		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_scripts' ), 11, 0 );
 	}
 
 	/**
@@ -197,6 +200,28 @@ class MyStyle_Customize_Page {
 		}
 
 		return $classes;
+	}
+
+	/**
+	 * Enqueue scripts.
+	 */
+	public function enqueue_scripts() {
+		global $post;
+
+		try {
+			if ( null !== $post ) {
+				if (
+						( self::get_id() === $post->ID ) &&
+						( isset( $_GET['product_id'] ) )
+				) {
+					wp_register_script( 'mystyle-customize', MYSTYLE_ASSETS_URL . 'js/customize.js' );
+					wp_enqueue_script( 'mystyle-customize' );
+				}
+			}
+		} catch ( MyStyle_Exception $e ) {
+			// This exception may be thrown if the Customize Page is missing.
+			// For this function, that is okay, just continue.
+		}
 	}
 
 	/**

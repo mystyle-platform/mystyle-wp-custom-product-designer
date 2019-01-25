@@ -208,6 +208,37 @@ class MyStyleCustomizePageTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the enqueue_scripts function.
+	 *
+	 * @global $post
+	 * @global $wp_scripts
+	 */
+	public function test_enqueue_scripts() {
+		global $post;
+		global $wp_scripts;
+
+		// Create the MyStyle Customize page.
+		MyStyle_Customize_Page::create();
+
+		// Create the MyStyle Design Profile page.
+		MyStyle_Design_Profile_Page::create();
+
+		// Mock the post and get vars.
+		$post               = new stdClass();
+		$post->ID           = MyStyle_Customize_Page::get_id();
+		$_GET['product_id'] = 1;
+
+		// Call the function.
+		$returned_classes = MyStyle_Customize_Page::get_instance()->enqueue_scripts();
+
+		// Assert that the customize.js script is registered.
+		$this->assertContains(
+			'mystyle-customize',
+			serialize( $wp_scripts ) // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
+		);
+	}
+
+	/**
 	 * Assert the hide_title() function.
 	 */
 	public function test_hide_title() {
