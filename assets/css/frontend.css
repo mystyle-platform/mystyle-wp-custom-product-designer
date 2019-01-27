@@ -91,11 +91,26 @@ body.mystyle-customize #customizer-close-button {
 	z-index: 10001;
 }
 
+
+body.mystyle-customize #customizer-close-button .dashicons, 
+body.mystyle-customize #customizer-close-button .dashicons-before:before {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+}
+
+.above-customizer-wrapper {
+	text-align:center;
+	margin-bottom: 15px;
+}
+
 #customizer-close-button,
 #customizer-fullscreen-button,
 #customizer-fullscreen-button label {
 	cursor: pointer;
+	font-size: 16px;
 }
+
 
 .mystyle-fullscreen-hidden {
 	display: none;
@@ -121,10 +136,20 @@ iframe#customizer-iframe {
 }
 
 /* Fixes the margins for the Customize page for Divi on mobile. */
+
+body.mystyle-customize #et-main-area > #main-content > .container {
+	width: auto;
+	max-width: 100%;
+}
+
 @media (max-width: 600px) {
     body.mystyle-customize #et-main-area > #main-content > .container {
         width: calc(100vw - 10px);
     }
+}
+
+.mystyle-customize #et-main-area h1.entry-title.main_title {
+    text-align: center;
 }
 
 /* MyStyle Design Profile Page */
