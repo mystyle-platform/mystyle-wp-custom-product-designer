@@ -5,14 +5,7 @@ ul.mystyle-button-group {
 	text-align: center;
 	margin: 0;
 }
-
 ul.mystyle-button-group li {display: inline-block;}
-
-/** hide unnecessary links in footer for better design thru conversion **/
-body.mystyle-customize .footer-widget, 
-body.mystyle-customize li.et-social-icon.et-social-rss {
-    display: none;
-}
 
 .mystyle-centered {
 	margin-left: auto;
