@@ -43,6 +43,18 @@ class MyStyle_Product {
 	}
 
 	/**
+	 * Static function to instantiate a MyStyle_Product from a product_id. Call
+	 * using `MyStyle_Product::get_by_id( $product_id );`.
+	 *
+	 * @param integer $product_id The id of the product that you want to get.
+	 */
+	public static function get_by_id( $product_id ) {
+		$instance = new self( new \WC_Product( $product_id ) );
+
+		return $instance;
+	}
+
+	/**
 	 * Returns the underlying WC_Product.
 	 *
 	 * @return \WC_Product The WC_Product that this class wraps.
@@ -135,6 +147,33 @@ class MyStyle_Product {
 		}
 
 		return $configur8_enabled;
+	}
+
+	/**
+	 * Method that gets the parent design that the product was spawned
+	 * (upgraded) from. If the product wasn't spawned from a design, this method
+	 * just returns null.
+	 *
+	 * @return MyStyle_Design|null Returns the design that spawned this product
+	 * or null if no parent design was found.
+	 */
+	public function get_parent_design() {
+		$design    = null;
+		$design_id = get_post_meta(
+			$this->get_id(),
+			'_mystyle_design_id',
+			true
+		);
+
+		if ( ! empty( $design_id ) ) {
+			/* @var $current_user \WP_User The current user. */
+			$current_user = wp_get_current_user();
+
+			/* @var $design \MyStyle_Design The current design. */
+			$design = MyStyle_DesignManager::get( $design_id, $current_user );
+		}
+
+		return $design;
 	}
 
 }

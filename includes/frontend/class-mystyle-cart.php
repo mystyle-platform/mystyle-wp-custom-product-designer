@@ -157,17 +157,10 @@ class MyStyle_Cart {
 	public function mystyle_add_to_cart_handler_customize( $url ) {
 		$product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
 
-		// Set up an array of data to pass to/through the customizer.
-		$passthru = array(
-			'post' => $_REQUEST,
-		);
+		/* @var $mystyle_product \MyStyle_Product The product. */
+		$mystyle_product = MyStyle_Product::get_by_id( $product_id );
 
-		// Add all available product attributes ( if there are any ) to the pass through data.
-		$product    = new WC_Product_Variable( $product_id );
-		$attributes = $product->get_variation_attributes();
-		if ( ! empty( $attributes ) ) {
-			$passthru['attributes'] = $attributes;
-		}
+		$passthru = MyStyle_Passthru_Codec::get_instance()->build_passthru( $_REQUEST, $mystyle_product );
 
 		$customize_page_id = MyStyle_Customize_Page::get_id();
 

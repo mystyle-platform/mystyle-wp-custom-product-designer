@@ -159,6 +159,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'admin/notices/mystyle-notice-functions.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-user-interface.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-order-listener.php';
+			require_once MYSTYLE_INCLUDES . 'class-mystyle-passthru-codec.php';
 
 			// We include this frontend class here because it is used by our
 			// shortcode classes (which are used botn on the frontend and the admin.
@@ -214,6 +215,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 
 			MyStyle_User_Interface::get_instance();
 			MyStyle_Order_Listener::get_instance();
+			MyStyle_Passthru_Codec::get_instance();
 
 			if ( $this->is_request( 'admin' ) ) {
 				// ---- ADMIN ---- //
