@@ -8,6 +8,11 @@
  */
 
 /**
+ * Test requirements.
+ */
+require_once MYSTYLE_PATH . 'tests/mocks/mock-mystyle-design.php';
+
+/**
  * MyStyleProductTest class.
  */
 class MyStyleProductTest extends WP_UnitTestCase {
@@ -33,8 +38,36 @@ class MyStyleProductTest extends WP_UnitTestCase {
 		parent::tearDown();
 
 		// Drop the tables that we created.
-		$wpdb->query( 'DROP TABLE IF EXISTS ' . MyStyle_Design::get_table_name() );
-		$wpdb->query( 'DROP TABLE IF EXISTS ' . MyStyle_Session::get_table_name() );
+		$wpdb->query( 'DROP TABLE IF EXISTS ' . MyStyle_Design::get_table_name() ); // phpcs:ignore WordPress.DB
+		$wpdb->query( 'DROP TABLE IF EXISTS ' . MyStyle_Session::get_table_name() ); // phpcs:ignore WordPress.DB
+	}
+
+	/**
+	 * Test the constructor.
+	 */
+	public function test_constructor() {
+		// Get a WC_Product.
+		$wc_product = WC_Helper_Product::create_simple_product();
+
+		// Instantitate the MyStyle_Product.
+		$mystyle_product = new MyStyle_Product( $wc_product );
+
+		// Assert that a product id is returned.
+		$this->assertEquals( 'MyStyle_Product', get_class( $mystyle_product ) );
+	}
+
+	/**
+	 * Test the get_by_id function.
+	 */
+	public function test_get_by_id() {
+		// Get a WC_Product.
+		$wc_product = WC_Helper_Product::create_simple_product();
+
+		// Instantitate the MyStyle_Product.
+		$mystyle_product = MyStyle_Product::get_by_id( $wc_product->get_id() );
+
+		// Assert that a product id is returned.
+		$this->assertEquals( 'MyStyle_Product', get_class( $mystyle_product ) );
 	}
 
 	/**
@@ -169,6 +202,30 @@ class MyStyleProductTest extends WP_UnitTestCase {
 
 		// Assert that configur8_enabled is true.
 		$this->assertTrue( $configur8_enabled );
+	}
+
+	/**
+	 * Test the get_parent_design method.
+	 */
+	public function test_get_parent_design() {
+
+		// Create and persist a design.
+		$design_id = 1;
+		$design    = MyStyle_MockDesign::get_mock_design( $design_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Create a test product and set the design in the post_meta.
+		$wc_product = WC_Helper_Product::create_variation_product();
+		add_post_meta( $wc_product->get_id(), '_mystyle_design_id', $design->get_design_id() );
+		$mystyle_product = new MyStyle_Product( $wc_product );
+
+		// Call the function.
+		/* @var $parent_design \MyStyle_Design The parent design. */
+		$parent_design = $mystyle_product->get_parent_design();
+
+		// Assert that the parent design is returned as expected.
+		$this->assertEquals( 'MyStyle_Design', get_class( $parent_design ) );
+		$this->assertEquals( $design_id, $parent_design->get_design_id() );
 	}
 
 }
