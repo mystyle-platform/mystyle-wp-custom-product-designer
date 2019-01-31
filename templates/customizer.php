@@ -13,18 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="above-customizer-wrapper">
+<div id="customizer-wrapper"></div>
+<div class="customizer-under-app-wrapper">
 	<a onclick="MyStyleCustomize.toggleFullscreen();" id="customizer-fullscreen-button" class="customizer-fullscreen-button button">
 		<span class="dashicons dashicons-editor-expand"></span>
 		<label>Full Screen</label>
 	</a>
-</div>
-
-<div id="customizer-wrapper">
-
-</div>
-<div class="customizer-under-app-wrapper">
-	<!-- under customizer app -->
 </div>
 
 <script type="text/javascript">
