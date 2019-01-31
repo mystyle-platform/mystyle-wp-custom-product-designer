@@ -1,3 +1,7 @@
+= 3.8.2 =
+
+* Fixed a bug where the options from designs that were upgraded to products weren't coming through. 
+
 = 3.8.1 =
 
 * Now resizing the viewport on the Customize page when the window is resized.
