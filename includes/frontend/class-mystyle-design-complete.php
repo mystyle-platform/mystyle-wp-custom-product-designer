@@ -37,7 +37,13 @@ class MyStyle_Design_Complete {
 		$design_complete = ( 1 === intval( get_query_var( 'design_complete', '0' ) ) ) ? true : false;
 
 		if ( $design_complete ) {
-			wp_register_script( 'mystyle-design-complete', MYSTYLE_ASSETS_URL . 'js/design-complete.js' );
+			wp_register_script(
+				'mystyle-design-complete', // handle.
+				MYSTYLE_ASSETS_URL . 'js/design-complete.js', // source.
+				array(), // deps.
+				'1.0.0', // version.
+				true // load in footer.
+			);
 			wp_enqueue_script( 'mystyle-design-complete' );
 		}
 	}
@@ -83,7 +89,7 @@ class MyStyle_Design_Complete {
 	}
 
 	/**
-	 * Function that builds the Get Redirect URL.
+	 * Function that builds the redirect URL.
 	 *
 	 * @param MyStyle_Design $design The MyStyle_Design to use for building the
 	 * URL.
