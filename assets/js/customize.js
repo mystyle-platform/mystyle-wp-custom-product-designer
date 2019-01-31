@@ -57,8 +57,8 @@ MyStyleCustomize = function() {
 			jQuery( '#customizer-iframe' ).parents().addClass( 'mystyle-fullscreen' );
 			jQuery( ':not(.mystyle-fullscreen )').addClass( 'mystyle-fullscreen-hidden' );
 			var closeButton = jQuery( '<a id="customizer-close-button" onclick="MyStyleCustomize.toggleFullscreen();" class="button"><span class="dashicons dashicons-no"></span></a>' );
-			jQuery( '#customizer-wrapper' ).prepend( closeButton );
-			
+			jQuery( '#customizer-wrapper' ).append( closeButton );
+
 			self.state.isFullscreen = true;
 		} else { // Disable full screen mode.
 			console.log( 'disabling full screen mode' );
@@ -85,38 +85,44 @@ MyStyleCustomize = function() {
 	 * Note that this only seems to work for mobile browsers and emulators.
 	 */
 	self._setOrientation = function () {
-		
-		if (self.config.disableViewportRewrite) /* || self.state.settingOrientation */ 
-		{
-			console.log('Note: Not setting viewport.  Mystyle viewport page zooming disabled.');
+		if ( (self.config.disableViewportRewrite) ||
+		     ( jQuery( window ).width() > 550 ) ||
+			 (self.state.settingOrientation)
+		) {
 			return;
 		}
 		
-		// defaults for landscape
-		var minAppWidthPortrait		= 550;
-		var minAppWidthLandscape	= 1000;
-		var orientation				= self._calculateOrientation();
-		var currentViewportTag$		= jQuery('meta[name="viewport"]');
-		var screenWidthPx			= screen.width;
-		var zoomInToFit				= screenWidthPx < minAppWidthLandscape; // dont zoom in if screen is larger than minimum landscape
-		
-		// set min size requirement for orientation
-		var appMinWidth = ( orientation === 'portrait' ) 
-						? minAppWidthPortrait 
-						: minAppWidthLandscape;// Landscape or portrait app min page width
-		var scale = screenWidthPx / appMinWidth;// scale to minimum size requirement
-		var finalScale = Math.min(1,scale); // dont zoom in (zoom out only) if its not under lanscape size 
-		var viewportSettings = 'initial-scale=' + finalScale + ', maximum-scale=' + finalScale;// new viewport settings
-		var newViewportTagHTML = '<meta name="viewport" content="'+viewportSettings+'">'; // new viewport html
-		
-		console.log('mystyle customize page setting viewport: (' + orientation + ') final scale: ' + finalScale + ' ( orig: ' + scale + ') screen width: ' + screenWidthPx ); 
-		
+		self.state.settingOrientation = true;
+		var orientation = self._calculateOrientation();
+
+		var viewportSettings;
+		if ( orientation === 'landscape' ) { // Landscape.
+			var scale = jQuery( window ).width() / 1000;
+			viewportSettings = 'initial-scale=' + scale + ', maximum-scale=' + scale;
+		} else { // Portrait.
+			var scale = jQuery( window ).width() / 550;
+			viewportSettings = 'initial-scale=' + scale + ', maximum-scale=' + scale;
+		}
+
 		// Set the viewport.
-		jQuery( 'meta[name="viewport"]' ).remove(); // removal (remove and re-add seems to trigger viewport update better)
-		jQuery( 'head' ).append(newViewportTagHTML); // add new
+		jQuery( 'meta[name="viewport"]' ).attr('content', viewportSettings);
+
+		setTimeout(
+			function() {MyStyleCustomize.noLongerSettingOrientation();},
+			1000
+		);
 	};
 	
-
+	/**
+	 * EXPOSED (as 'noLongerSettingOrientation').
+	 * 
+	 * Function that updates state once we are no longer setting the
+	 * orientation.
+	 */
+	self._noLongerSettingOrientation = function() {
+		self.state.settingOrientation = false;
+	};
+	
 	/**
 	 * EXPOSED (as 'renderCustomizer').
 	 * 
@@ -190,6 +196,7 @@ MyStyleCustomize = function() {
 		toggleFullscreen: function () { return self._toggleFullscreen(); },
 		setOrientation: function () { return self._setOrientation(); },
 		renderCustomizer: function () { return self._renderCustomizer(); },
+		noLongerSettingOrientation: function () { return self._noLongerSettingOrientation(); }
 	};
 
 	return self.public;
