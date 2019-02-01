@@ -11,3 +11,6 @@ config.php
 
 # Composer
 /vendor/
+
+# Node
+node_modules
