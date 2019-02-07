@@ -8,9 +8,17 @@
     "url": "https://github.com/mystyle-platform/mystyle-wp-custom-product-designer.git"
   },
   "license": "GPL-3.0+",
+  "main": "gulpfile.js",
+  "scripts": {
+    "lint": "gulp lint",
+    "test": "karma start",
+    "test-single-run": "karma start --single-run"
+  },
   "devDependencies": {
     "gulp": "^4.0.0",
     "gulp-cli": "^2.0.1",
+    "mocha": "^5.2.0",
+    "chai": "^4.1.2",
     "gulp-stylelint": "^8.0.0",
     "stylelint": "^9.10.1",
     "stylelint-config-wordpress": "^13.1.0",
