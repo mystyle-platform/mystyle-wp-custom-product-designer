@@ -19,9 +19,7 @@ module.exports = function(config) {
             '../../../wp-includes/js/jquery/jquery.js',
             
             // Our scripts.
-			'assets/js/admin.js',
-            'assets/js/customize.js',
-			'assets/js/design-complete.js',
+			'assets/js/**/*.js',
             
             // The tests.
             'javascript-tests/**/*.js'
