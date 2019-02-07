@@ -95,24 +95,25 @@ MyStyleCustomize = function() {
 		// defaults for landscape
 		var minAppWidthPortrait		= 550;
 		var minAppWidthLandscape	= 1000;
-		var orientation				= self._calculateOrientation();
+		var orientation			= self._calculateOrientation();
 		var currentViewportTag$		= jQuery('meta[name="viewport"]');
-		var screenWidthPx			= screen.width;
-		var zoomInToFit				= screenWidthPx < minAppWidthLandscape; // dont zoom in if screen is larger than minimum landscape
+		var screenWidthPx		= screen.width;
+		var zoomInToFit			= screenWidthPx < minAppWidthLandscape || false; // dont zoom in if screen is larger than minimum landscape
 		
 		// set min size requirement for orientation
 		var appMinWidth = ( orientation === 'portrait' ) 
 						? minAppWidthPortrait 
 						: minAppWidthLandscape;// Landscape or portrait app min page width
 		var scale = screenWidthPx / appMinWidth;// scale to minimum size requirement
-		var finalScale = Math.min(1,scale); // dont zoom in (zoom out only) if its not under lanscape size 
+		var finalScale = scale;
+		if(zoomInToFit) Math.min(1,scale);
 		var viewportSettings = 'initial-scale=' + finalScale + ', maximum-scale=' + finalScale;// new viewport settings
 		var newViewportTagHTML = '<meta name="viewport" content="'+viewportSettings+'">'; // new viewport html
 		
 		console.log('mystyle customize page setting viewport: (' + orientation + ') final scale: ' + finalScale + ' ( orig: ' + scale + ') screen width: ' + screenWidthPx ); 
 		
 		// Set the viewport.
-		jQuery( 'meta[name="viewport"]' ).remove(); // removal (remove and re-add seems to trigger viewport update better)
+		if(currentViewportTag$.size() > 0) jQuery( 'meta[name="viewport"]' ).remove(); // removal (remove and re-add seems to trigger viewport update better)
 		jQuery( 'head' ).append(newViewportTagHTML); // add new
 	};
 	
