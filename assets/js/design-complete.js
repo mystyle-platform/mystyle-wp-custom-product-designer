@@ -121,7 +121,7 @@ MyStyleDesignComplete = function() {
 // End MyStyleDesignComplete class.
 jQuery( window ).ready(
 	function () {
-		if ( ! window.hasOwnProperty('__karma__') ) {
+		if ( ! window.hasOwnProperty( '__karma__' ) ) {
 			MyStyleDesignComplete.init();
 		}
 	}
