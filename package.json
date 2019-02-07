@@ -13,6 +13,8 @@
     "gulp-cli": "^2.0.1",
     "gulp-stylelint": "^8.0.0",
     "stylelint": "^9.10.1",
-    "stylelint-config-wordpress": "^13.1.0"
+    "stylelint-config-wordpress": "^13.1.0",
+    "gulp-eslint": "^5.0.0",
+    "eslint-config-wordpress": "^2.0.0"
   }
 }
