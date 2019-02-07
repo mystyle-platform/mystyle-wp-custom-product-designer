@@ -25,7 +25,7 @@
       "phpunit --coverage-html coverage/"
     ],
     "phpcs": [
-      "phpcs -s -p ."
+      "vendor/squizlabs/php_codesniffer/bin/phpcs -s -p ."
     ],
     "phpcbf": [
       "phpcbf -p ."
