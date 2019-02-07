@@ -106,7 +106,7 @@ MyStyleCustomize = function() {
 						: minAppWidthLandscape;// Landscape or portrait app min page width
 		var scale = screenWidthPx / appMinWidth;// scale to minimum size requirement
 		var finalScale = scale;
-		if(zoomInToFit) Math.min(1,scale);
+		if(zoomInToFit) finalScale = Math.min(1,scale);
 		var viewportSettings = 'initial-scale=' + finalScale + ', maximum-scale=' + finalScale;// new viewport settings
 		var newViewportTagHTML = '<meta name="viewport" content="'+viewportSettings+'">'; // new viewport html
 		
