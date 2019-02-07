@@ -56,8 +56,11 @@ MyStyleCustomize = ( function() {
 			jQuery( '#customizer-iframe' ).addClass( 'mystyle-fullscreen' );
 			jQuery( '#customizer-iframe' ).parents().addClass( 'mystyle-fullscreen' );
 			jQuery( ':not(.mystyle-fullscreen )' ).addClass( 'mystyle-fullscreen-hidden' );
-			var closeButton = jQuery( '<a id="customizer-close-button" onclick="MyStyleCustomize.toggleFullscreen();" class="button"><span class="dashicons dashicons-no"></span></a>' );
-			jQuery( '#customizer-wrapper' ).prepend( closeButton );
+
+			// Add the close button.
+			jQuery( '#customizer-wrapper' ).prepend(
+				jQuery( '<a id="customizer-close-button" onclick="MyStyleCustomize.toggleFullscreen();" class="button"><span class="dashicons dashicons-no"></span></a>' )
+			);
 
 			self.state.isFullscreen = true;
 		} else { // Disable full screen mode.
@@ -86,34 +89,40 @@ MyStyleCustomize = ( function() {
 	 */
 	self._setOrientation = function() {
 
-		if ( self.config.disableViewportRewrite ) /* || self.state.settingOrientation */
-		{
-			console.log( 'Note: Not setting viewport.  Mystyle viewport page zooming disabled.' );
+		var minAppWidthPortrait,
+			minAppWidthLandscape,
+			orientation,
+			screenWidthPx,
+			appMinWidth,
+			scale,
+			finalScale,
+			newViewportTagHTML;
+
+		if ( self.config.disableViewportRewrite ) {
+			console.log( 'Note: Not setting viewport. Mystyle viewport page zooming disabled.' );
 			return;
 		}
 
-		// defaults for landscape
-		var minAppWidthPortrait		= 550;
-		var minAppWidthLandscape	= 1000;
-		var orientation				= self._calculateOrientation();
-		var currentViewportTag$		= jQuery( 'meta[name="viewport"]' );
-		var screenWidthPx			= screen.width;
-		var zoomInToFit				= screenWidthPx < minAppWidthLandscape; // dont zoom in if screen is larger than minimum landscape
+		// Defaults for landscape.
+		minAppWidthPortrait  = 550;
+		minAppWidthLandscape = 1000;
+		orientation          = self._calculateOrientation();
+		screenWidthPx        = screen.width;
 
-		// set min size requirement for orientation
-		var appMinWidth = ( 'portrait' === orientation ) ?
+		// Set min size requirement for orientation.
+		appMinWidth = ( 'portrait' === orientation ) ?
 						minAppWidthPortrait :
-						minAppWidthLandscape;// Landscape or portrait app min page width
-		var scale = screenWidthPx / appMinWidth;// scale to minimum size requirement
-		var finalScale = Math.min( 1, scale ); // dont zoom in (zoom out only) if its not under lanscape size
-		var viewportSettings = 'initial-scale=' + finalScale + ', maximum-scale=' + finalScale;// new viewport settings
-		var newViewportTagHTML = '<meta name="viewport" content="' + viewportSettings + '">'; // new viewport html
+						minAppWidthLandscape; // Landscape or portrait app min page width.
+		scale = screenWidthPx / appMinWidth; // Scale to minimum size requirement
+		finalScale = Math.min( 1, scale ); // Don't zoom in (zoom out only) if it's not under lanscape size.
+		viewportSettings = 'initial-scale=' + finalScale + ', maximum-scale=' + finalScale;// New viewport settings.
+		newViewportTagHTML = '<meta name="viewport" content="' + viewportSettings + '">'; // New viewport html.
 
-		console.log( 'mystyle customize page setting viewport: (' + orientation + ') final scale: ' + finalScale + ' ( orig: ' + scale + ') screen width: ' + screenWidthPx );
+		console.log( 'MyStyle customize page setting viewport: (' + orientation + ') final scale: ' + finalScale + ' ( orig: ' + scale + ') screen width: ' + screenWidthPx );
 
 		// Set the viewport.
-		jQuery( 'meta[name="viewport"]' ).remove(); // removal (remove and re-add seems to trigger viewport update better)
-		jQuery( 'head' ).append( newViewportTagHTML ); // add new
+		jQuery( 'meta[name="viewport"]' ).remove(); // Removal (remove and re-add seems to trigger viewport update better).
+		jQuery( 'head' ).append( newViewportTagHTML ); // Add new.
 	};
 
 
@@ -124,20 +133,23 @@ MyStyleCustomize = ( function() {
 	 */
 	self._renderCustomizer = function() {
 
-		// Does the browser support Flash?
-		var testFlash = swfobject.getFlashPlayerVersion();
 		var flashSupported = false;
+		var showFlashCustomizer = false;
+		var iframeCustomizer = '';
+		var testFlash, elem;
+
+		// Does the browser support Flash?
+		testFlash = swfobject.getFlashPlayerVersion();
+
 		if ( testFlash && testFlash.hasOwnProperty( 'major' ) && 0 < testFlash.major ) {
 			flashSupported = true;
 		}
 
 		// Show Flash customizer?
-		var showFlashCustomizer = false;
 		if ( flashSupported && self.config.enableFlash ) {
 			showFlashCustomizer = true;
 		}
 
-		var iframeCustomizer = '';
 		if ( showFlashCustomizer ) {
 			iframeCustomizer = '<iframe' +
 					' id="customizer-iframe"' +
@@ -160,7 +172,7 @@ MyStyleCustomize = ( function() {
 					' height="100%"></iframe>';
 		}
 
-		var elem = document.getElementById( 'customizer-wrapper' );
+		elem = document.getElementById( 'customizer-wrapper' );
 		elem.innerHTML = iframeCustomizer;
 	};
 

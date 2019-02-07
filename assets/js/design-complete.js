@@ -49,8 +49,10 @@ MyStyleDesignComplete = ( function() {
 	self._getQueryVariable = function( variable ) {
 		var query = window.location.search.substring( 1 );
 		var vars  = query.split( '&' );
-		for ( var i = 0; i < vars.length; i++ ) {
-			var pair = vars[i].split( '=' );
+		var i, pair;
+
+		for ( i = 0; i < vars.length; i++ ) {
+			pair = vars[i].split( '=' );
 			if ( pair[0] === variable ) {
 				return pair[1];
 			}
@@ -66,6 +68,7 @@ MyStyleDesignComplete = ( function() {
 	 * returns false.
 	 */
 	self._validateQueryVars = function() {
+		var designId;
 
 		// Validate the design_complete query var.
 		if ( '1' !== self._getQueryVariable( 'design_complete' ) ) {
@@ -73,7 +76,7 @@ MyStyleDesignComplete = ( function() {
 		}
 
 		// Validate the design_id query var.
-		var designId = self._getQueryVariable( 'design_id' );
+		designId = self._getQueryVariable( 'design_id' );
 		if ( ! designId ) {
 			throw 'MyStyleDesignComplete: Query vars are not valid (must include design_id).';
 		}
@@ -91,18 +94,19 @@ MyStyleDesignComplete = ( function() {
 
 		jQuery( 'input' ).each(
 			function( index, value ) {
+				var id, name;
 
-					// Any field with 'design_id' in the id.
-					var id = jQuery( this ).attr( 'id' );
+				// Any field with 'design_id' in the id.
+				id = jQuery( this ).attr( 'id' );
 				if ( ( 'undefined' !== typeof id ) && ( -1 !== id.indexOf( 'design_id' ) ) ) {
-					  jQuery( this ).val( self.designId );
-					  return true;
+					jQuery( this ).val( self.designId );
+					return true;
 				}
 
-					// Any field with 'design_id' in the name attribute.
-					var name = jQuery( this ).attr( 'name' );
+				// Any field with 'design_id' in the name attribute.
+				name = jQuery( this ).attr( 'name' );
 				if ( ( 'undefined' !== typeof name ) && ( -1 !== name.indexOf( 'design_id' ) ) ) {
-					  jQuery( this ).val( self.designId );
+					jQuery( this ).val( self.designId );
 				}
 			}
 		);
