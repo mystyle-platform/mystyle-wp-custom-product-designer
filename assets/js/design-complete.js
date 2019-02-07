@@ -25,11 +25,9 @@ MyStyleDesignComplete = function() {
 	 *  * Finds any forms and adds the design_id as a hidden field.
 	 */
 	self._init = function() {
-console.log(1);
 		// Validate the query string vars before continuing
 		// This will throw an exception if the vars are missing or invalid.
 		self._validateQueryVars();
-console.log(2);
 		// Pull the designId from the current url.
 		self.designId = self._getQueryVariable( 'design_id' );
 
