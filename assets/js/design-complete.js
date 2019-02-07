@@ -5,7 +5,7 @@
  * @since 3.4.0
  */
 
-MyStyleDesignComplete = function() {
+MyStyleDesignComplete = ( function() {
 
 	/**
 	 * Private object for attaching private properties and methods.
@@ -25,9 +25,11 @@ MyStyleDesignComplete = function() {
 	 *  * Finds any forms and adds the design_id as a hidden field.
 	 */
 	self._init = function() {
+
 		// Validate the query string vars before continuing
 		// This will throw an exception if the vars are missing or invalid.
 		self._validateQueryVars();
+
 		// Pull the designId from the current url.
 		self.designId = self._getQueryVariable( 'design_id' );
 
@@ -54,7 +56,7 @@ MyStyleDesignComplete = function() {
 			}
 		}
 
-		return( false );
+		return ( false );
 	};
 
 	/**
@@ -66,7 +68,7 @@ MyStyleDesignComplete = function() {
 	self._validateQueryVars = function() {
 
 		// Validate the design_complete query var.
-		if ( self._getQueryVariable( 'design_complete' ) !== '1' ) {
+		if ( '1' !== self._getQueryVariable( 'design_complete' ) ) {
 			throw 'MyStyleDesignComplete: Query vars are not valid (must include "design_complete=1").';
 		}
 
@@ -88,18 +90,18 @@ MyStyleDesignComplete = function() {
 	self._setDesignIdFields = function() {
 
 		jQuery( 'input' ).each(
-			function ( index, value ) {
+			function( index, value ) {
 
 					// Any field with 'design_id' in the id.
 					var id = jQuery( this ).attr( 'id' );
-				if ( ( typeof id !== 'undefined' ) && ( id.indexOf( 'design_id' ) !== -1 ) ) {
+				if ( ( 'undefined' !== typeof id ) && ( -1 !== id.indexOf( 'design_id' ) ) ) {
 					  jQuery( this ).val( self.designId );
 					  return true;
 				}
 
 					// Any field with 'design_id' in the name attribute.
 					var name = jQuery( this ).attr( 'name' );
-				if ( ( typeof name !== 'undefined' ) && ( name.indexOf( 'design_id' ) !== -1 ) ) {
+				if ( ( 'undefined' !== typeof name ) && ( -1 !== name.indexOf( 'design_id' ) ) ) {
 					  jQuery( this ).val( self.designId );
 				}
 			}
@@ -110,17 +112,17 @@ MyStyleDesignComplete = function() {
 	 * Declare the publicly exposed return object.
 	 */
 	self.public = {
-		init: function () {
+		init: function() {
 			return self._init();
 		}
 	};
 
 	return self.public;
 
-}();
-// End MyStyleDesignComplete class.
+}() );
+
 jQuery( window ).ready(
-	function () {
+	function() {
 		if ( ! window.hasOwnProperty( '__karma__' ) ) {
 			MyStyleDesignComplete.init();
 		}
