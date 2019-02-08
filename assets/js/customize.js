@@ -92,7 +92,9 @@ MyStyleCustomize = ( function() {
 		var minAppWidthPortrait,
 			minAppWidthLandscape,
 			orientation,
+			currentViewportTag$,
 			screenWidthPx,
+			zoomInToFit,
 			appMinWidth,
 			scale,
 			finalScale,
@@ -107,21 +109,28 @@ MyStyleCustomize = ( function() {
 		minAppWidthPortrait  = 550;
 		minAppWidthLandscape = 1000;
 		orientation          = self._calculateOrientation();
+		currentViewportTag$  = jQuery( 'meta[name="viewport"]' );
 		screenWidthPx        = screen.width;
 
 		// Set min size requirement for orientation.
-		appMinWidth = ( 'portrait' === orientation ) ?
-						minAppWidthPortrait :
-						minAppWidthLandscape; // Landscape or portrait app min page width.
-		scale = screenWidthPx / appMinWidth; // Scale to minimum size requirement
-		finalScale = Math.min( 1, scale ); // Don't zoom in (zoom out only) if it's not under lanscape size.
-		viewportSettings = 'initial-scale=' + finalScale + ', maximum-scale=' + finalScale;// New viewport settings.
+		appMinWidth        = ( 'portrait' === orientation ) ?
+								minAppWidthPortrait :
+								minAppWidthLandscape; // Landscape or portrait app min page width.
+		scale              = screenWidthPx / appMinWidth; // Scale to minimum size requirement.
+		finalScale         = scale;
+		if ( zoomInToFit ) {
+			finalScale = Math.min( 1, scale );
+		}
+		finalScale         = Math.min( 1, scale ); // Don't zoom in (zoom out only) if it's not under lanscape size.
+		viewportSettings   = 'initial-scale=' + finalScale + ', maximum-scale=' + finalScale;// New viewport settings.
 		newViewportTagHTML = '<meta name="viewport" content="' + viewportSettings + '">'; // New viewport html.
 
 		console.log( 'MyStyle customize page setting viewport: (' + orientation + ') final scale: ' + finalScale + ' ( orig: ' + scale + ') screen width: ' + screenWidthPx );
 
 		// Set the viewport.
-		jQuery( 'meta[name="viewport"]' ).remove(); // Removal (remove and re-add seems to trigger viewport update better).
+		if ( 0 < currentViewportTag$.size() ) {
+			jQuery( 'meta[name="viewport"]' ).remove(); // Removal (remove and re-add seems to trigger viewport update better).
+		}
 		jQuery( 'head' ).append( newViewportTagHTML ); // Add new.
 	};
 
