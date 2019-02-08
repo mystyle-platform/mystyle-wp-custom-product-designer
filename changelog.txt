@@ -1,3 +1,13 @@
+= 3.9.0 =
+
+* Hid unnecessary links in footer for better design through conversion on customizer page.
+* Fixed a bug with the viewport scaling on the Customize page.
+* Made the "Full Screen" button font and close icon larger.
+* Moved full screen button above app for mobile users who cannot scroll.
+* Added JS testing with Karma, Mocha and Chai.
+* Added CSS linting with stylelint.
+* Added JS linting with eslint.
+
 = 3.8.2 =
 
 * Fixed a bug where the options from designs that were upgraded to products weren't coming through. 
