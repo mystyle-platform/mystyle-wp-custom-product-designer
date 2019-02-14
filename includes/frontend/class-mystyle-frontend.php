@@ -65,6 +65,8 @@ class MyStyle_FrontEnd {
 	 * Constructor, constructs the class and sets up the hooks.
 	 */
 	public function __construct() {
+		$this->http_response_code = 200;
+
 		add_filter( 'query_vars', array( &$this, 'add_query_vars_filter' ), 10, 1 );
 		add_filter( 'wp_head', array( &$this, 'render_form_integration_config' ), 0 );
 
@@ -101,7 +103,7 @@ class MyStyle_FrontEnd {
 		$this->session = MyStyle()->get_session();
 
 		// Get the design from the url.
-		$design_id = intval( get_query_var( 'design_id', null ) );
+		$design_id = MyStyle_Util::get_query_var_int( 'design_id' );
 
 		if ( null !== $design_id ) {
 			// Get the design. If the user doesn't have access, an exception
@@ -212,6 +214,15 @@ class MyStyle_FrontEnd {
 	 */
 	public function get_exception() {
 		return $this->exception;
+	}
+
+	/**
+	 * Gets the current http_response_code.
+	 *
+	 * @return integer Returns the http response code that we are returning.
+	 */
+	public function get_http_response_code() {
+		return $this->http_response_code;
 	}
 
 	/**

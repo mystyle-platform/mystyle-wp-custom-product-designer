@@ -125,6 +125,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 		private function includes() {
 
 			require_once MYSTYLE_PATH . 'tests/qunit.php';
+			require_once MYSTYLE_INCLUDES . 'class-mystyle-util.php';
 			require_once MYSTYLE_INCLUDES . 'exceptions/class-mystyle-exception.php';
 			require_once MYSTYLE_INCLUDES . 'exceptions/class-mystyle-bad-request-exception.php';
 			require_once MYSTYLE_INCLUDES . 'exceptions/class-mystyle-forbidden-exception.php';

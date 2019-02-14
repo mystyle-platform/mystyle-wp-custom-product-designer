@@ -90,9 +90,9 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the init_vars function.
+	 * Test the init_vars when design_id in query string.
 	 */
-	public function test_init_vars() {
+	public function test_init_vars_with_design_id_in_query_string() {
 		$design_id = 1;
 
 		// Mock the query var.
@@ -115,6 +115,21 @@ class MyStyleFrontEndTest extends WP_UnitTestCase {
 
 		// Assert that the page was created and has the expected title.
 		$this->assertEquals( $design_id, $current_design->get_design_id() );
+	}
+
+	/**
+	 * Test the init_vars when design_id NOT in query string. It should just
+	 * quit and not return an error code.
+	 */
+	public function test_init_vars_with_design_id_not_in_query_string() {
+		// Get the SUT (System Under Test) class.
+		$frontend = MyStyle_Frontend::get_instance();
+
+		// Call the function.
+		$frontend->init_vars();
+
+		// Assert that the class doesn't result in an error response.
+		$this->assertEquals( 200, $frontend->get_http_response_code() );
 	}
 
 	/**
