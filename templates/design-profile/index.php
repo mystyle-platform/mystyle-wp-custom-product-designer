@@ -20,14 +20,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php
 			/* @var $design \MyStyle_Design The current MyStyleDesign. */
 			foreach ( $pager->get_items() as $design ) {
-				$design_url = MyStyle_Design_Profile_page::get_design_url( $design );
+				$design_url    = MyStyle_Design_Profile_page::get_design_url( $design );
+				$product_id    = $design->get_product_id();
+				$product_title = $design->get_product()->get_title();
 				?>
 				<li>
 					<a href="<?php echo esc_attr( $design_url ); ?>">
 						<img src="<?php echo esc_attr( $design->get_thumb_url() ); ?>" />
-						<span class="mystyle-design-id">
-							<?php echo esc_attr( $design->get_design_id() ); ?>
-						</span>
+						<h3 class="mystyle-design-id">
+							<?php
+							echo 'Custom ' . $product_title . ' <span>' . $design->get_design_id() . '</span>';
+							?>
+						</h3>
 					</a>
 				</li>
 				<?php

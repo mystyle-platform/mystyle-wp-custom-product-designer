@@ -176,4 +176,31 @@ class MyStyle_Product {
 		return $design;
 	}
 
+	/**
+	 * Gets the product title.
+	 *
+	 * @returns string Returns the product title.
+	 */
+	public function get_title() {
+		return $this->product->get_title();
+	}
+
+	/**
+	 * Gets the product description.
+	 *
+	 * @returns string Returns the product description.
+	 */
+	public function get_description() {
+		return $this->product->get_description();
+	}
+
+	/**
+	 * Gets a link to the product info page.
+	 *
+	 * @returns string Returns a link to the product info page.
+	 */
+	public function get_permalink() {
+		return $this->product->get_permalink();
+	}
+
 }

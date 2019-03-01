@@ -7,10 +7,10 @@
  */
 
 /**
- * Given a base registry array entry, this private function will return all
- * function names within that array.
+ * Given a base registry array entry, this function will return all function
+ * names within that array.
  *
- * @param type $reg_array_1 The base registry array that you want to search
+ * @param array $reg_array_1 The base registry array that you want to search
  * through.
  * @return array An array of the function names that were found.
  */

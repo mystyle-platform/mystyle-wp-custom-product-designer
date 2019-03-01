@@ -296,35 +296,6 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the get_reload_url function for a design with cart_data.
-	 */
-	public function test_get_reload_url_for_design_with_cart_data() {
-
-		// Create the MyStyle Customize page (needed for the url).
-		MyStyle_Customize_Page::create();
-
-		// Create a design.
-		$result_object = new MyStyle_MockDesignQueryResult( 1 );
-		$design        = MyStyle_Design::create_from_result_object( $result_object );
-
-		// Add the cart data to the design.
-		$obj                  = new stdClass();
-		$obj->quantity        = 1;
-		$obj->{'add-to-cart'} = 2;
-		$cart_data            = wp_json_encode( $obj );
-		$design->set_cart_data( $cart_data );
-
-		// Call the function.
-		$url = $design->get_reload_url();
-
-		// Assert that the expected page_id parameter is included in the url.
-		$this->assertContains( 'page_id=' . MyStyle_Customize_Page::get_id(), $url );
-
-		// Assert that the expected design_id parameter is included in the url.
-		$this->assertContains( 'design_id=' . $design->get_design_id(), $url );
-	}
-
-	/**
 	 * Test the get_add_to_cart_url function for a design with cart_data.
 	 *
 	 * @global $woocommerce

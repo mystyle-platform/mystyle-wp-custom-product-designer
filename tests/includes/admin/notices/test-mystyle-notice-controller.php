@@ -27,12 +27,11 @@ class MyStyleNoticeControllerTest extends WP_UnitTestCase {
 
 		$mystyle_notice_controller = new MyStyle_Notice_Controller();
 
-		// Assert that the admin notices function is registered.
+		// Assert that the admin_notices function is registered.
 		$function_names = get_function_names( $wp_filter['admin_notices'] );
-
 		$this->assertContains( 'admin_notices', $function_names );
 
-		// Assert that the admin notices function is registered.
+		// Assert that the wp_ajax_mystyle_set_notice_pref function is registered.
 		$function_names = get_function_names( $wp_filter['wp_ajax_mystyle_set_notice_pref'] );
 		$this->assertContains( 'set_notice_pref_callback', $function_names );
 	}

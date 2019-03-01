@@ -97,7 +97,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		// Assert that the action field is registered/rendered.
 		$this->assertContains( '<input type="hidden" name="action" value="update" />', $outbound );
 
-		// Assert taht the _secret_wpnonce field is registered/rendered.
+		// Assert that the _secret_wpnonce field is registered/rendered.
 		$this->assertContains( '<input type="hidden" id="_wpnonce" name="_wpnonce"', $outbound );
 
 		// Assert taht the _wp_http_referer field is registered/rendered.
@@ -279,6 +279,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['alternate_design_complete_redirect_url']    = '';
 		$input['redirect_url_whitelist']                    = '';
 		$input['enable_configur8']                          = 0;
+		$input['design_profile_product_menu_type']          = 'list';
 
 		// Run the function.
 		$new_options = $mystyle_options_page->validate( $input );
@@ -317,6 +318,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['alternate_design_complete_redirect_url']    = '';
 		$input['redirect_url_whitelist']                    = '';
 		$input['enable_configur8']                          = 0;
+		$input['design_profile_product_menu_type']          = 'list';
 
 		// Run the function.
 		$new_options = $mystyle_options_page->validate( $input );
@@ -355,6 +357,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['alternate_design_complete_redirect_url']    = '';
 		$input['redirect_url_whitelist']                    = '';
 		$input['enable_configur8']                          = 0;
+		$input['design_profile_product_menu_type']          = 'list';
 
 		// Run the function.
 		$new_options = $mystyle_options_page->validate( $input );
@@ -391,6 +394,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['alternate_design_complete_redirect_url']    = '';
 		$input['redirect_url_whitelist']                    = '';
 		$input['enable_configur8']                          = 0;
+		$input['design_profile_product_menu_type']          = 'list';
 
 		// Run the function.
 		$new_options = $mystyle_options_page->validate( $input );
@@ -430,6 +434,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['alternate_design_complete_redirect_url']    = '';
 		$input['redirect_url_whitelist']                    = '';
 		$input['enable_configur8']                          = 0;
+		$input['design_profile_product_menu_type']          = 'list';
 
 		// Run the function.
 		$new_options = $mystyle_options_page->validate( $input );
@@ -469,6 +474,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		$input['alternate_design_complete_redirect_url']    = '';
 		$input['redirect_url_whitelist']                    = '';
 		$input['enable_configur8']                          = 0;
+		$input['design_profile_product_menu_type']          = 'list';
 
 		// Run the function.
 		$new_options = $mystyle_options_page->validate( $input );

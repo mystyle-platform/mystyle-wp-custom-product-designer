@@ -43,6 +43,7 @@ abstract class MyStyle_Customizer_Shortcode {
 			$out = '';
 			add_filter( 'woocommerce_shortcode_products_query', array( 'MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query' ), 10, 1 );
 			$out = do_shortcode( '[products per_page="12" limit="12" paginate="true"]' );
+			remove_filter( 'woocommerce_shortcode_products_query', array( 'MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query' ) );
 
 			if ( strlen( $out ) < 50 ) {
 				$out  = '<p>Sorry, no products are currently available for customization.</p>';
@@ -115,7 +116,12 @@ abstract class MyStyle_Customizer_Shortcode {
 			$settings['print_type'] = $print_type;
 		}
 
-		// TODO: skip enter email step if logged in and email can be pulled from user acct.
+		// Skip enter email step if logged in and email can be pulled from user acct.
+		if ( is_user_logged_in() ) {
+			$settings['email_skip'] = 1;
+		}
+
+		// Base64 encode settings.
 		$encoded_settings = base64_encode( wp_json_encode( $settings ) );
 
 		// Add all vars to URL.

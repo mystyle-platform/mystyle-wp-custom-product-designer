@@ -847,28 +847,26 @@ class MyStyle_Design implements MyStyle_Entity {
 	 * Build the reload url to the customizer for the design.
 	 */
 	public function get_reload_url() {
-		$customize_page_id = MyStyle_Customize_Page::get_id();
+		$customizer_url = MyStyle_Customize_Page::get_design_url( $this );
 
-		$passthru         = array();
-		$passthru['post'] = null;
+		return $customizer_url;
+	}
 
-		if ( null !== $this->cart_data ) {
-			$post_data = json_decode( $this->cart_data, true );
-		} else {
-			// Set some default post/cart data.
-			$post_data = array(
-				'quantity'    => 1,
-				'add-to-cart' => $this->product_id,
-			);
-		}
-		$passthru['post'] = $post_data;
-		$passthru_encoded = base64_encode( wp_json_encode( $passthru ) );
-		$customize_args   = array(
-			'product_id' => $this->product_id,
-			'design_id'  => $this->design_id,
-			'h'          => $passthru_encoded,
-		);
-		$customizer_url   = add_query_arg( $customize_args, get_permalink( $customize_page_id ) );
+	/**
+	 * Build the scratch url to the customizer for the design.
+	 *
+	 * The "scratch" url is a url that loads the customizer with the product
+	 * used in the design but without the design (allowing you to create a new
+	 * design for the product "from scratch").
+	 *
+	 * This works the same as the get_reload_url function above except that it
+	 * leaves off the 'design_id' URL query arg.
+	 *
+	 * @returns string Returns the "scratch" url to the customizer for the
+	 * design.
+	 */
+	public function get_scratch_url() {
+		$customizer_url = MyStyle_Customize_Page::get_scratch_url( $this );
 
 		return $customizer_url;
 	}
@@ -892,6 +890,19 @@ class MyStyle_Design implements MyStyle_Entity {
 		$cart_url = add_query_arg( 'design_id', $this->design_id, $cart_url );
 
 		return $cart_url;
+	}
+
+	/**
+	 * Get the underlying product.
+	 *
+	 * @returns MyStyle_Product Returns the underlying MyStyle_Product.
+	 */
+	public function get_product() {
+		$wc_product = wc_get_product( $this->product_id );
+
+		$product = new \MyStyle_Product( $wc_product );
+
+		return $product;
 	}
 
 	/**

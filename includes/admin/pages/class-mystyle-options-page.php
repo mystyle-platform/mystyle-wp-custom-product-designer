@@ -144,6 +144,15 @@ class MyStyle_Options_Page {
 			'mystyle_options_advanced_section'
 		);
 
+		/* DESIGN_PROFILE_PRODUCT_MENU_TYPE */
+		add_settings_field(
+			'design_profile_product_menu_type',
+			'Reload-To-Other-Product Menu Style',
+			array( &$this, 'render_design_profile_product_menu_type' ),
+			'mystyle_advanced_settings',
+			'mystyle_options_advanced_section'
+		);
+
 		// ************** TOOLS SECTION ******************//
 		add_settings_section(
 			'mystyle_options_tools_section',
@@ -151,7 +160,8 @@ class MyStyle_Options_Page {
 			array( &$this, 'render_tools_section_text' ),
 			'mystyle_tools'
 		);
-		if ( ( ! empty( $_GET['action'] ) ) && ( 'POST' === $_SERVER['REQUEST_METHOD'] ) ) {
+
+		if ( ( ! empty( $_GET['action'] ) ) && ( 'POST' === $_SERVER['REQUEST_METHOD'] ) && ( wp_verify_nonce( $_REQUEST['_wpnonce'], 'mystyle_admin_action' ) ) ) { // phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
 			switch ( $_GET['action'] ) {
 				case 'fix_customize_page':
 					// Attempt the fix.
@@ -222,21 +232,21 @@ class MyStyle_Options_Page {
 					<?php do_settings_sections( 'mystyle_advanced_settings' ); ?>
 				</div>
 				<p class="submit">
-					<input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Save Changes' ); ?>" />
+					<input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'mystyle' ); ?>" />
 				</p>
 			</form>
 			<br/>
 			<div class="mystyle-admin-box">
 				<?php do_settings_sections( 'mystyle_tools' ); ?>
-				<form action="admin.php?page=mystyle&action=fix_customize_page" method="post">
+				<form action="admin.php?page=mystyle&action=fix_customize_page&_wpnonce=<?php echo rawurlencode( wp_create_nonce( 'mystyle-admin-action' ) ); ?>" method="post">
 					<p class="submit">
-						<input type="submit" name="Submit" id="submit_fix_customize_page" class="button button-primary" value="<?php esc_attr_e( 'Fix Customize Page' ); ?>" /><br/>
+						<input type="submit" name="Submit" id="submit_fix_customize_page" class="button button-primary" value="<?php esc_attr_e( 'Fix Customize Page', 'mystyle' ); ?>" /><br/>
 						<small>This tool will attempt to fix the Customize page. This may involve creating, recreating, or restoring the page.</small>
 					</p>
 				</form>
-				<form action="admin.php?page=mystyle&action=fix_design_profile_page" method="post">
+				<form action="admin.php?page=mystyle&action=fix_design_profile_page&_wpnonce=<?php echo rawurlencode( wp_create_nonce( 'mystyle-admin-action' ) ); ?>" method="post">
 					<p class="submit">
-						<input type="submit" name="Submit" id="submit_fix_design_profile_page" class="button button-primary" value="<?php esc_attr_e( 'Fix Design Profile Page' ); ?>" /><br/>
+						<input type="submit" name="Submit" id="submit_fix_design_profile_page" class="button button-primary" value="<?php esc_attr_e( 'Fix Design Profile Page', 'mystyle' ); ?>" /><br/>
 						<small>This tool will attempt to fix the Design page. This may involve creating, recreating, or restoring the page.</small>
 					</p>
 				</form>
@@ -271,7 +281,7 @@ class MyStyle_Options_Page {
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		$api_key = ( array_key_exists( 'api_key', $options ) ) ? $options['api_key'] : '';
 		?>
-		<input id="mystyle_api_key" name="mystyle_options[api_key]" size="5" type="text" value="<?php echo $api_key; ?>" />
+		<input id="mystyle_api_key" name="mystyle_options[api_key]" size="5" type="text" value="<?php echo esc_attr( $api_key ); ?>" />
 		<p class="description">
 			You must enter a valid MyStyle API Key here. If you need an
 			API Key, you can create one
@@ -287,7 +297,7 @@ class MyStyle_Options_Page {
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		$secret  = ( array_key_exists( 'secret', $options ) ) ? $options['secret'] : '';
 		?>
-		<input id="mystyle_secret" name="mystyle_options[secret]" size="27" type="text" value="<?php echo $secret; ?>" />
+		<input id="mystyle_secret" name="mystyle_options[secret]" size="27" type="text" value="<?php echo esc_attr( $secret ); ?>" />
 		<p class="description">
 			You must enter a valid MyStyle Secret here. If you need a MyStyle
 			Secret, you can create one
@@ -381,10 +391,10 @@ class MyStyle_Options_Page {
 	 */
 	public function render_form_integration_config() {
 
-		$options     = get_option( MYSTYLE_OPTIONS_NAME, array() ); // get WP Options table Key of this option.
+		$options     = get_option( MYSTYLE_OPTIONS_NAME, array() ); // Get WP Options table Key of this option.
 		$current_val = ( array_key_exists( 'form_integration_config', $options ) ) ? $options['form_integration_config'] : '';
 		?>
-		<textarea id="mystyle_form_integration_config" name="mystyle_options[form_integration_config]" ><?php echo $current_val; ?></textarea>
+		<textarea id="mystyle_form_integration_config" name="mystyle_options[form_integration_config]" ><?php echo esc_textarea( $current_val ); ?></textarea>
 		<p class="description">Configure advanced form integrations here (not recommended)</p>
 		<?php
 	}
@@ -413,7 +423,7 @@ class MyStyle_Options_Page {
 		$options     = get_option( MYSTYLE_OPTIONS_NAME, array() ); // Get WP Options table Key of this option.
 		$current_val = ( array_key_exists( 'alternate_design_complete_redirect_url', $options ) ) ? $options['alternate_design_complete_redirect_url'] : '';
 		?>
-		<input id="mystyle_alternate_design_complete_redirect_url" name="mystyle_options[alternate_design_complete_redirect_url]" size="60" type="text" value="<?php echo $current_val; ?>" />
+		<input id="mystyle_alternate_design_complete_redirect_url" name="mystyle_options[alternate_design_complete_redirect_url]" size="60" type="text" value="<?php echo esc_attr( $current_val ); ?>" />
 		<p class="description">Specify an alternate URL to redirect to after the user completes their design. By default, the user will be redirected to the cart.</p>
 		<?php
 	}
@@ -426,7 +436,7 @@ class MyStyle_Options_Page {
 		$options     = get_option( MYSTYLE_OPTIONS_NAME, array() ); // Get WP Options table Key of this option.
 		$current_val = ( array_key_exists( 'redirect_url_whitelist', $options ) ) ? $options['redirect_url_whitelist'] : '';
 		?>
-		<textarea id="mystyle_redirect_url_whitelist" name="mystyle_options[redirect_url_whitelist]" ><?php echo $current_val; ?></textarea>
+		<textarea id="mystyle_redirect_url_whitelist" name="mystyle_options[redirect_url_whitelist]" ><?php echo esc_textarea( $current_val ); ?></textarea>
 		<p class="description">White list domains that can be redirected to (one per line, ex: "www.example.com"). Contact MyStyle for details.</p>
 		<?php
 	}
@@ -448,6 +458,37 @@ class MyStyle_Options_Page {
 				To use, first enable this setting and then turn Configur8 on in
 				the settings for each individual product as well.
 			</p>
+		</label>
+		<?php
+	}
+
+	/**
+	 * Function to render the design_profile_product_menu_type field.
+	 */
+	public function render_design_profile_product_menu_type() {
+		$options     = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		$type = ( array_key_exists( 'design_profile_product_menu_type', $options ) ) ? $options['design_profile_product_menu_type'] : '';
+		?>
+		<label class="description">
+			<select name="mystyle_options[design_profile_product_menu_type]">
+			<?php
+			$select = array(
+				'list' => 'List View',
+				'grid' => 'Grid View',
+				'disabled'  => 'Disabled',
+			);
+			foreach ( $select as $key => $value ) {
+				if ( $key === $type ) {
+					$selected = 'selected';
+				} else {
+					$selected = '';
+				}
+				// phpcs:ignore WordPress.XSS.EscapeOutput
+				echo '<option value="' . $key . '"' . $selected . ' >' . $value . '</option>';
+			}
+			?>
+			</select>
+			<p class="description">Choose how to render the menu on the design profile page listing all custom products to reload the design on.</p>
 		</label>
 		<?php
 	}
@@ -476,7 +517,7 @@ class MyStyle_Options_Page {
 	public function validate( $input ) {
 
 		// Return without doing any validation if a tools/action button pressed.
-		if ( ( ! empty( $_GET['action'] ) ) && ( 'POST' === $_SERVER['REQUEST_METHOD'] ) ) {
+		if ( ( ! empty( $_GET['action'] ) ) && ( 'POST' === $_SERVER['REQUEST_METHOD'] ) ) { // phpcs:ignore WordPress.VIP.ValidatedSanitizedInput, WordPress.CSRF.NonceVerification
 			return $input;
 		}
 
@@ -546,8 +587,12 @@ class MyStyle_Options_Page {
 			$new_options['enable_alternate_design_complete_redirect'] = 0;
 		}
 
+		// Design Profile Page product menu type.
+		$new_options['design_profile_product_menu_type'] = trim( $input['design_profile_product_menu_type'] );
+
 		// Alternate Design Complete Redirect URL.
 		$new_options['alternate_design_complete_redirect_url'] = trim( $input['alternate_design_complete_redirect_url'] );
+
 		if (
 				( ! empty( $new_options['alternate_design_complete_redirect_url'] ) ) &&
 				( false === filter_var( $new_options['alternate_design_complete_redirect_url'], FILTER_VALIDATE_URL ) )
