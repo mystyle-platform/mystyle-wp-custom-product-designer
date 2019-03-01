@@ -28,12 +28,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</ul>
 	<img id="mystyle-design-profile-img" src="<?php echo esc_attr( $design->get_web_url() ); ?>"/>
 	<ul class="mystyle-button-group">
-		<li><a onclick="location.href = '<?php echo esc_attr( $design->get_reload_url() ); ?>';" class="button">Customize</a></li>
 		<li>
 			<form enctype="multipart/form-data" method="post" action="<?php echo esc_attr( get_permalink( $design->get_product_id() ) ); ?>">
 				<?php
 				// If we have the cart_data (older versions of the plugin don't)
-				// through it all into hidden fields.
+				// throw it all into hidden fields.
 				if ( null !== $design->get_cart_data_array() ) {
 					foreach ( $design->get_cart_data_array() as $key => $value ) {
 						echo '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '" />';
@@ -49,5 +48,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php } ?>
 			</form>
 		</li>
+		<li><a href="<?php echo esc_attr( $design->get_reload_url() ); ?>" class="button">Customize</a></li>
+		<li><a href="<?php echo esc_attr( $design->get_scratch_url() ); ?>" class="button">Design from scratch</a></li>
+
 	</ul>
+
+	<div class="product_description">
+		<h2 class='linked_title'>
+			<a href="<?php echo esc_attr( $product->get_permalink() ); ?>">
+				<?php echo 'Custom ' . esc_html( $product->get_title() ); ?>
+			</a>
+		</h2>
+		<div class='linked_desc'>
+			<?php echo ( $product->get_description() ) ?: 'No description.'; ?>
+		</div>
+	</div>
+<?php if ( 'disabled' !== $product_menu_type ) { ?>
+	<div class="customize_products <?php echo esc_attr( $product_menu_type ); ?>">
+		<h2>Load design on another product:</h2>
+		<?php
+		$out = MyStyle_Design_Profile_Page::get_instance()->get_product_list_html();
+
+		if ( strlen( $out ) < 50 ) {
+			$out = '<p>Sorry, no products are currently available for customization.</p>';
+		}
+
+		echo $out; // phpcs:ignore WordPress.XSS.EscapeOutput
+		?>
+	</div>
+	<?php
+}
+?>
 </div>

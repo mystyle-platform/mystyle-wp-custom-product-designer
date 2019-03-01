@@ -111,23 +111,36 @@ class MyStyle_Customize_Page {
 	}
 
 	/**
-	 * Builds a url to the customize page including url paramaters to load
+	 * Builds a URL to the customize page including url paramaters to load
 	 * the passed design.
 	 *
 	 * @param MyStyle_Design $design The design that you want a url for.
 	 * @param integer        $cart_item_key An optional cart_item_key.
-	 * @param array          $passthru Any passthru data to include in the url. If non is
-	 * passed, defaults are used.
+	 * @param array          $passthru Any passthru data to include in the url.
+	 * If none is passed, defaults are used.
 	 * @return string Returns a link that can be used to reload a design.
+	 * @todo Combine this code with the get_scratch_url and get_product_url
+	 * functions.
 	 */
-	public static function get_design_url( MyStyle_Design $design, $cart_item_key = null, $passthru = null ) {
+	public static function get_design_url(
+		MyStyle_Design $design,
+		$cart_item_key = null,
+		$passthru = null ) {
 
 		if ( null === $passthru ) {
-			$passthru = array(
-				'post' => array(
+
+			if ( null !== $design->get_cart_data() ) {
+				$post_data = json_decode( $design->get_cart_data(), true );
+			} else {
+				// Set some default post/cart data.
+				$post_data = array(
 					'quantity'    => 1,
 					'add-to-cart' => $design->get_product_id(),
-				),
+				);
+			}
+
+			$passthru = array(
+				'post' => $post_data,
 			);
 		}
 
@@ -139,6 +152,104 @@ class MyStyle_Customize_Page {
 		$customize_args   = array(
 			'product_id' => $design->get_product_id(),
 			'design_id'  => $design->get_design_id(),
+			'h'          => $passthru_encoded,
+		);
+
+		$customizer_url = add_query_arg( $customize_args, get_permalink( self::get_id() ) );
+
+		return $customizer_url;
+	}
+
+	/**
+	 * Build the scratch url to the customizer for the design.
+	 *
+	 * The "scratch" url is a url that loads the customizer with the product
+	 * used in the design but without the design (allowing you to create a new
+	 * design for the product "from scratch").
+	 *
+	 * This works the same as the get_reload_url function above except that it
+	 * leaves off the 'design_id' URL query arg.
+	 *
+	 * @param MyStyle_Design $design The design that you want a url for.
+	 * @param integer        $cart_item_key An optional cart_item_key.
+	 * @param array          $passthru Any passthru data to include in the url.
+	 * If none is passed, defaults are used.
+	 * @returns string Returns the "scratch" url to the customizer for the
+	 * design.
+	 * @todo Combine this code with the get_design_url and get_product_url
+	 * functions.
+	 */
+	public static function get_scratch_url(
+		MyStyle_Design $design,
+		$cart_item_key = null,
+		$passthru = null ) {
+
+		if ( null === $passthru ) {
+
+			if ( null !== $design->get_cart_data() ) {
+				$post_data = json_decode( $design->get_cart_data(), true );
+			} else {
+				// Set some default post/cart data.
+				$post_data = array(
+					'quantity'    => 1,
+					'add-to-cart' => $design->get_product_id(),
+				);
+			}
+
+			$passthru = array(
+				'post' => $post_data
+			);
+		}
+
+		if ( null !== $cart_item_key ) {
+			$passthru['cart_item_key'] = $cart_item_key;
+		}
+
+		$passthru_encoded = base64_encode( wp_json_encode( $passthru ) );
+		$customize_args   = array(
+			'product_id' => $design->get_product_id(),
+			'h'          => $passthru_encoded,
+		);
+
+		$customizer_url = add_query_arg( $customize_args, get_permalink( self::get_id() ) );
+
+		return $customizer_url;
+	}
+
+	/**
+	 * Builds a url to the customize page including url paramaters to load
+	 * the passed product.
+	 *
+	 * @param MyStyle_Product $product The design that you want a url for.
+	 * @param integer         $cart_item_key An optional cart_item_key.
+	 * @param array           $passthru Any passthru data to include in the url.
+	 * If none is passed, defaults are used.
+	 * @return string Returns a link that can be used to reload a design.
+	 * @todo Unit test this function.
+	 * @todo Combine this code with the get_design_url and get_scratch_url
+	 * functions.
+	 */
+	public static function get_product_url(
+		MyStyle_Product $product,
+		$cart_item_key = null,
+		$passthru = null ) {
+
+		if ( null === $passthru ) {
+			$passthru = array(
+				'post' => array(
+					'quantity'    => 1,
+					'add-to-cart' => $product->get_id(),
+				),
+			);
+		}
+
+		if ( null !== $cart_item_key ) {
+			$passthru['cart_item_key'] = $cart_item_key;
+		}
+
+		$passthru_encoded = base64_encode( wp_json_encode( $passthru ) );
+		$customize_args   = array(
+			'product_id' => $product->get_id(),
 			'h'          => $passthru_encoded,
 		);
 

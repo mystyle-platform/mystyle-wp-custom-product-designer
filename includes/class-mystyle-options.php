@@ -185,6 +185,23 @@ abstract class MyStyle_Options {
 	}
 
 	/**
+	 * Function that gets the the design_profile_product_menu_type.
+	 *
+	 * @return string Returns the design_profile_product_menu_type. If the
+	 * design_profile_product_menu_type isn't set, this function returns
+	 * 'list'.
+	 */
+	public static function get_design_profile_product_menu_type() {
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		if ( ! empty( $options['design_profile_product_menu_type'] ) ) {
+			$val = $options['design_profile_product_menu_type'];
+		} else {
+			$val = 'list';
+		}
+		return $val;
+	}
+
+	/**
 	 * Determines whether or not the passed option is enabled.
 	 *
 	 * @param string  $option_name The name of the option. This is passed to

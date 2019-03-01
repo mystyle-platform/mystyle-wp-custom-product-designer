@@ -64,6 +64,10 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
 		// Create a design.
 		$design = MyStyle_MockDesign::get_mock_design( $design_id );
 
+		// Create a real product for the design.
+		$product_id = create_wc_test_product();
+		$design->set_product_id( $product_id );
+
 		// Persist the design.
 		MyStyle_DesignManager::persist( $design );
 
@@ -108,6 +112,10 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
 
 		// Create a design.
 		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+
+		// Create a real product for the design.
+		$product_id = create_wc_test_product();
+		$design->set_product_id( $product_id );
 
 		// Persist the design.
 		MyStyle_DesignManager::persist( $design );

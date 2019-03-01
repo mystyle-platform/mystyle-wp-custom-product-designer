@@ -75,6 +75,9 @@ abstract class MyStyle_Design_Profile_Shortcode {
 			$next_design_url = MyStyle_Design_Profile_Page::get_design_url( $next_design );
 		}
 
+		$product     = $design->get_Product();
+		$product_menu_type = MyStyle_Options::get_design_profile_product_menu_type();
+
 		// ---------- Call the view layer -------------------- //
 		ob_start();
 		require MYSTYLE_TEMPLATES . 'design-profile/profile.php';

@@ -391,7 +391,8 @@ class MyStyle_Design_Profile_Page {
 	 * Gets the design id from the url. If it can't find the design id in the
 	 * url, this function returns false.
 	 *
-	 * @return int Returns the design id from the url or false if none found.
+	 * @return int|false Returns the design id from the url or false if none
+	 * found.
 	 */
 	public static function get_design_id_from_url() {
 		// Try the query vars ( ex: &design_id=10 ).
@@ -723,6 +724,68 @@ class MyStyle_Design_Profile_Page {
 		}
 
 		return $classes;
+	}
+
+	/**
+	 * Gets the list of products for the design profile page as an HTML string.
+	 *
+	 * @return string Returns the product list as an HTML string.
+	 * @todo Unit test this function.
+	 */
+	public function get_product_list_html() {
+		// Hook the WooCommerce [products] shortcode to modify the output.
+		add_filter( 'woocommerce_loop_product_link', array( &$this, 'modify_woocommerce_loop_product_link' ), 10, 1 );
+		add_filter( 'woocommerce_shortcode_products_query', array( &$this, 'modify_woocommerce_shortcode_products_query' ), 10, 1 );
+
+		// Get the shortcode output.
+		$out = do_shortcode( '[products paginate="false"]' );
+
+		// Undo our hooks.
+		remove_filter( 'woocommerce_loop_product_link', array( &$this, 'modify_woocommerce_loop_product_link' ) );
+		remove_filter( 'woocommerce_shortcode_products_query', array( &$this, 'modify_woocommerce_shortcode_products_query' ) );
+
+		return $out;
+	}
+
+	/**
+	 * Modify the WooCommerce products link to go to the customizer instead
+	 * of the product info page.
+	 *
+	 * Used by the get_product_list_html method above.
+	 *
+	 * @return string Returns the html for the link as a string (i.e.
+	 * "<a href...").
+	 * @global $product
+	 * @todo Unit test this function.
+	 */
+	public function modify_woocommerce_loop_product_link() {
+		global $product;
+
+		$mystyle_product = new \MyStyle_Product( $product );
+		$customizer_url  = MyStyle_Customize_Page::get_product_url( $mystyle_product );
+
+		return $customizer_url;
+	}
+
+	/**
+	 * Modify the WooCommerce products shortcode query to only include MyStyle
+	 * enabled products.
+	 *
+	 * Used by the get_product_list_html method above.
+	 *
+	 * @param array $args An array of query arguments.
+	 * @return array Returns the array of query arguments.
+	 * @todo Unit test this function.
+	 */
+	public function modify_woocommerce_shortcode_products_query( $args ) {
+		$mystyle_filter            = array();
+		$mystyle_filter['key']     = '_mystyle_enabled';
+		$mystyle_filter['value']   = 'yes';
+		$mystyle_filter['compare'] = 'IN';
+
+		$args['meta_query'][] = $mystyle_filter;
+
+		return $args;
 	}
 
 	/**

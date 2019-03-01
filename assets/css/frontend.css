@@ -115,9 +115,9 @@ iframe#customizer-iframe {
 
 /* Fixes the margins for the Customize page for Divi on mobile. */
 @media (max-width: 600px) {
-    body.mystyle-customize #et-main-area > #main-content > .container {
-        width: calc(100vw - 10px);
-    }
+	body.mystyle-customize #et-main-area > #main-content > .container {
+		width: calc(100vw - 10px);
+	}
 }
 
 /* MyStyle Design Profile Page */
@@ -144,8 +144,8 @@ body.mystyle-design-profile ul.mystyle-designs {
 body.mystyle-design-profile ul.mystyle-designs li {
 	display: inline-block;
 	margin: 1em;
+	max-width: 300px;
 }
-
 body.mystyle-design-profile ul.mystyle-designs li a {
 	display: block;
 	padding: 2em;
@@ -161,4 +161,31 @@ body.mystyle-design-profile ul.mystyle-designs li a:hover {
 
 body.mystyle-design-profile ul.mystyle-designs li span.mystyle-design-id {
 	display: block;
+}
+
+/* List/grid styling rules start */
+#mystyle-design-profile-wrapper .product_description {
+	margin-bottom: 60px;
+}
+#mystyle-design-profile-wrapper .customize_products.list ul.products li {
+	display: block;
+	width: 100% !important;
+	text-align: left;
+}
+#mystyle-design-profile-wrapper .customize_products.list ul.products li h2,
+#mystyle-design-profile-wrapper .customize_products.list ul.products li a {
+	float: left;
+}
+#mystyle-design-profile-wrapper .customize_products.list ul.products li img,
+#mystyle-design-profile-wrapper .customize_products.list ul.products li span.onsale {
+	display: none;
+}
+#mystyle-design-profile-wrapper .customize_products.list ul.products li .price {
+	display: inline-block;
+	margin-left: 10px;
+}
+#mystyle-design-profile-wrapper .customize_products.list ul.products li a.button.add_to_cart_button {
+	margin-left: 10px;
+	position: relative;
+	bottom: 7px;
 }
