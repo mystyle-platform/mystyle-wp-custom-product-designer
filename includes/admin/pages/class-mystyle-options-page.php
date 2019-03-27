@@ -26,6 +26,9 @@ class MyStyle_Options_Page {
 	public function __construct() {
 		add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ), 10, 0 );
 		add_action( 'admin_init', array( &$this, 'admin_init' ), 10, 0 );
+		// Note: we run our custom actions in the current_screen action so that
+		// it is late enough to tell what screen we are on but early enough to
+		// set/display notices.
 		add_action( 'current_screen', array( &$this, 'handle_custom_actions' ), 10, 0 );
 	}
 
