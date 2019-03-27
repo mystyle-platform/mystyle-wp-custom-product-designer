@@ -26,6 +26,7 @@ class MyStyle_Options_Page {
 	public function __construct() {
 		add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ), 10, 0 );
 		add_action( 'admin_init', array( &$this, 'admin_init' ), 10, 0 );
+		add_action( 'current_screen', array( &$this, 'handle_custom_actions' ), 10, 0 );
 	}
 
 	/**
@@ -152,37 +153,6 @@ class MyStyle_Options_Page {
 			'mystyle_advanced_settings',
 			'mystyle_options_advanced_section'
 		);
-
-		// ************** TOOLS SECTION ******************//
-		add_settings_section(
-			'mystyle_options_tools_section',
-			'MyStyle Tools',
-			array( &$this, 'render_tools_section_text' ),
-			'mystyle_tools'
-		);
-
-		if ( ( ! empty( $_GET['action'] ) ) && ( 'POST' === $_SERVER['REQUEST_METHOD'] ) && ( wp_verify_nonce( $_REQUEST['_wpnonce'], 'mystyle_admin_action' ) ) ) { // phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
-			switch ( $_GET['action'] ) {
-				case 'fix_customize_page':
-					// Attempt the fix.
-					$message = MyStyle_Customize_Page::fix();
-
-					// Post Fix Notice.
-					$fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
-					mystyle_notice_add_to_queue( $fix_notice );
-
-					break;
-				case 'fix_design_profile_page':
-					// Attempt the fix.
-					$message = MyStyle_Design_Profile_Page::fix();
-
-					// Post Fix Notice.
-					$fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
-					mystyle_notice_add_to_queue( $fix_notice );
-
-					break;
-			}
-		}
 	}
 
 	/**
@@ -208,6 +178,51 @@ class MyStyle_Options_Page {
 			'manage_options',
 			$mystyle_hook
 		);
+	}
+
+	/**
+	 * Function to handle post requests from the MyStyle Admin Options page.
+	 */
+	public function handle_custom_actions() {
+		/* $screen \WP_Screen The current screen. */
+		$screen    = get_current_screen();
+		$screen_id = ( ! empty( $screen ) ? $screen->id : null );
+		$handled   = false;
+		if (
+			( 'toplevel_page_mystyle' === $screen_id ) &&
+			( ! empty( $_GET['action'] ) ) &&
+			( 'POST' === $_SERVER['REQUEST_METHOD'] ) &&
+			( wp_verify_nonce( $_REQUEST['_wpnonce'], 'mystyle-admin-action' ) )
+		) { // phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
+
+			switch ( $_GET['action'] ) {
+				case 'fix_customize_page':
+					// Attempt the fix.
+					$message = MyStyle_Customize_Page::fix();
+
+					// Post Fix Notice.
+					$fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
+					mystyle_notice_add_to_queue( $fix_notice );
+					$handled = true;
+
+					break;
+				case 'fix_design_profile_page':
+					// Attempt the fix.
+					$message = MyStyle_Design_Profile_Page::fix();
+
+					// Post Fix Notice.
+					$fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
+					mystyle_notice_add_to_queue( $fix_notice );
+					$handled = true;
+
+					break;
+			}
+		}
+
+		// For unit testing.
+		if ( defined( 'DOING_PHPUNIT' ) ) {
+			return $handled;
+		}
 	}
 
 	/**
@@ -238,7 +253,7 @@ class MyStyle_Options_Page {
 			<br/>
 			<div class="mystyle-admin-box">
 				<?php do_settings_sections( 'mystyle_tools' ); ?>
-				<form action="admin.php?page=mystyle&action=fix_customize_page&_wpnonce=<?php echo rawurlencode( wp_create_nonce( 'mystyle-admin-action' ) ); ?>" method="post">
+				<form action="admin.php?page=mystyle&action=fix_customize_page&_wpnonce=<?php echo wp_create_nonce( 'mystyle-admin-action' ); ?>" method="post">
 					<p class="submit">
 						<input type="submit" name="Submit" id="submit_fix_customize_page" class="button button-primary" value="<?php esc_attr_e( 'Fix Customize Page', 'mystyle' ); ?>" /><br/>
 						<small>This tool will attempt to fix the Customize page. This may involve creating, recreating, or restoring the page.</small>
@@ -466,16 +481,16 @@ class MyStyle_Options_Page {
 	 * Function to render the design_profile_product_menu_type field.
 	 */
 	public function render_design_profile_product_menu_type() {
-		$options     = get_option( MYSTYLE_OPTIONS_NAME, array() );
-		$type = ( array_key_exists( 'design_profile_product_menu_type', $options ) ) ? $options['design_profile_product_menu_type'] : '';
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		$type    = ( array_key_exists( 'design_profile_product_menu_type', $options ) ) ? $options['design_profile_product_menu_type'] : '';
 		?>
 		<label class="description">
 			<select name="mystyle_options[design_profile_product_menu_type]">
 			<?php
 			$select = array(
-				'list' => 'List View',
-				'grid' => 'Grid View',
-				'disabled'  => 'Disabled',
+				'list'     => 'List View',
+				'grid'     => 'Grid View',
+				'disabled' => 'Disabled',
 			);
 			foreach ( $select as $key => $value ) {
 				if ( $key === $type ) {

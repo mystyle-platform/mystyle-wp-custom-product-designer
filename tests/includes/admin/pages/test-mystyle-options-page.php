@@ -185,6 +185,26 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the handle_custom_actions function.
+	 * @global $current_screen;
+	 */
+	public function test_handle_custom_actions_ignores_other_screens() {
+		global $current_screen;
+
+		// Set the current screen to some other screen (the widgets page).
+		$current_screen = WP_Screen::get( 'widgets' );
+
+		// Instantiate the SUT (System Under Test) class.
+		$mystyle_options_page = new MyStyle_Options_Page();
+
+		// Call the method.
+		$handled = $mystyle_options_page->handle_custom_actions();
+
+		// Assert that the method returned false.
+		$this->assertFalse( $handled );
+	}
+
+	/**
 	 * Test the render_access_section_text function.
 	 */
 	public function test_render_access_section_text() {
