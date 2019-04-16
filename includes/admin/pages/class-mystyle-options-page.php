@@ -42,20 +42,20 @@ class MyStyle_Options_Page {
 			'mystyle_options_access_section',
 			'Account Settings',
 			array( &$this, 'render_access_section_text' ),
-			'mystyle_account_settings'
+			'mystyle_options'
 		);
 		add_settings_field(
 			'api_key',
 			'API Key',
 			array( &$this, 'render_api_key' ),
-			'mystyle_account_settings',
+			'mystyle_options',
 			'mystyle_options_access_section'
 		);
 		add_settings_field(
 			'secret',
 			'Secret',
 			array( &$this, 'render_secret' ),
-			'mystyle_account_settings',
+			'mystyle_options',
 			'mystyle_options_access_section'
 		);
 
@@ -64,7 +64,7 @@ class MyStyle_Options_Page {
 			'mystyle_options_advanced_section',
 			'Advanced Settings',
 			array( &$this, 'render_advanced_section_text' ),
-			'mystyle_advanced_settings'
+			'mystyle_options'
 		);
 
 		/* ENABLE FLASH SETTING */
@@ -72,7 +72,7 @@ class MyStyle_Options_Page {
 			'enable_flash',
 			'Enable Flash (Not Recommended)',
 			array( &$this, 'render_enable_flash' ),
-			'mystyle_advanced_settings',
+			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
 
@@ -81,7 +81,7 @@ class MyStyle_Options_Page {
 			'customize_page_title_hide',
 			'Hide Customize Page Title',
 			array( &$this, 'render_hide_customize_title' ),
-			'mystyle_advanced_settings',
+			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
 
@@ -90,7 +90,7 @@ class MyStyle_Options_Page {
 			'design_profile_page_show_add_to_cart',
 			'Show Add to Cart Button on Design Profile Pages',
 			array( &$this, 'render_design_profile_page_show_add_to_cart' ),
-			'mystyle_advanced_settings',
+			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
 
@@ -99,7 +99,7 @@ class MyStyle_Options_Page {
 			'customize_page_disable_viewport_rewrite',
 			'Disable Viewport Rewrite',
 			array( &$this, 'render_customize_page_disable_viewport_rewrite' ),
-			'mystyle_advanced_settings',
+			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
 
@@ -108,7 +108,7 @@ class MyStyle_Options_Page {
 			'form_integration_config',
 			'Form Integration Config',
 			array( &$this, 'render_form_integration_config' ),
-			'mystyle_advanced_settings',
+			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
 
@@ -117,7 +117,7 @@ class MyStyle_Options_Page {
 			'enable_alternate_design_complete_redirect',
 			'Enable Alternate Design Complete Redirect',
 			array( &$this, 'render_enable_alternate_design_complete_redirect' ),
-			'mystyle_advanced_settings',
+			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
 
@@ -126,7 +126,7 @@ class MyStyle_Options_Page {
 			'alternate_design_complete_redirect_url',
 			'Alternate Design Complete Redirect URL',
 			array( &$this, 'render_alternate_design_complete_redirect_url' ),
-			'mystyle_advanced_settings',
+			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
 
@@ -135,7 +135,7 @@ class MyStyle_Options_Page {
 			'redirect_url_whitelist',
 			'Redirect URL Whitelist',
 			array( &$this, 'render_redirect_url_whitelist' ),
-			'mystyle_advanced_settings',
+			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
 
@@ -144,7 +144,7 @@ class MyStyle_Options_Page {
 			'enable_configur8',
 			'Enable Configur8',
 			array( &$this, 'render_enable_configur8' ),
-			'mystyle_advanced_settings',
+			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
 
@@ -153,7 +153,7 @@ class MyStyle_Options_Page {
 			'design_profile_product_menu_type',
 			'Reload-To-Other-Product Menu Style',
 			array( &$this, 'render_design_profile_product_menu_type' ),
-			'mystyle_advanced_settings',
+			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
 	}
@@ -242,13 +242,7 @@ class MyStyle_Options_Page {
 
 			<form action="options.php" method="post">
 				<?php settings_fields( 'mystyle_options' ); ?>
-				<div class="mystyle-admin-box">
-					<?php do_settings_sections( 'mystyle_account_settings' ); ?>
-				</div>
-				<br/>
-				<div class="mystyle-admin-box">
-					<?php do_settings_sections( 'mystyle_advanced_settings' ); ?>
-				</div>
+				<?php MyStyle_Admin::do_settings_sections( 'mystyle_options' ); ?>
 				<p class="submit">
 					<input type="submit" name="Submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'mystyle' ); ?>" />
 				</p>
@@ -639,6 +633,8 @@ class MyStyle_Options_Page {
 				'error'
 			);
 		}
+
+		$new_options = apply_filters( 'mystyle_validate_options', $new_options, $input, $old_options );
 
 		return $new_options;
 	}

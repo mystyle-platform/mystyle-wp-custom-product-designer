@@ -56,6 +56,50 @@ class MyStyle_Admin {
 	}
 
 	/**
+	 * Prints out all settings sections added to a particular settings page
+	 *
+	 * We use this instead of WordPress' default Settings API so that we
+	 * can add custom styling. We have this function here instead of in the
+	 * MyStyle_Options_Page class so that it can be used by the MyStyle add-ons,
+	 * etc.
+	 *
+	 * This function is mostly copy pasted from wp-admin/includes/template.php
+	 *
+	 * @global $wp_settings_sections Storage array of all settings sections added to admin pages.
+	 * @global $wp_settings_fields Storage array of settings fields and info about their pages/sections.
+	 * @since 2.7.0
+	 *
+	 * @param string $page The slug name of the page whose settings sections you want to output.
+	 */
+	public static function do_settings_sections( $page ) {
+		global $wp_settings_sections, $wp_settings_fields;
+
+		if ( ! isset( $wp_settings_sections[ $page ] ) ) {
+			return;
+		}
+
+		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
+			echo '<div class="mystyle-admin-box">';
+			if ( $section['title'] ) {
+					echo "<h2>{$section['title']}</h2>\n";
+			}
+
+			if ( $section['callback'] ) {
+					call_user_func( $section['callback'], $section );
+			}
+
+			if ( ! isset( $wp_settings_fields ) || ! isset( $wp_settings_fields[ $page ] ) || ! isset( $wp_settings_fields[ $page ][ $section['id'] ] ) ) {
+					continue;
+			}
+			echo '<table class="form-table">';
+			do_settings_fields( $page, $section['id'] );
+			echo '</table>';
+			echo '</div>';
+			echo '<br/>';
+		}
+	}
+
+	/**
 	 * Get the singleton instance.
 	 *
 	 * @return MyStyle_Admin
