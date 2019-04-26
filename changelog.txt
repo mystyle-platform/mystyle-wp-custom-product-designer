@@ -1,3 +1,8 @@
+= 3.11.1 =
+
+* Fixed a conflict with retrieving the mystyle session when other plugins have
+  prematurely started the PHP session.
+
 = 3.11.0 =
 
 * Made the MyStyle admin options hookable.
