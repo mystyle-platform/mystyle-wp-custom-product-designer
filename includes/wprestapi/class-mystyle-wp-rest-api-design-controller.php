@@ -149,7 +149,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 
 			return new WP_REST_Response( $data, 200 );
 		} catch ( \Exception $ex ) {
-			return new WP_Error( $ex->getCode() , __( 'message', 'mystyle' ) );
+			return new WP_Error( $ex->getCode() , __( $ex->getMessage(), 'mystyle' ) );
 		}
 	}
 
@@ -160,16 +160,21 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 * @return WP_Error|WP_REST_Request
 	 */
 	public function create_item( $request ) {
-		$item = $this->prepare_item_for_database( $request );
+		try {
+			// Get parameters from request.
+			$json_body_str   = $request->get_body();
 
-		if ( function_exists( 'slug_some_function_to_create_item' ) ) {
-			$data = slug_some_function_to_create_item( $item );
-			if ( is_array( $data ) ) {
-				return new WP_REST_Response( $data, 200 );
-			}
+			/* @var $design \MyStyle_Design The requested design. */
+			$design = MyStyle_Design::create_from_json( $json_body_str );
+
+			$design = MyStyle_DesignManager::persist( $design );
+			$data   = $this->prepare_item_for_response( $design, $request );
+
+			return new WP_REST_Response( $data, 200 );
+
+		} catch ( \Exception $ex ) {
+			return new WP_Error( $ex->getCode() , __( $ex->getMessage(), 'mystyle' ) );
 		}
-
-		return new WP_Error( 'cant-create', __( 'message', 'mystyle' ), array( 'status' => 500 ) );
 	}
 
 	/**
@@ -214,7 +219,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 			return new WP_REST_Response( true, 200 );
 
 		} catch ( \Exception $ex ) {
-			return new WP_Error( $ex->getCode() , __( 'message', 'mystyle' ) );
+			return new WP_Error( $ex->getCode() , __( $ex->getMessage(), 'mystyle' ) );
 		}
 	}
 

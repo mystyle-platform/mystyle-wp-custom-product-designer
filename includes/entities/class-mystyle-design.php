@@ -311,6 +311,46 @@ class MyStyle_Design implements MyStyle_Entity {
 	}
 
 	/**
+	 * Static function to create a new Design from JSON data. Call using
+	 * `MyStyle_Design::create_from_json( $json );`.
+	 *
+	 * This is used by the REST API.
+	 *
+	 * @param array $json_str JSON string to use to create the design.
+	 * @return \self Works like a constructor.
+	 */
+	public static function create_from_json( $json_str ) {
+		$json_arr = json_decode( $json_str, true );
+
+		$instance = new self();
+
+		$instance->design_id      = (int) htmlspecialchars( $json_arr['design_id'] );
+		$instance->template_id    = (int) htmlspecialchars( $json_arr['template_id'] );
+		$instance->designer_id    = (int) htmlspecialchars( $json_arr['designer_id'] );
+		$instance->email          = htmlspecialchars( $json_arr['email'] );
+		$instance->description    = htmlspecialchars( $json_arr['description'] );
+		$instance->price          = (int) htmlspecialchars( $json_arr['price'] );
+		$instance->print_url      = htmlspecialchars( $json_arr['print_url'] );
+		$instance->web_url        = htmlspecialchars( $json_arr['web_url'] );
+		$instance->thumb_url      = htmlspecialchars( $json_arr['thumb_url'] );
+		$instance->design_url     = htmlspecialchars( $json_arr['design_url'] );
+		$instance->product_id     = (int) htmlspecialchars( $json_arr['product_id'] );
+		$instance->user_id        = (int) htmlspecialchars( $json_arr['user_id'] );
+		$instance->session_id     = htmlspecialchars( $json_arr['session_id'] );
+		$instance->mobile         = (int) htmlspecialchars( $json_arr['mobile'] );
+		$instance->access         = (int) htmlspecialchars( $json_arr['access'] );
+		$instance->created        = htmlspecialchars( $json_arr['created'] );
+		$instance->created_gmt    = htmlspecialchars( $json_arr['created_gmt'] );
+		$instance->modified       = htmlspecialchars( $json_arr['modified'] );
+		$instance->modified_gmt   = htmlspecialchars( $json_arr['modified_gmt'] );
+		$instance->view_count     = (int) htmlspecialchars( $json_arr['view_count'] );
+		$instance->purchase_count = (int) htmlspecialchars( $json_arr['purchase_count'] );
+		$instance->cart_data      = $json_arr['cart_data'];
+
+		return $instance;
+	}
+
+	/**
 	 * Method to add data received from the api call to the Design.
 	 *
 	 * @param array $api_data API data to be used to add more data to the
