@@ -4,7 +4,7 @@
  * to add an endpoint and functionality for working with designs.
  *
  * @package MyStyle
- * @since 3.11.0
+ * @since 3.12.0
  */
 
 /**

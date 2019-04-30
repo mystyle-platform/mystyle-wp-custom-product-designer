@@ -4,7 +4,7 @@
  * the WC_REST_Authentication class.
  *
  * @package MyStyle
- * @since    3.11.0
+ * @since    3.12.0
  */
 
 defined( 'ABSPATH' ) || exit;
