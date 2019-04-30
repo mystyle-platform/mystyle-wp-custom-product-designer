@@ -140,14 +140,16 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	public function get_item( $request ) {
 		// Get parameters from request.
 		$params = $request->get_params();
-		$item   = array(); // Do a query, call another class, etc.
-		$data   = $this->prepare_item_for_response( $item, $request );
+		$current_user = wp_get_current_user();
+		try {
+			$design_id = $params['id'];
+			/* @var $design \MyStyle_Design The requested design. */
+			$design = MyStyle_DesignManager::get( $design_id, $current_user );
+			$data   = $this->prepare_item_for_response( $design, $request );
 
-		// Return a response or error based on some conditional.
-		if ( 1 === 1 ) {
 			return new WP_REST_Response( $data, 200 );
-		} else {
-			return new WP_Error( 'code', __( 'message', 'mystyle' ) );
+		} catch ( \Exception $ex ) {
+			return new WP_Error( $ex->getCode() , __( 'message', 'mystyle' ) );
 		}
 	}
 
