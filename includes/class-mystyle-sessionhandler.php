@@ -93,8 +93,16 @@ class MyStyle_SessionHandler {
 			// First look in the session variables.
 			if ( isset( $_SESSION[ MyStyle_Session::SESSION_KEY ] ) ) {
 				$session = $_SESSION[ MyStyle_Session::SESSION_KEY ];
-			} else {
-				// Next look in their cookies.
+			}
+
+			// Next look in their cookies and the db.
+			// Note: If deserialization failed, get_class may return "__PHP_Incomplete_Class".
+			//       If that happens, go to the db to get the session. Deserialization
+			//       issues can happen if another plugin starts the php session before our
+			//       plugin files have been included.
+			// TODO: Manual serialization/deserialization might be a better solution to this
+			// problem.
+			if ( ( null === $session ) || ( 'MyStyle_Session' !== get_class( $session ) ) ) {
 				if ( isset( $_COOKIE[ MyStyle_Session::COOKIE_NAME ] ) ) {
 					$session_id                               = wp_unslash( $_COOKIE[ MyStyle_Session::COOKIE_NAME ] );
 					$session                                  = MyStyle_SessionManager::get( $session_id );

@@ -1,3 +1,19 @@
+= 3.11.1 =
+
+* Fixed a conflict with retrieving the mystyle session when other plugins have
+  prematurely started the PHP session.
+
+= 3.11.0 =
+
+* Made the MyStyle admin options hookable.
+* Updated the NPM/JavaScript dependencies.
+
+= 3.10.1 =
+
+* Fixed a bug with the tool functions on the main settings page.
+* Updated the readme.txt to reflect that the plugin has been tested with up to WP 5.1.1.
+* Updated the main plugin file to reflect that the plugin has been tested with up to WC 3.5.7.
+
 = 3.10.0 =
 
 * Now adds a "Custom " prefix (ex "Custom T-Shirt") to the title on the design profile page (@webbninja).

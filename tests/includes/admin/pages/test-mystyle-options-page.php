@@ -106,12 +106,8 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 
 	/**
 	 * Test the mystyle_account_settings_section function.
-	 *
-	 * @global $wp_filter
 	 */
 	public function test_mystyle_account_settings_section() {
-		global $wp_filter;
-
 		$mystyle_options_page = new MyStyle_Options_Page();
 
 		// Run the function.
@@ -119,7 +115,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 
 		// Assert that the expected settings fields were registered and rendered.
 		ob_start();
-		do_settings_sections( 'mystyle_account_settings' );
+		do_settings_sections( 'mystyle_options' );
 		$outbound = ob_get_contents();
 		ob_end_clean();
 
@@ -132,12 +128,8 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 
 	/**
 	 * Test the mystyle_account_settings_section function.
-	 *
-	 * @global $wp_filter
 	 */
 	public function test_mystyle_advanced_settings_section() {
-		global $wp_filter;
-
 		$mystyle_options_page = new MyStyle_Options_Page();
 
 		// Run the function.
@@ -146,7 +138,7 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		// Assert that the expected settings fields were registered and
 		// rendered.
 		ob_start();
-		do_settings_sections( 'mystyle_advanced_settings' );
+		do_settings_sections( 'mystyle_options' );
 		$outbound = ob_get_contents();
 		ob_end_clean();
 
@@ -182,6 +174,26 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 		// Assert that the menu page was added.
 		$expected = 'http://example.org/wp-admin/admin.php?page=mystyle';
 		$this->assertEquals( $expected, menu_page_url( 'mystyle', false ) );
+	}
+
+	/**
+	 * Test the handle_custom_actions function.
+	 * @global $current_screen;
+	 */
+	public function test_handle_custom_actions_ignores_other_screens() {
+		global $current_screen;
+
+		// Set the current screen to some other screen (the widgets page).
+		$current_screen = WP_Screen::get( 'widgets' );
+
+		// Instantiate the SUT (System Under Test) class.
+		$mystyle_options_page = new MyStyle_Options_Page();
+
+		// Call the method.
+		$handled = $mystyle_options_page->handle_custom_actions();
+
+		// Assert that the method returned false.
+		$this->assertFalse( $handled );
 	}
 
 	/**
@@ -487,6 +499,61 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 
 		// Assert that the settings were stored.
 		$this->assertFalse( empty( $new_options['secret'] ) );
+	}
+
+	/**
+	 * Filter the option values returned by the validate method (registered in
+	 * the test_validate_is_filterable method below.
+	 *
+	 * @param array $new_options The new option values (as determined by other
+	 * plugins, etc).
+	 * @param array $input The submitted values.
+	 * @param array $old_options The old option values (from before they were
+	 * changed by the user).
+	 * @return array Returns the new options to be stored in the database.
+	 */
+	public function filter_validate_options( $new_options, $input, $old_options ) {
+		$new_options['extra_setting'] = 'filtered';
+
+		return $new_options;
+	}
+
+	/**
+	 * Test that the result of the validate function is able to be filtered.
+	 *
+	 * @global $wp_settings_errors;
+	 */
+	public function test_validate_is_filterable() {
+		global $wp_settings_errors;
+		// Clear out any previous settings errors.
+		$wp_settings_errors = null;
+
+		$mystyle_options_page = new MyStyle_Options_Page();
+
+		$input                              = array();
+		$input['api_key']                   = 'A0000';
+		$input['secret']                    = 'validsecret';
+		$input['enable_flash']              = 0;
+		$input['customize_page_title_hide'] = 0;
+		$input['customize_page_disable_viewport_rewrite']   = 0;
+		$input['form_integration_config']                   = '';
+		$input['enable_alternate_design_complete_redirect'] = 0;
+		$input['alternate_design_complete_redirect_url']    = '';
+		$input['redirect_url_whitelist']                    = '';
+		$input['enable_configur8']                          = 0;
+		$input['design_profile_product_menu_type']          = 'list';
+
+		// Add an extra setting (such as one from an add-on) to the input.
+		$input['extra_setting'] = '';
+
+		// Register a filter.
+		add_filter( 'mystyle_validate_options', array( &$this, 'filter_validate_options' ), true, 4 );
+
+		// Run the function.
+		$new_options = $mystyle_options_page->validate( $input );
+
+		// Assert that the extra setting was able to be filtered.
+		$this->assertEquals( 'filtered', $new_options['extra_setting'] );
 	}
 
 	/**
