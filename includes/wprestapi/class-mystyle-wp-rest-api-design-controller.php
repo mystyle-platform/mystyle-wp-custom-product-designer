@@ -56,7 +56,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 		$version   = '2';
 		$vendor    = 'wc-mystyle';
 		$namespace = $vendor . '/v' . $version;
-		$base      = 'design';
+		$base      = 'designs';
 		register_rest_route( $namespace, '/' . $base, array(
 			array(
 				'methods'             => WP_REST_Server::READABLE,
