@@ -161,9 +161,10 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-user-interface.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-order-listener.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-passthru-codec.php';
+			require_once MYSTYLE_INCLUDES . 'wprestapi/class-mystyle-wp-rest-api-design-controller.php';
 
 			// We include this frontend class here because it is used by our
-			// shortcode classes (which are used botn on the frontend and the admin.
+			// shortcode classes (which are used both on the frontend and the admin).
 			require_once MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php';
 
 			// Shortcode includes.
@@ -217,6 +218,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			MyStyle_User_Interface::get_instance();
 			MyStyle_Order_Listener::get_instance();
 			MyStyle_Passthru_Codec::get_instance();
+			MyStyle_Wp_Rest_Api_Design_Controller::get_instance();
 
 			if ( $this->is_request( 'admin' ) ) {
 				// ---- ADMIN ---- //

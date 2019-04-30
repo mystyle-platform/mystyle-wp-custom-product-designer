@@ -32,4 +32,25 @@ class MyStyle_Util {
 		return $ret;
 	}
 
+	/**
+	 * Preps a value for being returned by the REST API.
+	 *
+	 * This function does the following:
+	 *
+	 *  * Replaces empty strings ("") with nulls.
+	 *
+	 * @param mixed $val The value that you want to prep.
+	 * @return int|null Returns value prepped and ready to returned by the
+	 * REST API.
+	 */
+	public static function prep_rest_val( $val ) {
+		$ret = null;
+
+		if ( ! empty( $val ) ) {
+			$ret = $val;
+		}
+
+		return $ret;
+	}
+
 }

@@ -921,4 +921,38 @@ class MyStyle_Design implements MyStyle_Entity {
 		return $cart_data_array;
 	}
 
+	/**
+	 * Return the MyStyle_Design as an array ready to be encoded to JSON.
+	 * @return Returns the MyStyle_Design as an array ready to be encoded to
+	 * JSON.
+	 */
+	public function json_encode() {
+		$arr = array(
+			'design_id'      => MyStyle_Util::prep_rest_val( $this->design_id ),
+			'template_id'    => MyStyle_Util::prep_rest_val( $this->template_id ),
+			'designer_id'    => MyStyle_Util::prep_rest_val( $this->designer_id ),
+			'email'          => MyStyle_Util::prep_rest_val( $this->email ),
+			'description'    => MyStyle_Util::prep_rest_val( $this->description ),
+			'price'          => MyStyle_Util::prep_rest_val( $this->price ),
+			'print_url'      => MyStyle_Util::prep_rest_val( $this->print_url ),
+			'web_url'        => MyStyle_Util::prep_rest_val( $this->web_url ),
+			'thumb_url'      => MyStyle_Util::prep_rest_val( $this->thumb_url ),
+			'design_url'     => MyStyle_Util::prep_rest_val( $this->design_url ),
+			'product_id'     => MyStyle_Util::prep_rest_val( $this->product_id ),
+			'user_id'        => MyStyle_Util::prep_rest_val( $this->user_id ),
+			'created'        => MyStyle_Util::prep_rest_val( $this->created ),
+			'created_gmt'    => MyStyle_Util::prep_rest_val( $this->created_gmt ),
+			'modified'       => MyStyle_Util::prep_rest_val( $this->modified ),
+			'modified_gmt'   => MyStyle_Util::prep_rest_val( $this->modified_gmt ),
+			'mobile'         => MyStyle_Util::prep_rest_val( $this->mobile ),
+			'access'         => MyStyle_Util::prep_rest_val( $this->access ),
+			'view_count'     => MyStyle_Util::prep_rest_val( $this->view_count ),
+			'purchase_count' => MyStyle_Util::prep_rest_val( $this->purchase_count ),
+			'session_id'     => MyStyle_Util::prep_rest_val( $this->session_id ),
+			'cart_data'      => MyStyle_Util::prep_rest_val( $this->cart_data ),
+		);
+
+		return $arr;
+	}
+
 }
