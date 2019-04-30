@@ -198,16 +198,24 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 * @return WP_Error|WP_REST_Request
 	 */
 	public function delete_item( $request ) {
-		$item = $this->prepare_item_for_database( $request );
+		// Get parameters from request.
+		$params = $request->get_params();
+		$current_user = wp_get_current_user();
+		try {
+			$design_id = $params['id'];
+			/* @var $design \MyStyle_Design The requested design. */
+			$design = MyStyle_DesignManager::get( $design_id, $current_user );
+			$deleted = MyStyle_DesignManager::delete ( $design );
 
-		if ( function_exists( 'slug_some_function_to_delete_item' ) ) {
-			$deleted = slug_some_function_to_delete_item( $item );
-			if ( $deleted ) {
-				return new WP_REST_Response( true, 200 );
+			if ( ! $deleted ) {
+				throw new MyStyle_Exception( 'Can\'t delete design', 500 );
 			}
-		}
 
-		return new WP_Error( 'cant-delete', __( 'message', 'mystyle' ), array( 'status' => 500 ) );
+			return new WP_REST_Response( true, 200 );
+
+		} catch ( \Exception $ex ) {
+			return new WP_Error( $ex->getCode() , __( 'message', 'mystyle' ) );
+		}
 	}
 
 	/**
