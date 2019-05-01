@@ -1,3 +1,7 @@
+= 3.12.0 =
+
+* Added CRUD functionality for MyStyle Designs to the WordPress/WooCommerce REST API.
+
 = 3.11.1 =
 
 * Fixed a conflict with retrieving the mystyle session when other plugins have
