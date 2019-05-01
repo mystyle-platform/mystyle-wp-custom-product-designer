@@ -76,6 +76,46 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the create_from_json function.
+	 */
+	public function test_create_from_json() {
+
+		// Create the JSON to use.
+		$json_str = '
+		{
+			"design_id": 1,
+			"template_id": 0,
+			"designer_id": null,
+			"email": null,
+			"description": null,
+			"price": null,
+			"print_url": null,
+			"web_url": "http://www.example.com/example.jpg",
+			"thumb_url": "http://www.example.com/example.jpg",
+			"design_url": "http://www.example.com/example.jpg",
+			"product_id": 0,
+			"user_id": 0,
+			"created": "2015-08-06 22:35:52",
+			"created_gmt": "2015-08-06 22:35:52",
+			"modified": "2015-08-06 22:35:52",
+			"modified_gmt": "2015-08-06 22:35:52",
+			"mobile": 1,
+			"access": null,
+			"view_count": null,
+			"purchase_count": null,
+			"session_id": "testsessionid",
+			"cart_data": null
+		}';
+
+		// Call the method.
+		$design = MyStyle_Design::create_from_json( $json_str );
+
+		// Assert that the design is created as expected.
+		$this->assertEquals( 'MyStyle_Design', get_class( $design ) );
+		$this->assertEquals( '1', $design->get_design_id() );
+	}
+
+	/**
 	 * Test the add_api_data function.
 	 */
 	public function test_add_api_data() {
@@ -324,6 +364,47 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 
 		// Assert that the expected design_id parameter is included in the url.
 		$this->assertContains( 'design_id=' . $design_id, $url );
+	}
+
+	/**
+	 * Test the json_encode function.
+	 */
+	public function test_json_encode() {
+
+		// Create Design
+		$json_str = '
+		{
+			"design_id": 1,
+			"template_id": 0,
+			"designer_id": null,
+			"email": null,
+			"description": null,
+			"price": null,
+			"print_url": null,
+			"web_url": "http://www.example.com/example.jpg",
+			"thumb_url": "http://www.example.com/example.jpg",
+			"design_url": "http://www.example.com/example.jpg",
+			"product_id": 0,
+			"user_id": 0,
+			"created": "2015-08-06 22:35:52",
+			"created_gmt": "2015-08-06 22:35:52",
+			"modified": "2015-08-06 22:35:52",
+			"modified_gmt": "2015-08-06 22:35:52",
+			"mobile": 1,
+			"access": null,
+			"view_count": null,
+			"purchase_count": null,
+			"session_id": "testsessionid",
+			"cart_data": null
+		}';
+		$design = MyStyle_Design::create_from_json( $json_str );
+
+		// Call the method.
+		$json_data = $design->json_encode();
+
+		// Assert that the json data is returned as expected.
+		$this->assertTrue( is_array( $json_data ) );
+		$this->assertEquals( '1', $json_data['design_id'] );
 	}
 
 }
