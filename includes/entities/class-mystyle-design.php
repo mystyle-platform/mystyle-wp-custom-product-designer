@@ -963,7 +963,8 @@ class MyStyle_Design implements MyStyle_Entity {
 
 	/**
 	 * Return the MyStyle_Design as an array ready to be encoded to JSON.
-	 * @return Returns the MyStyle_Design as an array ready to be encoded to
+	 * 
+	 * @return array Returns the MyStyle_Design as an array ready to be encoded to
 	 * JSON.
 	 */
 	public function json_encode() {
