@@ -1,3 +1,9 @@
+= 3.12.1 =
+
+* Added a safety check to the function that overwrites the cart image.
+* Updated the readme.txt to reflect that the plugin has been tested with up to WP 5.2.1.
+* Updated the main plugin file to reflect that the plugin has been tested with up to WC 3.6.4.
+
 = 3.12.0 =
 
 * Added CRUD functionality for MyStyle Designs to the WordPress/WooCommerce REST API.
