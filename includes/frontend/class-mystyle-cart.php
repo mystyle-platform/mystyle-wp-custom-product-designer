@@ -289,29 +289,33 @@ class MyStyle_Cart {
 			/* @var $design \MyStyle_Design phpcs:ignore */
 			$design = MyStyle_DesignManager::get( $design_id, $user, $session );
 
-			// Overwrite the src attribute.
-			$new_src         = 'src="' . $design->get_thumb_url() . '"';
-			$product_img_tag = preg_replace( '/src\=".*?"/', $new_src, $product_img_tag );
+			// Only proceed if we have a design to work with.
+			if ( null !== $design) {
 
-			// Remove the srcset attribute.
-			$product_img_tag = preg_replace( '/srcset\=".*?"/', '', $product_img_tag );
+				// Overwrite the src attribute.
+				$new_src         = 'src="' . $design->get_thumb_url() . '"';
+				$product_img_tag = preg_replace( '/src\=".*?"/', $new_src, $product_img_tag );
 
-			// Prep the link to the design profile page for the design.
-			$design_profile_url = MyStyle_Design_Profile_Page::get_design_url( $design, $cart_item_key );
+				// Remove the srcset attribute.
+				$product_img_tag = preg_replace( '/srcset\=".*?"/', '', $product_img_tag );
 
-			// Prep the link to reload the design in the customizer.
-			$customizer_url = MyStyle_Customize_Page::get_design_url( $design, $cart_item_key );
+				// Prep the link to the design profile page for the design.
+				$design_profile_url = MyStyle_Design_Profile_Page::get_design_url( $design, $cart_item_key );
 
-			// Call the view/template layer.
-			$out = mystyle_get_template_html(
-				'cart/cart-item-thumbnail.php',
-				array(
-					'product_img_tag'    => $product_img_tag,
-					'design'             => $design,
-					'design_profile_url' => $design_profile_url,
-					'customizer_url'     => $customizer_url,
-				)
-			);
+				// Prep the link to reload the design in the customizer.
+				$customizer_url = MyStyle_Customize_Page::get_design_url( $design, $cart_item_key );
+
+				// Call the view/template layer.
+				$out = mystyle_get_template_html(
+					'cart/cart-item-thumbnail.php',
+					array(
+						'product_img_tag'    => $product_img_tag,
+						'design'             => $design,
+						'design_profile_url' => $design_profile_url,
+						'customizer_url'     => $customizer_url,
+					)
+				);
+			}
 		}
 
 		return $out;
