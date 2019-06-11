@@ -29,19 +29,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <script type="text/javascript">
 
-	// On ready.
-	jQuery( window ).ready(
-		function () {
+	/// wait for MyStyleCustomze to exist and initialize.
+	function initMyStyleCustomizer(){
+		var hasMyStyle	= Boolean(
+				typeof MyStyleCustomize !== 'undefined' 
+				&& MyStyleCustomize !== null 
+				&& MyStyleCustomize );
+		if( hasMyStyle ){	
+			console.log('has MyStyle... initializing.');
 			MyStyleCustomize.init({
 				"disableViewportRewrite": <?php echo ( $disable_viewport_rewrite ) ? 'true' : 'false'; ?>,
 				"enableFlash": <?php echo ( $enable_flash ) ? 'true' : 'false'; ?>,
 				"flashCustomizerUrl": "<?php echo esc_attr( $flash_customizer_url ); ?>",
-				"html5CustomizerUrl": "<?php echo esc_attr( $html5_customizer_url ); ?>",
+				"html5CustomizerUrl": "<?php echo esc_attr( $html5_customizer_url ); ?>"
 			});
 			MyStyleCustomize.setOrientation();
 			MyStyleCustomize.renderCustomizer();
+		} else {
+			console.log('does not have MyStyle... waiting.');
+			//(Sometimes, MyStyleCustomize does not exist at first yet)
+			setTimeout(initMyStyleCustomizer,1000); // retry every second until the object exists
 		}
-	);
+	} 
+
+	// On ready.
+	jQuery( window ).ready( initMyStyleCustomizer );
 
 	// On resize.
 	jQuery( window ).resize(
