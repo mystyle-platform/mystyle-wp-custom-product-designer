@@ -58,8 +58,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	// On resize.
 	jQuery( window ).resize(
 		function () {
-			MyStyleCustomize.setOrientation();
+			var hasMyStyle	= Boolean(
+				typeof MyStyleCustomize !== 'undefined' 
+				&& MyStyleCustomize !== null 
+				&& MyStyleCustomize );
+			if( hasMyStyle) MyStyleCustomize.setOrientation();
 		}
 	);
-
 </script>
