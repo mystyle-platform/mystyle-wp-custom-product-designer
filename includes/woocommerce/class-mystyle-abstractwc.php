@@ -88,20 +88,22 @@ abstract class MyStyle_AbstractWC {
 	 * @param array   $variation The variation that you are looking for.
 	 * @return integer Returns the variation id of the matching product
 	 * variation.
-	 * @todo Add unit testing
 	 */
 	public function get_matching_variation( $product_id, $variation ) {
+		$variation_id = null;
 		if ( MyStyle()->get_WC()->version_compare( '3.0', '<' ) ) {
 			$variable_product = new \WC_Product_Variable( $product_id );
-			return $variable_product->get_matching_variation( $variation );
+			$variation_id = $variable_product->get_matching_variation( $variation );
 		} else {
 			$product    = new WC_Product( $product_id );
 			$data_store = \WC_Data_Store::load( 'product' );
-			return $data_store->find_matching_product_variation(
+			$variation_id = $data_store->find_matching_product_variation(
 				$product,
 				$variation
 			);
 		}
+
+		return $variation_id;
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mocks the woocommerce cart
+ * Mocks the woocommerce cart.
  *
  * @package MyStyle
  * @since 1.0.0

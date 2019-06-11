@@ -283,7 +283,7 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 
 	/**
 	 * Test the handle function for a POST request with a variation that is
-	 * altered by the customiser. The post data includes the color red but the
+	 * altered by the customizer. The post data includes the color red but the
 	 * variation_id for the blue variation.  The function should catch this
 	 * and change the variation_id to the id of the red variation.
 	 *
@@ -306,28 +306,18 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 		// Mock woocommerce.
 		$woocommerce = new MyStyle_MockWooCommerce();
 
-		// Create a variable product.
-		$product_id = create_wc_test_product(
-			'Test Product', // name.
-			'variable', // type.
-			array( 'color' => array( 'red', 'blue' ) ) // attributes.
-		);
+		// Set up the test data.
+		$wc_product = WC_Helper_Product::create_variation_product();
 
-		$parent = get_post( $product_id );
+		// Fix the test data (WC < 3.0 is broken).
+		fix_variation_product( $wc_product );
 
-		// Create the red variation.
-		$red_variation_id = create_wc_test_product_variation(
-			$parent,
-			1,
-			array( 'color' => 'red' )
-		);
+		// Wrap the product to get the id.
+		$product    = new MyStyle_Product( $wc_product );
+		$product_id = $product->get_id();
 
-		// Create the blue variation.
-		$blue_variation_id = create_wc_test_product_variation(
-			$parent,
-			2,
-			array( 'color' => 'blue' )
-		);
+		// Get all children of the product.
+		$children = $product->get_children();
 
 		// Init the MyStyle_Handoff.
 		$mystyle_handoff = new MyStyle_Handoff();
@@ -346,9 +336,9 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 						'add-to-cart'        => $product_id,
 						'product_id'         => $product_id,
 						'quantity'           => 1,
-						// Submit the blue variation_id but the color red.
-						'variation_id'       => $blue_variation_id,
-						'attribute_pa_color' => 'red',
+						// Submit the small variation_id but the large size.
+						'variation_id'       => $children[0],
+						'attribute_pa_size' => 'large',
 					),
 				)
 			)
@@ -360,9 +350,9 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 		// Call the function.
 		$mystyle_handoff->handle();
 
-		// Assert that the variation_id ws updated to the red one.
+		// Assert that the variation_id was updated to the large one.
 		$added_to_cart = $woocommerce->cart->added_to_cart;
-		$this->assertEquals( $red_variation_id, $added_to_cart['variation_id'] );
+		$this->assertEquals( $children[1], $added_to_cart['variation_id'] );
 	}
 
 	/**
