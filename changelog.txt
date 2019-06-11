@@ -1,3 +1,7 @@
+= 3.12.2 =
+
+* Fixed a bug where the customizer was failing to load under certain circumstances.
+
 = 3.12.1 =
 
 * Added a safety check to the function that overwrites the cart image.
