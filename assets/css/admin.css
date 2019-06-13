@@ -204,3 +204,22 @@ span#mystyle-icon-general.icon100 {
 .mystyle-admin-box.warning {
 	border-top-color: #ffb900;
 }
+
+/**
+woocommerce order mystyle data area
+*/
+.woocommerce_order_items .mystyle-panel a.button {
+    display: block;
+    text-align: center;
+    max-width: 190px;
+    margin: 8px auto;
+}
+
+.woocommerce_order_items .mystyle-panel img {
+    margin: auto;
+    display: block;
+}
+
+a.mystyle-toggle-link.button {
+	min-width: 100px;
+}

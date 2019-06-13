@@ -75,7 +75,7 @@ class MyStyle_WooCommerce_Admin_Order {
 		<td class="item-mystyle">
 			<?php if ( null !== $design ) : ?>
 				<div class="mystyle-toggle" onclick="mystyleTogglePanelVis(<?php echo $item_id; ?>)">
-					<a class="mystyle-toggle-link" title="Click to toggle">MyStyle Data</a>
+					<a class="mystyle-toggle-link button" title="Click to toggle">MyStyle Data</a>
 					<a id="mystyle-toggle-handle-<?php echo $item_id; ?>" class="mystyle-toggle-handle" title="Click to toggle" onclick="mystyleTogglePanelVis(<?php echo $item_id; ?>)"></a>
 				</div>
 				<div class="mystyle-panel" id="mystyle-panel-<?php echo $item_id; ?>" style="display:none;">
