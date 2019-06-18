@@ -1,3 +1,7 @@
+= 3.12.3 =
+
+* Improved the styling/usablitity of the MyStyle controls on the WC Order form.
+
 = 3.12.2 =
 
 * Fixed a bug where the customizer was failing to load under certain circumstances.
