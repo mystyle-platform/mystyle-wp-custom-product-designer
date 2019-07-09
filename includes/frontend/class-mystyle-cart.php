@@ -354,9 +354,16 @@ class MyStyle_Cart {
 			/* @var $design \MyStyle_Design phpcs:ignore */
 			$design = MyStyle_DesignManager::get( $design_id, $user, $session );
 
-			$url = MyStyle_Design_Profile_Page::get_design_url( $design, $cart_item_key );
+			// Ensure that the design is found. Note: it might be missing if
+			// they return to their cart after the admin deletes it for some
+			// reason.
+			if ( ! is_null( $design ) ) {
+				$url = MyStyle_Design_Profile_Page::get_design_url( $design, $cart_item_key );
 
-			$new_name = sprintf( '<a href="%s">%s</a>', esc_url( $url ), $name );
+				$new_name = sprintf( '<a href="%s">%s</a>', esc_url( $url ), $name );
+			} else {
+				$new_name = 'Design Not Found. Please remove from cart and re-add';
+			}
 		}
 
 		return $new_name;
