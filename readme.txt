@@ -82,8 +82,8 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 == Changelog ==
 
 = 3.12.4 =
-* Fixed a bug where deleted designs where breaking the cart (if the user had 
-  that particular design in their cart).
+* Fixed a bug where deleted designs were breaking the cart (if the user had that
+  particular design in their cart).
 * Updated the readme.txt to reflect that the plugin has been tested with up to WP 5.2.2.
 
 = 3.12.3 =
