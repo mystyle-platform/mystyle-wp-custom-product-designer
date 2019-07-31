@@ -168,6 +168,13 @@ class MyStyle_MockDesignQueryResult {
 	public $cart_data;
 
 	/**
+	 * The design id from any legacy system.
+	 *
+	 * @var int
+	 */
+	public $legacy_design_id;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param integer $design_id An id for the design.
@@ -195,6 +202,7 @@ class MyStyle_MockDesignQueryResult {
 		$this->design_purchase_count = 0;
 		$this->session_id            = 'testsessionid';
 		$this->cart_data             = null;
+		$this->legacy_design_id      = null;
 	}
 
 	/**
@@ -227,6 +235,7 @@ class MyStyle_MockDesignQueryResult {
 		$arr['design_purchase_count'] = $this->design_purchase_count;
 		$arr['session_id']            = $this->session_id;
 		$arr['cart_data']             = $this->cart_data;
+		$arr['legacy_design_id']      = $this->legacy_design_id;
 
 		return $arr;
 	}

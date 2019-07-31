@@ -112,6 +112,7 @@ class MyStyleInstallTest extends WP_UnitTestCase {
                 design_purchase_count bigint(20) NULL DEFAULT '0',
                 session_id varchar(100) NULL DEFAULT NULL,
                 cart_data TEXT NULL DEFAULT NULL,
+                legacy_design_id bigint(32) NULL DEFAULT NULL,
                 PRIMARY KEY (ms_design_id)
             ) DEFAULT CHARACTER SET $wpdb->charset COLLATE $wpdb->collate;
             CREATE TABLE wptests_mystyle_sessions (

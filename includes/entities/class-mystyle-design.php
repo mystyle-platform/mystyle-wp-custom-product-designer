@@ -99,7 +99,7 @@ class MyStyle_Design implements MyStyle_Entity {
 	private $design_url;
 
 	/**
-	 * This is the MyStyle product id
+	 * This is the MyStyle product id.
 	 *
 	 * @var integer
 	 */
@@ -185,6 +185,13 @@ class MyStyle_Design implements MyStyle_Entity {
 	private $cart_data;
 
 	/**
+	 * The id of the design from legacy systems.
+	 *
+	 * @var integer
+	 */
+	private $legacy_design_id;
+
+	/**
 	 * Constructor. Note: see the functions below for additional ways to create
 	 * a Design.
 	 */
@@ -243,28 +250,29 @@ class MyStyle_Design implements MyStyle_Entity {
 	public static function create_from_result_object( $result_object ) {
 		$instance = new self();
 
-		$instance->design_id      = (int) htmlspecialchars( $result_object->ms_design_id );
-		$instance->template_id    = (int) htmlspecialchars( $result_object->ms_product_id );
-		$instance->designer_id    = (int) htmlspecialchars( $result_object->ms_user_id );
-		$instance->email          = htmlspecialchars( $result_object->ms_email );
-		$instance->description    = htmlspecialchars( $result_object->ms_description );
-		$instance->price          = (int) htmlspecialchars( $result_object->ms_price );
-		$instance->print_url      = htmlspecialchars( $result_object->ms_print_url );
-		$instance->web_url        = htmlspecialchars( $result_object->ms_web_url );
-		$instance->thumb_url      = htmlspecialchars( $result_object->ms_thumb_url );
-		$instance->design_url     = htmlspecialchars( $result_object->ms_design_url );
-		$instance->product_id     = (int) htmlspecialchars( $result_object->product_id );
-		$instance->user_id        = (int) htmlspecialchars( $result_object->user_id );
-		$instance->session_id     = htmlspecialchars( $result_object->session_id );
-		$instance->mobile         = (int) htmlspecialchars( $result_object->ms_mobile );
-		$instance->access         = (int) htmlspecialchars( $result_object->ms_access );
-		$instance->created        = htmlspecialchars( $result_object->design_created );
-		$instance->created_gmt    = htmlspecialchars( $result_object->design_created_gmt );
-		$instance->modified       = htmlspecialchars( $result_object->design_modified );
-		$instance->modified_gmt   = htmlspecialchars( $result_object->design_modified_gmt );
-		$instance->view_count     = (int) htmlspecialchars( $result_object->design_view_count );
-		$instance->purchase_count = (int) htmlspecialchars( $result_object->design_purchase_count );
-		$instance->cart_data      = $result_object->cart_data;
+		$instance->design_id        = (int) htmlspecialchars( $result_object->ms_design_id );
+		$instance->template_id      = (int) htmlspecialchars( $result_object->ms_product_id );
+		$instance->designer_id      = (int) htmlspecialchars( $result_object->ms_user_id );
+		$instance->email            = htmlspecialchars( $result_object->ms_email );
+		$instance->description      = htmlspecialchars( $result_object->ms_description );
+		$instance->price            = (int) htmlspecialchars( $result_object->ms_price );
+		$instance->print_url        = htmlspecialchars( $result_object->ms_print_url );
+		$instance->web_url          = htmlspecialchars( $result_object->ms_web_url );
+		$instance->thumb_url        = htmlspecialchars( $result_object->ms_thumb_url );
+		$instance->design_url       = htmlspecialchars( $result_object->ms_design_url );
+		$instance->product_id       = (int) htmlspecialchars( $result_object->product_id );
+		$instance->user_id          = (int) htmlspecialchars( $result_object->user_id );
+		$instance->session_id       = htmlspecialchars( $result_object->session_id );
+		$instance->mobile           = (int) htmlspecialchars( $result_object->ms_mobile );
+		$instance->access           = (int) htmlspecialchars( $result_object->ms_access );
+		$instance->created          = htmlspecialchars( $result_object->design_created );
+		$instance->created_gmt      = htmlspecialchars( $result_object->design_created_gmt );
+		$instance->modified         = htmlspecialchars( $result_object->design_modified );
+		$instance->modified_gmt     = htmlspecialchars( $result_object->design_modified_gmt );
+		$instance->view_count       = (int) htmlspecialchars( $result_object->design_view_count );
+		$instance->purchase_count   = (int) htmlspecialchars( $result_object->design_purchase_count );
+		$instance->cart_data        = $result_object->cart_data;
+		$instance->legacy_design_id = (int) htmlspecialchars( $result_object->legacy_design_id );
 
 		return $instance;
 	}
@@ -284,28 +292,29 @@ class MyStyle_Design implements MyStyle_Entity {
 	public static function create_from_result_array( $result_array ) {
 		$instance = new self();
 
-		$instance->design_id      = (int) htmlspecialchars( $result_array['ms_design_id'] );
-		$instance->template_id    = (int) htmlspecialchars( $result_array['ms_product_id'] );
-		$instance->designer_id    = (int) htmlspecialchars( $result_array['ms_user_id'] );
-		$instance->email          = htmlspecialchars( $result_array['ms_email'] );
-		$instance->description    = htmlspecialchars( $result_array['ms_description'] );
-		$instance->price          = (int) htmlspecialchars( $result_array['ms_price'] );
-		$instance->print_url      = htmlspecialchars( $result_array['ms_print_url'] );
-		$instance->web_url        = htmlspecialchars( $result_array['ms_web_url'] );
-		$instance->thumb_url      = htmlspecialchars( $result_array['ms_thumb_url'] );
-		$instance->design_url     = htmlspecialchars( $result_array['ms_design_url'] );
-		$instance->product_id     = (int) htmlspecialchars( $result_array['product_id'] );
-		$instance->user_id        = (int) htmlspecialchars( $result_array['user_id'] );
-		$instance->session_id     = htmlspecialchars( $result_array['session_id'] );
-		$instance->mobile         = (int) htmlspecialchars( $result_array['ms_mobile'] );
-		$instance->access         = (int) htmlspecialchars( $result_array['ms_access'] );
-		$instance->created        = htmlspecialchars( $result_array['design_created'] );
-		$instance->created_gmt    = htmlspecialchars( $result_array['design_created_gmt'] );
-		$instance->modified       = htmlspecialchars( $result_array['design_modified'] );
-		$instance->modified_gmt   = htmlspecialchars( $result_array['design_modified_gmt'] );
-		$instance->view_count     = (int) htmlspecialchars( $result_array['design_view_count'] );
-		$instance->purchase_count = (int) htmlspecialchars( $result_array['design_purchase_count'] );
-		$instance->cart_data      = $result_array['cart_data'];
+		$instance->design_id        = (int) htmlspecialchars( $result_array['ms_design_id'] );
+		$instance->template_id      = (int) htmlspecialchars( $result_array['ms_product_id'] );
+		$instance->designer_id      = (int) htmlspecialchars( $result_array['ms_user_id'] );
+		$instance->email            = htmlspecialchars( $result_array['ms_email'] );
+		$instance->description      = htmlspecialchars( $result_array['ms_description'] );
+		$instance->price            = (int) htmlspecialchars( $result_array['ms_price'] );
+		$instance->print_url        = htmlspecialchars( $result_array['ms_print_url'] );
+		$instance->web_url          = htmlspecialchars( $result_array['ms_web_url'] );
+		$instance->thumb_url        = htmlspecialchars( $result_array['ms_thumb_url'] );
+		$instance->design_url       = htmlspecialchars( $result_array['ms_design_url'] );
+		$instance->product_id       = (int) htmlspecialchars( $result_array['product_id'] );
+		$instance->user_id          = (int) htmlspecialchars( $result_array['user_id'] );
+		$instance->session_id       = htmlspecialchars( $result_array['session_id'] );
+		$instance->mobile           = (int) htmlspecialchars( $result_array['ms_mobile'] );
+		$instance->access           = (int) htmlspecialchars( $result_array['ms_access'] );
+		$instance->created          = htmlspecialchars( $result_array['design_created'] );
+		$instance->created_gmt      = htmlspecialchars( $result_array['design_created_gmt'] );
+		$instance->modified         = htmlspecialchars( $result_array['design_modified'] );
+		$instance->modified_gmt     = htmlspecialchars( $result_array['design_modified_gmt'] );
+		$instance->view_count       = (int) htmlspecialchars( $result_array['design_view_count'] );
+		$instance->purchase_count   = (int) htmlspecialchars( $result_array['design_purchase_count'] );
+		$instance->cart_data        = $result_array['cart_data'];
+		$instance->legacy_design_id = (int) htmlspecialchars( $result_array['legacy_design_id'] );
 
 		return $instance;
 	}
@@ -324,28 +333,31 @@ class MyStyle_Design implements MyStyle_Entity {
 
 		$instance = new self();
 
-		$instance->design_id      = (int) htmlspecialchars( $json_arr['design_id'] );
-		$instance->template_id    = (int) htmlspecialchars( $json_arr['template_id'] );
-		$instance->designer_id    = (int) htmlspecialchars( $json_arr['designer_id'] );
-		$instance->email          = htmlspecialchars( $json_arr['email'] );
-		$instance->description    = htmlspecialchars( $json_arr['description'] );
-		$instance->price          = (int) htmlspecialchars( $json_arr['price'] );
-		$instance->print_url      = htmlspecialchars( $json_arr['print_url'] );
-		$instance->web_url        = htmlspecialchars( $json_arr['web_url'] );
-		$instance->thumb_url      = htmlspecialchars( $json_arr['thumb_url'] );
-		$instance->design_url     = htmlspecialchars( $json_arr['design_url'] );
-		$instance->product_id     = (int) htmlspecialchars( $json_arr['product_id'] );
-		$instance->user_id        = (int) htmlspecialchars( $json_arr['user_id'] );
-		$instance->session_id     = htmlspecialchars( $json_arr['session_id'] );
-		$instance->mobile         = (int) htmlspecialchars( $json_arr['mobile'] );
-		$instance->access         = (int) htmlspecialchars( $json_arr['access'] );
-		$instance->created        = htmlspecialchars( $json_arr['created'] );
-		$instance->created_gmt    = htmlspecialchars( $json_arr['created_gmt'] );
-		$instance->modified       = htmlspecialchars( $json_arr['modified'] );
-		$instance->modified_gmt   = htmlspecialchars( $json_arr['modified_gmt'] );
-		$instance->view_count     = (int) htmlspecialchars( $json_arr['view_count'] );
-		$instance->purchase_count = (int) htmlspecialchars( $json_arr['purchase_count'] );
-		$instance->cart_data      = $json_arr['cart_data'];
+		$instance->design_id        = (int) htmlspecialchars( $json_arr['design_id'] );
+		$instance->template_id      = (int) htmlspecialchars( $json_arr['template_id'] );
+		$instance->designer_id      = (int) htmlspecialchars( $json_arr['designer_id'] );
+		$instance->email            = htmlspecialchars( $json_arr['email'] );
+		$instance->description      = htmlspecialchars( $json_arr['description'] );
+		$instance->price            = (int) htmlspecialchars( $json_arr['price'] );
+		$instance->print_url        = htmlspecialchars( $json_arr['print_url'] );
+		$instance->web_url          = htmlspecialchars( $json_arr['web_url'] );
+		$instance->thumb_url        = htmlspecialchars( $json_arr['thumb_url'] );
+		$instance->design_url       = htmlspecialchars( $json_arr['design_url'] );
+		$instance->product_id       = (int) htmlspecialchars( $json_arr['product_id'] );
+		$instance->user_id          = (int) htmlspecialchars( $json_arr['user_id'] );
+		$instance->session_id       = htmlspecialchars( $json_arr['session_id'] );
+		$instance->mobile           = (int) htmlspecialchars( $json_arr['mobile'] );
+		$instance->access           = (int) htmlspecialchars( $json_arr['access'] );
+		$instance->created          = htmlspecialchars( $json_arr['created'] );
+		$instance->created_gmt      = htmlspecialchars( $json_arr['created_gmt'] );
+		$instance->modified         = htmlspecialchars( $json_arr['modified'] );
+		$instance->modified_gmt     = htmlspecialchars( $json_arr['modified_gmt'] );
+		$instance->view_count       = (int) htmlspecialchars( $json_arr['view_count'] );
+		$instance->purchase_count   = (int) htmlspecialchars( $json_arr['purchase_count'] );
+		$instance->cart_data        = $json_arr['cart_data'];
+		if ( isset($json_arr['legacy_design_id']) ) {
+			$instance->legacy_design_id = (int) htmlspecialchars( $json_arr['legacy_design_id'] );
+		}
 
 		return $instance;
 	}
@@ -738,6 +750,24 @@ class MyStyle_Design implements MyStyle_Entity {
 	}
 
 	/**
+	 * Sets the value of legacy_design_id.
+	 *
+	 * @param int $legacy_design_id The new value for legacy_design_id.
+	 */
+	public function set_legacy_design_id( $legacy_design_id ) {
+		$this->legacy_design_id = $legacy_design_id;
+	}
+
+	/**
+	 * Gets the value of legacy_design_id.
+	 *
+	 * @return int Returns the value of legacy_design_id.
+	 */
+	public function get_legacy_design_id() {
+		return $this->legacy_design_id;
+	}
+
+	/**
 	 * Function for converting the object into an array for use with WP meta
 	 * storage.
 	 *
@@ -786,6 +816,7 @@ class MyStyle_Design implements MyStyle_Entity {
                 design_purchase_count bigint(20) NULL DEFAULT '0',
                 session_id varchar(100) NULL DEFAULT NULL,
                 cart_data TEXT NULL DEFAULT NULL,
+                legacy_design_id bigint(32) NULL DEFAULT NULL,
                 PRIMARY KEY (ms_design_id)
             )";
 	}
@@ -841,6 +872,7 @@ class MyStyle_Design implements MyStyle_Entity {
 		$data['design_purchase_count'] = $this->purchase_count;
 		$data['session_id']            = $this->session_id;
 		$data['cart_data']             = $this->cart_data;
+		$data['legacy_design_id']      = $this->legacy_design_id;
 
 		return $data;
 	}
@@ -878,6 +910,7 @@ class MyStyle_Design implements MyStyle_Entity {
 			'%d', // design_purchase_count.
 			'%s', // session_id.
 			'%s', // cart_data.
+			'%d', // legacy_design_id.
 		);
 
 		return $formats_arr;
@@ -963,34 +996,35 @@ class MyStyle_Design implements MyStyle_Entity {
 
 	/**
 	 * Return the MyStyle_Design as an array ready to be encoded to JSON.
-	 * 
+	 *
 	 * @return array Returns the MyStyle_Design as an array ready to be encoded to
 	 * JSON.
 	 */
 	public function json_encode() {
 		$arr = array(
-			'design_id'      => MyStyle_Util::prep_rest_val( $this->design_id ),
-			'template_id'    => MyStyle_Util::prep_rest_val( $this->template_id ),
-			'designer_id'    => MyStyle_Util::prep_rest_val( $this->designer_id ),
-			'email'          => MyStyle_Util::prep_rest_val( $this->email ),
-			'description'    => MyStyle_Util::prep_rest_val( $this->description ),
-			'price'          => MyStyle_Util::prep_rest_val( $this->price ),
-			'print_url'      => MyStyle_Util::prep_rest_val( $this->print_url ),
-			'web_url'        => MyStyle_Util::prep_rest_val( $this->web_url ),
-			'thumb_url'      => MyStyle_Util::prep_rest_val( $this->thumb_url ),
-			'design_url'     => MyStyle_Util::prep_rest_val( $this->design_url ),
-			'product_id'     => MyStyle_Util::prep_rest_val( $this->product_id ),
-			'user_id'        => MyStyle_Util::prep_rest_val( $this->user_id ),
-			'created'        => MyStyle_Util::prep_rest_val( $this->created ),
-			'created_gmt'    => MyStyle_Util::prep_rest_val( $this->created_gmt ),
-			'modified'       => MyStyle_Util::prep_rest_val( $this->modified ),
-			'modified_gmt'   => MyStyle_Util::prep_rest_val( $this->modified_gmt ),
-			'mobile'         => MyStyle_Util::prep_rest_val( $this->mobile ),
-			'access'         => MyStyle_Util::prep_rest_val( $this->access ),
-			'view_count'     => MyStyle_Util::prep_rest_val( $this->view_count ),
-			'purchase_count' => MyStyle_Util::prep_rest_val( $this->purchase_count ),
-			'session_id'     => MyStyle_Util::prep_rest_val( $this->session_id ),
-			'cart_data'      => MyStyle_Util::prep_rest_val( $this->cart_data ),
+			'design_id'        => MyStyle_Util::prep_rest_val( $this->design_id ),
+			'template_id'      => MyStyle_Util::prep_rest_val( $this->template_id ),
+			'designer_id'      => MyStyle_Util::prep_rest_val( $this->designer_id ),
+			'email'            => MyStyle_Util::prep_rest_val( $this->email ),
+			'description'      => MyStyle_Util::prep_rest_val( $this->description ),
+			'price'            => MyStyle_Util::prep_rest_val( $this->price ),
+			'print_url'        => MyStyle_Util::prep_rest_val( $this->print_url ),
+			'web_url'          => MyStyle_Util::prep_rest_val( $this->web_url ),
+			'thumb_url'        => MyStyle_Util::prep_rest_val( $this->thumb_url ),
+			'design_url'       => MyStyle_Util::prep_rest_val( $this->design_url ),
+			'product_id'       => MyStyle_Util::prep_rest_val( $this->product_id ),
+			'user_id'          => MyStyle_Util::prep_rest_val( $this->user_id ),
+			'created'          => MyStyle_Util::prep_rest_val( $this->created ),
+			'created_gmt'      => MyStyle_Util::prep_rest_val( $this->created_gmt ),
+			'modified'         => MyStyle_Util::prep_rest_val( $this->modified ),
+			'modified_gmt'     => MyStyle_Util::prep_rest_val( $this->modified_gmt ),
+			'mobile'           => MyStyle_Util::prep_rest_val( $this->mobile ),
+			'access'           => MyStyle_Util::prep_rest_val( $this->access ),
+			'view_count'       => MyStyle_Util::prep_rest_val( $this->view_count ),
+			'purchase_count'   => MyStyle_Util::prep_rest_val( $this->purchase_count ),
+			'session_id'       => MyStyle_Util::prep_rest_val( $this->session_id ),
+			'cart_data'        => MyStyle_Util::prep_rest_val( $this->cart_data ),
+			'legacy_design_id' => MyStyle_Util::prep_rest_val( $this->legacy_design_id ),
 		);
 
 		return $arr;
