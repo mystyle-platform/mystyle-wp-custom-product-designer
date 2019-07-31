@@ -211,6 +211,33 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the get_by_legacy_design_id function.
+	 */
+	public function test_get_by_legacy_design_id() {
+
+		$design_id = 1;
+		$legacy_design_id = 999;
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+
+		// Add a legacy_design_id.
+		$design->set_legacy_design_id( $legacy_design_id );
+
+		// Persist the design.
+		MyStyle_DesignManager::persist( $design );
+
+		// Call the function.
+		$design_from_db = MyStyle_DesignManager::get_by_legacy_design_id( $legacy_design_id );
+
+		// Assert that the design_id is set.
+		$this->assertEquals(
+					$legacy_design_id,
+					$design_from_db->get_legacy_design_id()
+				);
+	}
+
+	/**
 	 * Test the delete function.
 	 */
 	public function test_delete() {
