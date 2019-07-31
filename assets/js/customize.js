@@ -127,8 +127,12 @@ MyStyleCustomize = ( function() {
 
 		console.log( 'MyStyle customize page setting viewport: (' + orientation + ') final scale: ' + finalScale + ' ( orig: ' + scale + ') screen width: ' + screenWidthPx );
 
+		var hasViewport = typeof currentViewportTag$ !== 'undefined' 
+						&& currentViewportTag$ 
+						&& (0 < currentViewportTag$.length > 0);
+		
 		// Set the viewport.
-		if ( 0 < currentViewportTag$.size() ) {
+		if ( hasViewport ) {
 			jQuery( 'meta[name="viewport"]' ).remove(); // Removal (remove and re-add seems to trigger viewport update better).
 		}
 		jQuery( 'head' ).append( newViewportTagHTML ); // Add new.
