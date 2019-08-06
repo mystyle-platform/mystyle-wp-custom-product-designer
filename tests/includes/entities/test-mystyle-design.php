@@ -105,7 +105,8 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 			"purchase_count": null,
 			"session_id": "testsessionid",
 			"cart_data": null,
-			"legacy_design_id": null
+			"legacy_design_id": null,
+			"tags": null
 		}';
 
 		// Call the method.
@@ -197,6 +198,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
                 session_id varchar(100) NULL DEFAULT NULL,
                 cart_data TEXT NULL DEFAULT NULL,
                 legacy_design_id bigint(32) NULL DEFAULT NULL,
+				tags TEXT NULL DEFAULT NULL,
                 PRIMARY KEY (ms_design_id)
             )";
 
@@ -264,6 +266,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 			'cart_data'             => null,
 			'session_id'            => 'testsessionid',
 			'legacy_design_id'      => null,
+			'tags'                  => null,
 		);
 
 		// Create a design.
@@ -307,6 +310,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 			'%s', // session_id.
 			'%s', // cart_data.
 			'%d', // legacy_design_id.
+			'%s', // tags.
 		);
 
 		// Create a design.
@@ -400,7 +404,8 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 			"purchase_count": null,
 			"session_id": "testsessionid",
 			"cart_data": null,
-			"legacy_design_id": null
+			"legacy_design_id": null,
+			"tags": null
 		}';
 		$design = MyStyle_Design::create_from_json( $json_str );
 

@@ -187,9 +187,16 @@ class MyStyle_Design implements MyStyle_Entity {
 	/**
 	 * The id of the design from legacy systems.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $legacy_design_id;
+
+	/**
+	 * The design tags.
+	 *
+	 * @var array
+	 */
+	private $tags;
 
 	/**
 	 * Constructor. Note: see the functions below for additional ways to create
@@ -273,6 +280,7 @@ class MyStyle_Design implements MyStyle_Entity {
 		$instance->purchase_count   = (int) htmlspecialchars( $result_object->design_purchase_count );
 		$instance->cart_data        = $result_object->cart_data;
 		$instance->legacy_design_id = (int) htmlspecialchars( $result_object->legacy_design_id );
+		$instance->tags             = $result_object->tags;
 
 		return $instance;
 	}
@@ -315,6 +323,7 @@ class MyStyle_Design implements MyStyle_Entity {
 		$instance->purchase_count   = (int) htmlspecialchars( $result_array['design_purchase_count'] );
 		$instance->cart_data        = $result_array['cart_data'];
 		$instance->legacy_design_id = (int) htmlspecialchars( $result_array['legacy_design_id'] );
+		$instance->tags             = $result_array['tags'];
 
 		return $instance;
 	}
@@ -357,6 +366,9 @@ class MyStyle_Design implements MyStyle_Entity {
 		$instance->cart_data        = $json_arr['cart_data'];
 		if ( isset($json_arr['legacy_design_id']) ) {
 			$instance->legacy_design_id = (int) htmlspecialchars( $json_arr['legacy_design_id'] );
+		}
+		if ( isset($json_arr['tags']) ) {
+			$instance->tags = $json_arr['tags'];
 		}
 
 		return $instance;
@@ -768,6 +780,34 @@ class MyStyle_Design implements MyStyle_Entity {
 	}
 
 	/**
+	 * Sets the value of tags.
+	 *
+	 * @param string $tags The new value for tags.
+	 */
+	public function set_tags( $tags ) {
+		$this->tags = $tags;
+	}
+
+	/**
+	 * Gets the value of tags.
+	 *
+	 * @return string Returns the value of tags. Tags is a json encoded string
+	 * of tags.
+	 */
+	public function get_tags() {
+		return $this->tags;
+	}
+
+	/**
+	 * Gets the decoded value of tags.
+	 *
+	 * @return array Returns the value of tags.
+	 */
+	public function get_tags_decoded() {
+		return json_decode( $this->tags, true );
+	}
+
+	/**
 	 * Function for converting the object into an array for use with WP meta
 	 * storage.
 	 *
@@ -817,6 +857,7 @@ class MyStyle_Design implements MyStyle_Entity {
                 session_id varchar(100) NULL DEFAULT NULL,
                 cart_data TEXT NULL DEFAULT NULL,
                 legacy_design_id bigint(32) NULL DEFAULT NULL,
+				tags TEXT NULL DEFAULT NULL,
                 PRIMARY KEY (ms_design_id)
             )";
 	}
@@ -873,6 +914,7 @@ class MyStyle_Design implements MyStyle_Entity {
 		$data['session_id']            = $this->session_id;
 		$data['cart_data']             = $this->cart_data;
 		$data['legacy_design_id']      = $this->legacy_design_id;
+		$data['tags']                  = $this->tags;
 
 		return $data;
 	}
@@ -911,6 +953,7 @@ class MyStyle_Design implements MyStyle_Entity {
 			'%s', // session_id.
 			'%s', // cart_data.
 			'%d', // legacy_design_id.
+			'%s', // tags.
 		);
 
 		return $formats_arr;
@@ -1025,6 +1068,7 @@ class MyStyle_Design implements MyStyle_Entity {
 			'session_id'       => MyStyle_Util::prep_rest_val( $this->session_id ),
 			'cart_data'        => MyStyle_Util::prep_rest_val( $this->cart_data ),
 			'legacy_design_id' => MyStyle_Util::prep_rest_val( $this->legacy_design_id ),
+			'tags'             => MyStyle_Util::prep_rest_val( $this->tags ),
 		);
 
 		return $arr;
