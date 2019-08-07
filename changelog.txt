@@ -1,3 +1,8 @@
+= 3.12.5 =
+
+* Fixed a bug with the customize page with sites running later versions of 
+  jQuery.
+
 = 3.12.4 =
 
 * Fixed a bug where deleted designs were breaking the cart (if the user had that
