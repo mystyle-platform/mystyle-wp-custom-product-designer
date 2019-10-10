@@ -222,9 +222,9 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * The designs are filtered for the passed user based on these rules:
 	 *  * If no user is specified, only public designs are returned.
 	 *  * If the passed user is an admin (or has the 'read_private_posts'
-	 *    capablility, all designs are returned).
+	 *    capability, all designs are returned).
 	 *  * If the passed user is a regular user, all public designs are returned
-	 *    allong with any private designs that the user owns.
+	 *    along with any private designs that the user owns.
 	 *
 	 * @param int     $per_page The number of designs to show per page (default:
 	 * 250).
@@ -318,12 +318,17 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		// Note: admin (and users with the read_private_posts capability) see all designs.
 		if ( ( null === $user ) || ( 0 === $user->ID ) ) {
 			// No user, get public designs only.
-			$sql = ' ' . $exp . ' ms_access = 0 ';
+			$sql = ' ' . $exp . ' ms_access = ' . MyStyle_Access::ACCESS_PUBLIC . ' ';
 		} else {
 			// User was passed.
 			if ( ! $user->has_cap( 'read_private_posts' ) ) {
-				// User isn't admin, show public and their own private designs.
-				$sql .= ' ' . $exp . ' ( ms_access = 0 OR ( ( ms_access = 1 ) AND ( user_id = ' . $user->ID . ' ) ) ) ';
+				// User isn't admin, show public and their own private or hidden designs.
+				$sql .= ' ' . $exp
+						. ' ( '
+							. ' ( ms_access = ' . MyStyle_Access::ACCESS_PUBLIC .  ' ) OR '
+							. ' ( ( ms_access = ' . MyStyle_Access::ACCESS_PRIVATE .  ' ) AND ( user_id = ' . $user->ID . ' ) ) OR '
+							. ' ( ( ms_access = ' . MyStyle_Access::ACCESS_HIDDEN .  ' ) AND ( user_id = ' . $user->ID . ' ) ) '
+						. ' ) ';
 			}
 		}
 
