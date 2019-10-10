@@ -156,7 +156,17 @@ class MyStyle_Design implements MyStyle_Entity {
 	private $mobile;
 
 	/**
-	 * The access visibility for the design (0=public, 1=private, 2=restricted)
+	 * The access visibility for the design.
+	 *
+	 *  * 0: public (anyone can view the design).
+	 *  * 1: private (only the author and the admin can view the design).
+	 *  * 2: restricted (only the admin can view the design - primarily for
+	 *       inappropriate or offensive designs).
+	 *  * 3: hidden (design access is public but the design isn't listed
+	 *       anywhere - use when design is upgraded to a product but you don't
+	 *       want a design profile page).
+	 *
+	 * See the MyStyle_Access class for more information.
 	 *
 	 * @var integer
 	 */
@@ -963,7 +973,7 @@ class MyStyle_Design implements MyStyle_Entity {
 
 	/**
 	 * Return the MyStyle_Design as an array ready to be encoded to JSON.
-	 * 
+	 *
 	 * @return array Returns the MyStyle_Design as an array ready to be encoded to
 	 * JSON.
 	 */

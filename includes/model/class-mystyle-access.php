@@ -23,7 +23,7 @@ abstract class MyStyle_Access {
 	const ACCESS_PUBLIC = 0;
 
 	/**
-	 * Only the author can access.
+	 * Only the author (and admin) can access.
 	 *
 	 * @var int
 	 */
@@ -35,5 +35,14 @@ abstract class MyStyle_Access {
 	 * @var int
 	 */
 	const ACCESS_RESTRICTED = 2;
+
+	/**
+	 * Design is accessible publicly but the design isn't listed anywhere. Use
+	 * this setting when the design is upgraded to a product but you don't want
+	 * a design profile page.
+	 *
+	 * @var int
+	 */
+	const ACCESS_HIDDEN = 3;
 
 }

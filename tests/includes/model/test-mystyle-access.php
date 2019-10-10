@@ -24,6 +24,9 @@ class MyStyleAccessTest extends WP_UnitTestCase {
 
 		// Assert that restricted access property exists, and is as expected.
 		$this->assertEquals( 2, MyStyle_Access::ACCESS_RESTRICTED );
+
+		// Assert that hidden access property exists, and is as expected.
+		$this->assertEquals( 3, MyStyle_Access::ACCESS_HIDDEN );
 	}
 
 }
