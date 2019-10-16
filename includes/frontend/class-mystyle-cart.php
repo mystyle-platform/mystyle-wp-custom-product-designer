@@ -70,6 +70,15 @@ class MyStyle_Cart {
 	 */
 	public function filter_add_to_cart_handler( $handler, $product ) {
 
+		// If this is a request from the WooCommerce TM Extra Product Options
+		// edit cart function, just return the handler unaltered.
+		if (
+				( isset( $_REQUEST['tm_cart_item_key'] ) ) ||
+				( isset( $_REQUEST['tc_cart_edit_key'] ) )
+		) {
+			return $handler;
+		}
+
 		if ( null !== $product ) {
 			$mystyle_product = new \MyStyle_Product( $product );
 			$product_id      = $mystyle_product->get_id();
@@ -181,8 +190,8 @@ class MyStyle_Cart {
 	}
 
 	/**
-	 * Handles the add_to_cart action for when an exising design is added to the
-	 * cart.
+	 * Handles the add_to_cart action for when an existing design is added to
+	 * the cart.
 	 *
 	 * The handler to use is determined by the filter_add_to_cart_handler
 	 * function above.
@@ -201,7 +210,7 @@ class MyStyle_Cart {
 
 		$variation_id = ( isset( $_REQUEST['variation_id'] ) ) ? $_REQUEST['variation_id'] : null;
 
-		// Get the variations ( they should all be in the passthru post and start with "attribute_" ).
+		// Get the variations (they should all be in the passthru post and start with "attribute_").
 		$variation = array();
 		foreach ( $_REQUEST as $key => $value ) {
 			if ( 'attribute_' === substr( $key, 0, 10 ) ) {
@@ -225,7 +234,7 @@ class MyStyle_Cart {
 		if ( $cart_item_key ) {
 			wc_add_to_cart_message( array( $product_id => $quantity ), true );
 
-			// Redirect and exit ( unless called by phpunit ).
+			// Redirect and exit (unless called by phpunit).
 			if ( ! defined( 'DOING_PHPUNIT' ) ) {
 				wp_redirect( wc_get_page_permalink( 'cart' ) );
 				exit();
