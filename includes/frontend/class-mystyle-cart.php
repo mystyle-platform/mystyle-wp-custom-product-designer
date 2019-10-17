@@ -72,10 +72,7 @@ class MyStyle_Cart {
 
 		// If this is a request from the WooCommerce TM Extra Product Options
 		// edit cart function, just return the handler unaltered.
-		if (
-				( isset( $_REQUEST['tm_cart_item_key'] ) ) ||
-				( isset( $_REQUEST['tc_cart_edit_key'] ) )
-		) {
+		if ( MyStyle_Tm_Extra_Product_Options::is_tm_extra_product_options_edit_request( $_REQUEST ) ) {
 			return $handler;
 		}
 
