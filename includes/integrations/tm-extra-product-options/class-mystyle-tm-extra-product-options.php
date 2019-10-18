@@ -104,7 +104,6 @@ class MyStyle_Tm_Extra_Product_Options {
 						$variation,
 						$cart_item_data
 					) {
-
 		// Return if this isn't the scenario that we are looking for.
 		if (
 				( ! self::is_tm_extra_product_options_edit_request( $_REQUEST ) ) ||
