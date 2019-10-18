@@ -1,3 +1,8 @@
+= 3.13.1 =
+
+* Now returns directly to cart after TM Extra Product Options cart item edit.
+* Updated the readme.txt to reflect that the plugin has been tested with up to WP 5.2.4.
+
 = 3.13.0 =
 
 * Added a new 'hidden' design access setting.
