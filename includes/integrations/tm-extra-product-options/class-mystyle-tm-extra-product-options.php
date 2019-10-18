@@ -78,8 +78,10 @@ class MyStyle_Tm_Extra_Product_Options {
 		// Get the old cart item key from the TM Extra Product Options plugin.
 		$old_cart_item_key = THEMECOMPLETE_EPO()->cart_edit_key;
 
-		// Stash the mystyle_data.
-		$this->mystyle_data = $cart->cart_contents[ $old_cart_item_key ]['mystyle_data'];
+		// Stash the mystyle_data (if it exists).
+		if ( isset( $cart->cart_contents[ $old_cart_item_key ]['mystyle_data']) ) {
+			$this->mystyle_data = $cart->cart_contents[ $old_cart_item_key ]['mystyle_data'];
+		}
 
 		return $passed;
 	}
