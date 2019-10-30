@@ -55,7 +55,7 @@ class MyStyle_Wpml {
 
 		$table_name = $this->get_translations_table_name();
 
-		$stmt = $wpdb->prepare( 'SHOW TABLES LIKE \'%s\'', $table_name );
+		$stmt = $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name );
 
 		$found_table_name = $wpdb->get_var( $stmt );
 
@@ -101,11 +101,11 @@ class MyStyle_Wpml {
 			",
 			$translation_id, $parent_id
 		);
-		$ret = $wpdb->query($stmt);
+		$ret  = $wpdb->query( $stmt );
 
-		$is_translation_of_page = boolval($ret);
+		$is_translation_of_page = boolval( $ret );
 
-		return boolval($ret);
+		return $is_translation_of_page;
 	}
 
 	/**

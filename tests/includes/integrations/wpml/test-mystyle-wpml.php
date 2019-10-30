@@ -107,7 +107,7 @@ class MyStyleWpmlTest extends WP_UnitTestCase {
 	 */
 	public function test_is_translation_of_page_returns_false_when_not_a_translation() {
 		// Set up the test data.
-		$parent_id = 1;
+		$parent_id      = 1;
 		$translation_id = 2;
 
 		// Call the method.
@@ -127,32 +127,31 @@ class MyStyleWpmlTest extends WP_UnitTestCase {
 		global $wpdb;
 
 		// Set up the test data.
-		$parent_id = 1;
+		$parent_id      = 1;
 		$translation_id = 2;
-		$trid = 12345;
+		$trid           = 12345;
 
 		// Insert the test data into the db.
 		$table_name = MyStyle_Wpml::get_instance()->get_translations_table_name();
-		$format = array( '%d', '%s','%d', '%d', '%s', '%s' );
+		$format     = array( '%d', '%s','%d', '%d', '%s', '%s' );
 		$parent_row = array(
-					'translation_id'       => 100,
-					'element_type'         => 'post_page',
-					'element_id'           => $parent_id,
-					'trid'                 => $trid,
-					'language_code'        => 'en',
-					'source_language_code' => null,
-				);
+			'translation_id'       => 100,
+			'element_type'         => 'post_page',
+			'element_id'           => $parent_id,
+			'trid'                 => $trid,
+			'language_code'        => 'en',
+			'source_language_code' => null,
+		);
 		$wpdb->insert( $table_name, $parent_row, $format );
 		$translation_row = array(
-					'translation_id'       => 101,
-					'element_type'         => 'post_page',
-					'element_id'           => $translation_id,
-					'trid'                 => $trid,
-					'language_code'        => 'no',
-					'source_language_code' => 'en',
-				);
+			'translation_id'       => 101,
+			'element_type'         => 'post_page',
+			'element_id'           => $translation_id,
+			'trid'                 => $trid,
+			'language_code'        => 'no',
+			'source_language_code' => 'en',
+		);
 		$wpdb->insert( $table_name, $translation_row, $format );
-
 
 		// Call the method.
 		$ret = MyStyle_Wpml::get_instance()->is_translation_of_page( $parent_id, $translation_id );
@@ -171,7 +170,7 @@ class MyStyleWpmlTest extends WP_UnitTestCase {
 		global $wpdb;
 
 		// Set up the test data.
-		$parent_id = 1;
+		$parent_id      = 1;
 		$translation_id = 2;
 
 		// Drop the WPML table (added in the setUp method above).

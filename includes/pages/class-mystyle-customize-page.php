@@ -197,7 +197,7 @@ class MyStyle_Customize_Page {
 			}
 
 			$passthru = array(
-				'post' => $post_data
+				'post' => $post_data,
 			);
 		}
 
@@ -270,7 +270,7 @@ class MyStyle_Customize_Page {
 		try {
 			if (
 					( ! empty( $id ) ) &&
-					( self::get_id() === $id ) &&
+					( $this->is_customize_page( $id ) ) &&
 					( self::hide_title() ) &&
 					( get_the_ID() === $id ) &&
 					( in_the_loop() )
@@ -299,7 +299,7 @@ class MyStyle_Customize_Page {
 		try {
 			if ( null !== $post ) {
 				if (
-						( self::get_id() === $post->ID ) &&
+						( $this->is_customize_page( $post->ID ) ) &&
 						( isset( $_GET['product_id'] ) )
 				) {
 					$classes[] = 'mystyle-customize';
@@ -322,7 +322,7 @@ class MyStyle_Customize_Page {
 		try {
 			if ( null !== $post ) {
 				if (
-						( self::get_id() === $post->ID ) &&
+						( $this->is_customize_page( $post->ID ) ) &&
 						( isset( $_GET['product_id'] ) )
 				) {
 					wp_register_script( 'mystyle-customize', MYSTYLE_ASSETS_URL . 'js/customize.js' );
@@ -442,6 +442,27 @@ class MyStyle_Customize_Page {
 		$message .= $status;
 
 		return $message;
+	}
+
+	/**
+	 * Function that tests to see if the passed id is the id of the Customize
+	 * page OR the id of a translation of the Customize page.
+	 *
+	 * @param int $id The post id.
+	 * @return boolean Returns the filtered title.
+	 * @todo Add unit testing.
+	 */
+	public function is_customize_page( $id ) {
+		$is_customize_page = false;
+
+		if (
+			( self::get_id() === $id ) ||
+			( MyStyle_Wpml::get_instance()->is_translation_of_page( self::get_id(), $id ) )
+		) {
+			$is_customize_page = true;
+		}
+
+		return $is_customize_page;
 	}
 
 	/**
