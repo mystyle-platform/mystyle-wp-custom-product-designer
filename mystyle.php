@@ -163,6 +163,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-passthru-codec.php';
 			require_once MYSTYLE_INCLUDES . 'wprestapi/class-mystyle-wp-rest-api-design-controller.php';
 			require_once MYSTYLE_INCLUDES . 'integrations/tm-extra-product-options/class-mystyle-tm-extra-product-options.php';
+			require_once MYSTYLE_INCLUDES . 'integrations/wpml/class-mystyle-wpml.php';
 
 			// We include this frontend class here because it is used by our
 			// shortcode classes (which are used both on the frontend and the admin).
@@ -221,6 +222,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			MyStyle_Passthru_Codec::get_instance();
 			MyStyle_Wp_Rest_Api_Design_Controller::get_instance();
 			MyStyle_Tm_Extra_Product_Options::get_instance();
+			MyStyle_Wpml::get_instance();
 
 			if ( $this->is_request( 'admin' ) ) {
 				// ---- ADMIN ---- //
