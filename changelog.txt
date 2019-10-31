@@ -1,3 +1,7 @@
+= 3.13.3 =
+
+* Bumping the version to fix an issue with the previous release (3.13.2).
+
 = 3.13.2 =
 
 * Fixed a bug where the customizer wasn't showing on translations of the MyStyle Customize page.
