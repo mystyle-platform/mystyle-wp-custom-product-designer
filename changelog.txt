@@ -1,3 +1,7 @@
+= 3.13.2 =
+
+* Fixed a bug where the customizer wasn't showing on translations of the MyStyle Customize page.
+
 = 3.13.1 =
 
 * Now returns directly to cart after TM Extra Product Options cart item edit.
