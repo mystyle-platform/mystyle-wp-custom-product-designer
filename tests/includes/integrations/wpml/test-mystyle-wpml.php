@@ -4,7 +4,7 @@
  * MyStyle_Wpml class.
  *
  * @package MyStyle
- * @since 3.13.1
+ * @since 3.13.2
  */
 
 /**
