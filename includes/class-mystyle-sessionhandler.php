@@ -132,7 +132,8 @@ class MyStyle_SessionHandler {
 				setcookie(
 					MyStyle_Session::COOKIE_NAME,
 					$session->get_session_id(),
-					time() + ( 60 * 60 * 24 * 365 * 10 )
+					time() + ( 60 * 60 * 24 * 365 * 10 ),
+					'/'
 				);
 			}
 		}
