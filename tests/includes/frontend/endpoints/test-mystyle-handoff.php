@@ -112,6 +112,25 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 		$this->assertTrue( $ret );
 	}
 
+		/**
+	 * Test the override function for a matching multilingual uri.
+	 */
+	public function test_override_overrides_ml_matching_uri() {
+
+		$GLOBALS['skip_ob_start'] = true;
+
+		$_SERVER['REQUEST_URI'] = 'http://localhost/wordpress/no/?mystyle-handoff';
+
+		// Init the MyStyle_Handoff.
+		$mystyle_handoff = new MyStyle_Handoff();
+		$mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
+
+		// Call the function.
+		$ret = $mystyle_handoff->override();
+
+		$this->assertTrue( $ret );
+	}
+
 	/**
 	 * Test the handle function for a GET request.
 	 */
