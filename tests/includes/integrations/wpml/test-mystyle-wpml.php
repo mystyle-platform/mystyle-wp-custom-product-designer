@@ -184,12 +184,43 @@ class MyStyleWpmlTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test that the get_current_language function returns null when no language
+	 * has been set.
+	 */
+	public function test_get_current_language_returns_null_when_not_set() {
+
+		// Call the method.
+		$ret = MyStyle_Wpml::get_instance()->get_current_language();
+
+		// Assert that NULL is returned as expected.
+		$this->assertNull( $ret );
+	}
+
+	/**
+	 * Test that the get_current_language function returns the expected
+	 * language.
+	 */
+	public function test_get_current_language_returns_language() {
+		// Set up the test data.
+		$current_language = 'fr';
+
+		// Mock the cookies.
+		$_COOKIE['_icl_current_language'] = $current_language;
+
+		// Call the method.
+		$ret = MyStyle_Wpml::get_instance()->get_current_language();
+
+		// Assert that the expected language is returned.
+		$this->assertEquals( $current_language, $ret );
+	}
+
+	/**
 	 * Private helper method that sets up the database tables which to test
 	 * against.
 	 *
 	 * @global $wpdb;
 	 */
-	public function create_tables() {
+	private function create_tables() {
 		global $wpdb;
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';

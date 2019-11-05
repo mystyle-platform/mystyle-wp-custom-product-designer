@@ -22,6 +22,13 @@ class MyStyle_Wpml {
 	const TRANSLATIONS_TABLE_NAME = 'icl_translations';
 
 	/**
+	 * The name of the cookie that holds the current language.
+	 *
+	 * @var string
+	 */
+	const CURRENT_LANGUAGE_COOKIE_NAME = '_icl_current_language';
+
+	/**
 	 * Singleton class instance.
 	 *
 	 * @var MyStyle_Wpml
@@ -106,6 +113,23 @@ class MyStyle_Wpml {
 		$is_translation_of_page = boolval( $ret );
 
 		return $is_translation_of_page;
+	}
+
+	/**
+	 * Returns the current language (ex: "fr"). If the language isn't set, this
+	 * method returns null. The current language is retrieved from the cookies.
+	 *
+	 * @return string| Returns the current language (ex: "fr") or null if no
+	 * language is set.
+	 */
+	public function get_current_language() {
+		$language = null;
+
+		if ( isset( $_COOKIE[ self::CURRENT_LANGUAGE_COOKIE_NAME ] ) ) {
+			$language = wp_unslash( $_COOKIE[ self::CURRENT_LANGUAGE_COOKIE_NAME ] );
+		}
+
+		return $language;
 	}
 
 	/**
