@@ -184,6 +184,38 @@ class MyStyleWpmlTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test that the get_default_language function returns null when not set.
+	 */
+	public function test_get_default_language_returns_null_when_not_set() {
+
+		// Call the method.
+		$ret = MyStyle_Wpml::get_instance()->get_default_language();
+
+		// Assert that NULL is returned as expected.
+		$this->assertNull( $ret );
+	}
+
+	/**
+	 * Test that the get_default_language function returns the expected
+	 * language.
+	 */
+	public function test_get_default_language_returns_language() {
+		// Set up the test data.
+		$default_language = 'fr';
+
+		// Mock the WPML options.
+		$wpml_options                     = get_option( MyStyle_Wpml::WPML_OPTIONS_KEY, array() );
+		$wpml_options['default_language'] = $default_language;
+		update_option( MyStyle_Wpml::WPML_OPTIONS_KEY, $wpml_options );
+
+		// Call the method.
+		$ret = MyStyle_Wpml::get_instance()->get_default_language();
+
+		// Assert that the expected language is returned.
+		$this->assertEquals( $default_language, $ret );
+	}
+
+	/**
 	 * Test that the get_current_language function returns null when no language
 	 * has been set.
 	 */

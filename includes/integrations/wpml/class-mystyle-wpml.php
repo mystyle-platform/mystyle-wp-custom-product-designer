@@ -29,6 +29,13 @@ class MyStyle_Wpml {
 	const CURRENT_LANGUAGE_COOKIE_NAME = '_icl_current_language';
 
 	/**
+	 * The key of the WPML options.
+	 *
+	 * @var string
+	 */
+	const WPML_OPTIONS_KEY = '_icl_current_language';
+
+	/**
 	 * Singleton class instance.
 	 *
 	 * @var MyStyle_Wpml
@@ -113,6 +120,21 @@ class MyStyle_Wpml {
 		$is_translation_of_page = boolval( $ret );
 
 		return $is_translation_of_page;
+	}
+
+	/**
+	 * Gets the default WPML language.
+	 * @return string Returns the default WPML language (or null) if not set.
+	 */
+	public function get_default_language() {
+		$default_language = null;
+
+		$wpml_options = get_option( self::WPML_OPTIONS_KEY, array() );
+		if ( array_key_exists( 'default_language', $wpml_options ) ) {
+			$default_language = $wpml_options['default_language'];
+		}
+
+		return $default_language;
 	}
 
 	/**
