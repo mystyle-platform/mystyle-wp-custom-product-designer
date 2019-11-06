@@ -1,3 +1,7 @@
+= 3.13.5 =
+
+* Customizer now correctly redirects to translated cart (when using WPML).
+
 = 3.13.4 =
 
 * Bumping the version to fix an issue with the previous release (3.13.3).
