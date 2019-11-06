@@ -33,7 +33,7 @@ class MyStyle_Wpml {
 	 *
 	 * @var string
 	 */
-	const WPML_OPTIONS_KEY = '_icl_current_language';
+	const WPML_OPTIONS_KEY = 'icl_sitepress_settings';
 
 	/**
 	 * Singleton class instance.
