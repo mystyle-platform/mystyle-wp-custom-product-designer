@@ -76,6 +76,27 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the get_url function when a language is set.
+	 */
+	public function test_get_url_with_wpml_language_set() {
+		// Set up the test data.
+		$current_language = 'fr';
+
+		// Mock the cookies.
+		$_COOKIE['_icl_current_language'] = $current_language;
+
+		$expected_url = 'http://example.org/fr/?mystyle-handoff';
+
+		$url = MyStyle_Handoff::get_url();
+
+		// Assert that the expected url is returned.
+		$this->assertContains( $expected_url, $url );
+
+		// Cleanup
+		unset( $_COOKIE['_icl_current_language'] );
+	}
+
+	/**
 	 * Test the override function for a non matching uri.
 	 */
 	public function test_override_skips_non_matching_uri() {

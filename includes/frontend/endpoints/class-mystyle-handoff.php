@@ -55,7 +55,15 @@ class MyStyle_Handoff {
 	 * @return string Returns the url of the handoff endpoint
 	 */
 	public static function get_url() {
-		return site_url( '?' . self::SLUG );
+		$current_language = MyStyle_Wpml::get_instance()->get_current_language();
+
+		if ( null !== $current_language ) {
+			$url = site_url( $current_language . '/?' . self::SLUG );
+		} else {
+			$url = site_url( '?' . self::SLUG );
+		}
+
+		return $url;
 	}
 
 	/**

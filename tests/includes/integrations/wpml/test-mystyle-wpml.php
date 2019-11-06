@@ -212,6 +212,9 @@ class MyStyleWpmlTest extends WP_UnitTestCase {
 
 		// Assert that the expected language is returned.
 		$this->assertEquals( $current_language, $ret );
+
+		// Cleanup
+		unset( $_COOKIE['_icl_current_language'] );
 	}
 
 	/**
