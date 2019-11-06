@@ -80,7 +80,13 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 	 */
 	public function test_get_url_with_wpml_language_set() {
 		// Set up the test data.
+		$default_language = 'en';
 		$current_language = 'fr';
+
+		// Mock the WPML options.
+		$wpml_options                     = get_option( MyStyle_Wpml::WPML_OPTIONS_KEY, array() );
+		$wpml_options['default_language'] = $default_language;
+		update_option( MyStyle_Wpml::WPML_OPTIONS_KEY, $wpml_options );
 
 		// Mock the cookies.
 		$_COOKIE['_icl_current_language'] = $current_language;

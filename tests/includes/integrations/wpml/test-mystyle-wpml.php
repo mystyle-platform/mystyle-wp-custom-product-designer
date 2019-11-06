@@ -250,6 +250,47 @@ class MyStyleWpmlTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test that the get_current_translation_language function returns null when
+	 * no language has been set.
+	 */
+	public function test_get_current_translation_language_returns_null_when_not_set() {
+
+		// Call the method.
+		$ret = MyStyle_Wpml::get_instance()->get_current_translation_language();
+
+		// Assert that NULL is returned as expected.
+		$this->assertNull( $ret );
+	}
+
+	/**
+	 * Test that the get_current_translation_language function returns the
+	 * expected language. In this scenario, a language has been set and the
+	 * set language isn't the default language.
+	 */
+	public function test_get_current_translation_language_returns_language() {
+		// Set up the test data.
+		$current_language = 'fr';
+		$default_language = 'en';
+
+		// Mock the WPML options.
+		$wpml_options                     = get_option( MyStyle_Wpml::WPML_OPTIONS_KEY, array() );
+		$wpml_options['default_language'] = $default_language;
+		update_option( MyStyle_Wpml::WPML_OPTIONS_KEY, $wpml_options );
+
+		// Mock the cookies.
+		$_COOKIE['_icl_current_language'] = $current_language;
+
+		// Call the method.
+		$ret = MyStyle_Wpml::get_instance()->get_current_translation_language();
+
+		// Assert that the expected language is returned.
+		$this->assertEquals( $current_language, $ret );
+
+		// Cleanup
+		unset( $_COOKIE['_icl_current_language'] );
+	}
+
+	/**
 	 * Private helper method that sets up the database tables which to test
 	 * against.
 	 *

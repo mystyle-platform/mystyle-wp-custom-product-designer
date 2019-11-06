@@ -124,7 +124,8 @@ class MyStyle_Wpml {
 
 	/**
 	 * Gets the default WPML language.
-	 * @return string Returns the default WPML language (or null) if not set.
+	 * @return string|null Returns the default WPML language (or null) if not
+	 * set.
 	 */
 	public function get_default_language() {
 		$default_language = null;
@@ -141,7 +142,7 @@ class MyStyle_Wpml {
 	 * Returns the current language (ex: "fr"). If the language isn't set, this
 	 * method returns null. The current language is retrieved from the cookies.
 	 *
-	 * @return string| Returns the current language (ex: "fr") or null if no
+	 * @return string|null Returns the current language (ex: "fr") or null if no
 	 * language is set.
 	 */
 	public function get_current_language() {
@@ -152,6 +153,33 @@ class MyStyle_Wpml {
 		}
 
 		return $language;
+	}
+
+	/**
+	 * Returns the current translation language (ex: "fr"). This works the same
+	 * as the get_current_language method except that it returns null if the
+	 * current language is also the default language.
+	 *
+	 * @return string|null Returns the current translation language (ex: "fr").
+	 * Returns null if no language is set or if the current language is the
+	 * default language.
+	 */
+	public function get_current_translation_language() {
+		$ret = null;
+
+		$current_lang = $this->get_current_language();
+
+		if ( null !== $current_lang ) {
+			$default_lang = $this->get_default_language();
+
+			if ( null !== $default_lang) {
+				if ( $current_lang !== $default_lang ) {
+					$ret = $current_lang;
+				}
+			}
+		}
+
+		return $ret;
 	}
 
 	/**
