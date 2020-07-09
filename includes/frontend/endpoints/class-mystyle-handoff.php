@@ -61,7 +61,6 @@ class MyStyle_Handoff {
             $lang = (ICL_LANGUAGE_CODE == 'en') ? null : ICL_LANGUAGE_CODE;
         }
 		
-
 		if ( null !== $lang ) {
 			$url = site_url( $lang . '/?' . self::SLUG );
 		} else {
