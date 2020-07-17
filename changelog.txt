@@ -1,3 +1,6 @@
+= 3.13.7 =
+* Fixed the ability to load designs on another product
+
 = 3.13.6 =
 * Minor bug fixes
 
