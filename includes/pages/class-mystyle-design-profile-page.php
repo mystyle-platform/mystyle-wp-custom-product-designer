@@ -761,9 +761,10 @@ class MyStyle_Design_Profile_Page {
 	 * @todo Unit test this function.
 	 */
 	public function modify_woocommerce_loop_product_link() {
-		
+		global $product ;
+        $product_id = $product->id ;
 		$mystyle_design = $this->get_design() ;
-		$customizer_url  = MyStyle_Customize_Page::get_design_url( $mystyle_design );
+		$customizer_url  = MyStyle_Customize_Page::get_design_url( $mystyle_design, null, null, $product_id );
         
 		return $customizer_url;
 	}
@@ -786,7 +787,7 @@ class MyStyle_Design_Profile_Page {
 			// Build the url to the customizer including the poduct_id 
             
 			$mystyle_design = $this->get_design() ;
-		    $customizer_url  = MyStyle_Customize_Page::get_design_url( $mystyle_design );
+		    $customizer_url  = MyStyle_Customize_Page::get_design_url( $mystyle_design, null, null, $product_id );
 
 			// Add the passthru data to the url.
 			$passthru                        = array();

@@ -125,7 +125,9 @@ class MyStyle_Customize_Page {
 	public static function get_design_url(
 		MyStyle_Design $design,
 		$cart_item_key = null,
-		$passthru = null ) {
+		$passthru = null,
+        $product_id = null
+        ) {
 
 		if ( null === $passthru ) {
 
@@ -150,7 +152,7 @@ class MyStyle_Customize_Page {
 
 		$passthru_encoded = base64_encode( wp_json_encode( $passthru ) );
 		$customize_args   = array(
-			'product_id' => $design->get_product_id(),
+			'product_id' => ($product_id === null ? $design->get_product_id() : $product_id),
 			'design_id'  => $design->get_design_id(),
 			'h'          => $passthru_encoded,
 		);
