@@ -735,6 +735,7 @@ class MyStyle_Design_Profile_Page {
 	public function get_product_list_html() {
 		// Hook the WooCommerce [products] shortcode to modify the output.
 		add_filter( 'woocommerce_loop_product_link', array( &$this, 'modify_woocommerce_loop_product_link' ), 10, 1 );
+        add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
 		add_filter( 'woocommerce_shortcode_products_query', array( &$this, 'modify_woocommerce_shortcode_products_query' ), 10, 1 );
 
 		// Get the shortcode output.
@@ -742,6 +743,7 @@ class MyStyle_Design_Profile_Page {
 
 		// Undo our hooks.
 		remove_filter( 'woocommerce_loop_product_link', array( &$this, 'modify_woocommerce_loop_product_link' ) );
+        remove_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ) );
 		remove_filter( 'woocommerce_shortcode_products_query', array( &$this, 'modify_woocommerce_shortcode_products_query' ) );
 
 		return $out;
@@ -759,12 +761,60 @@ class MyStyle_Design_Profile_Page {
 	 * @todo Unit test this function.
 	 */
 	public function modify_woocommerce_loop_product_link() {
-		global $product;
-
-		$mystyle_product = new \MyStyle_Product( $product );
-		$customizer_url  = MyStyle_Customize_Page::get_product_url( $mystyle_product );
-
+		
+		$mystyle_design = $this->get_design() ;
+		$customizer_url  = MyStyle_Customize_Page::get_design_url( $mystyle_design );
+        
 		return $customizer_url;
+	}
+    
+    /**
+	 * Modify the add to cart link for product listings.
+	 *
+	 * @param type $link The "Add to Cart" link (html).
+	 * @param type $product The current product.
+	 * @return type Returns the html to be outputted.
+	 */
+	public function loop_add_to_cart_link( $link, $product ) {
+		$mystyle_product = new \MyStyle_Product( $product );
+		$product_id      = $mystyle_product->get_id();
+		$product_type    = $mystyle_product->get_type();
+
+		if ( ( $mystyle_product->is_customizable() ) && ( 'variable' !== $product_type ) ) {
+			$customize_page_id = MyStyle_Customize_Page::get_id();
+
+			// Build the url to the customizer including the poduct_id 
+            
+			$mystyle_design = $this->get_design() ;
+		    $customizer_url  = MyStyle_Customize_Page::get_design_url( $mystyle_design );
+
+			// Add the passthru data to the url.
+			$passthru                        = array();
+			$passthru['post']                = array();
+			$passthru['post']['quantity']    = 1;
+			$passthru['post']['add-to-cart'] = $product_id;
+			$passthru_encoded                = base64_encode( wp_json_encode( $passthru ) );
+			$customizer_url                  = add_query_arg( 'h', $passthru_encoded, $customizer_url );
+
+			// Build the link ( a tag ) to the customizer.
+			$customize_link = sprintf(
+				'<a ' .
+				'href="%s" ' .
+				'rel="nofollow" ' .
+				'class="button %s product_type_%s" ' .
+				'>%s</a>',
+				esc_url( $customizer_url ),
+				$product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
+				esc_attr( $product_type ),
+				esc_html( 'Customize' )
+			);
+
+			$ret = $customize_link;
+		} else {
+			$ret = $link;
+		}
+
+		return $ret;
 	}
 
 	/**

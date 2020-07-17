@@ -120,7 +120,8 @@ class MyStyle_Cart {
 		if ( ( $mystyle_product->is_customizable() ) && ( 'variable' !== $product_type ) ) {
 			$customize_page_id = MyStyle_Customize_Page::get_id();
 
-			// Build the url to the customizer including the poduct_id.
+			// Build the url to the customizer including the poduct_id 
+            
 			$customizer_url = add_query_arg( 'product_id', $product_id, get_permalink( $customize_page_id ) );
 
 			// Add the passthru data to the url.

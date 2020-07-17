@@ -154,9 +154,9 @@ class MyStyle_Customize_Page {
 			'design_id'  => $design->get_design_id(),
 			'h'          => $passthru_encoded,
 		);
-
+        
 		$customizer_url = add_query_arg( $customize_args, get_permalink( self::get_id() ) );
-
+        
 		return $customizer_url;
 	}
 
