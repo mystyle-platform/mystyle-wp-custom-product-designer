@@ -34,7 +34,7 @@ class MyStyle_Design_Profile_Page {
 	 *
 	 * @var WP_User
 	 */
-	private $user;
+	public $user;
 
 	/**
 	 * Stores the current session (when the class is instantiated as a
@@ -42,7 +42,7 @@ class MyStyle_Design_Profile_Page {
 	 *
 	 * @var MyStyle_Session
 	 */
-	private $session;
+	public $session;
 
 	/**
 	 * The design that comes immediately before this one in the collection.
@@ -63,14 +63,14 @@ class MyStyle_Design_Profile_Page {
 	 *
 	 * @var array
 	 */
-	private $designs;
+	public $designs;
 
 	/**
 	 * Pager for the design profile index.
 	 *
 	 * @var MyStyle_Pager
 	 */
-	private $pager;
+	public $pager;
 
 	/**
 	 * Stores the currently thrown exception (if any) (when the class is
@@ -154,7 +154,7 @@ class MyStyle_Design_Profile_Page {
 	public function init() {
 
 		// Only run if we are currently serving the design profile page.
-		if ( self::is_current_post() || true ) {
+		if ( self::is_current_post() ) {
 
 			$design_profile_page = self::get_instance();
 

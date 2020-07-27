@@ -7,7 +7,6 @@
  * @package MyStyle
  * @since 1.4.0
  */
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
