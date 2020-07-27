@@ -154,7 +154,7 @@ class MyStyle_Design_Profile_Page {
 	public function init() {
 
 		// Only run if we are currently serving the design profile page.
-		if ( self::is_current_post() ) {
+		if ( self::is_current_post() || true ) {
 
 			$design_profile_page = self::get_instance();
 
