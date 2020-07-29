@@ -34,7 +34,7 @@ class MyStyle_Design_Profile_Page {
 	 *
 	 * @var WP_User
 	 */
-	public $user;
+	private $user;
 
 	/**
 	 * Stores the current session (when the class is instantiated as a
@@ -42,7 +42,7 @@ class MyStyle_Design_Profile_Page {
 	 *
 	 * @var MyStyle_Session
 	 */
-	public $session;
+	private $session;
 
 	/**
 	 * The design that comes immediately before this one in the collection.
@@ -63,14 +63,14 @@ class MyStyle_Design_Profile_Page {
 	 *
 	 * @var array
 	 */
-	public $designs;
+	private $designs;
 
 	/**
 	 * Pager for the design profile index.
 	 *
 	 * @var MyStyle_Pager
 	 */
-	public $pager;
+	private $pager;
 
 	/**
 	 * Stores the currently thrown exception (if any) (when the class is
@@ -100,6 +100,7 @@ class MyStyle_Design_Profile_Page {
 		add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
+        add_action( 'wp_head', array( &$this, 'wp_head' ), 2);
 	}
 
 	/**
@@ -725,6 +726,26 @@ class MyStyle_Design_Profile_Page {
 
 		return $classes;
 	}
+    
+    /**
+    * Generate Author metatag for individual design pages
+    **/
+    public function wp_head() {
+        $design_id = self::get_design_id_from_url();
+
+        if ( $design_id ) {
+            $design = $this->get_design() ;
+            $user_id = $design->get_user_id() ;
+            $product_id = $design->get_product_id() ;
+            $product = wc_get_product($product_id) ;
+            $user = get_user_by('id', $user_id) ;
+            ?>
+            <meta name="author" content="<?php print $user->user_nicename ; ?>">
+            <meta name="description" content="<?php print $product->name . ' Design ' . $design_id ; ?>">
+
+            <?php
+        }
+    }
 
 	/**
 	 * Gets the list of products for the design profile page as an HTML string.

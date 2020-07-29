@@ -70,6 +70,9 @@ class MyStyle_Install {
 		if ( ! MyStyle_Design_Profile_Page::exists() ) {
 			MyStyle_Design_Profile_Page::create();
 		}
+        
+        MyStyle_MyDesigns::flush_rewrite_rules() ;
+        
 		self::create_tables();
 	}
 
