@@ -62,9 +62,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class='linked_desc'>
 			<?php echo ( $product->get_description() ) ?: 'No description.'; ?>
 		</div>
+        <?php if($author) : ?>
         <div class="linked_user">
-            Designer: <a href="/author/<?php echo MyStyle_Author_Designs::encrypt_decrypt('encrypt', $design->get_email()) ; ?>/designs/" title="Author Designs">Unknown</a>
+            Designer: <a href="/author/<?php print (is_string($author) ? $author : $author->user_nicename) ; ?>/designs/" title="<?php print (is_string($author) ? "Unknown" : $author->user_nicename) ?> Designs"><?php print (is_string($author) ? "Unknown" : $author->user_nicename) ?></a>
         </div>
+        <?php endif ; ?>
 	</div>
 <?php if ( 'disabled' !== $product_menu_type ) { ?>
 	<div class="customize_products <?php echo esc_attr( $product_menu_type ); ?>">
