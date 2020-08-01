@@ -52,7 +52,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<li><a href="<?php echo esc_attr( $design->get_scratch_url() ); ?>" class="button">Design from scratch</a></li>
 
 	</ul>
-
+    
 	<div class="product_description">
 		<h2 class='linked_title'>
 			<a href="<?php echo esc_attr( $product->get_permalink() ); ?>">
@@ -62,6 +62,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class='linked_desc'>
 			<?php echo ( $product->get_description() ) ?: 'No description.'; ?>
 		</div>
+        <div class="linked_user">
+            Designer: <a href="/author/<?php echo MyStyle_Author_Designs::encrypt_decrypt('encrypt', $design->get_email()) ; ?>/designs/" title="Author Designs">Unknown</a>
+        </div>
 	</div>
 <?php if ( 'disabled' !== $product_menu_type ) { ?>
 	<div class="customize_products <?php echo esc_attr( $product_menu_type ); ?>">

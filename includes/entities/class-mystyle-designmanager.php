@@ -295,13 +295,25 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	public static function get_user_designs(
 		$per_page = 250,
 		$page_number = 1,
-		WP_User $user = null
+        $user
 	) {
 		global $wpdb;
 
 		$sql = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ';
-
-        $sql .= ' WHERE (user_id = ' . $user->ID . ') AND ms_email != "NULL" ' ;
+        
+        if(is_string($user)) {
+            $sql .= ' WHERE (ms_email = "' . $user . '") AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC ;
+        }
+        else {
+            $current_user_id = get_current_user_id() ;
+            if($current_user_id == $user->ID){
+                $sql .= ' WHERE (user_id = ' . $user->ID . ') AND ms_email != "NULL" ' ;
+            }
+            else {
+                $sql .= ' WHERE (user_id = ' . $user->ID . ') AND ms_email != "NULL" AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC ;
+            }
+            
+        }
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );

@@ -297,6 +297,36 @@ class MyStyle_MyDesigns {
 		return $this->pager;
 	}
     
+    
+	/**
+	 * Sets the current http response code.
+	 *
+	 * @param int $http_response_code The http response code to set as the
+	 * currently set response code. This is used by the shortcode and view
+	 * layer.  We set it as a variable since it is difficult to retrieve in
+	 * php < 5.4.
+	 */
+	public function set_http_response_code( $http_response_code ) {
+		$this->http_response_code = $http_response_code;
+		if ( function_exists( 'http_response_code' ) ) {
+			http_response_code( $http_response_code );
+		}
+	}
+
+	/**
+	 * Gets the current http response code.
+	 *
+	 * @return int Returns the current http response code. This is used by the
+	 * shortcode and view layer.
+	 */
+	public function get_http_response_code() {
+		if ( function_exists( 'http_response_code' ) ) {
+			return http_response_code();
+		} else {
+			return $this->http_response_code;
+		}
+	}
+    
     /**
 	 * Gets the singleton instance.
 	 *
