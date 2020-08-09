@@ -733,7 +733,7 @@ class MyStyle_Design_Profile_Page {
     public function wp_head() {
         $design_id = self::get_design_id_from_url();
 
-        if ( $design_id ) {
+        if ( $design_id && !isset($_GET['design_id'])) {
             $design = $this->get_design() ;
             $user_id = $design->get_user_id() ;
             $product_id = $design->get_product_id() ;

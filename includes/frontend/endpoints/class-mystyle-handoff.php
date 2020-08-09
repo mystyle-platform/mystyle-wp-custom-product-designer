@@ -133,7 +133,9 @@ class MyStyle_Handoff {
 			// If the user is logged in to WordPress, store their user id with their design.
 			$wp_user_id = get_current_user_id();
 			if ( 0 !== $wp_user_id ) {
+                $user = get_userdata($wp_user_id) ;
 				$this->design->set_user_id( $wp_user_id );
+                $this->design->set_email( $user->user_email ) ;
 			} else {
 				// If the user isn't logged in, see if their email matches an existing user and store that id with the design.
 				$user = get_user_by( 'email', $mystyle_user->get_email() );
@@ -164,6 +166,8 @@ class MyStyle_Handoff {
 						'You can access your design at any time from the following ' .
 						"url:\n\n" .
 						MyStyle_Design_Profile_Page::get_design_url( $this->design ) . "\n\n" .
+                        "View all of your designs on the My Designs page here. \n\n" . 
+                        $site_url . "my-account/my-designs/\n\n" .
 						"Reload and edit your design at any time here:\n\n" .
 						MyStyle_Customize_Page::get_design_url( $this->design, null, $passthru ) . "\n";
 				$admin_email      = get_option( 'admin_email' );

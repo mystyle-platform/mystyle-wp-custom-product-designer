@@ -307,10 +307,10 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         else {
             $current_user_id = get_current_user_id() ;
             if($current_user_id == $user->ID){
-                $sql .= ' WHERE (user_id = ' . $user->ID . ') AND ms_email != "NULL" ' ;
+                $sql .= ' WHERE (user_id = ' . $user->ID . ') ' ;
             }
             else {
-                $sql .= ' WHERE (user_id = ' . $user->ID . ') AND ms_email != "NULL" AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC ;
+                $sql .= ' WHERE (user_id = ' . $user->ID . ') AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC ;
             }
             
         }
