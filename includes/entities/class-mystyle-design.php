@@ -139,6 +139,13 @@ class MyStyle_Design implements MyStyle_Entity {
 	 * @var email|null
 	 */
 	private $email;
+    
+	/**
+	 * The title that was submitted with the design (if any).
+	 *
+	 * @var title|null
+	 */
+	private $title;
 
 	/**
 	 * A price for the design.
@@ -257,6 +264,7 @@ class MyStyle_Design implements MyStyle_Entity {
 		$instance->template_id    = (int) htmlspecialchars( $result_object->ms_product_id );
 		$instance->designer_id    = (int) htmlspecialchars( $result_object->ms_user_id );
 		$instance->email          = htmlspecialchars( $result_object->ms_email );
+		$instance->title          = htmlspecialchars( $result_object->ms_title );
 		$instance->description    = htmlspecialchars( $result_object->ms_description );
 		$instance->price          = (int) htmlspecialchars( $result_object->ms_price );
 		$instance->print_url      = htmlspecialchars( $result_object->ms_print_url );
@@ -630,6 +638,15 @@ class MyStyle_Design implements MyStyle_Entity {
 	public function get_email() {
 		return $this->email;
 	}
+    
+	/**
+	 * Gets the value of title.
+	 *
+	 * @return string Returns the value of title.
+	 */
+	public function get_title() {
+		return $this->title;
+	}
 
 	/**
 	 * Sets the value of price.
@@ -778,6 +795,7 @@ class MyStyle_Design implements MyStyle_Entity {
                 ms_product_id bigint(20) NOT NULL,
                 ms_user_id bigint(20) NULL,
                 ms_email varchar(255) NULL,
+                ms_title varchar(255) NULL,
                 ms_description text NULL,
                 ms_price numeric(15,2) NULL,
                 ms_print_url varchar(255) NULL,

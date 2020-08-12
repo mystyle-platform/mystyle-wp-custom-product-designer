@@ -171,11 +171,16 @@ class MyStyle_Design_Profile_Page {
 
 			// Get the design from the url, if it's not found, this function
 			// returns false.
-			$design_id = self::get_design_id_from_url();
-
+            $design_id = self::get_design_id_from_url();
+            
 			if ( false === $design_id ) {
 				$design_profile_page->init_index_request();
 			} else {
+                
+                if(isset($_POST['ms-title'])) {
+                    MyStyle_DesignManager::set_title($design_id, $_POST['ms-title']) ;
+                }
+                
 				$design_profile_page->init_design_request( $design_id );
 			}
 		}
@@ -208,7 +213,13 @@ class MyStyle_Design_Profile_Page {
 				$this->user,
 				$this->session
 			);
-
+            
+            if(get_current_user_id() == $design->get_user_id()) {
+                wp_enqueue_script( 'frontend_js', MYSTYLE_ASSETS_URL . 'js/frontend.js', array(), // deps.
+				'1.0.0', // version.
+				true);
+            }
+            
 			// Throw exception if design isn't found (it's caught at the bottom
 			// of this function.
 			if ( null === $design ) {
@@ -690,7 +701,12 @@ class MyStyle_Design_Profile_Page {
 			) {
 				$design = $this->get_design();
 				if ( null !== $design ) {
-					$title = 'Design ' . $design->get_design_id();
+                    if("" !== $design->get_title()) {
+                        $title = $design->get_title() ;
+                    }
+                    else {
+                        $title = 'Design ' . $design->get_design_id();
+                    }
 				}
 			}
 		} catch ( MyStyle_Exception $e ) {
@@ -739,10 +755,16 @@ class MyStyle_Design_Profile_Page {
             $product_id = $design->get_product_id() ;
             $product = wc_get_product($product_id) ;
             $user = get_user_by('id', $user_id) ;
+            $design_title = ' Design ' . $design_id ;
+            
+            if("" !== $design->get_title()) {
+                $design_title = $design->get_title() ;
+            }
+            
             ?>
             <meta name="author" content="<?php print $user->user_nicename ; ?>">
-            <meta name="description" content="<?php print $product->name . ' Design ' . $design_id ; ?>">
-
+            <meta name="description" content="<?php print $product->name . ' ' . $design_title ; ?>">
+            <meta name="keywords" content="<?php print $product->name . ', ' . $design_title ; ?>">
             <?php
         }
     }

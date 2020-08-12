@@ -13,6 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div id="mystyle-design-profile-wrapper" class="woocommerce">
+    <?php if(get_current_user_id() == $design->get_user_id()) : ?>
+    <a id="ms-edit-title-form-show" href="#">Edit Title</a>
+    <div id="ms-edit-title-form">
+        <form method="post" id="ms-edit-title-form">
+            <input type="text" name="ms-title" value="<?php echo ($design->get_title() !== "" ? $design->get_title() : "Design " . $design->get_design_id()) ; ?>" />
+            <input type="submit" class="button" value="Save Title" />
+        </form>
+    </div>
+    <?php endif ; ?>
 	<ul class="mystyle-button-group mystyle-design-nav">
 		<?php if ( ! empty( $previous_design_url ) ) { ?>
 			<li><a href="<?php echo esc_attr( $previous_design_url ); ?>">&larr;</a></li>
