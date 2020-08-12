@@ -228,7 +228,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         $result = $wpdb->update(
             MyStyle_Design::get_table_name(),
             array( 'ms_title' => $title ),
-            array( MyStyle_Design::get_primary_key() => $design_id )
+            array( MyStyle_Design::get_primary_key() => $design_id, 'user_id' => get_current_user_id() )
         ) ;
         
         return $result ;
