@@ -214,7 +214,7 @@ class MyStyle_Design_Profile_Page {
 				$this->session
 			);
             
-            if(get_current_user_id() == $design->get_user_id()) {
+            if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
                 wp_enqueue_script( 'frontend_js', MYSTYLE_ASSETS_URL . 'js/frontend.js', array(), // deps.
 				'1.0.0', // version.
 				true);
