@@ -114,7 +114,10 @@ class MyStyle_Install {
 		if ( version_compare( $old_version, '1.7.0', '<' ) ) {
 			MyStyle_SessionManager::purge_abandoned_sessions();
 		}
-
+        
+        //flush rewrite rules for newly created rewrites
+        flush_rewrite_rules() ;
+        
 		$upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $old_version . ' to ' . $new_version . '.' );
 		mystyle_notice_add_to_queue( $upgrade_notice );
 	}
