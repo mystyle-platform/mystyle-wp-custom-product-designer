@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div id="mystyle-design-profile-wrapper" class="woocommerce">
-    <?php if(get_current_user_id() == $design->get_user_id()) : ?>
+    <?php if($design->get_user_id() !== 0 && get_current_user_id() == $design->get_user_id()) : ?>
     <a id="ms-edit-title-form-show" href="#">Edit Title</a>
     <div id="ms-edit-title-form">
         <form method="post" id="ms-edit-title-form">
@@ -73,7 +73,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
         <?php if($author) : ?>
         <div class="linked_user">
-            Designer: <a href="/author/<?php print (is_string($author) ? $author : $author->user_nicename) ; ?>/designs/" title="<?php print (is_string($author) ? "Unknown" : $author->user_nicename) ?> Designs"><?php print (is_string($author) ? "Unknown" : $author->user_nicename) ?></a>
+            Designer: <a href="/author/<?php print (is_string($author) ? $author : $author->user_nicename) ; ?>/designs/" title="<?php print (is_string($author) ? "Anonymous User" : $author->user_nicename) ?> Designs"><?php print (is_string($author) ? "Anonymous User" : $author->user_nicename) ?></a>
         </div>
         <?php endif ; ?>
 	</div>
