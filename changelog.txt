@@ -1,3 +1,6 @@
+= 3.13.8 =
+* Added My Designs page and Author Design pages.  Added the ability to add and edit design titles. 
+
 = 3.13.7 =
 * Fixed the ability to load designs on another product
 
