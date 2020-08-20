@@ -76,6 +76,16 @@ if ( ! defined( 'ABSPATH' ) ) {
             Designer: <a href="/author/<?php print (is_string($author) ? $author : $author->user_nicename) ; ?>/designs/" title="<?php print (is_string($author) ? "Anonymous User" : $author->user_nicename) ?> Designs"><?php print (is_string($author) ? "Anonymous User" : $author->user_nicename) ?></a>
         </div>
         <?php endif ; ?>
+        <?php if(($design->get_user_id() !== 0 && get_current_user_id() == $design->get_user_id()) || current_user_can('administrator')) : ?>
+        <div class="edit-design-tags">
+            <br />
+            <b>Add or Edit Design Tags</b>
+            <form method="post">
+                <input type="text" class="edit-design-tag-input" name="edit-design-tag" />
+                <input type="submit" class="button" value="SAVE TAGS" />
+            </form>
+        </div>
+        <?php endif ; ?>
 	</div>
 <?php if ( 'disabled' !== $product_menu_type ) { ?>
 	<div class="customize_products <?php echo esc_attr( $product_menu_type ); ?>">

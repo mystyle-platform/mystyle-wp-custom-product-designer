@@ -101,6 +101,10 @@ class MyStyle_Design_Profile_Page {
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
         add_action( 'wp_head', array( &$this, 'wp_head' ), 2);
+        
+        //add_action( 'wp_ajax_design_tag_lookup', array( &$this, 'design_tag_lookup' ) ) ;
+        
+        add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 ); 
 	}
 
 	/**
@@ -215,9 +219,27 @@ class MyStyle_Design_Profile_Page {
 			);
             
             if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
+                
+                
+                wp_register_style( 'jquery-ui-styles','http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
+                wp_enqueue_style( 'jquery-ui-styles' );
+                
+                wp_register_style( 'tokenfield-styles','https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css' );
+                wp_enqueue_style( 'tokenfield-styles' );
+                
+                wp_register_script( 'tokenfield', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.js', null, null, true );
+                wp_enqueue_script('tokenfield');
+                
+                wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', null, null, true );
+                wp_enqueue_script( 'jquery-ui' );
+                
                 wp_enqueue_script( 'frontend_js', MYSTYLE_ASSETS_URL . 'js/frontend.js', array(), // deps.
 				'1.0.0', // version.
 				true);
+                
+                wp_register_style( 'tokenfield-custom-styles', MYSTYLE_ASSETS_URL . 'css/tokenfield.css' );
+                wp_enqueue_style( 'tokenfield-custom-styles' );
+                
             }
             
 			// Throw exception if design isn't found (it's caught at the bottom
@@ -398,6 +420,15 @@ class MyStyle_Design_Profile_Page {
 
 		return $url;
 	}
+    
+    /**
+     * Get design tags 
+     *
+     *
+     */
+    public static function get_design_tags() {
+        return array('test', 'two') ;
+    }
 
 	/**
 	 * Gets the design id from the url. If it can't find the design id in the
@@ -716,6 +747,24 @@ class MyStyle_Design_Profile_Page {
 
 		return $title;
 	}
+    
+    /**
+     * Filter Document Title Parts
+     *
+     */
+    public function filter_document_title_parts( $title ) {
+        $design_id = self::get_design_id_from_url();
+
+        if ( $design_id && !isset($_GET['design_id'])) {
+            $design = $this->get_design() ;
+            if("" !== $design->get_title() ) {
+                $title['page'] = $design->get_title() ;
+            }
+        }
+        
+        return $title ;
+        
+    }
 
 	/**
 	 * Filter the body class output. Adds a "mystyle-design-profile" class if
@@ -766,6 +815,15 @@ class MyStyle_Design_Profile_Page {
             <meta name="description" content="<?php print $product->name . ' ' . $design_title ; ?>">
             <meta name="keywords" content="<?php print $product->name . ', ' . $design_title ; ?>">
             <?php
+            
+            if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
+            ?>
+            <script>
+                var se_ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
+                var designTags = '<?php echo implode(",", $this->get_design_tags()) ; ?>' ;
+            </script>
+            <?php
+            }
         }
     }
 
