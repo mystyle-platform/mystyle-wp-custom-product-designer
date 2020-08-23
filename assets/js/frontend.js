@@ -17,12 +17,29 @@
                 //save to wp via ajax
                 var tag = e.attrs.value ;
                 
+                var postData = {
+                    action: 'design-add-tag',
+                    taxonomy: 'design_tag',
+                    tag: tag,
+                    design_id: designId
+                }
+                
+                $.post(design_ajax_url, postData, function(data) {
+                    console.log(data) ;
+                }) ;
             }
         })
         .on('tokenfield:removedtoken', function (e) {
             //delete from wp via ajax
             var tag = e.attrs.value ;
             
+            $.post(design_ajax_url, {
+                action: 'design-tag-save',
+                tag: tag,
+                designId: designId
+            }, function(data) {
+
+            }) ;
         })
         .tokenfield({
             delimiter: ',',
@@ -30,7 +47,7 @@
             autocomplete :{
                 source: function(request, response)
                 {
-                    $.get(se_ajax_url, {
+                    $.get(design_ajax_url, {
                         action: 'ajax-tag-search',
                         tax: 'post_tag',
                         q : request.term

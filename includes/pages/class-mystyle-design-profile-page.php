@@ -102,7 +102,8 @@ class MyStyle_Design_Profile_Page {
 		add_action( 'template_redirect', array( &$this, 'init' ) );
         add_action( 'wp_head', array( &$this, 'wp_head' ), 2);
         
-        //add_action( 'wp_ajax_design_tag_lookup', array( &$this, 'design_tag_lookup' ) ) ;
+        add_action( 'wp_ajax_design_tag_add', array( &$this, 'design_tag_add' ) ) ;
+        add_action( 'wp_ajax_design_tag_remove', array( &$this, 'design_tag_remove' ) ) ;
         
         add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 ); 
 	}
@@ -429,6 +430,38 @@ class MyStyle_Design_Profile_Page {
     public static function get_design_tags() {
         return array('test', 'two') ;
     }
+    
+    /**
+     * Save design tag
+     *
+     */
+    public static function design_tag_add() {
+        $taxonomy = $_POST['taxonomy'] ;
+        $tag = $_POST['tag'] ;
+        $design_id = $_POST['design_id'] ;
+        
+        wp_set_object_terms($design_id, $tag, $taxonomy) ;
+        
+        header('Content-Type: application/json');
+        print json_encode(array('tag' => $tag)) ;
+        die() ;
+    }
+    
+    /**
+     * Remove design tag
+     *
+     */
+    public static function design_tag_remove() {
+        $taxonomy = $_POST['taxonomy'] ;
+        $tag = $_POST['tag'] ;
+        $design_id = $_POST['design_id'] ;
+        
+        
+        header('Content-Type: application/json');
+        print json_encode(array('tag' => $tag)) ;
+        die() ;
+    }
+    
 
 	/**
 	 * Gets the design id from the url. If it can't find the design id in the
@@ -819,7 +852,8 @@ class MyStyle_Design_Profile_Page {
             if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
             ?>
             <script>
-                var se_ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
+                var design_ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
+                var designId = <?php echo $design_id ; ?> ;
                 var designTags = '<?php echo implode(",", $this->get_design_tags()) ; ?>' ;
             </script>
             <?php
