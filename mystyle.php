@@ -103,6 +103,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			define( 'MYSTYLE_NOTICES_DISMISSED_NAME', 'mystyle_notices_dismissed' );
 			define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
 			define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' );
+            define( 'MYSTYLE_TAXONOMY_NAME', 'design_tag' ) ;
 		}
 
 		/**

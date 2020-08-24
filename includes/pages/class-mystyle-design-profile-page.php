@@ -436,7 +436,7 @@ class MyStyle_Design_Profile_Page {
      *
      */
     public static function design_tag_add() {
-        $taxonomy = $_POST['taxonomy'] ;
+        $taxonomy = MYSTYLE_TAXONOMY_NAME ;
         $tag = $_POST['tag'] ;
         $design_id = $_POST['design_id'] ;
         
@@ -452,10 +452,11 @@ class MyStyle_Design_Profile_Page {
      *
      */
     public static function design_tag_remove() {
-        $taxonomy = $_POST['taxonomy'] ;
+        $taxonomy = MYSTYLE_TAXONOMY_NAME ;
         $tag = $_POST['tag'] ;
         $design_id = $_POST['design_id'] ;
         
+        wp_remove_object_terms($design_id, $tag, $taxonomy) ;
         
         header('Content-Type: application/json');
         print json_encode(array('tag' => $tag)) ;

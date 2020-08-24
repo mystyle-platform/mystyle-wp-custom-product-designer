@@ -118,6 +118,11 @@ class MyStyle_Install {
         //flush rewrite rules for newly created rewrites
         flush_rewrite_rules() ;
         
+        //register design_tag taxonomy as of 3.13.9
+        if ( ! taxonomy_exists( MYSTYLE_TAXONOMY_NAME ) ) {
+			register_taxonomy( MYSTYLE_TAXONOMY_NAME ) ;
+		}
+        
 		$upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $old_version . ' to ' . $new_version . '.' );
 		mystyle_notice_add_to_queue( $upgrade_notice );
 	}

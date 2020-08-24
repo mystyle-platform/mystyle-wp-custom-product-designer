@@ -19,7 +19,6 @@
                 
                 var postData = {
                     action: 'design-add-tag',
-                    taxonomy: 'design_tag',
                     tag: tag,
                     design_id: designId
                 }
@@ -49,7 +48,7 @@
                 {
                     $.get(design_ajax_url, {
                         action: 'ajax-tag-search',
-                        tax: 'post_tag',
+                        tax: 'design_tag',
                         q : request.term
                     }, function(data){
                         data = { data } ;
