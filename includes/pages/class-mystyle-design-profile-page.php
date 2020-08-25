@@ -96,7 +96,8 @@ class MyStyle_Design_Profile_Page {
 	 */
 	public function __construct() {
 		$this->http_response_code = 200;
-
+        
+        add_action( 'init', array( &$this, 'rewrite_rules') ) ;
 		add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
@@ -107,6 +108,13 @@ class MyStyle_Design_Profile_Page {
         
         add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 ); 
 	}
+    
+    /**
+     * Added rewrite rule since WordPress 5.5
+     */
+    public function rewrite_rules() {
+        add_rewrite_rule('designs/([a-zA-Z0-9_-].+)/?$', 'index.php?pagename=designs&design_id=$matches[1]', 'top') ;
+    }
 
 	/**
 	 * Function to create the page.
@@ -161,7 +169,7 @@ class MyStyle_Design_Profile_Page {
 
 		// Only run if we are currently serving the design profile page.
 		if ( self::is_current_post() ) {
-
+            
 			$design_profile_page = self::get_instance();
 
 			// Set the user.
