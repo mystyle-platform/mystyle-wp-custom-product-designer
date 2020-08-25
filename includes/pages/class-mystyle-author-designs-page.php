@@ -46,6 +46,7 @@ class MyStyle_Author_Designs {
         add_action('query_vars', array( &$this, 'query_vars') ) ;
         add_action( 'template_redirect', array( &$this, 'init' ) );
         add_action( 'loop_start', array( &$this, 'loop_start' ) ) ;
+        
 	}
     
     public function init() {
@@ -97,6 +98,7 @@ class MyStyle_Author_Designs {
     * Add user designs to loop
     **/
     public function loop_start( $array ) {
+        
         if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
             
             /* @var $pager \Mystyle_Pager phpcs:ignore */

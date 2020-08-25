@@ -134,3 +134,18 @@ function mystyle_get_template_html(
 	mystyle_get_template( $template_name, $args, $template_path, $default_path );
 	return ob_get_clean();
 }
+
+
+function et_divi_post_meta() {
+    if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
+        return '' ;
+    }
+    
+	$postinfo = is_single() ? et_get_option( 'divi_postinfo2' ) : et_get_option( 'divi_postinfo1' );
+
+	if ( $postinfo ) :
+		echo '<p class="post-meta">';
+		echo et_pb_postinfo_meta( $postinfo, et_get_option( 'divi_date_format', 'M j, Y' ), esc_html__( '0 comments', 'Divi' ), esc_html__( '1 comment', 'Divi' ), '% ' . esc_html__( 'comments', 'Divi' ) );
+		echo '</p>';
+	endif;
+}
