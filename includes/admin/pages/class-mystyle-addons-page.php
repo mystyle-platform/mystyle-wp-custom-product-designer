@@ -39,7 +39,8 @@ class MyStyle_Addons_Page {
 			'Add-ons',
 			'manage_options',
 			$mystyle_hook . '_addons',
-			array( $this, 'render_page' )
+			array( $this, 'render_page' ),
+            99
 		);
 	}
 

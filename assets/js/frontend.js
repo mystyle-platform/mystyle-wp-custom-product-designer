@@ -18,7 +18,7 @@
                 var tag = e.attrs.value ;
                 
                 var postData = {
-                    action: 'design-add-tag',
+                    action: 'design_tag_add',
                     tag: tag,
                     design_id: designId
                 }
@@ -33,9 +33,9 @@
             var tag = e.attrs.value ;
             
             $.post(design_ajax_url, {
-                action: 'design-tag-save',
+                action: 'design_tag_remove',
                 tag: tag,
-                designId: designId
+                design_id: designId
             }, function(data) {
 
             }) ;

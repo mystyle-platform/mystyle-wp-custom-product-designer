@@ -435,8 +435,19 @@ class MyStyle_Design_Profile_Page {
      *
      *
      */
-    public static function get_design_tags() {
-        return array('test', 'two') ;
+    public static function get_design_tags( $design_id = null ) {
+        if( null == $design_id ) {
+            $design_id = self::get_design_id_from_url() ;
+        }
+        
+        $tag_names = array() ;
+        $terms = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME ) ;
+        
+        foreach( $terms as $term ) {
+            $tag_names[] = $term->name ;
+        }
+        
+        return $tag_names ;
     }
     
     /**
@@ -448,7 +459,7 @@ class MyStyle_Design_Profile_Page {
         $tag = $_POST['tag'] ;
         $design_id = $_POST['design_id'] ;
         
-        wp_set_object_terms($design_id, $tag, $taxonomy) ;
+        wp_add_object_terms($design_id, $tag, $taxonomy) ;
         
         header('Content-Type: application/json');
         print json_encode(array('tag' => $tag)) ;
@@ -859,11 +870,12 @@ class MyStyle_Design_Profile_Page {
             <?php
             
             if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
+                $tags = $this->get_design_tags() ;
             ?>
             <script>
                 var design_ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
                 var designId = <?php echo $design_id ; ?> ;
-                var designTags = '<?php echo implode(",", $this->get_design_tags()) ; ?>' ;
+                var designTags = '<?php echo ( (count($tags) > 0) ? implode(",", $tags) : '') ; ?>' ;
             </script>
             <?php
             }

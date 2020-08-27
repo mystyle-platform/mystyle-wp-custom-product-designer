@@ -92,7 +92,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' );
 			}
 			if ( ! defined( 'MYSTYLE_VERSION' ) ) {
-				define( 'MYSTYLE_VERSION', '3.13.9' );
+				define( 'MYSTYLE_VERSION', '3.13.10' );
 			}
 			if ( ! defined( 'MYSTYLE_TEMPLATE_DEBUG_MODE' ) ) {
 				define( 'MYSTYLE_TEMPLATE_DEBUG_MODE', false );
@@ -117,6 +117,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 
 			add_action( 'init', array( $this, 'check_version' ), 10, 0 );
 			add_action( 'init', array( $this, 'register_shortcodes' ), 10, 0 );
+			add_action( 'init', array( $this, 'register_taxonomy' ), 10, 0 );
 			add_action( 'admin_init', array( $this, 'check_woocommerce' ), 10, 0 );
 		}
 
@@ -306,6 +307,39 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
+		}
+        
+        /**
+		 * Register our taxonomy.
+		 *
+		 * This is run during init.
+		 *
+		 * @todo Add unit testing for this function.
+		 */
+		public function register_taxonomy() {
+            //register design_tag taxonomy as of 3.13.9
+            if ( ! taxonomy_exists( MYSTYLE_TAXONOMY_NAME ) ) {
+                register_taxonomy( MYSTYLE_TAXONOMY_NAME, 'design', array(
+                    'labels' => array(
+                      'name' => _x( 'Design Tags', 'taxonomy general name' ),
+                      'singular_name' => _x( 'Design Tag', 'taxonomy singular name' ),
+                      'search_items' =>  __( 'Search Design Tags' ),
+                      'all_items' => __( 'All Design Tags' ),
+                      'parent_item' => __( 'Parent Design Tag' ),
+                      'parent_item_colon' => __( 'Parent Design Tag:' ),
+                      'edit_item' => __( 'Edit Design Tag' ),
+                      'update_item' => __( 'Update Design Tag' ),
+                      'add_new_item' => __( 'Add New Design Tag' ),
+                      'new_item_name' => __( 'New Design Tag Name' ),
+                      'menu_name' => __( 'Design Tags' ),
+                    ),
+                    // Control the slugs used for this taxonomy
+                    'rewrite' => array(
+                      'slug' => 'design-tags'
+                    ),
+                ) ) ;
+            }
+			
 		}
 
 		/**
