@@ -113,6 +113,9 @@ class MyStyle_Design_Profile_Page {
      * Added rewrite rule since WordPress 5.5
      */
     public function rewrite_rules() {
+        //flush rewrite rules for newly created rewrites
+        flush_rewrite_rules() ;
+        
         add_rewrite_rule('designs/([a-zA-Z0-9_-].+)/?$', 'index.php?pagename=designs&design_id=$matches[1]', 'top') ;
     }
 
@@ -918,7 +921,7 @@ class MyStyle_Design_Profile_Page {
 	 */
 	public function modify_woocommerce_loop_product_link() {
 		global $product ;
-        $product_id = $product->id ;
+        $product_id = $product->get_id() ;
 		$mystyle_design = $this->get_design() ;
 		$customizer_url  = MyStyle_Customize_Page::get_design_url( $mystyle_design, null, null, $product_id );
         

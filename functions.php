@@ -135,17 +135,18 @@ function mystyle_get_template_html(
 	return ob_get_clean();
 }
 
+if(!function_exists('et_divi_post_meta')) {
+    function et_divi_post_meta() {
+        if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
+            return '' ;
+        }
 
-function et_divi_post_meta() {
-    if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
-        return '' ;
+        $postinfo = is_single() ? et_get_option( 'divi_postinfo2' ) : et_get_option( 'divi_postinfo1' );
+
+        if ( $postinfo ) :
+            echo '<p class="post-meta">';
+            echo et_pb_postinfo_meta( $postinfo, et_get_option( 'divi_date_format', 'M j, Y' ), esc_html__( '0 comments', 'Divi' ), esc_html__( '1 comment', 'Divi' ), '% ' . esc_html__( 'comments', 'Divi' ) );
+            echo '</p>';
+        endif;
     }
-    
-	$postinfo = is_single() ? et_get_option( 'divi_postinfo2' ) : et_get_option( 'divi_postinfo1' );
-
-	if ( $postinfo ) :
-		echo '<p class="post-meta">';
-		echo et_pb_postinfo_meta( $postinfo, et_get_option( 'divi_date_format', 'M j, Y' ), esc_html__( '0 comments', 'Divi' ), esc_html__( '1 comment', 'Divi' ), '% ' . esc_html__( 'comments', 'Divi' ) );
-		echo '</p>';
-	endif;
 }
