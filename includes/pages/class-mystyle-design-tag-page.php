@@ -63,55 +63,32 @@ class MyStyle_DesignTag_Page {
     public function __construct() {
         $this->http_response_code = 200 ;
         
-        add_action( 'template_redirect', array( &$this, 'alter_query'), 20 );
-        //add_action( 'loop_start', array( &$this, 'loop_start' )) ;
+        add_action( 'posts_pre_query', array( &$this, 'alter_query'), 20, 2 );
 
 	}
     
-    public function alter_query() {
+    public function alter_query( $posts, $q ) {
         
-        global $wp_query ;
-        
-        
-        //$wp_query->request = "SELECT * FROM wp_mystyle_designs" ;
-        
-        echo '<pre>' ; var_dump($wp_query) ; echo '</pre>' ;
-        
-        
-        $wp_query = new WP_Query( array(
-            'post_type'         => 'post',
-            'post_status'       => 'publish'
-        ) );
-        
-    }
-    
-    
-    public function loop_start( $array ) {
-        
-        
-        global $wp_query;
-        //checks the context before altering the query
+        if($q->is_main_query()) {
+            
+            //echo '<pre>' ; var_dump($wp_query) ; echo '</pre>' ;
+
+            if(isset($q->query['design_tag'])) {
+                $design = new stdClass() ;
+
+                $design->ID = 213123 ;
+                $design->post_author = '123' ;
+                $design->post_name = 'Test' ;
+                $design->post_type = 'Design' ;
+                $design->post_title = 'Test Design' ;
+                $design->post_content = 'Test' ;
+
+                return array($design, $design) ;
+            }
+        }
         
         
-        $design = new stdClass() ;
-                
-        $design->ID = 213123 ;
-        $design->post_author = '123' ;
-        $design->post_name = 'Test' ;
-        $design->post_type = 'Design' ;
-        $design->post_title = 'Test Design' ;
-        $design->post_content = 'Test' ;
-        
-        $array->posts = array($design) ;
-        
-        //$query->set('posts', array($design) ) ;
-        //$query->set('found_posts', true) ;
-        //$query->set('is_post_page', true) ;
-        
-        //echo '<pre>' ; var_dump($wp_query) ; echo '</pre>' ;// die() ;
-        //remove_all_actions ( '__after_loop');
-        
-        
+         
     }
     
     public function init() {
