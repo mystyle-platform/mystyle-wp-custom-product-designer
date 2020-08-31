@@ -116,7 +116,7 @@ class MyStyle_Design_Profile_Page {
         //flush rewrite rules for newly created rewrites
         flush_rewrite_rules() ;
         
-        add_rewrite_rule('designs/([a-zA-Z0-9_-].+)/?$', 'index.php?pagename=designs&design_id=$matches[1]', 'top') ;
+        add_rewrite_rule('designs/([a-zA-Z0-9_-].+)?$', 'index.php?pagename=designs&design_id=$matches[1]', 'top') ;
     }
 
 	/**
@@ -189,7 +189,7 @@ class MyStyle_Design_Profile_Page {
 			// returns false.
             $design_id = self::get_design_id_from_url();
             
-			if ( false === $design_id ) {
+			if ( false === $design_id || preg_match('/page/', $design_id ) ) {
 				$design_profile_page->init_index_request();
 			} else {
                 
@@ -230,6 +230,14 @@ class MyStyle_Design_Profile_Page {
 				$this->session
 			);
             
+            
+			// Throw exception if design isn't found (it's caught at the bottom
+			// of this function.
+			if ( null === $design ) {
+				throw new MyStyle_Not_Found_Exception( 'Design not found.' );
+			}
+            
+            
             if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
                 
                 
@@ -253,12 +261,6 @@ class MyStyle_Design_Profile_Page {
                 wp_enqueue_style( 'tokenfield-custom-styles' );
                 
             }
-            
-			// Throw exception if design isn't found (it's caught at the bottom
-			// of this function.
-			if ( null === $design ) {
-				throw new MyStyle_Not_Found_Exception( 'Design not found.' );
-			}
 
 			// Set the current design in the singleton instance.
 			$this->set_design( $design );
@@ -301,10 +303,12 @@ class MyStyle_Design_Profile_Page {
 
 		// Designs per page.
 		$this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
-
+        
 		// Current page number.
+        $page_array = explode('/', self::get_design_id_from_url()) ; //not the best solution @TODO cleaner fix for this
+        
 		$this->pager->set_current_page_number(
-			max( 1, get_query_var( 'paged' ) )
+			max( 1, $page_array[1] )
 		);
 
 		// Pager items.
@@ -856,16 +860,25 @@ class MyStyle_Design_Profile_Page {
 
         if ( $design_id && !isset($_GET['design_id'])) {
             $design = $this->get_design() ;
-            $user_id = $design->get_user_id() ;
-            $product_id = $design->get_product_id() ;
-            $product = wc_get_product($product_id) ;
-            $user = get_user_by('id', $user_id) ;
-            $design_title = ' Design ' . $design_id ;
-            
-            if("" !== $design->get_title()) {
-                $design_title = $design->get_title() ;
+            if(null !== $design) {
+                $user_id = $design->get_user_id() ;
+                $product_id = $design->get_product_id() ;
+                $product = wc_get_product($product_id) ;
+                $user = get_user_by('id', $user_id) ;
+                $design_title = ' Design ' . $design_id ;
+
+                if("" !== $design->get_title()) {
+                    $design_title = $design->get_title() ;
+                }
+
+                ?>
+                <meta name="author" content="<?php print $user->user_nicename ; ?>">
+                <meta name="description" content="<?php print $product->name . ' ' . $design_title ; ?>">
+                <meta name="keywords" content="<?php print $product->name . ', ' . $design_title ; ?>">
+                <?php
             }
             
+<<<<<<< HEAD
             ?>
             <meta name="author" content="<?php print $user->user_nicename ; ?>">
             <meta name="description" content="<?php print $product->name . ' ' . $design_title ; ?>">
@@ -882,6 +895,8 @@ class MyStyle_Design_Profile_Page {
             </script>
             <?php
             }
+=======
+>>>>>>> master
         }
     }
 
