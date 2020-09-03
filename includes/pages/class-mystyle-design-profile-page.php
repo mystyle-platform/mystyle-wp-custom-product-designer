@@ -452,7 +452,7 @@ class MyStyle_Design_Profile_Page {
      *
      *
      */
-    public static function get_design_tags( $design_id = null ) {
+    public static function get_design_tags( $design_id = null, $slug = false ) {
         if( null == $design_id ) {
             $design_id = self::get_design_id_from_url() ;
         }
@@ -461,7 +461,12 @@ class MyStyle_Design_Profile_Page {
         $terms = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME ) ;
         
         foreach( $terms as $term ) {
-            $tag_names[] = $term->name ;
+            if($slug) {
+                $tag_names[] = array( 'name' => $term->name, 'slug' => $term->slug ) ;
+            }
+            else {
+                $tag_names[] = $term->name ;
+            }
         }
         
         return $tag_names ;
