@@ -63,254 +63,118 @@ class MyStyle_DesignTag_Page {
     public function __construct() {
         $this->http_response_code = 200 ;
         
-        add_action( 'posts_pre_query', array( &$this, 'alter_query'), 20, 2 );
+        add_action( 'template_redirect', array( &$this, 'set_pager' ) );
+        add_action( 'posts_pre_query', array( &$this, 'alter_query'), 25, 2 );
+        
+        add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail'), 10, 3 ) ;
+        add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src'), 10, 4 ) ;
+        add_filter( 'post_link', array( &$this, 'post_link'), 10, 3 ) ;
 
 	}
+    
+    public function set_pager() {
+        global $wp_query;
+        if(isset($wp_query->query['design_tag'])) {
+            
+
+
+            if ( !$wp_query->is_main_query() )
+              return;
+
+            $wp_query->max_num_pages = 10 ;
+        }
+    }
     
     public function alter_query( $posts, $q ) {
         
         if($q->is_main_query()) {
             
-            //echo '<pre>' ; var_dump($wp_query) ; echo '</pre>' ;
-
             if(isset($q->query['design_tag'])) {
-                $design = new stdClass() ;
-
-                $design->ID = 213123 ;
-                $design->post_author = '123' ;
-                $design->post_name = 'Test' ;
-                $design->post_type = 'Design' ;
-                $design->post_title = 'Test Design' ;
-                $design->post_content = 'Test' ;
-
-                return array($design, $design) ;
+                global $wpdb ;
+                
+                $term_id = $q->queried_object->term_id ;
+                
+                $page_limit = 1 ;
+                
+                $sql = "SELECT object_id FROM wp_term_relationships WHERE term_taxonomy_id = " . $term_id . " LIMIT " . $page_limit ; 
+                
+                if(null !== $q->query['paged']) {
+                    $page_num = ($q->query['paged'] - 1) * $page_limit ;
+                    $sql .= " OFFSET " . $page_num ;
+                }
+                
+                $terms = $wpdb->get_results($sql) ;
+                
+                $designs = array() ;
+                
+                foreach( $terms as $term) {
+                    $design = MyStyle_DesignManager::get( $term->object_id ) ;
+                    
+                    $title = ( "" == $design->get_title() ? "Design " . $design->get_design_id() : $design->get_title() ) ;
+                    
+                    $product_id = $design->get_product_id() ;
+                    
+                    $product = wc_get_product( $product_id ) ;
+                    
+                    $design_post = new stdClass() ;
+                    $design_post->ID = 1 ; //$design->get_design_id() ;
+                    $design_post->design_id = $design->get_design_id() ;
+                    $design_post->post_author = $design->get_user_id() ;
+                    $design_post->post_name = $title ;
+                    $design_post->post_type = 'Design' ;
+                    $design_post->post_title = $title ;
+                    $design_post->post_content = $title . ' custom ' . $product->get_name() ;
+                    
+                    $designs[] = $design_post ;
+                }
+                
+                return $designs ;
             }
         }
         
-        
+        return $posts ;
          
     }
     
-    public function init() {
+    public function has_post_thumbnail( $has_thumbnail, $post, $thumbnail_id ) {
         
         global $wp_query ;
         
-        if(isset($wp_query->query_vars['my-designs'])) {
-            $design_profile_page = self::get_instance();
-
-            // Set the user.
-            /* @var $user \WP_User phpcs:ignore */
-            $user = wp_get_current_user();
-            $design_profile_page->set_user( $user );
-
-            // Set the session.
-            /* @var $session \MyStyle_Session phpcs:ignore */
-            $session = MyStyle()->get_session();
-            $design_profile_page->set_session( $session );
-
-            $design_profile_page->init_user_index_request();
+        if(isset($wp_query->query['design_tag'])) {
+            return true ;
         }
-	}
-    
-    /**
-    *register new endpoint for WC My Account page
-    **/
-    public function design_endpoints() {
-        add_rewrite_endpoint( 'my-designs', EP_ROOT | EP_PAGES );
-    }
-    
-    /**
-    * register query variables
-    **/
-    public function design_query_vars( $vars ) {
-        $vars[] = 'my-designs';
-
-        return $vars;
-    }
-    
-    /**
-    * Add menu item to My Account Page
-    **/
-    public function my_account_menu_items( $items ) {
-        $new_items = array() ;
-        $new_items['my-designs'] = __( 'My Designs', 'woocommerce' );
-
-        return $this->insert_after_helper($items, $new_items, 'dashboard') ;
-    }
-    
-    /**
-    * Add My Designs breadcrumb
-    **/
-    public function breadcrumbs( $defaults ) {
-        $defaults[] = 'My Designs' ;
-        return $defaults ;
-    }
-    
-    /**
-     * Custom help to add new items into an array after a selected item.
-     *
-     * @param array $items
-     * @param array $new_items
-     * @param string $after
-     * @return array
-     */
-    function insert_after_helper( $items, $new_items, $after ) {
-        // Search for the item position and +1 since is after the selected item key.
-        $position = array_search( $after, array_keys( $items ) ) + 1;
-
-        // Insert the new item.
-        $array = array_slice( $items, 0, $position, true );
-        $array += $new_items;
-        $array += array_slice( $items, $position, count( $items ) - $position, true );
-
-        return $array;
-    }
-    
-    /**
-    * Flush rewrite rules on Plugin activation and deactivation
-    **/
-    public function flush_rewrite_rules() {
-        add_rewrite_endpoint( 'my-designs', EP_ROOT | EP_PAGES );
-        flush_rewrite_rules();
-    }
-    
-    /**
-    * Display user designs list
-    **/
-    public function designs_list() {
-        $design_profile_page = MyStyle_MyDesigns::get_instance();
         
-		/* @var $pager \Mystyle_Pager phpcs:ignore */
-		$pager = $design_profile_page->get_pager();
-        
-		// ---------- Call the view layer ------------------ //
-		ob_start();
-		require MYSTYLE_TEMPLATES . 'design-profile/index.php';
-		$out = ob_get_contents();
-		ob_end_clean();
-
-
-		print $out;
+        return $has_thumbnail ;
     }
     
-    
-	/**
-	 * Filter the post title.
-	 *
-	 * @param string $title The title of the post.
-	 * @param type   $id The id of the post.
-	 * @return string Returns the filtered title.
-	 */
-	public function filter_title( $title, $id = null ) {
-        global $wp_query;
+    public function wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) {
+        global $wp_query ;
+        
+        if(isset($wp_query->query['design_tag'])) {
+            global $post ;
 
-        $is_endpoint = isset( $wp_query->query_vars['my-designs'] );
+            $design = MyStyle_DesignManager::get( $post->design_id ) ;
 
-        if ( $is_endpoint && ! is_admin() && is_main_query() && in_the_loop() && is_account_page() ) {
-            // New page title.
-            $title = __( 'My Designs', 'woocommerce' );
+            $image[0] = $design->get_web_url() ;
+            $image[1] = 200 ;
+            $image[2] = 200 ;
 
-            remove_filter( 'the_title', array( &$this, 'filter_title' ) );
+            return $image ;
         }
-
-        return $title;
-	}
-    
-    /**
-    * Add design profile body class name
-    **/
-    public function body_classes( $classes ) {
-        $classes[] = 'mystyle-design-profile' ;
-        return $classes ;
-    } 
-    
-    /**
-	 * Init the singleton for an user designindex request.
-	 */
-	private function init_user_index_request() {
-		// ------- SET UP THE PAGER ------------//
-		// Create a new pager.
-		$this->pager = new MyStyle_Pager();
-
-		// Designs per page.
-		$this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
-
-		// Current page number.
-		$this->pager->set_current_page_number(
-			max( 1, get_query_var( 'paged' ) )
-		);
         
-		// Pager items.
-		$designs = MyStyle_DesignManager::get_user_designs(
-			$this->pager->get_items_per_page(),
-			$this->pager->get_current_page_number(),
-			$this->user
-		);
-		$this->pager->set_items( $designs );
-
-		// Total items.
-		$this->pager->set_total_item_count(
-			MyStyle_DesignManager::get_total_design_count(),
-			$this->user
-		);
-
-		// Validate the requested page.
-		try {
-			$this->pager->validate();
-		} catch ( MyStyle_Not_Found_Exception $ex ) {
-			$response_code = 404;
-			status_header( $response_code );
-
-			$this->set_exception( $ex );
-			$this->set_http_response_code( $response_code );
-		}
-	}
+        return $image ;
+    }
     
-    /**
-	 * Sets the current user.
-	 *
-	 * @param WP_User $user The user to set as the current user.
-	 */
-	public function set_user( WP_User $user ) {
-		$this->user = $user;
-	}
-
-	/**
-	 * Gets the current user.
-	 *
-	 * @return WP_User Returns the currently loaded WP_User.
-	 */
-	public function get_user() {
-		return $this->user;
-	}
-    
-    /**
-	 * Sets the current session.
-	 *
-	 * @param MyStyle_Session $session The session to set as the current session.
-	 */
-	public function set_session( MyStyle_Session $session ) {
-		$this->session = $session;
-	}
-
-	/**
-	 * Gets the current session.
-	 *
-	 * @return MyStyle_Session Returns the currently loaded MyStyle_Session.
-	 */
-	public function get_session() {
-		return $this->session;
-	}
-    
-	/**
-	 * Gets the pager for the designs index.
-	 *
-	 * @return MyStyle_Pager Returns the pager for the designs index.
-	 */
-	public function get_pager() {
-		return $this->pager;
-	}
-    
+    public function post_link( $permalink, $post, $leavename ) {
+        
+        global $wp_query ;
+        
+        if(isset($wp_query->query['design_tag'])) {
+            return get_site_url() . '/designs/' . $post->design_id ;
+        }
+        
+        return $permalink ;
+    }
     
 	/**
 	 * Sets the current http response code.

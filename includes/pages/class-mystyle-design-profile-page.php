@@ -876,27 +876,19 @@ class MyStyle_Design_Profile_Page {
                 <meta name="description" content="<?php print $product->name . ' ' . $design_title ; ?>">
                 <meta name="keywords" content="<?php print $product->name . ', ' . $design_title ; ?>">
                 <?php
+                
+                if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
+                    $tags = $this->get_design_tags() ;
+                ?>
+                <script>
+                    var design_ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
+                    var designId = <?php echo $design_id ; ?> ;
+                    var designTags = '<?php echo ( (count($tags) > 0) ? implode(",", $tags) : '') ; ?>' ;
+                </script>
+                <?php
+                }
             }
             
-<<<<<<< HEAD
-            ?>
-            <meta name="author" content="<?php print $user->user_nicename ; ?>">
-            <meta name="description" content="<?php print $product->name . ' ' . $design_title ; ?>">
-            <meta name="keywords" content="<?php print $product->name . ', ' . $design_title ; ?>">
-            <?php
-            
-            if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
-                $tags = $this->get_design_tags() ;
-            ?>
-            <script>
-                var design_ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
-                var designId = <?php echo $design_id ; ?> ;
-                var designTags = '<?php echo ( (count($tags) > 0) ? implode(",", $tags) : '') ; ?>' ;
-            </script>
-            <?php
-            }
-=======
->>>>>>> master
         }
     }
 

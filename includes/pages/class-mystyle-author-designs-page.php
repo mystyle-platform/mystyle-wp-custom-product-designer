@@ -44,85 +44,24 @@ class MyStyle_Author_Designs {
 		
         add_action('init', array( &$this, 'rewrite_rules') ) ;
         add_action('query_vars', array( &$this, 'query_vars') ) ;
-        add_action( 'template_redirect', array( &$this, 'init' ) );
-        add_action( 'loop_start', array( &$this, 'loop_start' ) ) ;
+        add_action( 'template_redirect', array( &$this, 'set_pager' ) );
+        
+        
+        add_action( 'posts_pre_query', array( &$this, 'alter_query'), 30, 2 );
+        
+        add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail'), 10, 3 ) ;
+        add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src'), 10, 4 ) ;
+        add_filter( 'post_link', array( &$this, 'post_link'), 10, 3 ) ;
         
 	}
-    
-    public function init() {
-        
-        $this->set_http_response_code(200) ;
-        
-        if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
-            
-            $username = get_query_var( 'username' ) ;
-            $decrypted = $this->encrypt_decrypt('decrypt', $username) ;
-
-            if($decrypted) {
-                $user = $decrypted ;
-            }
-            else {
-                $user = get_user_by( 'slug', $username ) ;
-            }
-            
-            // Create a new pager.
-            $this->pager = new MyStyle_Pager();
-
-            // Designs per page.
-            $this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
-
-            // Current page number.
-            $this->pager->set_current_page_number(
-                max( 1, get_query_var( 'paged' ) )
-            );
-
-            // Pager items.
-            $designs = MyStyle_DesignManager::get_user_designs(
-                $this->pager->get_items_per_page(),
-                $this->pager->get_current_page_number(),
-                $user
-            );
-            $this->pager->set_items( $designs );
-
-            // Total items.
-            $this->pager->set_total_item_count(
-                MyStyle_DesignManager::get_total_design_count(),
-                $user
-            );
-
-        }
-        
-	}
-    
-    /**
-    * Add user designs to loop
-    **/
-    public function loop_start( $array ) {
-        
-        if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
-            
-            /* @var $pager \Mystyle_Pager phpcs:ignore */
-            $pager = $this->get_pager();
-
-            // ---------- Call the view layer ------------------ //
-            ob_start();
-            require MYSTYLE_TEMPLATES . 'design-profile/index.php';
-            $out = ob_get_contents();
-            ob_end_clean();
-            print $out;
-            
-            //clear any post data
-            $array->posts = array() ;
-            return $array ;
-        }
-            
-    }
     
     /**
     * Add rewrite rules for custom author pages
     **/
     public function rewrite_rules() {
         add_rewrite_rule('author/([a-zA-Z0-9_-].+)/([a-z]+)/?$', 'index.php?designpage=$matches[2]&username=$matches[1]', 'top') ;
+        
+        add_rewrite_rule('author/([a-zA-Z0-9_-].+)/([a-z]+)/page/([0-9]+)?$', 'index.php?designpage=$matches[2]&username=$matches[1]&paged=$matches[3]', 'top') ;
     }
     
     /**
@@ -131,7 +70,137 @@ class MyStyle_Author_Designs {
     public function query_vars( $query_vars ) {
         $query_vars[] = 'username';
         $query_vars[] = 'designpage';
+        $query_vars[] = 'paged';
         return $query_vars;
+    }
+    
+    public function set_pager() {
+        if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
+            global $wp_query;
+
+
+            if ( !$wp_query->is_main_query() )
+              return;
+
+            $wp_query->max_num_pages = $this->pager->get_total_item_count() ;
+        }
+    }
+    
+    
+    public function alter_query( $posts, $q ) {
+        
+        if($q->is_main_query()) {
+            
+            if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
+                
+                $username = get_query_var( 'username' ) ;
+                $decrypted = $this->encrypt_decrypt('decrypt', $username) ;
+
+                if($decrypted) {
+                    $user = $decrypted ;
+                }
+                else {
+                    $user = get_user_by( 'slug', $username ) ;
+                }
+
+                // Create a new pager.
+                $this->pager = new MyStyle_Pager();
+
+                // Designs per page.
+                $this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
+                //$this->pager->set_items_per_page( 1 );
+
+                // Current page number.
+                $this->pager->set_current_page_number(
+                    max( 1, get_query_var( 'paged' ) )
+                );
+
+                // Pager items.
+                $designs = MyStyle_DesignManager::get_user_designs(
+                    $this->pager->get_items_per_page(),
+                    $this->pager->get_current_page_number(),
+                    $user
+                );
+
+                $this->pager->set_items( $designs );
+
+                // Total items.
+                $this->pager->set_total_item_count(
+                    MyStyle_DesignManager::get_total_design_count(),
+                    $user
+                );
+                
+                $pager = $this->get_pager() ;
+                
+                $design_posts = array() ;
+
+                foreach($pager->get_items() as $design) {
+                    $title = ( "" == $design->get_title() ? "Design " . $design->get_design_id() : $design->get_title() ) ;
+                    
+                    $product_id = $design->get_product_id() ;
+                    
+                    $product = wc_get_product( $product_id ) ;
+                    
+                    $design_post = new stdClass() ;
+                    $design_post->ID = 1 ; //$design->get_design_id() ;
+                    $design_post->design_id = $design->get_design_id() ;
+                    $design_post->post_author = $design->get_user_id() ;
+                    $design_post->post_name = $title ;
+                    $design_post->post_type = 'Design' ;
+                    $design_post->post_title = $title ;
+                    $design_post->post_content =  $title . ' custom ' . $product->get_name()  ;
+
+                    $design_posts[] = $design_post ;
+                }
+                
+                return $design_posts ;
+            }
+        }
+        
+        return $posts ;
+         
+    }
+    
+    public function has_post_thumbnail( $has_thumbnail, $post, $thumbnail_id ) {
+        
+        global $wp_query ;
+        
+        if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
+            return true ;
+        }
+        
+        return $has_thumbnail ;
+    }
+    
+    public function wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) {
+        global $wp_query ;
+        
+        if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
+            global $post ;
+            
+            if(isset($post->design_id)) {
+                $design = MyStyle_DesignManager::get( $post->design_id ) ;
+
+                $image[0] = $design->get_web_url() ;
+                $image[1] = 200 ;
+                $image[2] = 200 ;
+
+                return $image ;
+            }
+        }
+        
+        return $image ;
+    }
+    
+    public function post_link( $permalink, $post, $leavename ) {
+        
+        global $wp_query ;
+        
+        if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
+            return get_site_url() . '/designs/' . $post->design_id ;
+        }
+        
+        return $permalink ;
     }
     
 	/**
