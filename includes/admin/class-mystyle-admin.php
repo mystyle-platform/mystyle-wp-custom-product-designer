@@ -27,8 +27,6 @@ class MyStyle_Admin {
 		add_filter( 'plugin_action_links_' . MYSTYLE_BASENAME, array( &$this, 'add_settings_link' ) );
 
 		add_action( 'admin_init', array( &$this, 'admin_init' ) );
-        
-        add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ) );
 	}
 
 	/**
@@ -43,24 +41,6 @@ class MyStyle_Admin {
 		wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js' );
 		wp_enqueue_script( 'myStyleAdminJavaScript' );
 	}
-    
-    /** 
-     * Add Design Tags link to admin menu
-     *
-     */
-    public function add_page_to_menu() {
-        $mystyle_hook = 'mystyle';
-        
-		add_submenu_page(
-            $mystyle_hook, 
-            'Design Tags', 
-            'Design Tags', 
-            'manage_options',  
-            'edit-tags.php?taxonomy=design_tag',
-            '',
-            62
-        );
-    }
     
 
 	/**

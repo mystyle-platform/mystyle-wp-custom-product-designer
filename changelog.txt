@@ -1,3 +1,7 @@
+= 3.14.0 =
+* Added new Design Tags Feature.  
+* Optimized design archive pages to support standard WordPress Theme Development.
+
 = 3.13.11 =
 * Fixed Design profile pager bug.
 

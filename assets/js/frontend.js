@@ -47,11 +47,11 @@
                 source: function(request, response)
                 {
                     $.get(design_ajax_url, {
-                        action: 'ajax-tag-search',
+                        action: 'design_tag_search',
                         tax: 'design_tag',
                         q : request.term
                     }, function(data){
-                        data = { data } ;
+                        //data = { data } ;
                         response(data);
                     });
                 },

@@ -85,7 +85,15 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <input type="submit" class="button" value="SAVE TAGS" />
             </form>
         </div>
-        <?php endif ; ?>
+        <?php else : ?>
+        <div class="design-tags">
+            <?php $design_tags = MyStyle_Design_Profile_Page::get_design_tags() ; ?>
+            Design Tags:
+            <?php foreach($design_tags as $tag) : ?>
+            <a href="" title=""><?php print $tag ; ?></a>
+            <?php endforeach ; ?>
+        </div>
+        <?php endif; ?>
 	</div>
 <?php if ( 'disabled' !== $product_menu_type ) { ?>
 	<div class="customize_products <?php echo esc_attr( $product_menu_type ); ?>">

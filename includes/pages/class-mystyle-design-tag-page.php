@@ -63,8 +63,8 @@ class MyStyle_DesignTag_Page {
     public function __construct() {
         $this->http_response_code = 200 ;
         
-        add_action( 'template_redirect', array( &$this, 'set_pager' ) );
         add_action( 'posts_pre_query', array( &$this, 'alter_query'), 25, 2 );
+        add_action( 'template_redirect', array( &$this, 'set_pager' ) );
         
         add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail'), 10, 3 ) ;
         add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src'), 10, 4 ) ;
@@ -72,6 +72,10 @@ class MyStyle_DesignTag_Page {
 
 	}
     
+    /**
+     * Alter WP_QUERY pager information based in the MyStyle_Pager class
+     *
+     */
     public function set_pager() {
         global $wp_query;
         if(isset($wp_query->query['design_tag'])) {
@@ -80,11 +84,16 @@ class MyStyle_DesignTag_Page {
 
             if ( !$wp_query->is_main_query() )
               return;
-
-            $wp_query->max_num_pages = 10 ;
+            
+            $wp_query->max_num_pages = $this->pager->get_page_count() ;
         }
     }
     
+    /**
+     * Alter WP_QUERY to return designs based on URL query
+     * @since 3.14.0
+     *
+     */
     public function alter_query( $posts, $q ) {
         
         if($q->is_main_query()) {
@@ -94,12 +103,23 @@ class MyStyle_DesignTag_Page {
                 
                 $term_id = $q->queried_object->term_id ;
                 
-                $page_limit = 1 ;
+                // Create a new pager.
+                $this->pager = new MyStyle_Pager();
+                
+                // Designs per page.
+                $this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
+                
+                // Current page number.
+                $this->pager->set_current_page_number(
+                    max( 1, $q->query['paged'] )
+                );
+                
+                $page_limit = $this->pager->get_items_per_page() ;
                 
                 $sql = "SELECT object_id FROM wp_term_relationships WHERE term_taxonomy_id = " . $term_id . " LIMIT " . $page_limit ; 
                 
                 if(null !== $q->query['paged']) {
-                    $page_num = ($q->query['paged'] - 1) * $page_limit ;
+                    $page_num = ($this->pager->get_current_page_number() - 1) * $page_limit ;
                     $sql .= " OFFSET " . $page_num ;
                 }
                 
@@ -128,6 +148,15 @@ class MyStyle_DesignTag_Page {
                     $designs[] = $design_post ;
                 }
                 
+                $this->pager->set_items( $designs );
+                
+                // Total items.
+                $term_count = $wpdb->get_var("SELECT COUNT(object_id) FROM wp_term_relationships WHERE term_taxonomy_id = " . $term_id) ;
+                
+                $this->pager->set_total_item_count(
+                    $term_count
+                );
+                
                 return $designs ;
             }
         }
@@ -136,6 +165,9 @@ class MyStyle_DesignTag_Page {
          
     }
     
+    /**
+     * Force showing post thumbnail on design archive pages
+     */
     public function has_post_thumbnail( $has_thumbnail, $post, $thumbnail_id ) {
         
         global $wp_query ;
@@ -147,6 +179,10 @@ class MyStyle_DesignTag_Page {
         return $has_thumbnail ;
     }
     
+    /**
+     * Load the current designs thumbnail image in The_Loop
+     *
+     */
     public function wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) {
         global $wp_query ;
         
@@ -165,6 +201,10 @@ class MyStyle_DesignTag_Page {
         return $image ;
     }
     
+    /**
+     * Load the current designs permalink in The_Loop
+     *
+     */
     public function post_link( $permalink, $post, $leavename ) {
         
         global $wp_query ;

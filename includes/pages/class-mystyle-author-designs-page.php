@@ -74,6 +74,10 @@ class MyStyle_Author_Designs {
         return $query_vars;
     }
     
+    /**
+     * Alter WP_QUERY pager information based in the MyStyle_Pager class
+     *
+     */
     public function set_pager() {
         if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
             global $wp_query;
@@ -82,11 +86,15 @@ class MyStyle_Author_Designs {
             if ( !$wp_query->is_main_query() )
               return;
 
-            $wp_query->max_num_pages = $this->pager->get_total_item_count() ;
+            $wp_query->max_num_pages = $this->pager->get_page_count() ;
         }
     }
     
-    
+    /**
+     * Alter WP_QUERY to return designs based on URL query
+     * @since 3.14.0
+     *
+     */
     public function alter_query( $posts, $q ) {
         
         if($q->is_main_query()) {
@@ -108,7 +116,6 @@ class MyStyle_Author_Designs {
 
                 // Designs per page.
                 $this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
-                //$this->pager->set_items_per_page( 1 );
 
                 // Current page number.
                 $this->pager->set_current_page_number(
@@ -161,6 +168,9 @@ class MyStyle_Author_Designs {
          
     }
     
+    /**
+     * Force showing post thumbnail on design archive pages
+     */
     public function has_post_thumbnail( $has_thumbnail, $post, $thumbnail_id ) {
         
         global $wp_query ;
@@ -172,6 +182,10 @@ class MyStyle_Author_Designs {
         return $has_thumbnail ;
     }
     
+    /**
+     * Load the current designs thumbnail image in The_Loop
+     *
+     */
     public function wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) {
         global $wp_query ;
         
@@ -192,6 +206,10 @@ class MyStyle_Author_Designs {
         return $image ;
     }
     
+    /**
+     * Load the current designs permalink in The_Loop
+     *
+     */
     public function post_link( $permalink, $post, $leavename ) {
         
         global $wp_query ;

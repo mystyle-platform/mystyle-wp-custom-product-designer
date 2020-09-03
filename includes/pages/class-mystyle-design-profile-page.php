@@ -98,11 +98,13 @@ class MyStyle_Design_Profile_Page {
 		$this->http_response_code = 200;
         
         add_action( 'init', array( &$this, 'rewrite_rules') ) ;
+        add_action( 'query_vars', array( &$this, 'query_vars') ) ;
 		add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
         add_action( 'wp_head', array( &$this, 'wp_head' ), 2);
         
+        add_action( 'wp_ajax_design_tag_search', array( &$this, 'design_tag_search' ) ) ;
         add_action( 'wp_ajax_design_tag_add', array( &$this, 'design_tag_add' ) ) ;
         add_action( 'wp_ajax_design_tag_remove', array( &$this, 'design_tag_remove' ) ) ;
         
@@ -117,6 +119,15 @@ class MyStyle_Design_Profile_Page {
         flush_rewrite_rules() ;
         
         add_rewrite_rule('designs/([a-zA-Z0-9_-].+)?$', 'index.php?pagename=designs&design_id=$matches[1]', 'top') ;
+    }
+    
+    
+    /**
+    * Add custom query vars
+    **/
+    public function query_vars( $query_vars ) {
+        $query_vars[] = 'design_id';
+        return $query_vars;
     }
 
 	/**
@@ -169,7 +180,6 @@ class MyStyle_Design_Profile_Page {
 	 * for further processing downstream.
 	 */
 	public function init() {
-
 		// Only run if we are currently serving the design profile page.
 		if ( self::is_current_post() ) {
             
@@ -305,7 +315,7 @@ class MyStyle_Design_Profile_Page {
 		$this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
         
 		// Current page number.
-        $page_array = explode('/', self::get_design_id_from_url()) ; //not the best solution @TODO cleaner fix for this
+        $page_array = explode('/', get_query_var( 'design_id' )) ; //not the best solution @TODO cleaner fix for this
         
 		$this->pager->set_current_page_number(
 			max( 1, $page_array[1] )
@@ -458,15 +468,80 @@ class MyStyle_Design_Profile_Page {
     }
     
     /**
+     * Search design tags for ajax
+     *
+     */
+    public static function design_tag_search() {
+        $taxonomy = MYSTYLE_TAXONOMY_NAME ;
+        $s = wp_unslash( $_GET['q'] );
+ 
+        $comma = _x( ',', 'tag delimiter' );
+        if ( ',' !== $comma ) {
+            $s = str_replace( $comma, ',', $s );
+        }
+
+        if ( false !== strpos( $s, ',' ) ) {
+            $s = explode( ',', $s );
+            $s = $s[ count( $s ) - 1 ];
+        }
+
+        $s = trim( $s );
+
+        /**
+         * Filters the minimum number of characters required to fire a tag search via Ajax.
+         *
+         * @since 4.0.0
+         *
+         * @param int         $characters The minimum number of characters required. Default 2.
+         * @param WP_Taxonomy $tax        The taxonomy object.
+         * @param string      $s          The search term.
+         */
+        $term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
+
+        /*
+         * Require $term_search_min_chars chars for matching (default: 2)
+         * ensure it's a non-negative, non-zero integer.
+         */
+        if ( ( 0 == $term_search_min_chars ) || ( strlen( $s ) < $term_search_min_chars ) ) {
+            wp_die();
+        }
+
+        $results = get_terms(
+            array(
+                'taxonomy'   => $taxonomy,
+                'name__like' => $s,
+                'fields'     => 'names',
+                'hide_empty' => false,
+            )
+        );
+
+        header('Content-Type: application/json');
+        echo json_encode( $results ) ;
+        wp_die();
+    }
+    
+    /**
      * Save design tag
      *
      */
     public static function design_tag_add() {
         $taxonomy = MYSTYLE_TAXONOMY_NAME ;
         $tag = $_POST['tag'] ;
-        $design_id = $_POST['design_id'] ;
+        $design_id = intval($_POST['design_id']) ;
         
-        wp_add_object_terms($design_id, $tag, $taxonomy) ;
+        $user_id = get_current_user_id() ;
+        
+        global $wpdb ;
+        
+        $table_name = $wpdb->prefix . MyStyle_Design::TABLE_NAME;
+        
+        $sql = "SELECT user_id FROM " . $table_name . " WHERE ms_design_id = " . $design_id ;
+        
+        $design_user_id = $wpdb->get_var($sql) ;
+        
+        if( ( $design_user_id == $user_id ) || current_user_can('administrator') ) {
+            wp_add_object_terms($design_id, $tag, $taxonomy) ;  
+        }
         
         header('Content-Type: application/json');
         print json_encode(array('tag' => $tag)) ;
@@ -480,9 +555,21 @@ class MyStyle_Design_Profile_Page {
     public static function design_tag_remove() {
         $taxonomy = MYSTYLE_TAXONOMY_NAME ;
         $tag = $_POST['tag'] ;
-        $design_id = $_POST['design_id'] ;
+        $design_id = intval($_POST['design_id']) ;
         
-        wp_remove_object_terms($design_id, $tag, $taxonomy) ;
+        $user_id = get_current_user_id() ;
+        
+        global $wpdb ;
+        
+        $table_name = $wpdb->prefix . MyStyle_Design::TABLE_NAME;
+        
+        $sql = "SELECT user_id FROM " . $table_name . " WHERE ms_design_id = " . $design_id ;
+        
+        $design_user_id = $wpdb->get_var($sql) ;
+        
+        if( ( $design_user_id == $user_id ) || current_user_can('administrator') ) {
+            wp_remove_object_terms($design_id, $tag, $taxonomy) ;
+        }
         
         header('Content-Type: application/json');
         print json_encode(array('tag' => $tag)) ;
@@ -500,7 +587,10 @@ class MyStyle_Design_Profile_Page {
 	public static function get_design_id_from_url() {
 		// Try the query vars ( ex: &design_id=10 ).
 		$design_id = get_query_var( 'design_id' );
-		if ( empty( $design_id ) ) {
+        if(preg_match('/page/', $design_id)) {
+            $design_id = false ;
+        }
+        elseif ( empty( $design_id ) ) {
 			// ---------- try at /designs/10. --------
 			$path = $_SERVER['REQUEST_URI'];
 
@@ -517,7 +607,7 @@ class MyStyle_Design_Profile_Page {
 			}
 			// -------------------------------------
 		}
-
+        
 		return $design_id;
 	}
 
@@ -814,7 +904,7 @@ class MyStyle_Design_Profile_Page {
      */
     public function filter_document_title_parts( $title ) {
         $design_id = self::get_design_id_from_url();
-
+        
         if ( $design_id && !isset($_GET['design_id'])) {
             $design = $this->get_design() ;
             if("" !== $design->get_title() ) {
