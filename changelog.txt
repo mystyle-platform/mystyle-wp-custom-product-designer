@@ -1,3 +1,6 @@
+= 3.14.1 =
+* Fixed bug with table prefixes
+
 = 3.14.0 =
 * Added new Design Tags Feature.  
 * Optimized design archive pages to support standard WordPress Theme Development.
