@@ -4,7 +4,7 @@
  * The MyStyle My Designs Singleton class has hooks for working with the WooCommerce Design Tag page.
  *
  * @package MyStyle
- * @since 3.14.10
+ * @since 3.14.0
  */
 
 /**
