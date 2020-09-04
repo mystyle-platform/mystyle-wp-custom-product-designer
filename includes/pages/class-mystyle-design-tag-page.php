@@ -165,7 +165,7 @@ class MyStyle_DesignTag_Page {
                 
                 $page_limit = $this->pager->get_items_per_page() ;
                 
-                $sql = "SELECT object_id FROM wp_term_relationships WHERE term_taxonomy_id = " . $term_id . " LIMIT " . $page_limit ; 
+                $sql = "SELECT object_id FROM " . $wpdb->prefix . "term_relationships WHERE term_taxonomy_id = " . $term_id . " LIMIT " . $page_limit ; 
                 
                 if(null !== $q->query['paged']) {
                     $page_num = ($this->pager->get_current_page_number() - 1) * $page_limit ;
@@ -202,7 +202,7 @@ class MyStyle_DesignTag_Page {
                 $this->pager->set_items( $designs );
                 
                 // Total items.
-                $term_count = $wpdb->get_var("SELECT COUNT(object_id) FROM wp_term_relationships WHERE term_taxonomy_id = " . $term_id) ;
+                $term_count = $wpdb->get_var("SELECT COUNT(object_id) FROM " . $wpdb->prefix . "term_relationships WHERE term_taxonomy_id = " . $term_id) ;
                 
                 $this->pager->set_total_item_count(
                     $term_count
