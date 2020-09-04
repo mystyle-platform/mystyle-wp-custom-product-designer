@@ -1,5 +1,26 @@
 (function($){
     
+    var designTagStatus = function( status ) {
+        switch( status ) {
+            case 'removed':
+                var text = 'DESIGN TAG REMOVED!' ;
+                var color = 'red' ;
+                break ;
+            case 'added':
+                var text = 'DESIGN TAG SAVED!' ;
+                var color = 'forestgreen' ;
+                break ;
+        }
+        
+        $('.design-tag-status').text(text) ;
+        $('.design-tag-status').show() ;
+        $('.design-tag-status').css('color', color) ;
+        
+        setTimeout(function() {
+            $('.design-tag-status').fadeOut() ;
+        }, 3000) ;
+    }
+    
     $(window).ready(function(){
        $('#ms-edit-title-form').hide() ;
         
@@ -24,7 +45,7 @@
                 }
                 
                 $.post(design_ajax_url, postData, function(data) {
-                    console.log(data) ;
+                    designTagStatus('added') ;
                 }) ;
             }
         })
@@ -37,7 +58,7 @@
                 tag: tag,
                 design_id: designId
             }, function(data) {
-
+                designTagStatus('removed') ;
             }) ;
         })
         .tokenfield({
@@ -60,5 +81,6 @@
         }) ;
         
     }) ;
+    
     
 })(jQuery) ;

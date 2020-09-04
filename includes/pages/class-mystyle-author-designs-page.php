@@ -85,7 +85,7 @@ class MyStyle_Author_Designs {
 
             if ( !$wp_query->is_main_query() )
               return;
-
+            
             $wp_query->max_num_pages = $this->pager->get_page_count() ;
         }
     }
@@ -110,7 +110,7 @@ class MyStyle_Author_Designs {
                 else {
                     $user = get_user_by( 'slug', $username ) ;
                 }
-
+                
                 // Create a new pager.
                 $this->pager = new MyStyle_Pager();
 
@@ -130,10 +130,10 @@ class MyStyle_Author_Designs {
                 );
 
                 $this->pager->set_items( $designs );
-
+                
                 // Total items.
                 $this->pager->set_total_item_count(
-                    MyStyle_DesignManager::get_total_design_count(),
+                    MyStyle_DesignManager::get_total_user_design_count( $user ),
                     $user
                 );
                 
@@ -148,8 +148,10 @@ class MyStyle_Author_Designs {
                     
                     $product = wc_get_product( $product_id ) ;
                     
+                    $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+                    
                     $design_post = new stdClass() ;
-                    $design_post->ID = 1 ; //$design->get_design_id() ;
+                    $design_post->ID = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ;
                     $design_post->design_id = $design->get_design_id() ;
                     $design_post->post_author = $design->get_user_id() ;
                     $design_post->post_name = $title ;

@@ -110,7 +110,7 @@ class MyStyle_MyDesigns {
     **/
     public function design_query_vars( $vars ) {
         $vars[] = 'my-designs';
-
+        $vars[] = 'paged' ;
         return $vars;
     }
     
@@ -219,7 +219,7 @@ class MyStyle_MyDesigns {
 		$this->pager = new MyStyle_Pager();
 
 		// Designs per page.
-		$this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
+		$this->pager->set_items_per_page( 100 ); //@TODO add pager for more then 100 designs
 
 		// Current page number.
 		$this->pager->set_current_page_number(
@@ -236,7 +236,7 @@ class MyStyle_MyDesigns {
 
 		// Total items.
 		$this->pager->set_total_item_count(
-			MyStyle_DesignManager::get_total_design_count(),
+			MyStyle_DesignManager::get_total_user_design_count($this->user),
 			$this->user
 		);
 

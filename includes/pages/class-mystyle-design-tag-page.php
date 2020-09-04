@@ -73,6 +73,55 @@ class MyStyle_DesignTag_Page {
 	}
     
     /**
+	 * Function to determine if the post exists.
+	 *
+	 * @return boolean Returns true if the page exists, otherwise false.
+	 */
+	public static function exists() {
+		$exists = false;
+
+		// Get the page id of the Design Profile page.
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		if ( isset( $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ) ) {
+			$exists = true;
+		}
+
+		return $exists;
+	}
+    
+    /**
+	 * Function to create the page.
+	 *
+	 * @return number Returns the page id of the Design Profile page.
+	 * @throws MyStyle_Exception Throws a MyStyle_Exception if unable to store
+	 * the id of the created page in the db.
+	 */
+	public static function create() {
+		// Create the Design Profile page.
+		$design_tag_page = array(
+			'post_title'   => 'Design Tags Default Page',
+			'post_name'    => 'designtags',
+			'post_content' => 'Design Tags Default Page. DO NOT DELETE!',
+			'post_status'  => 'private',
+			'post_type'    => 'post',
+		);
+		$post_id             = wp_insert_post( $design_tag_page );
+        update_post_meta( $post_id, '_thumbnail_id', 1 ) ;
+
+		// Store the design profile page's id in the database.
+		$options                                       = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		$options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] = $post_id;
+		$updated                                       = update_option( MYSTYLE_OPTIONS_NAME, $options );
+
+		if ( ! $updated ) {
+			wp_delete_post( $post_id );
+			throw new MyStyle_Exception( __( 'Could not store page id.', 'mystyle' ), 500 );
+		}
+
+		return $post_id;
+	}
+    
+    /**
      * Alter WP_QUERY pager information based in the MyStyle_Pager class
      *
      */
@@ -136,8 +185,10 @@ class MyStyle_DesignTag_Page {
                     
                     $product = wc_get_product( $product_id ) ;
                     
+                    $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+                    
                     $design_post = new stdClass() ;
-                    $design_post->ID = 1 ; //$design->get_design_id() ;
+                    $design_post->ID = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ; //$design->get_design_id() ;
                     $design_post->design_id = $design->get_design_id() ;
                     $design_post->post_author = $design->get_user_id() ;
                     $design_post->post_name = $title ;

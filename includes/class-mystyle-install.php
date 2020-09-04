@@ -118,6 +118,13 @@ class MyStyle_Install {
         //flush rewrite rules for newly created rewrites
         flush_rewrite_rules() ;
         
+        // Add the Design tage page if upgrading from less than 3.14.0 ( versions that were before this page existed ).
+		if ( version_compare( $old_version, '3.14.0', '<' ) ) {
+			if ( ! MyStyle_DesignTag_Page::exists() ) {
+				MyStyle_DesignTag_Page::create();
+			}
+		}
+        
 		$upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $old_version . ' to ' . $new_version . '.' );
 		mystyle_notice_add_to_queue( $upgrade_notice );
 	}

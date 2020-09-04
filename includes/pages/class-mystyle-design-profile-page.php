@@ -264,7 +264,7 @@ class MyStyle_Design_Profile_Page {
                 wp_enqueue_script( 'jquery-ui' );
                 
                 wp_enqueue_script( 'frontend_js', MYSTYLE_ASSETS_URL . 'js/frontend.js', array(), // deps.
-				'1.0.0', // version.
+				'1.1.0', // version.
 				true);
                 
                 wp_register_style( 'tokenfield-custom-styles', MYSTYLE_ASSETS_URL . 'css/tokenfield.css' );
@@ -965,15 +965,17 @@ class MyStyle_Design_Profile_Page {
                 if("" !== $design->get_title()) {
                     $design_title = $design->get_title() ;
                 }
-
+                
+                $tags = $this->get_design_tags() ;
+                
                 ?>
                 <meta name="author" content="<?php print $user->user_nicename ; ?>">
                 <meta name="description" content="<?php print $product->name . ' ' . $design_title ; ?>">
-                <meta name="keywords" content="<?php print $product->name . ', ' . $design_title ; ?>">
+                <meta name="keywords" content="<?php print $product->name . ', ' . $design_title ; ?>,<?php echo ( (count($tags) > 0) ? implode(",", $tags) : '') ; ?>">
                 <?php
                 
                 if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
-                    $tags = $this->get_design_tags() ;
+                    
                 ?>
                 <script>
                     var design_ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';

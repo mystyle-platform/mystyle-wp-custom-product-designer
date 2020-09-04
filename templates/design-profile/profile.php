@@ -84,12 +84,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <input type="text" class="edit-design-tag-input" name="edit-design-tag" />
                 <input type="submit" class="button" value="SAVE TAGS" />
             </form>
+            <div class="design-tag-status"></div>
         </div>
         <?php else : ?>
         <div class="design-tags">
             <?php $design_tags = MyStyle_Design_Profile_Page::get_design_tags($design->get_design_id(), true) ; ?>
             Design Tags:
-            <?php foreach($design_tags as $tag) : ?>
+            <?php foreach($design_tags as $i => $tag) : ?>
+            <?php if( $i > 0 ) echo ', ' ?>
             <a href="/design-tags/<?php print $tag['slug'] ; ?>" title="<?php print $tag['name'] ; ?> Design Tags"><?php print $tag['name'] ; ?></a>
             <?php endforeach ; ?>
         </div>

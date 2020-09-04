@@ -17,3 +17,11 @@
 .edit-design-tags .button {
     float: left ;
 }
+
+.edit-design-tags form {
+    margin-bottom: 0;
+}
+
+.design-tag-status {
+    height:20px;
+}

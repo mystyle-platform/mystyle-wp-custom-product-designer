@@ -393,6 +393,40 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $count;
 	}
+    
+    /**
+	 * Retrieve the total number of user designs (filtered by WP_user->ID or email string) from
+	 * the db.
+	 *
+	 *
+	 * @param $user The current user. Either WP_User OR user email string.
+	 * @param $access (optional) Design Access.
+	 * @global $wpdb
+	 * @return integer
+	 */
+	public static function get_total_user_design_count( $user, $access = null ) {
+		global $wpdb;
+
+		$sql = 'SELECT COUNT(' . MyStyle_Design::get_primary_key() . ') ' .
+				'FROM ' . MyStyle_Design::get_table_name() ;
+        
+        if( null == $access ) {
+            $access = MyStyle_Access::ACCESS_PUBLIC ;
+        }
+        
+        $sql .= ' WHERE ms_access = ' . $access ;
+        
+        if( is_string( $user )) {
+            $sql .= ' AND ms_email = ' . $user ;
+        }
+        else {
+            $sql .= ' AND user_id = ' . $user->ID ;
+        }
+        
+		$count = $wpdb->get_var( $sql );
+
+		return $count;
+	}
 
 	/**
 	 * Helper method that returns the security WHERE clause ( EX: ' WHERE
@@ -411,7 +445,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		if ( ( null === $user ) || ( 0 === $user->ID ) ) {
 			// No user, get public designs only.
 			$sql = ' ' . $exp . ' ms_access = ' . MyStyle_Access::ACCESS_PUBLIC . ' ';
-		} else {
+		} 
+        else {
 			// User was passed.
 			if ( ! $user->has_cap( 'read_private_posts' ) ) {
 				// User isn't admin, show public and their own private or hidden designs.
