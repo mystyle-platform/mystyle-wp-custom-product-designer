@@ -44,7 +44,7 @@ class MyStyle_WooCommerce_Admin_Product {
 	 * Add a MyStyle tab to the product options tab set.
 	 */
 	public function add_product_data_tab() {
-		echo '<li class="mystyle_product_tab mystyle_product_options"><a href="#mystyle_product_data">MyStyle</a></li>';
+		echo '<li class="mystyle_product_tab mystyle_product_options"><a href="#mystyle_product_data"><span>MyStyle</span></a></li>';
 	}
 
 	/**
@@ -58,6 +58,7 @@ class MyStyle_WooCommerce_Admin_Product {
 		// Pull existing values.
 		$mystyle_enabled           = get_post_meta( $post->ID, '_mystyle_enabled', true );
 		$template_id               = get_post_meta( $post->ID, '_mystyle_template_id', true );
+		$mystyle_custom_template   = get_post_meta( $post->ID, '_mystyle_custom_template', true );
 		$customizer_ux             = get_post_meta( $post->ID, '_mystyle_customizer_ux', true );
 		$customizer_redirect       = get_post_meta( $post->ID, '_mystyle_customizer_redirect', true );
 		$mystyle_design_id         = get_post_meta( $post->ID, '_mystyle_design_id', true );
@@ -108,6 +109,53 @@ class MyStyle_WooCommerce_Admin_Product {
 				<div class="mystyle-panel" id="mystyle-panel-advanced" style="display:none;">
 
 					<?php
+                    woocommerce_wp_checkbox(
+                        array(
+                            'id'          => '_mystyle_custom_template',
+                            'label'       => __( 'Use Custom Template', 'mystyle' ),
+                            'desc_tip'    => 'true',
+                            'description' => __( 'Enable this option to use a custom design template.', 'mystyle' ),
+                            'value'       => $mystyle_custom_template,
+                        )
+                    );
+        
+                    woocommerce_wp_text_input(
+						array(
+							'id'          => '_mystyle_custom_template_width',
+							'label'       => __( 'Custom Template Width (inches)', 'mystyle' ),
+							'placeholder' => '',
+							'desc_tip'    => 'true',
+							'description' => __( 'Enter custom template width in inches', 'mystyle' ),
+							'value'       => $mystyle_custom_template_width,
+						)
+					);
+        
+                    woocommerce_wp_text_input(
+						array(
+							'id'          => '_mystyle_custom_template_height',
+							'label'       => __( 'Custom Template Height (inches)', 'mystyle' ),
+							'placeholder' => '',
+							'desc_tip'    => 'true',
+							'description' => __( 'Enter custom template height in inches', 'mystyle' ),
+							'value'       => $mystyle_custom_template_height,
+						)
+					);
+        
+					woocommerce_wp_select(
+						array(
+							'id'          => '_mystyle_custom_template_shape',
+							'label'       => __( 'Custom Template Shape', 'mystyle' ),
+							'placeholder' => 'rectangle',
+							'desc_tip'    => 'true',
+							'description' => __( 'Select the custom template shape', 'mystyle' ),
+							'value'       => $mystyle_custom_template_shape,
+							'options'     => array(
+								'rectangle'      => 'RECTANGLE',
+								'oval'           => 'OVAL',
+							),
+						)
+					);
+        
 					woocommerce_wp_text_input(
 						array(
 							'id'          => '_mystyle_design_id',
@@ -186,16 +234,24 @@ class MyStyle_WooCommerce_Admin_Product {
 	public function process_mystyle_data_panel( $post_id ) {
 
 		$mystyle_enabled           = ( isset( $_POST['_mystyle_enabled'] ) && $_POST['_mystyle_enabled'] ) ? 'yes' : 'no';
-		$template_id               = $_POST['_mystyle_template_id'];
-		$mystyle_design_id         = $_POST['_mystyle_design_id'];
-		$customizer_ux             = $_POST['_mystyle_customizer_ux'];
-		$customizer_redirect       = $_POST['_mystyle_customizer_redirect'];
-		$mystyle_print_type        = $_POST['_mystyle_print_type'];
-		$mystyle_configur8_enabled = ( isset( $_POST['_mystyle_configur8_enabled'] ) && $_POST['_mystyle_configur8_enabled'] ) ? 'yes' : 'no';
+		$template_id                     = $_POST['_mystyle_template_id'];
+		$mystyle_custom_template         = $_POST['_mystyle_custom_template'];
+		$mystyle_custom_template_width   = $_POST['_mystyle_custom_template_width'];
+		$mystyle_custom_template_height  = $_POST['_mystyle_custom_template_height'];
+		$mystyle_custom_template_shape   = $_POST['_mystyle_custom_template_shape'];
+		$mystyle_design_id               = $_POST['_mystyle_design_id'];
+		$customizer_ux                   = $_POST['_mystyle_customizer_ux'];
+		$customizer_redirect             = $_POST['_mystyle_customizer_redirect'];
+		$mystyle_print_type              = $_POST['_mystyle_print_type'];
+		$mystyle_configur8_enabled       = ( isset( $_POST['_mystyle_configur8_enabled'] ) && $_POST['_mystyle_configur8_enabled'] ) ? 'yes' : 'no';
 		if ( 'yes' === $mystyle_enabled ) {
 			if ( '' !== $template_id ) { // Both required options are set (store them).
 				update_post_meta( $post_id, '_mystyle_enabled', 'yes' );
 				update_post_meta( $post_id, '_mystyle_template_id', $template_id );
+				update_post_meta( $post_id, '_mystyle_custom_template', $mystyle_custom_template );
+				update_post_meta( $post_id, '_mystyle_custom_template_width', $mystyle_custom_template_width );
+				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
+				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -203,6 +259,7 @@ class MyStyle_WooCommerce_Admin_Product {
 			} else { // Enabled but no template id (store data, disable and notify).
 				update_post_meta( $post_id, '_mystyle_enabled', 'no' );
 				update_post_meta( $post_id, '_mystyle_template_id', $template_id );
+				update_post_meta( $post_id, '_mystyle_custom_template', $mystyle_custom_template );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -218,6 +275,10 @@ class MyStyle_WooCommerce_Admin_Product {
 		} else { // Not enabled (store data).
 			update_post_meta( $post_id, '_mystyle_enabled', 'no' );
 			update_post_meta( $post_id, '_mystyle_template_id', $template_id );
+            update_post_meta( $post_id, '_mystyle_custom_template', $mystyle_custom_template );
+            update_post_meta( $post_id, '_mystyle_custom_template_width', $mystyle_custom_template_width );
+            update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
+            update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 			update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 			update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 			update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );

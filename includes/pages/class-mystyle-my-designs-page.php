@@ -206,7 +206,11 @@ class MyStyle_MyDesigns {
     * Add design profile body class name
     **/
     public function body_classes( $classes ) {
-        $classes[] = 'mystyle-design-profile' ;
+        global $wp_query;
+        
+        if(isset( $wp_query->query_vars['my-designs'] ) ) {
+            $classes[] = 'mystyle-design-profile' ;
+        }
         return $classes ;
     } 
     
