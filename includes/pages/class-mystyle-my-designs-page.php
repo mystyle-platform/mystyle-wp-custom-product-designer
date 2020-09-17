@@ -212,7 +212,7 @@ class MyStyle_MyDesigns {
             $classes[] = 'mystyle-design-profile' ;
         }
         return $classes ;
-    } 
+    }
     
     /**
 	 * Init the singleton for an user designindex request.
