@@ -125,7 +125,7 @@ class MyStyle_Cart {
 			$customizer_url = add_query_arg( 'product_id', $product_id, get_permalink( $customize_page_id ) );
 
 			// Add the passthru data to the url.
-			$passthru                        = array();
+			$passthru = MyStyle_Passthru_Codec::get_instance()->build_passthru( $_REQUEST, $mystyle_product );
 			$passthru['post']                = array();
 			$passthru['post']['quantity']    = 1;
 			$passthru['post']['add-to-cart'] = $product_id;

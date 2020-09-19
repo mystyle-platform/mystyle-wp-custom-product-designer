@@ -70,7 +70,16 @@ class MyStyle_Passthru_Codec {
 		if ( ! empty( $attributes ) ) {
 			$passthru['attributes'] = $attributes;
 		}
-
+        
+        // Add custom template data if enabled
+        $mystyle_custom_template_enabled = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template', true ) ;
+        
+        if( 'yes' === $mystyle_custom_template_enabled ) {
+            $passthru['width']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_width', true ) ;
+            $passthru['height'] = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_height', true ) ;
+            $passthru['shape']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_shape', true ) ;
+        }
+        
 		return $passthru;
 	}
 

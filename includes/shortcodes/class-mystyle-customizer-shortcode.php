@@ -80,6 +80,7 @@ abstract class MyStyle_Customizer_Shortcode {
 			$passthru_arr['post']['add-to-cart'] = (int) $product_id;
 			$passthru                            = base64_encode( wp_json_encode( $passthru_arr ) );
 		}
+        
 
 		// Product Settings - Default Design ID.
 		// If no reload design id from url, use default design ID if there is one.
@@ -95,7 +96,7 @@ abstract class MyStyle_Customizer_Shortcode {
 		} else {
 			$settings = array();
 		}
-
+        
 		// Set the redirect_url (if it wasn't passed in).
 		if ( ! array_key_exists( 'redirect_url', $settings ) ) {
 			$settings['redirect_url'] = MyStyle_Handoff::get_url();
