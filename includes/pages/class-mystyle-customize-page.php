@@ -140,10 +140,19 @@ class MyStyle_Customize_Page {
 					'add-to-cart' => $design->get_product_id(),
 				);
 			}
-
+            
 			$passthru = array(
 				'post' => $post_data,
 			);
+            
+            // Add custom template data if enabled
+            $mystyle_custom_template_enabled = get_post_meta( $design->get_product_id(), '_mystyle_custom_template', true ) ;
+
+            if( 'yes' === $mystyle_custom_template_enabled ) {
+                $passthru['width']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_width', true ) ;
+                $passthru['height'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_height', true ) ;
+                $passthru['shape']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_shape', true ) ;
+            }
 		}
 
 		if ( null !== $cart_item_key ) {
@@ -201,6 +210,15 @@ class MyStyle_Customize_Page {
 			$passthru = array(
 				'post' => $post_data,
 			);
+            
+            // Add custom template data if enabled
+            $mystyle_custom_template_enabled = get_post_meta( $design->get_product_id(), '_mystyle_custom_template', true ) ;
+
+            if( 'yes' === $mystyle_custom_template_enabled ) {
+                $passthru['width']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_width', true ) ;
+                $passthru['height'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_height', true ) ;
+                $passthru['shape']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_shape', true ) ;
+            }
 		}
 
 		if ( null !== $cart_item_key ) {
