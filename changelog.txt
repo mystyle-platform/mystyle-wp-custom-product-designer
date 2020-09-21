@@ -1,3 +1,6 @@
+= 3.14.4 =
+* Added feature for custom design templates, including rectangle and oval shapes defined in inches.
+
 = 3.14.3 =
 * Fixed body class from design profile page
 
