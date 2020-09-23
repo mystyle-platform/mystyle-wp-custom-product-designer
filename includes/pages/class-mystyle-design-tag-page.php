@@ -150,6 +150,10 @@ class MyStyle_DesignTag_Page {
             if(isset($q->query['design_tag'])) {
                 global $wpdb ;
                 
+                $wp_user = wp_get_current_user() ;
+                
+                $session = MyStyle()->get_session();
+                
                 $term_id = $q->queried_object->term_id ;
                 
                 // Create a new pager.
@@ -177,26 +181,29 @@ class MyStyle_DesignTag_Page {
                 $designs = array() ;
                 
                 foreach( $terms as $term) {
-                    $design = MyStyle_DesignManager::get( $term->object_id ) ;
+                    try {
+                        $design = MyStyle_DesignManager::get( $term->object_id, $wp_user, $session ) ;
+                        $title = ( "" == $design->get_title() ? "Design " . $design->get_design_id() : $design->get_title() ) ;
                     
-                    $title = ( "" == $design->get_title() ? "Design " . $design->get_design_id() : $design->get_title() ) ;
-                    
-                    $product_id = $design->get_product_id() ;
-                    
-                    $product = wc_get_product( $product_id ) ;
-                    
-                    $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-                    
-                    $design_post = new stdClass() ;
-                    $design_post->ID = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ; //$design->get_design_id() ;
-                    $design_post->design_id = $design->get_design_id() ;
-                    $design_post->post_author = $design->get_user_id() ;
-                    $design_post->post_name = $title ;
-                    $design_post->post_type = 'Design' ;
-                    $design_post->post_title = $title ;
-                    $design_post->post_content = $title . ' custom ' . $product->get_name() ;
-                    
-                    $designs[] = $design_post ;
+                        $product_id = $design->get_product_id() ;
+
+                        $product = wc_get_product( $product_id ) ;
+
+                        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+
+                        $design_post = new stdClass() ;
+                        $design_post->ID = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ; //$design->get_design_id() ;
+                        $design_post->design_id = $design->get_design_id() ;
+                        $design_post->post_author = $design->get_user_id() ;
+                        $design_post->post_name = $title ;
+                        $design_post->post_type = 'Design' ;
+                        $design_post->post_title = $title ;
+                        $design_post->post_content = $title . ' custom ' . $product->get_name() ;
+
+                        $designs[] = $design_post ;
+                    } catch ( MyStyle_Unauthorized_Exception $ex ) {
+                        
+                    }
                 }
                 
                 $this->pager->set_items( $designs );
@@ -239,8 +246,12 @@ class MyStyle_DesignTag_Page {
         
         if(isset($wp_query->query['design_tag'])) {
             global $post ;
+            
+            $wp_user = wp_get_current_user() ;
+            
+            $session = MyStyle()->get_session();
 
-            $design = MyStyle_DesignManager::get( $post->design_id ) ;
+            $design = MyStyle_DesignManager::get( $post->design_id, $wp_user, $session ) ;
 
             $image[0] = $design->get_web_url() ;
             $image[1] = 200 ;

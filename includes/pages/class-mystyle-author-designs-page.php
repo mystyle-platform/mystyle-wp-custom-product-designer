@@ -38,6 +38,15 @@ class MyStyle_Author_Designs {
 	 * @var int
 	 */
 	private $http_response_code;
+    
+    
+	/**
+	 * Stores the currently thrown exception (if any) (when the class is
+	 * instantiated as a singleton).
+	 *
+	 * @var MyStyle_Exception
+	 */
+	private $exception;
 
     
     public function __construct() {
@@ -195,11 +204,20 @@ class MyStyle_Author_Designs {
             global $post ;
             
             if(isset($post->design_id)) {
-                $design = MyStyle_DesignManager::get( $post->design_id ) ;
+                $wp_user = wp_get_current_user();
+                $session = MyStyle()->get_session();
+                try {
+                    $design = MyStyle_DesignManager::get( $post->design_id, $wp_user, $session ) ; 
+                    $image[0] = $design->get_web_url() ;
+                    $image[1] = 200 ;
+                    $image[2] = 200 ;
+                } catch ( MyStyle_Unauthorized_Exception $ex ) {
+                    $response_code = 200;
+                    status_header( $response_code );
 
-                $image[0] = $design->get_web_url() ;
-                $image[1] = 200 ;
-                $image[2] = 200 ;
+                    $this->set_exception( $ex );
+                    $this->set_http_response_code( $response_code );
+                } 
 
                 return $image ;
             }
@@ -277,6 +295,17 @@ class MyStyle_Author_Designs {
 		} else {
 			return $this->http_response_code;
 		}
+	}
+    
+    
+	/**
+	 * Sets the current exception.
+	 *
+	 * @param MyStyle_Exception $exception The exception to set as the currently
+	 * thrown exception. This is used by the shortcode and view layer.
+	 */
+	public function set_exception( MyStyle_Exception $exception ) {
+		$this->exception = $exception;
 	}
     
 	/**
