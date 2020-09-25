@@ -38,6 +38,8 @@ class MyStyle_WooCommerce_Admin_Product {
 		} else {
 			add_action( 'woocommerce_product_data_panels', array( &$this, 'add_mystyle_data_panel' ) );
 		}
+        
+        add_action( 'admin_enqueue_scripts', array( &$this, 'add_color_picker' ) );
 	}
 
 	/**
@@ -62,6 +64,7 @@ class MyStyle_WooCommerce_Admin_Product {
 		$mystyle_custom_template_width    = get_post_meta( $post->ID, '_mystyle_custom_template_width', true );
 		$mystyle_custom_template_height   = get_post_meta( $post->ID, '_mystyle_custom_template_height', true );
 		$mystyle_custom_template_shape    = get_post_meta( $post->ID, '_mystyle_custom_template_shape', true );
+		$mystyle_custom_template_color    = get_post_meta( $post->ID, '_mystyle_custom_template_color', true );
 		$customizer_ux                    = get_post_meta( $post->ID, '_mystyle_customizer_ux', true );
 		$customizer_redirect              = get_post_meta( $post->ID, '_mystyle_customizer_redirect', true );
 		$mystyle_design_id                = get_post_meta( $post->ID, '_mystyle_design_id', true );
@@ -154,8 +157,18 @@ class MyStyle_WooCommerce_Admin_Product {
 							'value'       => $mystyle_custom_template_shape,
 							'options'     => array(
 								'rectangle'      => 'RECTANGLE',
-								'oval'           => 'OVAL',
+								'ellipse'        => 'ELLIPSE',
 							),
+						)
+					);
+        
+                    woocommerce_wp_text_input(
+						array(
+							'id'          => '_mystyle_custom_template_color',
+							'label'       => __( 'Custom Template Color', 'mystyle' ),
+							'placeholder' => '',
+							'desc_tip'    => 'false',
+							'value'       => $mystyle_custom_template_color,
 						)
 					);
         
@@ -242,6 +255,7 @@ class MyStyle_WooCommerce_Admin_Product {
 		$mystyle_custom_template_width   = $_POST['_mystyle_custom_template_width'];
 		$mystyle_custom_template_height  = $_POST['_mystyle_custom_template_height'];
 		$mystyle_custom_template_shape   = $_POST['_mystyle_custom_template_shape'];
+		$mystyle_custom_template_color   = $_POST['_mystyle_custom_template_color'];
 		$mystyle_design_id               = $_POST['_mystyle_design_id'];
 		$customizer_ux                   = $_POST['_mystyle_customizer_ux'];
 		$customizer_redirect             = $_POST['_mystyle_customizer_redirect'];
@@ -255,6 +269,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_width', $mystyle_custom_template_width );
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
+				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -266,6 +281,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_width', $mystyle_custom_template_width );
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
+				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -277,6 +293,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_width', $mystyle_custom_template_width );
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
+				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -296,6 +313,7 @@ class MyStyle_WooCommerce_Admin_Product {
             update_post_meta( $post_id, '_mystyle_custom_template_width', $mystyle_custom_template_width );
             update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
             update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
+            update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
 			update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 			update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 			update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -304,6 +322,21 @@ class MyStyle_WooCommerce_Admin_Product {
 		// Store the Enable Configur8 setting regardless of other settings.
 		update_post_meta( $post_id, '_mystyle_configur8_enabled', $mystyle_configur8_enabled );
 	}
+    
+    /**
+     * Add WP admin color picker js
+     *
+     */
+    public function add_color_picker() {
+        if( is_admin() ) { 
+     
+            // Add the color picker css file       
+            wp_enqueue_style( 'wp-color-picker' ); 
+
+            // Include our custom jQuery file with WordPress Color Picker dependency
+            wp_enqueue_script( 'mystyle-color-picker', MYSTYLE_ASSETS_URL . 'js/color-picker.js', array( 'wp-color-picker' ), false, true ); 
+        }
+    }
 
 	/**
 	 * Get the singleton instance.
