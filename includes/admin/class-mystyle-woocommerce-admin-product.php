@@ -39,7 +39,7 @@ class MyStyle_WooCommerce_Admin_Product {
 			add_action( 'woocommerce_product_data_panels', array( &$this, 'add_mystyle_data_panel' ) );
 		}
         
-        add_action( 'admin_enqueue_scripts', array( &$this, 'add_color_picker' ) );
+        add_action( 'admin_enqueue_scripts', array( &$this, 'add_admin_js' ) );
 	}
 
 	/**
@@ -172,6 +172,22 @@ class MyStyle_WooCommerce_Admin_Product {
 						)
 					);
         
+                    ?>
+                    <p class="form-field _mystyle_custom_template_bgimg_field ">
+                        <label for="_mystyle_custom_template_bgimg">Custom Template Background Image</label>
+                        <span class="woocommerce-help-tip" data-tip="Select a custom template background image (500px X 500px maximum size)"></span>
+                        <input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_bgimg_button" id="_mystyle_custom_template_bgimg_button" value="SELECT" placeholder=""> 
+                        <input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_bgimg" id="_mystyle_custom_template_bgimg" value="" placeholder=""> 
+                    </p>
+                    
+                    <p class="form-field _mystyle_custom_template_fgimg_field ">
+                        <label for="_mystyle_custom_template_fgimg">Custom Template Foreground Image</label>
+                        <span class="woocommerce-help-tip" data-tip="Select a custom template foreground image (500px X 500px maximum size)"></span>
+                        <input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_fgimg_button" id="_mystyle_custom_template_fgimg_button" value="SELECT" placeholder=""> 
+                        <input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_fgimg" id="_mystyle_custom_template_fgimg" value="" placeholder=""> 
+                    </p>
+                    <?php
+                    
 					woocommerce_wp_text_input(
 						array(
 							'id'          => '_mystyle_design_id',
@@ -327,7 +343,7 @@ class MyStyle_WooCommerce_Admin_Product {
      * Add WP admin color picker js
      *
      */
-    public function add_color_picker() {
+    public function add_admin_js() {
         if( is_admin() ) { 
      
             // Add the color picker css file       
@@ -335,6 +351,7 @@ class MyStyle_WooCommerce_Admin_Product {
 
             // Include our custom jQuery file with WordPress Color Picker dependency
             wp_enqueue_script( 'mystyle-color-picker', MYSTYLE_ASSETS_URL . 'js/color-picker.js', array( 'wp-color-picker' ), false, true ); 
+            wp_enqueue_script( 'mystyle-media-select', MYSTYLE_ASSETS_URL . 'js/media-select.js', array(), false, true ); 
         }
     }
 
