@@ -65,6 +65,9 @@ class MyStyle_WooCommerce_Admin_Product {
 		$mystyle_custom_template_height   = get_post_meta( $post->ID, '_mystyle_custom_template_height', true );
 		$mystyle_custom_template_shape    = get_post_meta( $post->ID, '_mystyle_custom_template_shape', true );
 		$mystyle_custom_template_color    = get_post_meta( $post->ID, '_mystyle_custom_template_color', true );
+		$mystyle_custom_template_bgimg    = get_post_meta( $post->ID, '_mystyle_custom_template_bgimg', true );
+		$mystyle_custom_template_fgimg    = get_post_meta( $post->ID, '_mystyle_custom_template_fgimg', true );
+		$mystyle_custom_template_bleed    = get_post_meta( $post->ID, '_mystyle_custom_template_bleed', true );
 		$customizer_ux                    = get_post_meta( $post->ID, '_mystyle_customizer_ux', true );
 		$customizer_redirect              = get_post_meta( $post->ID, '_mystyle_customizer_redirect', true );
 		$mystyle_design_id                = get_post_meta( $post->ID, '_mystyle_design_id', true );
@@ -177,17 +180,28 @@ class MyStyle_WooCommerce_Admin_Product {
                         <label for="_mystyle_custom_template_bgimg">Custom Template Background Image</label>
                         <span class="woocommerce-help-tip" data-tip="Select a custom template background image (500px X 500px maximum size)"></span>
                         <input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_bgimg_button" id="_mystyle_custom_template_bgimg_button" value="SELECT" placeholder=""> 
-                        <input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_bgimg" id="_mystyle_custom_template_bgimg" value="" placeholder=""> 
+                        <input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_bgimg" id="_mystyle_custom_template_bgimg" value="<?php print ( $mystyle_custom_template_bgimg ? $mystyle_custom_template_bgimg : '') ; ?>" placeholder=""> 
                     </p>
                     
                     <p class="form-field _mystyle_custom_template_fgimg_field ">
                         <label for="_mystyle_custom_template_fgimg">Custom Template Foreground Image</label>
                         <span class="woocommerce-help-tip" data-tip="Select a custom template foreground image (500px X 500px maximum size)"></span>
                         <input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_fgimg_button" id="_mystyle_custom_template_fgimg_button" value="SELECT" placeholder=""> 
-                        <input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_fgimg" id="_mystyle_custom_template_fgimg" value="" placeholder=""> 
+                        <input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_fgimg" id="_mystyle_custom_template_fgimg" value="<?php print ( $mystyle_custom_template_fgimg ? $mystyle_custom_template_fgimg : '') ; ?>" placeholder=""> 
                     </p>
                     <?php
                     
+                    woocommerce_wp_text_input(
+						array(
+							'id'          => '_mystyle_custom_template_bleed',
+							'label'       => __( 'Custom Template Bleed Size Per Edge', 'mystyle' ),
+							'placeholder' => '',
+							'desc_tip'    => 'true',
+							'description' => __( 'Enter a bleed size per edge in inches', 'mystyle' ),
+							'value'       => $mystyle_custom_template_bleed,
+						)
+					);
+        
 					woocommerce_wp_text_input(
 						array(
 							'id'          => '_mystyle_design_id',
@@ -272,6 +286,9 @@ class MyStyle_WooCommerce_Admin_Product {
 		$mystyle_custom_template_height  = $_POST['_mystyle_custom_template_height'];
 		$mystyle_custom_template_shape   = $_POST['_mystyle_custom_template_shape'];
 		$mystyle_custom_template_color   = $_POST['_mystyle_custom_template_color'];
+		$mystyle_custom_template_bgimg   = $_POST['_mystyle_custom_template_bgimg'];
+		$mystyle_custom_template_fgimg   = $_POST['_mystyle_custom_template_fgimg'];
+		$mystyle_custom_template_bleed   = ( is_numeric($_POST['_mystyle_custom_template_bleed']) ? $_POST['_mystyle_custom_template_bleed'] : '');
 		$mystyle_design_id               = $_POST['_mystyle_design_id'];
 		$customizer_ux                   = $_POST['_mystyle_customizer_ux'];
 		$customizer_redirect             = $_POST['_mystyle_customizer_redirect'];
@@ -286,6 +303,9 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
+				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
+				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
+				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -298,6 +318,9 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
+				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
+				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
+				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -310,6 +333,9 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
+				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
+				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
+				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -330,6 +356,9 @@ class MyStyle_WooCommerce_Admin_Product {
             update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
             update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
             update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
+            update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
+            update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
+            update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
 			update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 			update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 			update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
