@@ -159,6 +159,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-my-designs-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-author-designs-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-tag-page.php';
+			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-page.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-install.php';
 			require_once MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php';
@@ -281,6 +282,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				MyStyle_MyDesigns::get_instance();
 				MyStyle_Author_Designs::get_instance();
 				MyStyle_DesignTag_Page::get_instance();
+                MyStyle_DesignPage::get_instance();
 			}
 		}
 

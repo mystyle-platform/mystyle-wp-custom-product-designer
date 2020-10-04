@@ -364,6 +364,58 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $designs;
 	}
+    
+    /**
+	 * Retrieve random designs from the database.
+	 *
+	 * The designs are filtered for the passed user based on these rules:
+	 *  * If no user is specified, only public designs are returned.
+	 *  * If the passed user is an admin (or has the 'read_private_posts'
+	 *    capability, all designs are returned).
+	 *  * If the passed user is a regular user, all public designs are returned
+	 *    along with any private designs that the user owns.
+	 *
+	 * @param int     $per_page The number of designs to show per page (default:
+	 * 250).
+	 * @param int     $page_number The page number of the set of designs that you
+	 * want to get (default: 1).
+	 * @param WP_User $user (optional) The current user.
+	 * @global $wpdb;
+	 * @return mixed Returns an array of MyStyle_Design objects or null if none
+	 * are found.
+	 */
+	public static function get_random_designs(
+		$per_page = 250,
+		$page_number = 1,
+		WP_User $user = null
+	) {
+		global $wpdb;
+
+		$sql = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ';
+
+		// Add security WHERE clause.
+		$sql .= self::getSecurityWhereClause( 'WHERE', $user );
+
+        $sql .= ' ORDER BY RAND()';
+
+		$sql .= " LIMIT $per_page";
+
+		$sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
+
+		$results = $wpdb->get_results( $sql, 'OBJECT' );
+
+		// Transform the result objects (stdClass) into MyStyle_Designs.
+		$designs = null;
+		if ( null !== $results ) {
+			$designs = array();
+			foreach ( $results as $result ) {
+				$design = MyStyle_Design::create_from_result_object( $result );
+				array_push( $designs, $design );
+			}
+		}
+
+		return $designs;
+	}
 
 	/**
 	 * Retrieve the total number of designs (filtered by security rules) from

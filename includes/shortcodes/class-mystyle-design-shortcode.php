@@ -24,7 +24,7 @@ abstract class MyStyle_Design_Shortcode {
 	 *
 	 * @throws Exception Throws the exception if one is set in the controller.
 	 */
-	public static function output() {
+	public static function output( $atts = [], $content = null, $tag = '' ) {
 		$out = '';
 
 		$mystyle_frontend = MyStyle_FrontEnd::get_instance();
@@ -38,6 +38,11 @@ abstract class MyStyle_Design_Shortcode {
 			if ( null !== $mystyle_frontend->get_design() ) {
 				$out = self::output_design();
 			} else {
+                if( isset($atts['count']) ) { //return random public designs
+                    
+                    $count = $atts['count'] ;
+                    $out = self::output_random_designs( $count ) ;
+                }
 				// Fail silently. This can happen in the admin or if the
 				// design_id isn't set in the url.
 				// throw new MyStyle_Bad_Request_Exception('Design not found');
@@ -70,5 +75,39 @@ abstract class MyStyle_Design_Shortcode {
 
 		return $out;
 	}
+    
+    /** 
+     * Return the output for random designs
+     *
+     * @return string
+     */
+    public static function output_random_designs( $count ) {
+        
+        // Create a new pager.
+		$pager = new MyStyle_Pager();
 
+		// Designs per page.
+		$pager->set_items_per_page( $count );
+        
+		$pager->set_current_page_number(
+			1
+		);
+
+		// Pager items.
+		$designs = MyStyle_DesignManager::get_random_designs(
+            $count,
+            1
+        );
+		$pager->set_items( $designs );
+        
+        
+        // ---------- Call the view layer ------------------ //
+		ob_start();
+		require MYSTYLE_TEMPLATES . 'design-profile/index.php';
+		$out = ob_get_contents();
+		ob_end_clean();
+        
+        return $out ;
+    }
+    
 }

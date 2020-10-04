@@ -124,7 +124,9 @@ abstract class MyStyle_Customizer_Shortcode {
 
 		// Base64 encode settings.
 		$encoded_settings = base64_encode( wp_json_encode( $settings ) );
-
+        
+        echo '<pre>' ; var_dump(json_decode(base64_decode($passthru))) ; echo '</pre>' ;
+        
 		// Add all vars to URL.
 		$customizer_query_string = "?app_id=$mystyle_app_id" .
 				"&amp;product_id=$mystyle_template_id" .
