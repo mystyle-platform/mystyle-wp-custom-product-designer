@@ -102,7 +102,7 @@ class MyStyle_DesignTag_Page {
 			'post_title'   => 'Design Tags Default Page',
 			'post_name'    => 'designtags',
 			'post_content' => 'Design Tags Default Page. DO NOT DELETE!',
-			'post_status'  => 'private',
+			'post_status'  => 'draft',
 			'post_type'    => 'post',
 		);
 		$post_id             = wp_insert_post( $design_tag_page );
@@ -119,6 +119,27 @@ class MyStyle_DesignTag_Page {
 		}
 
 		return $post_id;
+	}
+    
+    /**
+	 * Function to fix the post_status.
+	 *
+	 * @return number Returns the page id of the Design Profile page.
+	 */
+	public static function fix() {
+        
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+        
+        $post_id = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ;
+        
+        $draft_post = array(
+            'ID'           => $post_id,
+            'post_status' => 'draft',
+        );
+		
+        $update_post_id = wp_update_post( $draft_post ) ;
+		
+        return $update_post_id ;
 	}
     
     /**
@@ -192,7 +213,7 @@ class MyStyle_DesignTag_Page {
                         $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 
                         $design_post = new stdClass() ;
-                        $design_post->ID = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ; //$design->get_design_id() ;
+                        $design_post->ID = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ; 
                         $design_post->design_id = $design->get_design_id() ;
                         $design_post->post_author = $design->get_user_id() ;
                         $design_post->post_name = $title ;
