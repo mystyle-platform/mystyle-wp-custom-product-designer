@@ -158,11 +158,11 @@ class MyStyle_Customize_Page {
                 }
 
                 if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bgimg', true )) {
-                    $passthru['bgimg']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bgimg', true ) ;
+                    $passthru['tbgimg']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bgimg', true ) ;
                 }
 
                 if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_fgimg', true )) {
-                    $passthru['fgimg']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_fgimg', true ) ;
+                    $passthru['tfgimg']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_fgimg', true ) ;
                 }
 
                 if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bleed', true )) {
@@ -240,11 +240,11 @@ class MyStyle_Customize_Page {
                 }
 
                 if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bgimg', true )) {
-                    $passthru['bgimg']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bgimg', true ) ;
+                    $passthru['tbgimg']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bgimg', true ) ;
                 }
 
                 if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_fgimg', true )) {
-                    $passthru['fgimg']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_fgimg', true ) ;
+                    $passthru['tfgimg']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_fgimg', true ) ;
                 }
 
                 if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bleed', true )) {

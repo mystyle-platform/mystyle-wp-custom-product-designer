@@ -8,14 +8,14 @@
  */
 
 /**
- * MyStyle_Addons_Page class.
+ * MyStyle_DesignTags_Page class.
  */
 class MyStyle_DesignTags_Page {
 
 	/**
 	 * Singleton instance.
 	 *
-	 * @var MyStyle_Addons_Page
+	 * @var MyStyle_Dashboard_Page
 	 */
 	private static $instance;
 

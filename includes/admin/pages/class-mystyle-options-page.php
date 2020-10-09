@@ -162,24 +162,15 @@ class MyStyle_Options_Page {
 	 * Function to add the options page to the settings menu.
 	 */
 	public function add_page_to_menu() {
-		global $mystyle_hook;
 		$mystyle_hook = 'mystyle';
 
-		add_menu_page(
-			'MyStyle',
-			'MyStyle',
-			'manage_options',
-			$mystyle_hook,
-			array( &$this, 'render_page' ),
-			MYSTYLE_ASSETS_URL . '/images/mystyle-icon.png',
-			'56'
-		);
 		add_submenu_page(
 			$mystyle_hook,
 			'Settings',
 			'Settings',
 			'manage_options',
-			$mystyle_hook,
+            $mystyle_hook . '_settings',
+			array( &$this, 'render_page' ),
             100
 		);
 	}

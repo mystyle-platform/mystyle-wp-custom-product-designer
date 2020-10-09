@@ -509,9 +509,19 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 							. ' ( ( ms_access = ' . MyStyle_Access::ACCESS_HIDDEN .  ' ) AND ( user_id = ' . $user->ID . ' ) ) '
 						. ' ) ';
 			}
+            else {
+                //show all designs to admin user
+                $sql .= ' ' . $exp
+                        . ' ( '
+							. ' ( ms_access = ' . MyStyle_Access::ACCESS_PUBLIC .  ' ) OR '
+							. ' ( ms_access = ' . MyStyle_Access::ACCESS_PRIVATE .  ' )  OR '
+							. ' ( ms_access = ' . MyStyle_Access::ACCESS_HIDDEN .  ' ) '
+						. ' ) '; 
+            }
 		}
 
 		return $sql;
 	}
+    
 
 }

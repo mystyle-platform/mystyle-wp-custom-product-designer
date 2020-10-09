@@ -198,6 +198,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 		private function admin_includes() {
 			require_once MYSTYLE_INCLUDES . 'admin/class-mystyle-admin.php';
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php';
+			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-dashboard-page.php';
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php';
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-design-tags-page.php';
 			require_once MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php';
@@ -239,7 +240,10 @@ if ( ! class_exists( 'MyStyle' ) ) :
 
 				// Set up the main admin class.
 				MyStyle_Admin::get_instance();
-
+                
+                // Set up the Design Tags page.
+                MyStyle_Dashboard_Page::get_instance() ;
+                
 				// Set up the options page.
 				MyStyle_Options_Page::get_instance();
 				add_filter( 'contextual_help', 'mystyle_help_dispatch', 10, 3 );
