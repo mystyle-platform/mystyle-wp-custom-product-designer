@@ -177,14 +177,14 @@ class MyStyle_WooCommerce_Admin_Product {
         
                     ?>
                     <p class="form-field _mystyle_custom_template_bgimg_field ">
-                        <label for="_mystyle_custom_template_bgimg">Custom Template Background Image</label>
+                        <label for="_mystyle_custom_template_bgimg">Custom Template Background Image (BETA)</label>
                         <span class="woocommerce-help-tip" data-tip="Select a custom template background image (500px X 500px maximum size)"></span>
                         <input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_bgimg_button" id="_mystyle_custom_template_bgimg_button" value="SELECT" placeholder=""> 
                         <input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_bgimg" id="_mystyle_custom_template_bgimg" value="<?php print ( $mystyle_custom_template_bgimg ? $mystyle_custom_template_bgimg : '') ; ?>" placeholder=""> 
                     </p>
                     
                     <p class="form-field _mystyle_custom_template_fgimg_field ">
-                        <label for="_mystyle_custom_template_fgimg">Custom Template Foreground Image</label>
+                        <label for="_mystyle_custom_template_fgimg">Custom Template Foreground Image (BETA)</label>
                         <span class="woocommerce-help-tip" data-tip="Select a custom template foreground image (500px X 500px maximum size)"></span>
                         <input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_fgimg_button" id="_mystyle_custom_template_fgimg_button" value="SELECT" placeholder=""> 
                         <input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_fgimg" id="_mystyle_custom_template_fgimg" value="<?php print ( $mystyle_custom_template_fgimg ? $mystyle_custom_template_fgimg : '') ; ?>" placeholder=""> 
@@ -194,7 +194,7 @@ class MyStyle_WooCommerce_Admin_Product {
                     woocommerce_wp_text_input(
 						array(
 							'id'          => '_mystyle_custom_template_bleed',
-							'label'       => __( 'Custom Template Bleed Size Per Edge', 'mystyle' ),
+							'label'       => __( 'Custom Template Bleed Size Per Edge (BETA)', 'mystyle' ),
 							'placeholder' => '',
 							'desc_tip'    => 'true',
 							'description' => __( 'Enter a bleed size per edge in inches', 'mystyle' ),
