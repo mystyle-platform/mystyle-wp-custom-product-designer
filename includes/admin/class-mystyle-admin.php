@@ -34,7 +34,7 @@ class MyStyle_Admin {
 	 */
 	public function admin_init() {
 		// Add the MyStyle admin stylesheet to the WP admin head.
-		wp_register_style( 'myStyleAdminStylesheet', MYSTYLE_ASSETS_URL . 'css/admin.css' );
+		wp_register_style( 'myStyleAdminStylesheet', MYSTYLE_ASSETS_URL . 'css/admin.css?89' );
 		wp_enqueue_style( 'myStyleAdminStylesheet' );
 
 		// Add the MyStyle admin js file to the WP admin head.
