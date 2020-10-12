@@ -81,7 +81,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 
 == Changelog ==
 = 3.14.6 =
-* Adde plugin admin dashboard page, more custom design template features (beta), random design shortcode
+* Added plugin admin dashboard page, more custom design template features (beta), random design shortcode
 
 = 3.14.5 =
 * Fixed Unauthorized Exception error
