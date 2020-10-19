@@ -1,3 +1,6 @@
+= 3.14.7 =
+* Updated Frontend CSS and DesignManager Class to add change design access function
+
 = 3.14.6 =
 * Added plugin admin dashboard page, more custom design template features (beta), random design shortcode
 
