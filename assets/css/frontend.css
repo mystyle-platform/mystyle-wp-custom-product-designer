@@ -231,3 +231,31 @@ body.mystyle-design-profile ul.mystyle-designs li span.mystyle-design-id {
 }
 
 
+/** MyStyle: Show thumbnail in cart larger than default 32px **/
+.woocommerce-cart table.cart img {
+width: auto;
+min-width: 32px;
+max-width: 100px;
+}
+@media(max-width:768px) {
+/** Show thumbnail row in cart on mobile **/
+.woocommerce-page table.cart .product-thumbnail {
+display: inline-block !important;
+}
+/** hide colon above thumbnail for mobile **/
+.woocommerce-page table.cart .product-thumbnail:before {
+display: none;
+}
+}
+/** design profile page buttons **/
+body.mystyle-design-profile ul.mystyle-design-nav li a {
+    padding: 12px;
+    display: inline-block;
+    background: rgba(0,0,0,.2);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    min-width: 47px;
+    border-radius: 5px;
+}
+

@@ -239,6 +239,30 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         
         return $result ;
     }
+    
+    /**
+     *
+     * Set the Design Access
+     *
+     *
+     */
+    public static function set_access( $design_id, $access ) {
+        global $wpdb ;
+        
+        $where = array( MyStyle_Design::get_primary_key() => $design_id, 'user_id' => get_current_user_id() ) ;
+        
+        if(current_user_can('administrator')) {
+            $where = array( MyStyle_Design::get_primary_key() => $design_id ) ;
+        }
+        
+        $result = $wpdb->update(
+            MyStyle_Design::get_table_name(),
+            array( 'ms_access' => $access ),
+            $where
+        ) ;
+        
+        return $result ;
+    }
 
 	/**
 	 * Retrieve designs from the database.
