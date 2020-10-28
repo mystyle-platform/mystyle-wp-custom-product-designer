@@ -112,14 +112,22 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
 		$post     = new stdClass();
 		$post->ID = $post_id;
 
-		$_POST                                 = array();
-		$_POST['_mystyle_enabled']             = true;
-		$_POST['_mystyle_template_id']         = 1;
-		$_POST['_mystyle_customizer_ux']       = 'uxtest';
-		$_POST['_mystyle_customizer_redirect'] = 'http://www.example.com';
-		$_POST['_mystyle_design_id']           = '2';
-		$_POST['_mystyle_print_type']          = 'FULL-COLOR';
-		$_POST['_mystyle_configur8_enabled']   = true;
+		$_POST                                    = array();
+		$_POST['_mystyle_enabled']                = true;
+		$_POST['_mystyle_template_id']            = 1;
+		$_POST['_mystyle_custom_template']        = false;
+		$_POST['_mystyle_custom_template_width']  = '';
+		$_POST['_mystyle_custom_template_height'] = '';
+		$_POST['_mystyle_custom_template_shape']  = '';
+		$_POST['_mystyle_custom_template_color']  = '';
+		$_POST['_mystyle_custom_template_bgimg']  = '';
+		$_POST['_mystyle_custom_template_fgimg']  = '';
+		$_POST['_mystyle_custom_template_bleed']  = '';
+		$_POST['_mystyle_customizer_ux']          = 'uxtest';
+		$_POST['_mystyle_customizer_redirect']    = 'http://www.example.com';
+		$_POST['_mystyle_design_id']              = '2';
+		$_POST['_mystyle_print_type']             = 'FULL-COLOR';
+		$_POST['_mystyle_configur8_enabled']      = true;
 
 		// Create post object.
 		$test_post = array(
@@ -170,13 +178,21 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
 		$post     = new stdClass();
 		$post->ID = $post_id;
 
-		$_POST                                 = array();
-		$_POST['_mystyle_enabled']             = false;
-		$_POST['_mystyle_template_id']         = 1;
-		$_POST['_mystyle_customizer_ux']       = 'uxtest';
-		$_POST['_mystyle_customizer_redirect'] = 'http://www.example.com';
-		$_POST['_mystyle_design_id']           = '2';
-		$_POST['_mystyle_print_type']          = 'FULL-COLOR';
+		$_POST                                    = array();
+		$_POST['_mystyle_enabled']                = false;
+		$_POST['_mystyle_template_id']            = 1;
+		$_POST['_mystyle_custom_template']        = false;
+		$_POST['_mystyle_custom_template_width']  = '';
+		$_POST['_mystyle_custom_template_height'] = '';
+		$_POST['_mystyle_custom_template_shape']  = '';
+		$_POST['_mystyle_custom_template_color']  = '';
+		$_POST['_mystyle_custom_template_bgimg']  = '';
+		$_POST['_mystyle_custom_template_fgimg']  = '';
+		$_POST['_mystyle_custom_template_bleed']  = '';
+		$_POST['_mystyle_customizer_ux']          = 'uxtest';
+		$_POST['_mystyle_customizer_redirect']    = 'http://www.example.com';
+		$_POST['_mystyle_design_id']              = '2';
+		$_POST['_mystyle_print_type']             = 'FULL-COLOR';
 
 		// Create post object.
 		$test_post = array(
@@ -227,13 +243,21 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
 		$post     = new stdClass();
 		$post->ID = $post_id;
 
-		$_POST                                 = array();
-		$_POST['_mystyle_enabled']             = true;
-		$_POST['_mystyle_template_id']         = '';
-		$_POST['_mystyle_customizer_ux']       = 'uxtest';
-		$_POST['_mystyle_customizer_redirect'] = 'http://www.example.com';
-		$_POST['_mystyle_design_id']           = '2';
-		$_POST['_mystyle_print_type']          = 'FULL-COLOR';
+		$_POST                                    = array();
+		$_POST['_mystyle_enabled']                = true;
+		$_POST['_mystyle_template_id']            = '';
+		$_POST['_mystyle_custom_template']        = false;
+		$_POST['_mystyle_custom_template_width']  = '';
+		$_POST['_mystyle_custom_template_height'] = '';
+		$_POST['_mystyle_custom_template_shape']  = '';
+		$_POST['_mystyle_custom_template_color']  = '';
+		$_POST['_mystyle_custom_template_bgimg']  = '';
+		$_POST['_mystyle_custom_template_fgimg']  = '';
+		$_POST['_mystyle_custom_template_bleed']  = '';
+		$_POST['_mystyle_customizer_ux']          = 'uxtest';
+		$_POST['_mystyle_customizer_redirect']    = 'http://www.example.com';
+		$_POST['_mystyle_design_id']              = '2';
+		$_POST['_mystyle_print_type']             = 'FULL-COLOR';
 
 		// Create post object.
 		$test_post = array(
