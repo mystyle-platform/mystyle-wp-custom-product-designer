@@ -44,7 +44,11 @@ function _manually_load_plugin() {
 tests_add_filter( 'plugins_loaded', '_manually_load_plugin' );
 
 // Bootstrap woocommerce.
-require dirname( __FILE__ ) . '/../../woocommerce/tests/bootstrap.php';
+$wc_bootstrap = dirname( __FILE__ ) . '/../../woocommerce/tests/legacy/bootstrap.php';
+if ( ! file_exists( $wc_bootstrap ) ) {
+	$wc_bootstrap = dirname( __FILE__ ) . '/../../woocommerce/tests/bootstrap.php';
+}
+require $wc_bootstrap;
 
 require_once $_tests_dir . '/includes/bootstrap.php';
 
