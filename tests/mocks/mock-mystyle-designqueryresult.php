@@ -177,6 +177,7 @@ class MyStyle_MockDesignQueryResult {
 		$this->ms_product_id         = 0;
 		$this->ms_user_id            = 0;
 		$this->ms_email              = 'someone@example.com';
+		$this->ms_title              = 'Test Title';
 		$this->ms_description        = 'test description';
 		$this->ms_price              = 0;
 		$this->ms_print_url          = 'http://www.example.com/example.jpg';
