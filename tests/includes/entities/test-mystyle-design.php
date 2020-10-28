@@ -177,6 +177,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
                 ms_product_id bigint(20) NOT NULL,
                 ms_user_id bigint(20) NULL,
                 ms_email varchar(255) NULL,
+                ms_title varchar(255) NULL,
                 ms_description text NULL,
                 ms_price numeric(15,2) NULL,
                 ms_print_url varchar(255) NULL,
