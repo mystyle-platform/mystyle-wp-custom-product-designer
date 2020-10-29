@@ -11,7 +11,7 @@
  * License: GPL v3
  *
  * MyStyle Custom Product Designer
- * Copyright (c) 2019 MyStyle <contact@mystyleplatform.com>
+ * Copyright (c) 2020 MyStyle <contact@mystyleplatform.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -240,17 +240,17 @@ if ( ! class_exists( 'MyStyle' ) ) :
 
 				// Set up the main admin class.
 				MyStyle_Admin::get_instance();
-                
+
                 // Set up the Design Tags page.
                 MyStyle_Dashboard_Page::get_instance() ;
-                
+
 				// Set up the options page.
 				MyStyle_Options_Page::get_instance();
 				add_filter( 'contextual_help', 'mystyle_help_dispatch', 10, 3 );
 
 				// Set up the addons page.
 				MyStyle_Addons_Page::get_instance();
-                
+
                 // Set up the Design Tags page.
                 MyStyle_DesignTags_Page::get_instance() ;
 
@@ -321,7 +321,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
 		}
-        
+
         /**
 		 * Register our taxonomy.
 		 *
@@ -353,7 +353,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
                     'public' => true
                 ) ) ;
             }
-			
+
 		}
 
 		/**

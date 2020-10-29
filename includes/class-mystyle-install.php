@@ -70,9 +70,9 @@ class MyStyle_Install {
 		if ( ! MyStyle_Design_Profile_Page::exists() ) {
 			MyStyle_Design_Profile_Page::create();
 		}
-        
-        MyStyle_MyDesigns::flush_rewrite_rules() ;
-        
+
+        MyStyle_MyDesigns::get_instance()->flush_rewrite_rules() ;
+
 		self::create_tables();
 	}
 
@@ -114,17 +114,17 @@ class MyStyle_Install {
 		if ( version_compare( $old_version, '1.7.0', '<' ) ) {
 			MyStyle_SessionManager::purge_abandoned_sessions();
 		}
-        
+
         //flush rewrite rules for newly created rewrites
         flush_rewrite_rules() ;
-        
+
         // Add the Design tage page if upgrading from less than 3.14.0 ( versions that were before this page existed ).
 		if ( version_compare( $old_version, '3.14.0', '<' ) ) {
 			if ( ! MyStyle_DesignTag_Page::exists() ) {
 				MyStyle_DesignTag_Page::create();
 			}
 		}
-        
+
         // fix Design tag post status to 'draft'
         if ( version_compare( $old_version, '3.14.6', '<' ) ) {
             $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
@@ -136,7 +136,7 @@ class MyStyle_Install {
                 MyStyle_DesignTag_Page::fix() ;
             }
         }
-        
+
 		$upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $old_version . ' to ' . $new_version . '.' );
 		mystyle_notice_add_to_queue( $upgrade_notice );
 	}
