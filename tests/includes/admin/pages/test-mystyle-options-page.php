@@ -11,6 +11,7 @@
  * Test requirements.
  */
 require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-options-page.php';
+require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-dashboard-page.php';
 
 /**
  * MyStyleOptionsPageTest class.
@@ -164,16 +165,25 @@ class MyStyleOptionsPageTest extends WP_UnitTestCase {
 	 * Test the add_page_to_menu function.
 	 */
 	public function test_add_page_to_menu() {
+		// Log the user into the admin.
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
 		// Assert that the menu page doesn't yet exist.
 		$this->assertEquals( '', menu_page_url( 'mystyle', false ) );
 
+		// Register the parent page.
+		$mystyle_dashboard_page = new MyStyle_Dashboard_Page();
+		$mystyle_dashboard_page->add_page_to_menu();
+
+		// Instantiate the SUT (System Under Test) class.
 		$mystyle_options_page = new MyStyle_Options_Page();
+
+		// Call the method.
 		$mystyle_options_page->add_page_to_menu();
 
 		// Assert that the menu page was added.
-		$expected = 'http://example.org/wp-admin/admin.php?page=mystyle';
-		$this->assertEquals( $expected, menu_page_url( 'mystyle', false ) );
+		$expected = 'http://example.org/wp-admin/admin.php?page=mystyle_settings';
+		$this->assertEquals( $expected, menu_page_url( 'mystyle_settings', false ) );
 	}
 
 	/**
