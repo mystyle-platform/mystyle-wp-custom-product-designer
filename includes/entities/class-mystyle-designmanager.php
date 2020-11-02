@@ -32,7 +32,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	public static function get(
 		$design_id,
 		WP_User $user = null,
-		MyStyle_Session $session = null
+		MyStyle_Session $session = null,
+        $skip_security = false
 	) {
 		global $wpdb;
 
@@ -48,7 +49,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		// -------------- SECURITY CHECK ------------ //
-		if ( null !== $design ) {
+		if ( null !== $design && !$skip_security ) {
 			if ( $design->get_access() === MyStyle_Access::ACCESS_PRIVATE ) {
 				// Check if created by current/passed session.
 				if (

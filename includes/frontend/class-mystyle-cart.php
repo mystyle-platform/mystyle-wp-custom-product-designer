@@ -294,7 +294,7 @@ class MyStyle_Cart {
 			$session = MyStyle()->get_session();
 
 			/* @var $design \MyStyle_Design phpcs:ignore */
-			$design = MyStyle_DesignManager::get( $design_id, $user, $session );
+			$design = MyStyle_DesignManager::get( $design_id, $user, $session, true ); //skip the security check because the design is already in the cart.
 
 			// Only proceed if we have a design to work with.
 			if ( null !== $design) {
