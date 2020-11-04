@@ -55,12 +55,8 @@ class MyStyle_Handoff {
 	 * @return string Returns the url of the handoff endpoint
 	 */
 	public static function get_url() {
-        $lang = 'en' ;
-        
-        if ( defined( 'ICL_LANGUAGE_CODE' ) ) {
-            $lang = (ICL_LANGUAGE_CODE == 'en') ? null : ICL_LANGUAGE_CODE;
-        }
-		
+		$lang = MyStyle_Wpml::get_instance()->get_current_translation_language();
+
 		if ( null !== $lang ) {
 			$url = site_url( $lang . '/?' . self::SLUG );
 		} else {
@@ -166,7 +162,7 @@ class MyStyle_Handoff {
 						'You can access your design at any time from the following ' .
 						"url:\n\n" .
 						MyStyle_Design_Profile_Page::get_design_url( $this->design ) . "\n\n" .
-                        "View all of your designs on the My Designs page here. \n\n" . 
+                        "View all of your designs on the My Designs page here. \n\n" .
                         $site_url . "my-account/my-designs/\n\n" .
 						"Reload and edit your design at any time here:\n\n" .
 						MyStyle_Customize_Page::get_design_url( $this->design, null, $passthru ) . "\n";
