@@ -1,3 +1,6 @@
+= 3.14.9 =
+* Fixed cart name access bug
+
 = 3.14.8 =
 * Fixed cart image access bug
 
