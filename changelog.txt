@@ -1,3 +1,6 @@
+= 3.15.0 =
+* Added custom template box shadow option
+
 = 3.14.9 =
 * Fixed cart name access bug
 
