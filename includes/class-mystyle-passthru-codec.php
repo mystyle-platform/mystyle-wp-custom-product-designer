@@ -94,6 +94,10 @@ class MyStyle_Passthru_Codec {
             if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bleed', true )) {
                 $passthru['bleed']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bleed', true ) ;
             }
+            
+            if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_boxshadow', true ) === 'yes') {
+                $passthru['boxshadow']  = 1 ;
+            }
         }
         
 		return $passthru;
