@@ -1,3 +1,6 @@
+= 3.15.1 =
+* Added Gallery and Tag attributes to mystyle_design shortcode, fixed design tag page bug.
+
 = 3.15.0 =
 * Added custom template box shadow option
 
