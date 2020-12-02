@@ -38,17 +38,42 @@ abstract class MyStyle_Design_Shortcode {
             if( isset( $atts['gallery']) ) {
                 if( $atts['gallery'] ) {
                     $count = 10 ;
-                    if( isset( $atts['count']) ) {
+                    if( isset($atts['count']) ) {
                         $count = $atts['count'] ;
                     }
-                    $out = self::output_random_designs( $count ) ;
+
+                    if( isset( $atts['total']) ) {
+                        $count = $atts['total'] ;
+                    }
+                    
+                    if( isset( $atts['tag']) ) {
+                        $tag = $atts['tag'] ;
+                        
+                        $out = self::output_tagged_designs( $tag, $count ) ;
+                    }
+                    else {
+                        $out = self::output_random_designs( $count ) ;
+                    }
+                    
                 }
                 elseif ( null !== $mystyle_frontend->get_design() ) {
                     $out = self::output_design();
                 } else {
-                    if( isset($atts['count']) ) { //return random public designs
-
+                    $count = 10 ;
+                    if( isset($atts['count']) ) {
                         $count = $atts['count'] ;
+                    }
+
+                    if( isset( $atts['total']) ) {
+                        $count = $atts['total'] ;
+                    }
+                    
+                    if( isset( $atts['tag']) ) {
+                        $tag = $atts['tag'] ;
+                        
+                        $out = self::output_tagged_designs( $tag, $count ) ;
+                    }
+                    else {
                         $out = self::output_random_designs( $count ) ;
                     }
                     // Fail silently. This can happen in the admin or if the
@@ -59,18 +84,21 @@ abstract class MyStyle_Design_Shortcode {
             elseif ( null !== $mystyle_frontend->get_design() ) {
 				$out = self::output_design();
 			} else {
+                $count = 10 ;
+                if( isset($atts['count']) ) {
+                    $count = $atts['count'] ;
+                }
+
+                if( isset( $atts['total']) ) {
+                    $count = $atts['total'] ;
+                }
+
                 if( isset( $atts['tag']) ) {
                     $tag = $atts['tag'] ;
-                    $count = 10 ;
-                    if( isset($atts['count']) ) {
-                        $count = $atts['count'] ;
-                    }
-                    
+
                     $out = self::output_tagged_designs( $tag, $count ) ;
                 }
-                elseif( isset($atts['count']) ) { //return random public designs
-                    
-                    $count = $atts['count'] ;
+                else {
                     $out = self::output_random_designs( $count ) ;
                 }
 				// Fail silently. This can happen in the admin or if the
