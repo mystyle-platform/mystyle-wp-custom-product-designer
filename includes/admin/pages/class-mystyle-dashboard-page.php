@@ -94,7 +94,7 @@ class MyStyle_Dashboard_Page {
                     <li>
                         <div class="license-status">
                             <h3>MyStyle License Status</h3>
-                            <p><?php print ( $api_key_status ? '<span class="green">VALID<spam>' : $settings_link) ; ?></p>
+                            <p><?php print ( $api_key_status ? '<span class="dashicons dashicons-yes"></span>' : $settings_link) ; ?></p>
                         </div>
                     </li>
                 </ul>

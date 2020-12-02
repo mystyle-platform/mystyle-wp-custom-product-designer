@@ -55,7 +55,7 @@ class MyStyle_Handoff {
 	 * @return string Returns the url of the handoff endpoint
 	 */
 	public static function get_url() {
-        $lang = 'en' ;
+        $lang = null ;
         
         if ( defined( 'ICL_LANGUAGE_CODE' ) ) {
             $lang = (ICL_LANGUAGE_CODE == 'en') ? null : ICL_LANGUAGE_CODE;

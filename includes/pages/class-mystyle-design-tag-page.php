@@ -189,21 +189,18 @@ class MyStyle_DesignTag_Page {
                 );
                 
                 $page_limit = $this->pager->get_items_per_page() ;
-                
-                $sql = "SELECT object_id FROM " . $wpdb->prefix . "term_relationships WHERE term_taxonomy_id = " . $term_id . " LIMIT " . $page_limit ; 
+                $page_num = 1 ;
                 
                 if(null !== $q->query['paged']) {
                     $page_num = ($this->pager->get_current_page_number() - 1) * $page_limit ;
-                    $sql .= " OFFSET " . $page_num ;
                 }
                 
-                $terms = $wpdb->get_results($sql) ;
+                $design_objs = MyStyle_DesignManager::get_designs_by_term_id( $term_id, $wp_user, $session, $page_limit, $page_num) ;
                 
                 $designs = array() ;
                 
-                foreach( $terms as $term) {
+                foreach( $design_objs as $design ) {
                     try {
-                        $design = MyStyle_DesignManager::get( $term->object_id, $wp_user, $session ) ;
                         $title = ( "" == $design->get_title() ? "Design " . $design->get_design_id() : $design->get_title() ) ;
                     
                         $product_id = $design->get_product_id() ;
@@ -230,7 +227,7 @@ class MyStyle_DesignTag_Page {
                 $this->pager->set_items( $designs );
                 
                 // Total items.
-                $term_count = $wpdb->get_var("SELECT COUNT(object_id) FROM " . $wpdb->prefix . "term_relationships WHERE term_taxonomy_id = " . $term_id) ;
+                $term_count = MyStyle_DesignManager::get_total_term_count( $term_id ) ;
                 
                 $this->pager->set_total_item_count(
                     $term_count
@@ -273,11 +270,13 @@ class MyStyle_DesignTag_Page {
             $session = MyStyle()->get_session();
 
             $design = MyStyle_DesignManager::get( $post->design_id, $wp_user, $session ) ;
-
-            $image[0] = $design->get_web_url() ;
-            $image[1] = 200 ;
-            $image[2] = 200 ;
-
+            
+            if($design !== null) {
+                $image[0] = $design->get_web_url() ;
+                $image[1] = 200 ;
+                $image[2] = 200 ;
+            }
+            
             return $image ;
         }
         
