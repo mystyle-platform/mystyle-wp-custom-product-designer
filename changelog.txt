@@ -1,3 +1,15 @@
+= 3.15.1 =
+* Added Gallery and Tag attributes to mystyle_design shortcode, fixed design tag page bug.
+
+= 3.15.0 =
+* Added custom template box shadow option
+
+= 3.14.9 =
+* Fixed cart name access bug
+
+= 3.14.8 =
+* Fixed cart image access bug
+
 = 3.14.7 =
 * Updated Frontend CSS and DesignManager Class to add change design access function
 

@@ -68,6 +68,7 @@ class MyStyle_WooCommerce_Admin_Product {
 		$mystyle_custom_template_bgimg    = get_post_meta( $post->ID, '_mystyle_custom_template_bgimg', true );
 		$mystyle_custom_template_fgimg    = get_post_meta( $post->ID, '_mystyle_custom_template_fgimg', true );
 		$mystyle_custom_template_bleed    = get_post_meta( $post->ID, '_mystyle_custom_template_bleed', true );
+		$mystyle_custom_template_boxshadow    = get_post_meta( $post->ID, '_mystyle_custom_template_boxshadow', true );
 		$customizer_ux                    = get_post_meta( $post->ID, '_mystyle_customizer_ux', true );
 		$customizer_redirect              = get_post_meta( $post->ID, '_mystyle_customizer_redirect', true );
 		$mystyle_design_id                = get_post_meta( $post->ID, '_mystyle_design_id', true );
@@ -174,6 +175,17 @@ class MyStyle_WooCommerce_Admin_Product {
 							'value'       => $mystyle_custom_template_color,
 						)
 					);
+        
+                    
+                    woocommerce_wp_checkbox(
+                        array(
+                            'id'          => '_mystyle_custom_template_boxshadow',
+                            'label'       => __( 'Enable Custom Template Box Shadow', 'mystyle' ),
+                            'desc_tip'    => 'true',
+                            'description' => __( 'Enable a custom template Box Shadow.', 'mystyle' ),
+                            'value'       => $mystyle_custom_template_boxshadow,
+                        )
+                    );
         
                     ?>
                     <p class="form-field _mystyle_custom_template_bgimg_field ">
@@ -289,6 +301,7 @@ class MyStyle_WooCommerce_Admin_Product {
 		$mystyle_custom_template_bgimg   = $_POST['_mystyle_custom_template_bgimg'];
 		$mystyle_custom_template_fgimg   = $_POST['_mystyle_custom_template_fgimg'];
 		$mystyle_custom_template_bleed   = ( is_numeric($_POST['_mystyle_custom_template_bleed']) ? $_POST['_mystyle_custom_template_bleed'] : '');
+		$mystyle_custom_template_boxshadow   = ( isset($_POST['_mystyle_custom_template_boxshadow']) ? $_POST['_mystyle_custom_template_boxshadow'] : 'no');
 		$mystyle_design_id               = $_POST['_mystyle_design_id'];
 		$customizer_ux                   = $_POST['_mystyle_customizer_ux'];
 		$customizer_redirect             = $_POST['_mystyle_customizer_redirect'];
@@ -306,6 +319,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
+				update_post_meta( $post_id, '_mystyle_custom_template_boxshadow', $mystyle_custom_template_boxshadow );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -321,6 +335,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
+				update_post_meta( $post_id, '_mystyle_custom_template_boxshadow', $mystyle_custom_template_boxshadow );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -336,6 +351,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
+				update_post_meta( $post_id, '_mystyle_custom_template_boxshadow', $mystyle_custom_template_boxshadow );
 				update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
@@ -359,6 +375,7 @@ class MyStyle_WooCommerce_Admin_Product {
             update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
             update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
             update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
+            update_post_meta( $post_id, '_mystyle_custom_template_boxshadow', $mystyle_custom_template_boxshadow );
 			update_post_meta( $post_id, '_mystyle_design_id', $mystyle_design_id );
 			update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 			update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );

@@ -169,8 +169,15 @@ span#mystyle-icon-general.icon100 {
 }
 
 .toplevel_page_mystyle ul.statistics p {
-    font-size: 3em ;
-    margin: 0.3em ;
+    font-size: 3.3em ;
+}
+
+
+.toplevel_page_mystyle ul.statistics span.dashicons {
+    margin-top:-20px;
+    font-size:2.5em;
+    width:130px;
+    color:green;
 }
 
 .toplevel_page_mystyle ul.products p {

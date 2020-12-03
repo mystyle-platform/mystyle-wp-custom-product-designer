@@ -32,7 +32,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	public static function get(
 		$design_id,
 		WP_User $user = null,
-		MyStyle_Session $session = null
+		MyStyle_Session $session = null,
+        $skip_security = false
 	) {
 		global $wpdb;
 
@@ -48,7 +49,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		// -------------- SECURITY CHECK ------------ //
-		if ( null !== $design ) {
+		if ( null !== $design && !$skip_security ) {
 			if ( $design->get_access() === MyStyle_Access::ACCESS_PRIVATE ) {
 				// Check if created by current/passed session.
 				if (
@@ -440,6 +441,53 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $designs;
 	}
+    
+    /**
+	 * Retrieve designs by term id.
+	 *
+	 * @param $term_id Int
+	 * @param int     $per_page The number of designs to show per page (default:
+	 * 250).
+	 * @param int     $page_number The page number of the set of designs that you
+	 * want to get (default: 1).
+	 * @global $wpdb;
+	 * @return mixed Returns an array of MyStyle_Design objects or null if none
+	 * are found.
+	 */
+	public static function get_designs_by_term_id(
+		$term_id,
+        WP_User $user = null,
+		MyStyle_Session $session = null,
+        $per_page = 250,
+		$page_number = 1
+	) {
+		global $wpdb;
+
+		$sql = "SELECT object_id FROM " . $wpdb->prefix . "term_relationships WHERE term_taxonomy_id = " . $term_id . " LIMIT " . $per_page ; 
+                
+        if(null !== $q->query['paged']) {
+            $page_number = ($page_number - 1) * $per_page ;
+            $sql .= " OFFSET " . $page_number ;
+        }
+
+        $terms = $wpdb->get_results($sql) ;
+
+        $designs = array() ;
+
+        foreach( $terms as $term) {
+            try {
+                
+                $design = MyStyle_DesignManager::get( $term->object_id, $user, $session ) ;
+                
+                array_push( $designs, $design );
+                
+            } catch ( MyStyle_Unauthorized_Exception $ex ) {
+
+            }
+        }
+
+		return $designs;
+	}
 
 	/**
 	 * Retrieve the total number of designs (filtered by security rules) from
@@ -500,6 +548,22 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
         }
         
 		$count = $wpdb->get_var( $sql );
+
+		return $count;
+	}
+    
+    /**
+	 * Retrieve the total number of terms
+	 *
+	 *
+	 * @param $term_id
+	 * @global $wpdb
+	 * @return integer
+	 */
+	public static function get_total_term_count( $term_id ) {
+		global $wpdb;
+
+		$wpdb->get_var("SELECT COUNT(object_id) FROM " . $wpdb->prefix . "term_relationships WHERE term_taxonomy_id = " . $term_id) ;
 
 		return $count;
 	}

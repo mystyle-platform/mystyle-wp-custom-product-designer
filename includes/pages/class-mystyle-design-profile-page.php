@@ -272,7 +272,7 @@ class MyStyle_Design_Profile_Page {
 
 			// Set the current design in the singleton instance.
 			$this->set_design( $design );
-
+            
 			// When an exception is thrown, set the status code and set the
 			// exception in the singleton instance, it will later be used by
 			// the shortcode and view layer.

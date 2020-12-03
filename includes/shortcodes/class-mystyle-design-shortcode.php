@@ -35,12 +35,70 @@ abstract class MyStyle_Design_Shortcode {
 			throw $ex;
 		} else {
 			// --------------- Valid Requests ------------------------- //
-			if ( null !== $mystyle_frontend->get_design() ) {
+            if( isset( $atts['gallery']) ) {
+                if( $atts['gallery'] ) {
+                    $count = 10 ;
+                    if( isset($atts['count']) ) {
+                        $count = $atts['count'] ;
+                    }
+
+                    if( isset( $atts['total']) ) {
+                        $count = $atts['total'] ;
+                    }
+                    
+                    if( isset( $atts['tag']) ) {
+                        $tag = $atts['tag'] ;
+                        
+                        $out = self::output_tagged_designs( $tag, $count ) ;
+                    }
+                    else {
+                        $out = self::output_random_designs( $count ) ;
+                    }
+                    
+                }
+                elseif ( null !== $mystyle_frontend->get_design() ) {
+                    $out = self::output_design();
+                } else {
+                    $count = 10 ;
+                    if( isset($atts['count']) ) {
+                        $count = $atts['count'] ;
+                    }
+
+                    if( isset( $atts['total']) ) {
+                        $count = $atts['total'] ;
+                    }
+                    
+                    if( isset( $atts['tag']) ) {
+                        $tag = $atts['tag'] ;
+                        
+                        $out = self::output_tagged_designs( $tag, $count ) ;
+                    }
+                    else {
+                        $out = self::output_random_designs( $count ) ;
+                    }
+                    // Fail silently. This can happen in the admin or if the
+                    // design_id isn't set in the url.
+                    // throw new MyStyle_Bad_Request_Exception('Design not found');
+                }
+            }
+            elseif ( null !== $mystyle_frontend->get_design() ) {
 				$out = self::output_design();
 			} else {
-                if( isset($atts['count']) ) { //return random public designs
-                    
+                $count = 10 ;
+                if( isset($atts['count']) ) {
                     $count = $atts['count'] ;
+                }
+
+                if( isset( $atts['total']) ) {
+                    $count = $atts['total'] ;
+                }
+
+                if( isset( $atts['tag']) ) {
+                    $tag = $atts['tag'] ;
+
+                    $out = self::output_tagged_designs( $tag, $count ) ;
+                }
+                else {
                     $out = self::output_random_designs( $count ) ;
                 }
 				// Fail silently. This can happen in the admin or if the
@@ -100,6 +158,44 @@ abstract class MyStyle_Design_Shortcode {
         );
 		$pager->set_items( $designs );
         
+        // ---------- Call the view layer ------------------ //
+		ob_start();
+		require MYSTYLE_TEMPLATES . 'design-profile/index.php';
+		$out = ob_get_contents();
+		ob_end_clean();
+        
+        return $out ;
+    }
+    
+    /** 
+     * Return the output for tagged designs
+     *
+     * @return string
+     */
+    public static function output_tagged_designs( $tag, $count=10 ) {
+        
+        $term = get_term_by( 'name', $tag, 'design_tag' ) ;
+        
+        $term_id = $term->term_id ;
+        
+        $user = wp_get_current_user() ;
+                
+        $session = MyStyle()->get_session();
+        
+        // Create a new pager.
+		$pager = new MyStyle_Pager();
+
+		// Designs per page.
+		$pager->set_items_per_page( $count );
+        
+		$pager->set_current_page_number(
+			1
+		);
+        
+		// Pager items.
+		$designs = MyStyle_DesignManager::get_designs_by_term_id( $term_id, $user, $session, $count, 1 ) ;
+		
+        $pager->set_items( $designs );
         
         // ---------- Call the view layer ------------------ //
 		ob_start();
