@@ -113,7 +113,7 @@ class MyStyleProductTest extends WP_UnitTestCase {
 		$children = $product->get_children();
 
 		// Assert that the expected number of children are returned.
-		$this->assertEquals( 2, count( $children ) );
+		$this->assertEquals( 6, count( $children ) );
 	}
 
 	/**
