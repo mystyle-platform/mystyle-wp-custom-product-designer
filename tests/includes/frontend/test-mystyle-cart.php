@@ -108,10 +108,21 @@ class MyStyleCartTest extends WP_UnitTestCase {
 	 * @param int               $object_id  Post ID.
 	 * @param string            $meta_key Meta key.
 	 * @param string|array      $single   Meta value, or an array of values.
-	 * @return string Returns "yes".
+	 * @return mixed Returns the mocked mystyle_metadata.
 	 */
 	public function mock_mystyle_metadata( $metadata, $object_id, $meta_key, $single ) {
-		return 'yes';
+		$ret = $metadata;
+
+		switch ( $meta_key ) {
+			case '_mystyle_enabled':
+				$ret = 'yes';
+				break;
+			case '_mystyle_design_id':
+				$ret = 2;
+				break;
+		}
+
+		return $ret;
 	}
 
 	/**
