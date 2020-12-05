@@ -34,11 +34,17 @@ class MyStyle_Admin {
 	 */
 	public function admin_init() {
 		// Add the MyStyle admin stylesheet to the WP admin head.
-		wp_register_style( 'myStyleAdminStylesheet', MYSTYLE_ASSETS_URL . 'css/admin.css' );
+		wp_register_style( 'myStyleAdminStylesheet', MYSTYLE_ASSETS_URL . 'css/admin.css?234' );
 		wp_enqueue_style( 'myStyleAdminStylesheet' );
 
 		// Add the MyStyle admin js file to the WP admin head.
-		wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js' );
+        wp_register_script( 'myStyleAdminSha', 'https://d203yb14zlmxwn.cloudfront.net/wp-content/uploads/2017/08/hmac-sha256.js' );
+		wp_enqueue_script( 'myStyleAdminSha' );
+        
+        wp_register_script( 'myStyleAdminBase64', 'https://d203yb14zlmxwn.cloudfront.net/wp-content/uploads/2017/08/enc-base64.js' );
+		wp_enqueue_script( 'myStyleAdminBase64' );
+        
+		wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js?324' );
 		wp_enqueue_script( 'myStyleAdminJavaScript' );
 	}
     
