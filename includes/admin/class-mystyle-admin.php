@@ -45,6 +45,17 @@ class MyStyle_Admin {
 		wp_enqueue_script( 'myStyleAdminBase64' );
         
 		wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js?324' );
+        
+        $api_key = MyStyle_Options::get_api_key() ;
+        $api_secret = MyStyle_Options::get_secret() ;
+        
+        $setting_array = array(
+            'app_key' => $api_key,
+            'app_secret' => $api_secret
+        ) ;
+        
+        wp_localize_script( 'myStyleAdminJavaScript', 'mystyle_api', $setting_array );
+
 		wp_enqueue_script( 'myStyleAdminJavaScript' );
 	}
     

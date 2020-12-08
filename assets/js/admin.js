@@ -23,15 +23,15 @@ function mystyleTogglePanelVis( id ) {
 (function($){
     
     $(window).ready(function(){
-        var appid = 74 ;
-        var appSecret = 'SqXHiNTaD5TC0Y908tC9nEqP6' ;
+        var appid = mystyle_api.app_key ;
+        var appSecret = mystyle_api.app_secret ;
         var action = 'design' ;
         var method = 'get';
         var datatype = action + '_id';
         var jsonobj = "{'design_id':[34535]}";
         const methodtype = 'get';
 
-        const ts = Math.floor(new Date().getTime() / 1000);
+        var ts = Math.floor(new Date().getTime() / 1000);
 
         /*end data for hash*/
         var hashstring = action + methodtype + appid + jsonobj + ts;
@@ -53,7 +53,7 @@ function mystyleTogglePanelVis( id ) {
                     $('.license-status span').addClass('dashicons dashicons-yes') ;
                 }
                 else {
-                    $('.license-status span').html('<a href="/wp-admin/admin.php?page=mystyle_settings" title="Update License Status">Check License Status</a>') ;
+                    $('.license-status span').html('<a href="/wp-admin/admin.php?page=mystyle_settings" title="Check License Status">Check License Status</a>') ;
                 }
                 
             }
