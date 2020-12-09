@@ -57,13 +57,44 @@ function mystyle_options_page_help( $contextual_help, $screen_id, $screen ) {
     <h3>The [mystyle_design] Shortcode</h3>
     <p>
         The [mystyle_design] Shortcode adds a MyStyle design to the page.
-        The shortcode expects there to be a design_id parameter in the url. It
-        uses the design_id parameter to know which design to show. An example
-        url might look like "https://www.example.com/somepage?design_id=12345".
-    </p>
-        Note that the design_id parameter is automatically added to the
-        Alternate Design Complete URL (see the Advanced Settings).
-    </p>
+	</p>
+	<h4>Available attributes</h4>
+	<ul>
+		<li>
+			<strong>gallery:</strong> Set gallery equal to 1
+			(ex: [mystyle_design gallery=1]) to have a gallery of designs
+			displayed. The gallery is also displayed if no design id is passed.
+		</li>
+		<li>
+			<strong>design_id:</strong> Set the design_id attribute to the id of
+			the design that you want to display. This attribute is ignored if
+			gallery mode is turned on (see above). Note that the shortcode can
+			also retrieve the design_id from the URL (as described below).
+		</li>
+		<li>
+			<strong>count:</strong> Used with gallery mode. Use count to specify
+			how many designs to show
+			(example: [mystyle-design gallery=1 count=6]). Default is 10.
+		</li>
+		<li>
+			<strong>total:</strong> Synonym for count.
+		</li>
+		<li>
+			<strong>tag:</strong> Used with gallery mode. Pass to only show
+			designs with the provided tag
+			(example: [mystyle-design gallery=1 tag="anime"]).
+		</li>
+
+		<h4>Available Query Params:
+		<li>
+			<strong>design_id:</strong> The id of the design to show. The
+			design_id can be passed to the shortcode either through a shortcode
+			attribute (as described above) or via a query param
+			(example: "http://www.example.com/somepage?design_id=123"). Note
+			that the design_id parameter is automatically added to the
+			Alternate Design Complete URL (see the Advanced Settings).
+		</li>
+	</ul>
     ';
 
 	$troubleshooting_content = '
