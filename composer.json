@@ -28,7 +28,7 @@
       "vendor/squizlabs/php_codesniffer/bin/phpcs -s -p mystyle.php includes tests"
     ],
     "phpcbf": [
-      "phpcbf -p --extensions=php mystyle.php includes tests"
+      "vendor/squizlabs/php_codesniffer/bin/phpcbf -p mystyle.php includes tests"
     ]
   },
   "extra": {
