@@ -99,10 +99,6 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 				),
 			),
 		) );
-		register_rest_route( $namespace, '/' . $base . '/schema', array(
-			'methods'  => WP_REST_Server::READABLE,
-			'callback' => array( $this, 'get_public_item_schema' ),
-		) );
 	}
 
 	/**
