@@ -25,10 +25,10 @@
       "phpunit --coverage-html coverage/"
     ],
     "phpcs": [
-      "vendor/squizlabs/php_codesniffer/bin/phpcs -s -p ."
+      "vendor/squizlabs/php_codesniffer/bin/phpcs -s -p mystyle.php includes tests"
     ],
     "phpcbf": [
-      "phpcbf -p ."
+      "phpcbf -p --extensions=php mystyle.php includes tests"
     ]
   },
   "extra": {
