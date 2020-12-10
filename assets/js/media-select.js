@@ -1,5 +1,10 @@
 (function( $ ) {
- 
+
+	// If there is no media on the page, just return.
+	if ( 'undefined' === typeof window.wp.media ) {
+		return;
+	}
+
     var mystyleBGMediaLibrary = window.wp.media({
 
         // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
@@ -34,7 +39,7 @@
         }
 
     });
-    
+
     var mystyleFGMediaLibrary = window.wp.media({
 
         // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
@@ -69,32 +74,32 @@
         }
 
     });
-    
+
     $( '#_mystyle_custom_template_bgimg_button' ).on( 'click', function( e ) {
         e.preventDefault();
         mystyleBGMediaLibrary.open();
     });
-    
+
     $( '#_mystyle_custom_template_fgimg_button' ).on( 'click', function( e ) {
         e.preventDefault();
         mystyleFGMediaLibrary.open();
     });
-    
+
     mystyleBGMediaLibrary.on( 'select', function() {
-        
+
         var selectedImages = mystyleBGMediaLibrary.state().get( 'selection' );
-        
+
         $( '#_mystyle_custom_template_bgimg' ).val(selectedImages.first().toJSON().url) ;
-        
+
     });
-    
-    
+
+
     mystyleFGMediaLibrary.on( 'select', function() {
-        
+
         var selectedImages = mystyleFGMediaLibrary.state().get( 'selection' );
-        
+
         $( '#_mystyle_custom_template_fgimg' ).val(selectedImages.first().toJSON().url) ;
-        
+
     });
-     
+
 })( jQuery );

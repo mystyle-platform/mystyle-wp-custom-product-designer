@@ -201,7 +201,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-dashboard-page.php';
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php';
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-design-tags-page.php';
-			require_once MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php';
+			require_once MYSTYLE_INCLUDES . 'admin/help/class-mystyle-help.php';
 			require_once MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php';
 			require_once MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php';
 		}
@@ -246,13 +246,15 @@ if ( ! class_exists( 'MyStyle' ) ) :
 
 				// Set up the options page.
 				MyStyle_Options_Page::get_instance();
-				add_filter( 'contextual_help', 'mystyle_help_dispatch', 10, 3 );
 
 				// Set up the addons page.
 				MyStyle_Addons_Page::get_instance();
 
                 // Set up the Design Tags page.
                 MyStyle_DesignTags_Page::get_instance() ;
+
+				// Set up the Help.
+				MyStyle_Help::get_instance();
 
 				// Hook into the WooCommerce admin.
 				MyStyle_WooCommerce_Admin_Product::get_instance();
