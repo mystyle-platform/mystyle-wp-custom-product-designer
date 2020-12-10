@@ -39,7 +39,10 @@ class MyStyle_Help {
 		// Return the contextual help unaltered if this isn't one of our pages.
 		if (
 			( ! $screen )
-			|| ( $mystyle_hook !== substr( $screen->id, 0, strlen( $mystyle_hook ) ) )
+			|| (
+					( $mystyle_hook !== substr( $screen->id, 0, strlen( $mystyle_hook ) ) )
+					&& ($screen->id !== 'toplevel_page_' . $mystyle_hook)
+				)
 		) {
 			return;
 		}
