@@ -70,36 +70,36 @@ class MyStyle_Passthru_Codec {
 		if ( ! empty( $attributes ) ) {
 			$passthru['attributes'] = $attributes;
 		}
-        
-        // Add custom template data if enabled
-        $mystyle_custom_template_enabled = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template', true ) ;
-        
-        if( 'yes' === $mystyle_custom_template_enabled ) {
-            $passthru['width']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_width', true ) ;
-            $passthru['height'] = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_height', true ) ;
-            $passthru['shape']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_shape', true ) ;
-            
-            if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_color', true )) {
-                $passthru['color']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_color', true ) ;
-            }
-            
-            if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bgimg', true )) {
-                $passthru['tbgimg']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bgimg', true ) ;
-            }
-            
-            if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_fgimg', true )) {
-                $passthru['tfgimg']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_fgimg', true ) ;
-            }
-            
-            if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bleed', true )) {
-                $passthru['bleed']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bleed', true ) ;
-            }
-            
-            if(get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_boxshadow', true ) === 'yes') {
-                $passthru['boxshadow']  = 1 ;
-            }
-        }
-        
+
+		// Add custom template data if enabled
+		$mystyle_custom_template_enabled = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template', true );
+
+		if ( 'yes' === $mystyle_custom_template_enabled ) {
+			$passthru['width']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_width', true );
+			$passthru['height'] = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_height', true );
+			$passthru['shape']  = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_shape', true );
+
+			if ( get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_color', true ) ) {
+				$passthru['color'] = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_color', true );
+			}
+
+			if ( get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bgimg', true ) ) {
+				$passthru['tbgimg'] = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bgimg', true );
+			}
+
+			if ( get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_fgimg', true ) ) {
+				$passthru['tfgimg'] = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_fgimg', true );
+			}
+
+			if ( get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bleed', true ) ) {
+				$passthru['bleed'] = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_bleed', true );
+			}
+
+			if ( get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_boxshadow', true ) === 'yes' ) {
+				$passthru['boxshadow'] = 1;
+			}
+		}
+
 		return $passthru;
 	}
 

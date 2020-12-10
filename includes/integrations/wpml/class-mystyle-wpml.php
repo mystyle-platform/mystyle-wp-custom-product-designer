@@ -124,6 +124,7 @@ class MyStyle_Wpml {
 
 	/**
 	 * Gets the default WPML language.
+	 *
 	 * @return string|null Returns the default WPML language (or null) if not
 	 * set.
 	 */
@@ -172,7 +173,7 @@ class MyStyle_Wpml {
 		if ( null !== $current_lang ) {
 			$default_lang = $this->get_default_language();
 
-			if ( null !== $default_lang) {
+			if ( null !== $default_lang ) {
 				if ( $current_lang !== $default_lang ) {
 					$ret = $current_lang;
 				}

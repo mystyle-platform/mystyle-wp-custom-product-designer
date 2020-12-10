@@ -41,7 +41,7 @@ class MyStyle_Admin {
 		wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js' );
 		wp_enqueue_script( 'myStyleAdminJavaScript' );
 	}
-    
+
 
 	/**
 	 * Add settings link on plugin page.

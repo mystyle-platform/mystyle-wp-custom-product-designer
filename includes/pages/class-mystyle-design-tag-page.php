@@ -11,21 +11,21 @@
  * MyStyle_MyDesigns class.
  */
 class MyStyle_DesignTag_Page {
-    
-    /**
+
+	/**
 	 * Singleton class instance.
 	 *
 	 * @var MyStyle_DesignTag_Page
 	 */
 	private static $instance;
-    
-    /**
+
+	/**
 	 * Stores the current user (when the class is instantiated as a singleton).
 	 *
 	 * @var WP_User
 	 */
 	private $user;
-    
+
 	/**
 	 * Stores the current session (when the class is instantiated as a
 	 * singleton).
@@ -33,14 +33,14 @@ class MyStyle_DesignTag_Page {
 	 * @var MyStyle_Session
 	 */
 	private $session;
-    
+
 	/**
 	 * Pager for the design profile index.
 	 *
 	 * @var MyStyle_Pager
 	 */
 	private $pager;
-    
+
 	/**
 	 * Stores the currently thrown exception (if any) (when the class is
 	 * instantiated as a singleton).
@@ -59,20 +59,20 @@ class MyStyle_DesignTag_Page {
 	 * @var int
 	 */
 	private $http_response_code;
-    
-    public function __construct() {
-        $this->http_response_code = 200 ;
-        
-        add_action( 'posts_pre_query', array( &$this, 'alter_query'), 25, 2 );
-        add_action( 'template_redirect', array( &$this, 'set_pager' ) );
-        
-        add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail'), 10, 3 ) ;
-        add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src'), 10, 4 ) ;
-        add_filter( 'post_link', array( &$this, 'post_link'), 10, 3 ) ;
+
+	public function __construct() {
+		$this->http_response_code = 200;
+
+		add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 25, 2 );
+		add_action( 'template_redirect', array( &$this, 'set_pager' ) );
+
+		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
+		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
+		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
 
 	}
-    
-    /**
+
+	/**
 	 * Function to determine if the post exists.
 	 *
 	 * @return boolean Returns true if the page exists, otherwise false.
@@ -88,8 +88,8 @@ class MyStyle_DesignTag_Page {
 
 		return $exists;
 	}
-    
-    /**
+
+	/**
 	 * Function to create the page.
 	 *
 	 * @return number Returns the page id of the Design Profile page.
@@ -105,13 +105,13 @@ class MyStyle_DesignTag_Page {
 			'post_status'  => 'draft',
 			'post_type'    => 'post',
 		);
-		$post_id             = wp_insert_post( $design_tag_page );
-        update_post_meta( $post_id, '_thumbnail_id', 1 ) ;
+		$post_id         = wp_insert_post( $design_tag_page );
+		update_post_meta( $post_id, '_thumbnail_id', 1 );
 
 		// Store the design profile page's id in the database.
-		$options                                       = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		$options                                   = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		$options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] = $post_id;
-		$updated                                       = update_option( MYSTYLE_OPTIONS_NAME, $options );
+		$updated                                   = update_option( MYSTYLE_OPTIONS_NAME, $options );
 
 		if ( ! $updated ) {
 			wp_delete_post( $post_id );
@@ -120,184 +120,180 @@ class MyStyle_DesignTag_Page {
 
 		return $post_id;
 	}
-    
-    /**
+
+	/**
 	 * Function to fix the post_status.
 	 *
 	 * @return number Returns the page id of the Design Profile page.
 	 */
 	public static function fix() {
-        
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-        
-        $post_id = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ;
-        
-        $draft_post = array(
-            'ID'           => $post_id,
-            'post_status' => 'draft',
-        );
-		
-        $update_post_id = wp_update_post( $draft_post ) ;
-		
-        return $update_post_id ;
+
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+
+		$post_id = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
+
+		$draft_post = array(
+			'ID'          => $post_id,
+			'post_status' => 'draft',
+		);
+
+		$update_post_id = wp_update_post( $draft_post );
+
+		return $update_post_id;
 	}
-    
-    /**
-     * Alter WP_QUERY pager information based in the MyStyle_Pager class
-     *
-     */
-    public function set_pager() {
-        global $wp_query;
-        if(isset($wp_query->query['design_tag'])) {
-            
 
+	/**
+	 * Alter WP_QUERY pager information based in the MyStyle_Pager class
+	 */
+	public function set_pager() {
+		global $wp_query;
+		if ( isset( $wp_query->query['design_tag'] ) ) {
 
-            if ( !$wp_query->is_main_query() )
-              return;
-            
-            $wp_query->max_num_pages = $this->pager->get_page_count() ;
-        }
-    }
-    
-    /**
-     * Alter WP_QUERY to return designs based on URL query
-     * @since 3.14.0
-     *
-     */
-    public function alter_query( $posts, $q ) {
-        
-        if($q->is_main_query()) {
-            
-            if(isset($q->query['design_tag'])) {
-                global $wpdb ;
-                
-                $wp_user = wp_get_current_user() ;
-                
-                $session = MyStyle()->get_session();
-                
-                $term_id = $q->queried_object->term_id ;
-                
-                // Create a new pager.
-                $this->pager = new MyStyle_Pager();
-                
-                // Designs per page.
-                $this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
-                
-                // Current page number.
-                $this->pager->set_current_page_number(
-                    max( 1, $q->query['paged'] )
-                );
-                
-                $page_limit = $this->pager->get_items_per_page() ;
-                $page_num = 1 ;
-                
-                if(null !== $q->query['paged']) {
-                    $page_num = ($this->pager->get_current_page_number() - 1) * $page_limit ;
-                }
-                
-                $design_objs = MyStyle_DesignManager::get_designs_by_term_id( $term_id, $wp_user, $session, $page_limit, $page_num) ;
-                
-                $designs = array() ;
-                
-                foreach( $design_objs as $design ) {
-                    try {
-                        $title = ( "" == $design->get_title() ? "Design " . $design->get_design_id() : $design->get_title() ) ;
-                    
-                        $product_id = $design->get_product_id() ;
+			if ( ! $wp_query->is_main_query() ) {
+				return;
+			}
 
-                        $product = wc_get_product( $product_id ) ;
+			$wp_query->max_num_pages = $this->pager->get_page_count();
+		}
+	}
 
-                        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+	/**
+	 * Alter WP_QUERY to return designs based on URL query
+	 *
+	 * @since 3.14.0
+	 */
+	public function alter_query( $posts, $q ) {
 
-                        $design_post = new stdClass() ;
-                        $design_post->ID = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ; 
-                        $design_post->design_id = $design->get_design_id() ;
-                        $design_post->post_author = $design->get_user_id() ;
-                        $design_post->post_name = $title ;
-                        $design_post->post_type = 'Design' ;
-                        $design_post->post_title = $title ;
-                        $design_post->post_content = $title . ' custom ' . $product->get_name() ;
+		if ( $q->is_main_query() ) {
 
-                        $designs[] = $design_post ;
-                    } catch ( MyStyle_Unauthorized_Exception $ex ) {
-                        
-                    }
-                }
-                
-                $this->pager->set_items( $designs );
-                
-                // Total items.
-                $term_count = MyStyle_DesignManager::get_total_term_count( $term_id ) ;
-                
-                $this->pager->set_total_item_count(
-                    $term_count
-                );
-                
-                return $designs ;
-            }
-        }
-        
-        return $posts ;
-         
-    }
-    
-    /**
-     * Force showing post thumbnail on design archive pages
-     */
-    public function has_post_thumbnail( $has_thumbnail, $post, $thumbnail_id ) {
-        
-        global $wp_query ;
-        
-        if(isset($wp_query->query['design_tag'])) {
-            return true ;
-        }
-        
-        return $has_thumbnail ;
-    }
-    
-    /**
-     * Load the current designs thumbnail image in The_Loop
-     *
-     */
-    public function wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) {
-        global $wp_query ;
-        
-        if(isset($wp_query->query['design_tag'])) {
-            global $post ;
-            
-            $wp_user = wp_get_current_user() ;
-            
-            $session = MyStyle()->get_session();
+			if ( isset( $q->query['design_tag'] ) ) {
+				global $wpdb;
 
-            $design = MyStyle_DesignManager::get( $post->design_id, $wp_user, $session ) ;
-            
-            if($design !== null) {
-                $image[0] = $design->get_web_url() ;
-                $image[1] = 200 ;
-                $image[2] = 200 ;
-            }
-            
-            return $image ;
-        }
-        
-        return $image ;
-    }
-    
-    /**
-     * Load the current designs permalink in The_Loop
-     *
-     */
-    public function post_link( $permalink, $post, $leavename ) {
-        
-        global $wp_query ;
-        
-        if(isset($wp_query->query['design_tag'])) {
-            return get_site_url() . '/designs/' . $post->design_id ;
-        }
-        
-        return $permalink ;
-    }
-    
+				$wp_user = wp_get_current_user();
+
+				$session = MyStyle()->get_session();
+
+				$term_id = $q->queried_object->term_id;
+
+				// Create a new pager.
+				$this->pager = new MyStyle_Pager();
+
+				// Designs per page.
+				$this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
+
+				// Current page number.
+				$this->pager->set_current_page_number(
+					max( 1, $q->query['paged'] )
+				);
+
+				$page_limit = $this->pager->get_items_per_page();
+				$page_num   = 1;
+
+				if ( null !== $q->query['paged'] ) {
+					$page_num = ( $this->pager->get_current_page_number() - 1 ) * $page_limit;
+				}
+
+				$design_objs = MyStyle_DesignManager::get_designs_by_term_id( $term_id, $wp_user, $session, $page_limit, $page_num );
+
+				$designs = array();
+
+				foreach ( $design_objs as $design ) {
+					try {
+						$title = ( '' == $design->get_title() ? 'Design ' . $design->get_design_id() : $design->get_title() );
+
+						$product_id = $design->get_product_id();
+
+						$product = wc_get_product( $product_id );
+
+						$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+
+						$design_post               = new stdClass();
+						$design_post->ID           = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
+						$design_post->design_id    = $design->get_design_id();
+						$design_post->post_author  = $design->get_user_id();
+						$design_post->post_name    = $title;
+						$design_post->post_type    = 'Design';
+						$design_post->post_title   = $title;
+						$design_post->post_content = $title . ' custom ' . $product->get_name();
+
+						$designs[] = $design_post;
+					} catch ( MyStyle_Unauthorized_Exception $ex ) {
+
+					}
+				}
+
+				$this->pager->set_items( $designs );
+
+				// Total items.
+				$term_count = MyStyle_DesignManager::get_total_term_count( $term_id );
+
+				$this->pager->set_total_item_count(
+					$term_count
+				);
+
+				return $designs;
+			}
+		}
+
+		return $posts;
+
+	}
+
+	/**
+	 * Force showing post thumbnail on design archive pages
+	 */
+	public function has_post_thumbnail( $has_thumbnail, $post, $thumbnail_id ) {
+
+		global $wp_query;
+
+		if ( isset( $wp_query->query['design_tag'] ) ) {
+			return true;
+		}
+
+		return $has_thumbnail;
+	}
+
+	/**
+	 * Load the current designs thumbnail image in The_Loop
+	 */
+	public function wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) {
+		global $wp_query;
+
+		if ( isset( $wp_query->query['design_tag'] ) ) {
+			global $post;
+
+			$wp_user = wp_get_current_user();
+
+			$session = MyStyle()->get_session();
+
+			$design = MyStyle_DesignManager::get( $post->design_id, $wp_user, $session );
+
+			if ( $design !== null ) {
+				$image[0] = $design->get_web_url();
+				$image[1] = 200;
+				$image[2] = 200;
+			}
+
+			return $image;
+		}
+
+		return $image;
+	}
+
+	/**
+	 * Load the current designs permalink in The_Loop
+	 */
+	public function post_link( $permalink, $post, $leavename ) {
+
+		global $wp_query;
+
+		if ( isset( $wp_query->query['design_tag'] ) ) {
+			return get_site_url() . '/designs/' . $post->design_id;
+		}
+
+		return $permalink;
+	}
+
 	/**
 	 * Sets the current http response code.
 	 *
@@ -326,8 +322,8 @@ class MyStyle_DesignTag_Page {
 			return $this->http_response_code;
 		}
 	}
-    
-    /**
+
+	/**
 	 * Gets the singleton instance.
 	 *
 	 * @return MyStyle_MyDesigns Returns the singleton instance of

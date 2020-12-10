@@ -126,8 +126,8 @@ class MyStyle_Customize_Page {
 		MyStyle_Design $design,
 		$cart_item_key = null,
 		$passthru = null,
-        $product_id = null
-        ) {
+		$product_id = null
+		) {
 
 		if ( null === $passthru ) {
 
@@ -140,39 +140,39 @@ class MyStyle_Customize_Page {
 					'add-to-cart' => $design->get_product_id(),
 				);
 			}
-            
+
 			$passthru = array(
 				'post' => $post_data,
 			);
-            
-            // Add custom template data if enabled
-            $mystyle_custom_template_enabled = get_post_meta( $design->get_product_id(), '_mystyle_custom_template', true ) ;
 
-            if( 'yes' === $mystyle_custom_template_enabled ) {
-                $passthru['width']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_width', true ) ;
-                $passthru['height'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_height', true ) ;
-                $passthru['shape']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_shape', true ) ;
-                
-                if(get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true )) {
-                    $passthru['color']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true ) ;
-                }
+			// Add custom template data if enabled
+			$mystyle_custom_template_enabled = get_post_meta( $design->get_product_id(), '_mystyle_custom_template', true );
 
-                if(get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bgimg', true )) {
-                    $passthru['tbgimg']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bgimg', true ) ;
-                }
+			if ( 'yes' === $mystyle_custom_template_enabled ) {
+				$passthru['width']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_width', true );
+				$passthru['height'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_height', true );
+				$passthru['shape']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_shape', true );
 
-                if(get_post_meta( $design->get_product_id(), '_mystyle_custom_template_fgimg', true )) {
-                    $passthru['tfgimg']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_fgimg', true ) ;
-                }
+				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true ) ) {
+					$passthru['color'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true );
+				}
 
-                if(get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bleed', true )) {
-                    $passthru['bleed']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bleed', true ) ;
-                }
-                
-                if(get_post_meta( $design->get_product_id(), '_mystyle_custom_template_boxshadow', true ) === 'yes') {
-                    $passthru['boxshadow']  = 1 ;
-                }
-            }
+				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bgimg', true ) ) {
+					$passthru['tbgimg'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bgimg', true );
+				}
+
+				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_fgimg', true ) ) {
+					$passthru['tfgimg'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_fgimg', true );
+				}
+
+				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bleed', true ) ) {
+					$passthru['bleed'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bleed', true );
+				}
+
+				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_boxshadow', true ) === 'yes' ) {
+					$passthru['boxshadow'] = 1;
+				}
+			}
 		}
 
 		if ( null !== $cart_item_key ) {
@@ -181,13 +181,13 @@ class MyStyle_Customize_Page {
 
 		$passthru_encoded = base64_encode( wp_json_encode( $passthru ) );
 		$customize_args   = array(
-			'product_id' => ($product_id === null ? $design->get_product_id() : $product_id),
+			'product_id' => ( $product_id === null ? $design->get_product_id() : $product_id ),
 			'design_id'  => $design->get_design_id(),
 			'h'          => $passthru_encoded,
 		);
-        
+
 		$customizer_url = add_query_arg( $customize_args, get_permalink( self::get_id() ) );
-        
+
 		return $customizer_url;
 	}
 
@@ -230,35 +230,35 @@ class MyStyle_Customize_Page {
 			$passthru = array(
 				'post' => $post_data,
 			);
-            
-            // Add custom template data if enabled
-            $mystyle_custom_template_enabled = get_post_meta( $design->get_product_id(), '_mystyle_custom_template', true ) ;
 
-            if( 'yes' === $mystyle_custom_template_enabled ) {
-                $passthru['width']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_width', true ) ;
-                $passthru['height'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_height', true ) ;
-                $passthru['shape']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_shape', true ) ;
-                
-                if(get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true )) {
-                    $passthru['color']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true ) ;
-                }
-                
-                if(get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bgimg', true )) {
-                    $passthru['tbgimg']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bgimg', true ) ;
-                }
+			// Add custom template data if enabled
+			$mystyle_custom_template_enabled = get_post_meta( $design->get_product_id(), '_mystyle_custom_template', true );
 
-                if(get_post_meta( $design->get_product_id(), '_mystyle_custom_template_fgimg', true )) {
-                    $passthru['tfgimg']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_fgimg', true ) ;
-                }
-                
-                if(get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bleed', true )) {
-                    $passthru['bleed']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bleed', true ) ;
-                }
-                
-                if(get_post_meta( $design->get_product_id(), '_mystyle_custom_template_boxshadow', true ) === 'yes') {
-                    $passthru['boxshadow']  = 1 ;
-                }
-            }
+			if ( 'yes' === $mystyle_custom_template_enabled ) {
+				$passthru['width']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_width', true );
+				$passthru['height'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_height', true );
+				$passthru['shape']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_shape', true );
+
+				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true ) ) {
+					$passthru['color'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true );
+				}
+
+				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bgimg', true ) ) {
+					$passthru['tbgimg'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bgimg', true );
+				}
+
+				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_fgimg', true ) ) {
+					$passthru['tfgimg'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_fgimg', true );
+				}
+
+				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bleed', true ) ) {
+					$passthru['bleed'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bleed', true );
+				}
+
+				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_boxshadow', true ) === 'yes' ) {
+					$passthru['boxshadow'] = 1;
+				}
+			}
 		}
 
 		if ( null !== $cart_item_key ) {

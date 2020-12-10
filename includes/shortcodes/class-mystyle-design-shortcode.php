@@ -26,7 +26,6 @@
  *    a shortcode attribute (as described above) or via a query param
  *   (example: "http://www.example.com/somepage?design_id=123").
  *
- *
  * @package MyStyle
  * @since 3.4.0
  */
@@ -67,7 +66,6 @@ abstract class MyStyle_Design_Shortcode {
 			}
 		}
 
-
 		return $out;
 	}
 
@@ -87,7 +85,7 @@ abstract class MyStyle_Design_Shortcode {
 		// If not in the URL, get the design from the shortcode attributes.
 		if ( null === $design ) {
 			$design_id = $atts['design_id'];
-			$design = MyStyle_DesignManager::get(
+			$design    = MyStyle_DesignManager::get(
 				$design_id,
 				wp_get_current_user(),
 				MyStyle()->get_session()
@@ -131,28 +129,28 @@ abstract class MyStyle_Design_Shortcode {
 
 		// If tag is passed, serve designs with the specified tag.
 		if ( isset( $atts['tag'] ) ) {
-			$tag = $atts['tag'] ;
+			$tag = $atts['tag'];
 
-			$out = self::output_tagged_designs( $tag, $count ) ;
+			$out = self::output_tagged_designs( $tag, $count );
 		} else {
 			// Serve random designs.
-			$out = self::output_random_designs( $count ) ;
+			$out = self::output_random_designs( $count );
 		}
 
 		return $out;
 	}
 
-    /**
-     * Private helper method that return the output for the random designs
+	/**
+	 * Private helper method that return the output for the random designs
 	 * gallery.
-     *
+	 *
 	 * @param integer $count The number of designs to display.
-     * @return string Returns the output for the random designs gallery (as a
+	 * @return string Returns the output for the random designs gallery (as a
 	 * (string).
-     */
-    private static function output_random_designs( $count ) {
+	 */
+	private static function output_random_designs( $count ) {
 
-        // Create a new pager.
+		// Create a new pager.
 		$pager = new MyStyle_Pager();
 
 		// Designs per page.
@@ -164,35 +162,35 @@ abstract class MyStyle_Design_Shortcode {
 		$designs = MyStyle_DesignManager::get_random_designs( $count, 1 );
 		$pager->set_items( $designs );
 
-        // ---------- Call the view layer ------------------ //
+		// ---------- Call the view layer ------------------ //
 		ob_start();
 		require MYSTYLE_TEMPLATES . 'design-profile/index.php';
 		$out = ob_get_contents();
 		ob_end_clean();
 
-        return $out ;
-    }
+		return $out;
+	}
 
-    /**
-     * Private helper method that returns the output for the gallery of designs
+	/**
+	 * Private helper method that returns the output for the gallery of designs
 	 * for a specific tag.
-     *
+	 *
 	 * @param string  $tag   The tag to serve.
 	 * @param integer $count The number of designs to display.
-     * @return string Returns the output for the tagged design gallery (as a
+	 * @return string Returns the output for the tagged design gallery (as a
 	 * string).
-     */
-    private static function output_tagged_designs( $tag, $count ) {
+	 */
+	private static function output_tagged_designs( $tag, $count ) {
 
-        $term = get_term_by( 'name', $tag, 'design_tag' );
+		$term = get_term_by( 'name', $tag, 'design_tag' );
 
-        $term_id = $term->term_id;
+		$term_id = $term->term_id;
 
-        $user = wp_get_current_user();
+		$user = wp_get_current_user();
 
-        $session = MyStyle()->get_session();
+		$session = MyStyle()->get_session();
 
-        // Create a new pager.
+		// Create a new pager.
 		$pager = new MyStyle_Pager();
 
 		// Designs per page.
@@ -203,15 +201,15 @@ abstract class MyStyle_Design_Shortcode {
 		// Pager items.
 		$designs = MyStyle_DesignManager::get_designs_by_term_id( $term_id, $user, $session, $count, 1 );
 
-        $pager->set_items( $designs );
+		$pager->set_items( $designs );
 
-        // ---------- Call the view layer ------------------ //
+		// ---------- Call the view layer ------------------ //
 		ob_start();
 		require MYSTYLE_TEMPLATES . 'design-profile/index.php';
 		$out = ob_get_contents();
 		ob_end_clean();
 
-        return $out;
-    }
+		return $out;
+	}
 
 }

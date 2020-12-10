@@ -27,24 +27,23 @@ class MyStyle_DesignTags_Page {
 		add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ) );
 	}
 
-	
-    /** 
-     * Add Design Tags link to admin menu
-     *
-     */
-    public function add_page_to_menu() {
-        $mystyle_hook = 'mystyle';
-        
+
+	/**
+	 * Add Design Tags link to admin menu
+	 */
+	public function add_page_to_menu() {
+		$mystyle_hook = 'mystyle';
+
 		add_submenu_page(
-            $mystyle_hook, 
-            'Design Tags', 
-            'Design Tags', 
-            'manage_options',  
-            'edit-tags.php?taxonomy=design_tag',
-            '',
-            62
-        );
-    }
+			$mystyle_hook,
+			'Design Tags',
+			'Design Tags',
+			'manage_options',
+			'edit-tags.php?taxonomy=design_tag',
+			'',
+			62
+		);
+	}
 
 	/**
 	 * Get the singleton instance.

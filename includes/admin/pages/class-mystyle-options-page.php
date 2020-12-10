@@ -169,9 +169,9 @@ class MyStyle_Options_Page {
 			'Settings',
 			'Settings',
 			'manage_options',
-            $mystyle_hook . '_settings',
+			$mystyle_hook . '_settings',
 			array( &$this, 'render_page' ),
-            100
+			100
 		);
 	}
 

@@ -80,7 +80,6 @@ abstract class MyStyle_Customizer_Shortcode {
 			$passthru_arr['post']['add-to-cart'] = (int) $product_id;
 			$passthru                            = base64_encode( wp_json_encode( $passthru_arr ) );
 		}
-        
 
 		// Product Settings - Default Design ID.
 		// If no reload design id from url, use default design ID if there is one.
@@ -96,7 +95,7 @@ abstract class MyStyle_Customizer_Shortcode {
 		} else {
 			$settings = array();
 		}
-        
+
 		// Set the redirect_url (if it wasn't passed in).
 		if ( ! array_key_exists( 'redirect_url', $settings ) ) {
 			$settings['redirect_url'] = MyStyle_Handoff::get_url();
@@ -124,9 +123,8 @@ abstract class MyStyle_Customizer_Shortcode {
 
 		// Base64 encode settings.
 		$encoded_settings = base64_encode( wp_json_encode( $settings ) );
-        
-        //echo '<pre>' ; var_dump(json_decode(base64_decode($passthru))) ; echo '</pre>' ;
-        
+
+		// echo '<pre>' ; var_dump(json_decode(base64_decode($passthru))) ; echo '</pre>' ;
 		// Add all vars to URL.
 		$customizer_query_string = "?app_id=$mystyle_app_id" .
 				"&amp;product_id=$mystyle_template_id" .
@@ -137,15 +135,13 @@ abstract class MyStyle_Customizer_Shortcode {
 
 		// ---------- Variables for use by the view layer ---------
 		$flash_customizer_url = 'http://customizer.ogmystyle.com/' . $customizer_query_string;
-		
-        //set the customizer to dev if parameter isset
-        if(isset($_GET['customizerdev'])) {
-            $html5_customizer_url = 'http://sean.base.customizer-js.api.dev.ogmystyle.com/' . $customizer_query_string;
-        }
-        else {
-            $html5_customizer_url = '//customizer-js.ogmystyle.com/' . $customizer_query_string;
-        }
-        
+
+		// set the customizer to dev if parameter isset
+		if ( isset( $_GET['customizerdev'] ) ) {
+			$html5_customizer_url = 'http://sean.base.customizer-js.api.dev.ogmystyle.com/' . $customizer_query_string;
+		} else {
+			$html5_customizer_url = '//customizer-js.ogmystyle.com/' . $customizer_query_string;
+		}
 
 		// Force mobile from plugin admin settings?
 		$enable_flash = MyStyle_Options::enable_flash();

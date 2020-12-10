@@ -41,12 +41,11 @@ class MyStyle_Help {
 			( ! $screen )
 			|| (
 					( $mystyle_hook !== substr( $screen->id, 0, strlen( $mystyle_hook ) ) )
-					&& ($screen->id !== 'toplevel_page_' . $mystyle_hook)
+					&& ( $screen->id !== 'toplevel_page_' . $mystyle_hook )
 				)
 		) {
 			return;
 		}
-
 
 		$overview_content = '
 		<h1>MyStyle Custom Product Designer Help</h1>

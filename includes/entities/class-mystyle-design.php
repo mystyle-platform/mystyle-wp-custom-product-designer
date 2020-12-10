@@ -139,7 +139,7 @@ class MyStyle_Design implements MyStyle_Entity {
 	 * @var email|null
 	 */
 	private $email;
-    
+
 	/**
 	 * The title that was submitted with the design (if any).
 	 *
@@ -638,7 +638,7 @@ class MyStyle_Design implements MyStyle_Entity {
 	public function get_email() {
 		return $this->email;
 	}
-    
+
 	/**
 	 * Gets the value of title.
 	 *

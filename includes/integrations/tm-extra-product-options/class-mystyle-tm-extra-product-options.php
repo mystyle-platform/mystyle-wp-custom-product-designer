@@ -40,12 +40,12 @@ class MyStyle_Tm_Extra_Product_Options {
 	 * in later hooks).
 	 *
 	 * @param boolean $passed Whether or not the item passed validation.
-	 * @param int    $product_id The id of the product being added.
-	 * @param int    $qty The quantity of items being added.
-	 * @param int    $variation_id ID of the variation being added to the cart.
-	 * @param array  $variations Attribute values.
-	 * @param array  $cart_item_data Extra cart item data that we want to pass
-	 * into the item.
+	 * @param int     $product_id The id of the product being added.
+	 * @param int     $qty The quantity of items being added.
+	 * @param int     $variation_id ID of the variation being added to the cart.
+	 * @param array   $variations Attribute values.
+	 * @param array   $cart_item_data Extra cart item data that we want to pass
+	 *  into the item.
 	 * @return string|void
 	 */
 	public function stash_mystyle_data(
@@ -79,7 +79,7 @@ class MyStyle_Tm_Extra_Product_Options {
 		$old_cart_item_key = THEMECOMPLETE_EPO()->cart_edit_key;
 
 		// Stash the mystyle_data (if it exists).
-		if ( isset( $cart->cart_contents[ $old_cart_item_key ]['mystyle_data']) ) {
+		if ( isset( $cart->cart_contents[ $old_cart_item_key ]['mystyle_data'] ) ) {
 			$this->mystyle_data = $cart->cart_contents[ $old_cart_item_key ]['mystyle_data'];
 		}
 

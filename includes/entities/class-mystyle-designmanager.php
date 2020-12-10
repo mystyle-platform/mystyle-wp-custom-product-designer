@@ -33,7 +33,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		$design_id,
 		WP_User $user = null,
 		MyStyle_Session $session = null,
-        $skip_security = false
+		$skip_security = false
 	) {
 		global $wpdb;
 
@@ -49,7 +49,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		// -------------- SECURITY CHECK ------------ //
-		if ( null !== $design && !$skip_security ) {
+		if ( null !== $design && ! $skip_security ) {
 			if ( $design->get_access() === MyStyle_Access::ACCESS_PRIVATE ) {
 				// Check if created by current/passed session.
 				if (
@@ -216,54 +216,56 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $result;
 	}
-    
-    /**
-     *
-     * Set the Design title
-     *
-     *
-     */
-    public static function set_title( $design_id, $title ) {
-        global $wpdb ;
-        
-        $where = array( MyStyle_Design::get_primary_key() => $design_id, 'user_id' => get_current_user_id() ) ;
-        
-        if(current_user_can('administrator')) {
-            $where = array( MyStyle_Design::get_primary_key() => $design_id ) ;
-        }
-        
-        $result = $wpdb->update(
-            MyStyle_Design::get_table_name(),
-            array( 'ms_title' => $title ),
-            $where
-        ) ;
-        
-        return $result ;
-    }
-    
-    /**
-     *
-     * Set the Design Access
-     *
-     *
-     */
-    public static function set_access( $design_id, $access ) {
-        global $wpdb ;
-        
-        $where = array( MyStyle_Design::get_primary_key() => $design_id, 'user_id' => get_current_user_id() ) ;
-        
-        if(current_user_can('administrator')) {
-            $where = array( MyStyle_Design::get_primary_key() => $design_id ) ;
-        }
-        
-        $result = $wpdb->update(
-            MyStyle_Design::get_table_name(),
-            array( 'ms_access' => $access ),
-            $where
-        ) ;
-        
-        return $result ;
-    }
+
+	/**
+	 *
+	 * Set the Design title
+	 */
+	public static function set_title( $design_id, $title ) {
+		global $wpdb;
+
+		$where = array(
+			MyStyle_Design::get_primary_key() => $design_id,
+			'user_id'                         => get_current_user_id(),
+		);
+
+		if ( current_user_can( 'administrator' ) ) {
+			$where = array( MyStyle_Design::get_primary_key() => $design_id );
+		}
+
+		$result = $wpdb->update(
+			MyStyle_Design::get_table_name(),
+			array( 'ms_title' => $title ),
+			$where
+		);
+
+		return $result;
+	}
+
+	/**
+	 *
+	 * Set the Design Access
+	 */
+	public static function set_access( $design_id, $access ) {
+		global $wpdb;
+
+		$where = array(
+			MyStyle_Design::get_primary_key() => $design_id,
+			'user_id'                         => get_current_user_id(),
+		);
+
+		if ( current_user_can( 'administrator' ) ) {
+			$where = array( MyStyle_Design::get_primary_key() => $design_id );
+		}
+
+		$result = $wpdb->update(
+			MyStyle_Design::get_table_name(),
+			array( 'ms_access' => $access ),
+			$where
+		);
+
+		return $result;
+	}
 
 	/**
 	 * Retrieve designs from the database.
@@ -321,8 +323,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $designs;
 	}
-    
-    /**
+
+	/**
 	 * Retrieve user designs from the database.
 	 *
 	 * The designs are filtered for the passed user based on these rules:
@@ -344,25 +346,22 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	public static function get_user_designs(
 		$per_page = 250,
 		$page_number = 1,
-        $user
+		$user
 	) {
 		global $wpdb;
 
 		$sql = 'SELECT * FROM ' . MyStyle_Design::get_table_name() . ' ';
-        
-        if(is_string($user)) {
-            $sql .= ' WHERE (ms_email = "' . $user . '") AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC ;
-        }
-        else {
-            $current_user_id = get_current_user_id() ;
-            if($current_user_id == $user->ID){
-                $sql .= ' WHERE (user_id = ' . $user->ID . ') ' ;
-            }
-            else {
-                $sql .= ' WHERE (user_id = ' . $user->ID . ') AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC ;
-            }
-            
-        }
+
+		if ( is_string( $user ) ) {
+			$sql .= ' WHERE (ms_email = "' . $user . '") AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC;
+		} else {
+			$current_user_id = get_current_user_id();
+			if ( $current_user_id == $user->ID ) {
+				$sql .= ' WHERE (user_id = ' . $user->ID . ') ';
+			} else {
+				$sql .= ' WHERE (user_id = ' . $user->ID . ') AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC;
+			}
+		}
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
@@ -389,8 +388,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $designs;
 	}
-    
-    /**
+
+	/**
 	 * Retrieve random designs from the database.
 	 *
 	 * The designs are filtered for the passed user based on these rules:
@@ -421,7 +420,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		// Add security WHERE clause.
 		$sql .= self::getSecurityWhereClause( 'WHERE', $user );
 
-        $sql .= ' ORDER BY RAND()';
+		$sql .= ' ORDER BY RAND()';
 
 		$sql .= " LIMIT $per_page";
 
@@ -441,50 +440,50 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $designs;
 	}
-    
-    /**
+
+	/**
 	 * Retrieve designs by term id.
 	 *
 	 * @param $term_id Int
-	 * @param int     $per_page The number of designs to show per page (default:
-	 * 250).
-	 * @param int     $page_number The page number of the set of designs that you
-	 * want to get (default: 1).
+	 * @param int         $per_page The number of designs to show per page (default:
+	 *     250).
+	 * @param int         $page_number The page number of the set of designs that you
+	 *     want to get (default: 1).
 	 * @global $wpdb;
 	 * @return mixed Returns an array of MyStyle_Design objects or null if none
 	 * are found.
 	 */
 	public static function get_designs_by_term_id(
 		$term_id,
-        WP_User $user = null,
+		WP_User $user = null,
 		MyStyle_Session $session = null,
-        $per_page = 250,
+		$per_page = 250,
 		$page_number = 1
 	) {
 		global $wpdb;
 
-		$sql = "SELECT object_id FROM " . $wpdb->prefix . "term_relationships WHERE term_taxonomy_id = " . $term_id . " LIMIT " . $per_page ; 
-                
-        if(null !== $q->query['paged']) {
-            $page_number = ($page_number - 1) * $per_page ;
-            $sql .= " OFFSET " . $page_number ;
-        }
+		$sql = 'SELECT object_id FROM ' . $wpdb->prefix . 'term_relationships WHERE term_taxonomy_id = ' . $term_id . ' LIMIT ' . $per_page;
 
-        $terms = $wpdb->get_results($sql) ;
+		if ( null !== $q->query['paged'] ) {
+			$page_number = ( $page_number - 1 ) * $per_page;
+			$sql        .= ' OFFSET ' . $page_number;
+		}
 
-        $designs = array() ;
+		$terms = $wpdb->get_results( $sql );
 
-        foreach( $terms as $term) {
-            try {
-                
-                $design = MyStyle_DesignManager::get( $term->object_id, $user, $session ) ;
-                
-                array_push( $designs, $design );
-                
-            } catch ( MyStyle_Unauthorized_Exception $ex ) {
+		$designs = array();
 
-            }
-        }
+		foreach ( $terms as $term ) {
+			try {
+
+				$design = MyStyle_DesignManager::get( $term->object_id, $user, $session );
+
+				array_push( $designs, $design );
+
+			} catch ( MyStyle_Unauthorized_Exception $ex ) {
+
+			}
+		}
 
 		return $designs;
 	}
@@ -517,11 +516,10 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $count;
 	}
-    
-    /**
+
+	/**
 	 * Retrieve the total number of user designs (filtered by WP_user->ID or email string) from
 	 * the db.
-	 *
 	 *
 	 * @param $user The current user. Either WP_User OR user email string.
 	 * @param $access (optional) Design Access.
@@ -532,29 +530,27 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		global $wpdb;
 
 		$sql = 'SELECT COUNT(' . MyStyle_Design::get_primary_key() . ') ' .
-				'FROM ' . MyStyle_Design::get_table_name() ;
-        
-        if( null == $access ) {
-            $access = MyStyle_Access::ACCESS_PUBLIC ;
-        }
-        
-        $sql .= ' WHERE ms_access = ' . $access ;
-        
-        if( is_string( $user )) {
-            $sql .= ' AND ms_email = ' . $user ;
-        }
-        else {
-            $sql .= ' AND user_id = ' . $user->ID ;
-        }
-        
+				'FROM ' . MyStyle_Design::get_table_name();
+
+		if ( null == $access ) {
+			$access = MyStyle_Access::ACCESS_PUBLIC;
+		}
+
+		$sql .= ' WHERE ms_access = ' . $access;
+
+		if ( is_string( $user ) ) {
+			$sql .= ' AND ms_email = ' . $user;
+		} else {
+			$sql .= ' AND user_id = ' . $user->ID;
+		}
+
 		$count = $wpdb->get_var( $sql );
 
 		return $count;
 	}
-    
-    /**
+
+	/**
 	 * Retrieve the total number of terms
-	 *
 	 *
 	 * @param $term_id
 	 * @global $wpdb
@@ -563,7 +559,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	public static function get_total_term_count( $term_id ) {
 		global $wpdb;
 
-		$wpdb->get_var("SELECT COUNT(object_id) FROM " . $wpdb->prefix . "term_relationships WHERE term_taxonomy_id = " . $term_id) ;
+		$wpdb->get_var( 'SELECT COUNT(object_id) FROM ' . $wpdb->prefix . 'term_relationships WHERE term_taxonomy_id = ' . $term_id );
 
 		return $count;
 	}
@@ -585,31 +581,29 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		if ( ( null === $user ) || ( 0 === $user->ID ) ) {
 			// No user, get public designs only.
 			$sql = ' ' . $exp . ' ms_access = ' . MyStyle_Access::ACCESS_PUBLIC . ' ';
-		} 
-        else {
+		} else {
 			// User was passed.
 			if ( ! $user->has_cap( 'read_private_posts' ) ) {
 				// User isn't admin, show public and their own private or hidden designs.
 				$sql .= ' ' . $exp
 						. ' ( '
-							. ' ( ms_access = ' . MyStyle_Access::ACCESS_PUBLIC .  ' ) OR '
-							. ' ( ( ms_access = ' . MyStyle_Access::ACCESS_PRIVATE .  ' ) AND ( user_id = ' . $user->ID . ' ) ) OR '
-							. ' ( ( ms_access = ' . MyStyle_Access::ACCESS_HIDDEN .  ' ) AND ( user_id = ' . $user->ID . ' ) ) '
+							. ' ( ms_access = ' . MyStyle_Access::ACCESS_PUBLIC . ' ) OR '
+							. ' ( ( ms_access = ' . MyStyle_Access::ACCESS_PRIVATE . ' ) AND ( user_id = ' . $user->ID . ' ) ) OR '
+							. ' ( ( ms_access = ' . MyStyle_Access::ACCESS_HIDDEN . ' ) AND ( user_id = ' . $user->ID . ' ) ) '
+						. ' ) ';
+			} else {
+				// show all designs to admin user
+				$sql .= ' ' . $exp
+						. ' ( '
+							. ' ( ms_access = ' . MyStyle_Access::ACCESS_PUBLIC . ' ) OR '
+							. ' ( ms_access = ' . MyStyle_Access::ACCESS_PRIVATE . ' )  OR '
+							. ' ( ms_access = ' . MyStyle_Access::ACCESS_HIDDEN . ' ) '
 						. ' ) ';
 			}
-            else {
-                //show all designs to admin user
-                $sql .= ' ' . $exp
-                        . ' ( '
-							. ' ( ms_access = ' . MyStyle_Access::ACCESS_PUBLIC .  ' ) OR '
-							. ' ( ms_access = ' . MyStyle_Access::ACCESS_PRIVATE .  ' )  OR '
-							. ' ( ms_access = ' . MyStyle_Access::ACCESS_HIDDEN .  ' ) '
-						. ' ) '; 
-            }
 		}
 
 		return $sql;
 	}
-    
+
 
 }

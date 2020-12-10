@@ -97,9 +97,9 @@ class MyStyle_SessionHandler {
 
 			// Next look in their cookies and the db.
 			// Note: If deserialization failed, get_class may return "__PHP_Incomplete_Class".
-			//       If that happens, go to the db to get the session. Deserialization
-			//       issues can happen if another plugin starts the php session before our
-			//       plugin files have been included.
+			// If that happens, go to the db to get the session. Deserialization
+			// issues can happen if another plugin starts the php session before our
+			// plugin files have been included.
 			// TODO: Manual serialization/deserialization might be a better solution to this
 			// problem.
 			if ( ( null === $session ) || ( 'MyStyle_Session' !== get_class( $session ) ) ) {

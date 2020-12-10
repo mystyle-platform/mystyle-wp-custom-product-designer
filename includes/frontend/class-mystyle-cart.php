@@ -120,12 +120,11 @@ class MyStyle_Cart {
 		if ( ( $mystyle_product->is_customizable() ) && ( 'variable' !== $product_type ) ) {
 			$customize_page_id = MyStyle_Customize_Page::get_id();
 
-			// Build the url to the customizer including the poduct_id 
-            
+			// Build the url to the customizer including the poduct_id
 			$customizer_url = add_query_arg( 'product_id', $product_id, get_permalink( $customize_page_id ) );
 
 			// Add the passthru data to the url.
-			$passthru = MyStyle_Passthru_Codec::get_instance()->build_passthru( $_REQUEST, $mystyle_product );
+			$passthru                        = MyStyle_Passthru_Codec::get_instance()->build_passthru( $_REQUEST, $mystyle_product );
 			$passthru['post']                = array();
 			$passthru['post']['quantity']    = 1;
 			$passthru['post']['add-to-cart'] = $product_id;
@@ -294,10 +293,10 @@ class MyStyle_Cart {
 			$session = MyStyle()->get_session();
 
 			/* @var $design \MyStyle_Design phpcs:ignore */
-			$design = MyStyle_DesignManager::get( $design_id, $user, $session, true ); //skip the security check because the design is already in the cart.
-            
+			$design = MyStyle_DesignManager::get( $design_id, $user, $session, true ); // skip the security check because the design is already in the cart.
+
 			// Only proceed if we have a design to work with.
-			if ( null !== $design) {
+			if ( null !== $design ) {
 
 				// Overwrite the src attribute.
 				$new_src         = 'src="' . $design->get_thumb_url() . '"';
@@ -359,8 +358,8 @@ class MyStyle_Cart {
 			$session = MyStyle()->get_session();
 
 			/* @var $design \MyStyle_Design phpcs:ignore */
-			$design = MyStyle_DesignManager::get( $design_id, $user, $session, true ); //skip the security check because the design is already in the cart.
-            
+			$design = MyStyle_DesignManager::get( $design_id, $user, $session, true ); // skip the security check because the design is already in the cart.
+
 			// Ensure that the design is found. Note: it might be missing if
 			// they return to their cart after the admin deletes it for some
 			// reason.

@@ -129,7 +129,7 @@ class MyStyle_MyDesigns {
 	 * Add menu item to My Account Page.
 	 */
 	public function my_account_menu_items( $items ) {
-		$new_items = array();
+		$new_items               = array();
 		$new_items['my-designs'] = __( 'My Designs', 'woocommerce' );
 
 		return $this->insert_after_helper( $items, $new_items, 'dashboard' );
@@ -148,8 +148,8 @@ class MyStyle_MyDesigns {
 	 * Private helper method that adds new items into an array after a selected
 	 * item.
 	 *
-	 * @param array $items
-	 * @param array $new_items
+	 * @param array  $items
+	 * @param array  $new_items
 	 * @param string $after
 	 * @return array
 	 */
@@ -158,7 +158,7 @@ class MyStyle_MyDesigns {
 		$position = array_search( $after, array_keys( $items ) ) + 1;
 
 		// Insert the new item.
-		$array = array_slice( $items, 0, $position, true );
+		$array  = array_slice( $items, 0, $position, true );
 		$array += $new_items;
 		$array += array_slice( $items, $position, count( $items ) - $position, true );
 
@@ -187,7 +187,6 @@ class MyStyle_MyDesigns {
 		require MYSTYLE_TEMPLATES . 'design-profile/index.php';
 		$out = ob_get_contents();
 		ob_end_clean();
-
 
 		print $out;
 	}
@@ -221,7 +220,7 @@ class MyStyle_MyDesigns {
 	public function body_classes( $classes ) {
 		global $wp_query;
 
-		if(isset( $wp_query->query_vars['my-designs'] ) ) {
+		if ( isset( $wp_query->query_vars['my-designs'] ) ) {
 			$classes[] = 'mystyle-design-profile';
 		}
 
