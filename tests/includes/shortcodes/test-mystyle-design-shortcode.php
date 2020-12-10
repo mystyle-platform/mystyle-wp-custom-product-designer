@@ -55,7 +55,7 @@ class MyStyleDesignShortcodeTest extends WP_UnitTestCase {
 	public function test_output_with_valid_design_id_in_url() {
 		// Set up the test data.
 		$design_id = 1;
-		$atts = array();
+		$atts      = array();
 
 		// Create a design.
 		$design = MyStyle_MockDesign::get_mock_design( $design_id );
@@ -82,8 +82,8 @@ class MyStyleDesignShortcodeTest extends WP_UnitTestCase {
 	public function test_output_with_valid_design_id_in_attr() {
 		// Set up the test data.
 		$design_id = 1;
-		$atts = array(
-			'design_id' => $design_id
+		$atts      = array(
+			'design_id' => $design_id,
 		);
 
 		// Create a design.
@@ -129,7 +129,7 @@ class MyStyleDesignShortcodeTest extends WP_UnitTestCase {
 		// Set up the test data.
 		$atts = array(
 			'gallery' => 1,
-			'count'   => 6
+			'count'   => 6,
 		);
 
 		// Reset the MyStyle_FrontEnd.

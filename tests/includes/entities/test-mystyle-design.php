@@ -398,7 +398,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 			"session_id": "testsessionid",
 			"cart_data": null
 		}';
-		$design = MyStyle_Design::create_from_json( $json_str );
+		$design   = MyStyle_Design::create_from_json( $json_str );
 
 		// Call the method.
 		$json_data = $design->json_encode();

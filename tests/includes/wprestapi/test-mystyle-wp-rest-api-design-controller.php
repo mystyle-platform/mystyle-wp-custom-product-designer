@@ -152,7 +152,7 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 	 */
 	public function test_update_item() {
 
-		$design_id = 1;
+		$design_id       = 1;
 		$new_description = 'new description';
 
 		// Create a design.
@@ -165,7 +165,7 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		$this->assertEquals( 'test description', $design->get_description() );
 
 		// Mock some updated data.
-		$design_data = $design->json_encode();
+		$design_data                = $design->json_encode();
 		$design_data['description'] = $new_description;
 
 		// Mock the request.

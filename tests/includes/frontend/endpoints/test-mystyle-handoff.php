@@ -379,11 +379,11 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 			wp_json_encode(
 				array(
 					'post' => array(
-						'add-to-cart'        => $product_id,
-						'product_id'         => $product_id,
-						'quantity'           => 1,
+						'add-to-cart'       => $product_id,
+						'product_id'        => $product_id,
+						'quantity'          => 1,
 						// Submit the small variation_id but the large size.
-						'variation_id'       => $children[0],
+						'variation_id'      => $children[0],
 						'attribute_pa_size' => 'large',
 					),
 				)

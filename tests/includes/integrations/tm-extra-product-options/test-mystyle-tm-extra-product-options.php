@@ -12,7 +12,7 @@
  */
 function THEMECOMPLETE_EPO() {
 
-	$mock = new stdClass();
+	$mock                = new stdClass();
 	$mock->cart_edit_key = 'fake_old_cart_item_key';
 
 	return $mock;
@@ -61,38 +61,38 @@ class MyStyleTmExtraProductOptionsTest extends WP_UnitTestCase {
 		// Set up the test data.
 		$old_cart_item_key = 'fake_old_cart_item_key';
 		$new_cart_item_key = 'fake_new_cart_item_key';
-		$mystyle_data = 'fake_mystyle_data';
-		$passed = true;
-		$product_id = 1;
-		$qty = 1;
-		$variation_id = 1;
-		$variations = array();
-		$cart_item_data = array();
+		$mystyle_data      = 'fake_mystyle_data';
+		$passed            = true;
+		$product_id        = 1;
+		$qty               = 1;
+		$variation_id      = 1;
+		$variations        = array();
+		$cart_item_data    = array();
 
 		// Mock woocommerce.
-		$woocommerce = new MyStyle_MockWooCommerce();
+		$woocommerce                      = new MyStyle_MockWooCommerce();
 		$woocommerce->cart->cart_contents = array(
 			$old_cart_item_key => array(
-				'mystyle_data' => $mystyle_data
+				'mystyle_data' => $mystyle_data,
 			),
-			$new_cart_item_key => array()
+			$new_cart_item_key => array(),
 		);
 
 		// Mock the $_REQUEST.
-		$_REQUEST = array('tm_cart_item_key' => $old_cart_item_key);
+		$_REQUEST = array( 'tm_cart_item_key' => $old_cart_item_key );
 
 		// Instantiate the SUT (System Under Test) class.
 		$mystyle_tm_extra_product_options = new MyStyle_Tm_Extra_Product_Options();
 
 		// Call the function.
 		$ret = $mystyle_tm_extra_product_options->stash_mystyle_data(
-														$passed,
-														$product_id,
-														$qty,
-														$variation_id,
-														$variations,
-														$cart_item_data
-													);
+			$passed,
+			$product_id,
+			$qty,
+			$variation_id,
+			$variations,
+			$cart_item_data
+		);
 
 		// Assert that the function returned true (validation passed).
 		$this->assertTrue( $ret );
@@ -111,48 +111,48 @@ class MyStyleTmExtraProductOptionsTest extends WP_UnitTestCase {
 		// Set up the test data.
 		$old_cart_item_key = 'fake_old_cart_item_key';
 		$new_cart_item_key = 'fake_new_cart_item_key';
-		$mystyle_data = 'fake_mystyle_data';
-		$passed = true;
-		$product_id = 1;
-		$qty = 1;
-		$variation_id = 1;
-		$variations = array();
-		$cart_item_data = array();
+		$mystyle_data      = 'fake_mystyle_data';
+		$passed            = true;
+		$product_id        = 1;
+		$qty               = 1;
+		$variation_id      = 1;
+		$variations        = array();
+		$cart_item_data    = array();
 
 		// Mock woocommerce.
-		$woocommerce = new MyStyle_MockWooCommerce();
+		$woocommerce                      = new MyStyle_MockWooCommerce();
 		$woocommerce->cart->cart_contents = array(
 			$old_cart_item_key => array(
-				'mystyle_data' => $mystyle_data
+				'mystyle_data' => $mystyle_data,
 			),
-			$new_cart_item_key => array()
+			$new_cart_item_key => array(),
 		);
 
 		// Mock the $_REQUEST.
-		$_REQUEST = array('tm_cart_item_key' => $new_cart_item_key);
+		$_REQUEST = array( 'tm_cart_item_key' => $new_cart_item_key );
 
 		// Instantiate the SUT (System Under Test) class.
 		$mystyle_tm_extra_product_options = new MyStyle_Tm_Extra_Product_Options();
 
 		// Call the stash_mystyle_data function to stash the mystyle data.
 		$ret = $mystyle_tm_extra_product_options->stash_mystyle_data(
-														$passed,
-														$product_id,
-														$qty,
-														$variation_id,
-														$variations,
-														$cart_item_data
-													);
+			$passed,
+			$product_id,
+			$qty,
+			$variation_id,
+			$variations,
+			$cart_item_data
+		);
 
 		// Call the function.
 		$mystyle_tm_extra_product_options->copy_mystyle_data(
-														$new_cart_item_key,
-														$product_id,
-														$qty,
-														$variation_id,
-														$variations,
-														$cart_item_data
-													);
+			$new_cart_item_key,
+			$product_id,
+			$qty,
+			$variation_id,
+			$variations,
+			$cart_item_data
+		);
 
 		// Get the woocommerce cart.
 		/* @var $cart \WC_Cart */
@@ -172,7 +172,7 @@ class MyStyleTmExtraProductOptionsTest extends WP_UnitTestCase {
 	 */
 	public function test_is_tm_extra_product_options_edit_request_returns_true() {
 		// Set up the test data.
-		$request = array('tm_cart_item_key' => 'fake_cart_item_key');
+		$request = array( 'tm_cart_item_key' => 'fake_cart_item_key' );
 
 		// Instantiate the SUT (System Under Test) class.
 		$mystyle_tm_extra_product_options = new MyStyle_Tm_Extra_Product_Options();
