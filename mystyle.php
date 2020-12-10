@@ -104,7 +104,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
 			define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' );
 			define( 'MYSTYLE_DESIGN_TAG_PAGEID_NAME', 'mystyle_design_tag_page_id' );
-            define( 'MYSTYLE_TAXONOMY_NAME', 'design_tag' ) ;
+			define( 'MYSTYLE_TAXONOMY_NAME', 'design_tag' );
 		}
 
 		/**
@@ -241,8 +241,8 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				// Set up the main admin class.
 				MyStyle_Admin::get_instance();
 
-                // Set up the Design Tags page.
-                MyStyle_Dashboard_Page::get_instance() ;
+				// Set up the Design Tags page.
+				MyStyle_Dashboard_Page::get_instance();
 
 				// Set up the options page.
 				MyStyle_Options_Page::get_instance();
@@ -250,8 +250,8 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				// Set up the addons page.
 				MyStyle_Addons_Page::get_instance();
 
-                // Set up the Design Tags page.
-                MyStyle_DesignTags_Page::get_instance() ;
+				// Set up the Design Tags page.
+				MyStyle_DesignTags_Page::get_instance();
 
 				// Set up the Help.
 				MyStyle_Help::get_instance();
@@ -288,7 +288,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				MyStyle_MyDesigns::get_instance();
 				MyStyle_Author_Designs::get_instance();
 				MyStyle_DesignTag_Page::get_instance();
-                MyStyle_DesignPage::get_instance();
+				MyStyle_DesignPage::get_instance();
 			}
 		}
 
@@ -324,7 +324,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
 		}
 
-        /**
+		/**
 		 * Register our taxonomy.
 		 *
 		 * This is run during init.
@@ -332,29 +332,31 @@ if ( ! class_exists( 'MyStyle' ) ) :
 		 * @todo Add unit testing for this function.
 		 */
 		public function register_taxonomy() {
-            //register design_tag taxonomy as of 3.13.9
-            if ( ! taxonomy_exists( MYSTYLE_TAXONOMY_NAME ) ) {
-                register_taxonomy( MYSTYLE_TAXONOMY_NAME, 'design', array(
-                    'labels' => array(
-                      'name' => _x( 'Design Tags', 'taxonomy general name' ),
-                      'singular_name' => _x( 'Design Tag', 'taxonomy singular name' ),
-                      'search_items' =>  __( 'Search Design Tags' ),
-                      'all_items' => __( 'All Design Tags' ),
-                      'parent_item' => __( 'Parent Design Tag' ),
-                      'parent_item_colon' => __( 'Parent Design Tag:' ),
-                      'edit_item' => __( 'Edit Design Tag' ),
-                      'update_item' => __( 'Update Design Tag' ),
-                      'add_new_item' => __( 'Add New Design Tag' ),
-                      'new_item_name' => __( 'New Design Tag Name' ),
-                      'menu_name' => __( 'Design Tags' ),
-                    ),
-                    // Control the slugs used for this taxonomy
-                    'rewrite' => array(
-                      'slug' => 'design-tags'
-                    ),
-                    'public' => true
-                ) ) ;
-            }
+			// register design_tag taxonomy as of 3.13.9
+			if ( ! taxonomy_exists( MYSTYLE_TAXONOMY_NAME ) ) {
+				register_taxonomy(
+					MYSTYLE_TAXONOMY_NAME, 'design', array(
+						'labels'  => array(
+							'name'              => _x( 'Design Tags', 'taxonomy general name' ),
+							'singular_name'     => _x( 'Design Tag', 'taxonomy singular name' ),
+							'search_items'      => __( 'Search Design Tags' ),
+							'all_items'         => __( 'All Design Tags' ),
+							'parent_item'       => __( 'Parent Design Tag' ),
+							'parent_item_colon' => __( 'Parent Design Tag:' ),
+							'edit_item'         => __( 'Edit Design Tag' ),
+							'update_item'       => __( 'Update Design Tag' ),
+							'add_new_item'      => __( 'Add New Design Tag' ),
+							'new_item_name'     => __( 'New Design Tag Name' ),
+							'menu_name'         => __( 'Design Tags' ),
+						),
+						// Control the slugs used for this taxonomy
+						'rewrite' => array(
+							'slug' => 'design-tags',
+						),
+						'public'  => true,
+					)
+				);
+			}
 
 		}
 
