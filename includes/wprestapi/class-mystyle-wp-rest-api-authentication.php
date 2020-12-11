@@ -51,7 +51,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 	 * @return bool
 	 */
 	protected function is_request_to_rest_api() {
-		if ( empty( $_SERVER['REQUEST_URI'] ) ) {
+		if ( empty( $_SERVER['REQUEST_URI'] ) ) { // @codingStandardsIgnoreLine
 			return false;
 		}
 
@@ -141,15 +141,15 @@ class MyStyle_Wp_Rest_Api_Authentication {
 		$consumer_secret   = '';
 
 		// If the $_GET parameters are present, use those first.
-		if ( ! empty( $_GET['consumer_key'] ) && ! empty( $_GET['consumer_secret'] ) ) { // WPCS: CSRF ok.
-			$consumer_key    = $_GET['consumer_key']; // WPCS: CSRF ok, sanitization ok.
-			$consumer_secret = $_GET['consumer_secret']; // WPCS: CSRF ok, sanitization ok.
+		if ( ! empty( $_GET['consumer_key'] ) && ! empty( $_GET['consumer_secret'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected,WordPress.CSRF.NonceVerification.NoNonceVerification
+			$consumer_key    = $_GET['consumer_key']; // @codingStandardsIgnoreLine
+			$consumer_secret = $_GET['consumer_secret']; // @codingStandardsIgnoreLine
 		}
 
 		// If the above is not present, we will do full basic auth.
-		if ( ! $consumer_key && ! empty( $_SERVER['PHP_AUTH_USER'] ) && ! empty( $_SERVER['PHP_AUTH_PW'] ) ) {
-			$consumer_key    = $_SERVER['PHP_AUTH_USER']; // WPCS: CSRF ok, sanitization ok.
-			$consumer_secret = $_SERVER['PHP_AUTH_PW']; // WPCS: CSRF ok, sanitization ok.
+		if ( ! $consumer_key && ! empty( $_SERVER['PHP_AUTH_USER'] ) && ! empty( $_SERVER['PHP_AUTH_PW'] ) ) { // @codingStandardsIgnoreLine
+			$consumer_key    = $_SERVER['PHP_AUTH_USER']; // @codingStandardsIgnoreLine
+			$consumer_secret = $_SERVER['PHP_AUTH_PW']; // @codingStandardsIgnoreLine
 		}
 
 		// Stop if don't have any key.
@@ -165,7 +165,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 
 		// Validate user secret.
 		if ( ! hash_equals( $this->user->consumer_secret, $consumer_secret ) ) { // @codingStandardsIgnoreLine
-			$this->set_error( new WP_Error( 'woocommerce_rest_authentication_error', __( 'Consumer secret is invalid.', 'woocommerce' ), array( 'status' => 401 ) ) );
+			$this->set_error( new WP_Error( 'woocommerce_rest_authentication_error', __( 'Consumer secret is invalid.', 'mystyle' ), array( 'status' => 401 ) ) );
 
 			return false;
 		}
@@ -214,8 +214,8 @@ class MyStyle_Wp_Rest_Api_Authentication {
 	 * @return string Authorization header if set.
 	 */
 	public function get_authorization_header() {
-		if ( ! empty( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
-			return wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ); // WPCS: sanitization ok.
+		if ( ! empty( $_SERVER['HTTP_AUTHORIZATION'] ) ) { // @codingStandardsIgnoreLine
+			return wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ); // @codingStandardsIgnoreLine
 		}
 
 		if ( function_exists( 'getallheaders' ) ) {
@@ -239,7 +239,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 	 * @return array|WP_Error
 	 */
 	public function get_oauth_parameters() {
-		$params = array_merge( $_GET, $_POST ); // WPCS: CSRF ok.
+		$params = array_merge( $_GET, $_POST ); // @codingStandardsIgnoreLine (CSRF ok)
 		$params = wp_unslash( $params );
 		$header = $this->get_authorization_header();
 
@@ -283,7 +283,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 		if ( ! empty( $errors ) ) {
 			$message = sprintf(
 				/* translators: %s: amount of errors */
-				_n( 'Missing OAuth parameter %s', 'Missing OAuth parameters %s', count( $errors ), 'woocommerce' ),
+				_n( 'Missing OAuth parameter %s', 'Missing OAuth parameters %s', count( $errors ), 'mystyle' ),
 				implode( ', ', $errors )
 			);
 
@@ -323,7 +323,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 		$this->user = $this->get_user_data_by_consumer_key( $params['oauth_consumer_key'] );
 
 		if ( empty( $this->user ) ) {
-			$this->set_error( new WP_Error( 'woocommerce_rest_authentication_error', __( 'Consumer key is invalid.', 'woocommerce' ), array( 'status' => 401 ) ) );
+			$this->set_error( new WP_Error( 'woocommerce_rest_authentication_error', __( 'Consumer key is invalid.', 'mystyle' ), array( 'status' => 401 ) ) );
 
 			return false;
 		}
@@ -353,8 +353,8 @@ class MyStyle_Wp_Rest_Api_Authentication {
 	 * @return true|WP_Error
 	 */
 	private function check_oauth_signature( $user, $params ) {
-		$http_method  = isset( $_SERVER['REQUEST_METHOD'] ) ? strtoupper( $_SERVER['REQUEST_METHOD'] ) : ''; // WPCS: sanitization ok.
-		$request_path = isset( $_SERVER['REQUEST_URI'] ) ? wp_parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ) : ''; // WPCS: sanitization ok.
+		$http_method  = isset( $_SERVER['REQUEST_METHOD'] ) ? strtoupper( $_SERVER['REQUEST_METHOD'] ) : ''; // @codingStandardsIgnoreLine (sanitization ok).
+		$request_path = isset( $_SERVER['REQUEST_URI'] ) ? wp_parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ) : ''; // @codingStandardsIgnoreLine (sanitization ok).
 		$wp_base      = get_home_url( null, '/', 'relative' );
 		if ( substr( $request_path, 0, strlen( $wp_base ) ) === $wp_base ) {
 			$request_path = substr( $request_path, strlen( $wp_base ) );
@@ -367,7 +367,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 
 		// Sort parameters.
 		if ( ! uksort( $params, 'strcmp' ) ) {
-			return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Invalid signature - failed to sort parameters.', 'woocommerce' ), array( 'status' => 401 ) );
+			return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Invalid signature - failed to sort parameters.', 'mystyle' ), array( 'status' => 401 ) );
 		}
 
 		// Normalize parameter key/values.
@@ -376,7 +376,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 		$string_to_sign = $http_method . '&' . $base_request_uri . '&' . $query_string;
 
 		if ( 'HMAC-SHA1' !== $params['oauth_signature_method'] && 'HMAC-SHA256' !== $params['oauth_signature_method'] ) {
-			return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Invalid signature - signature method is invalid.', 'woocommerce' ), array( 'status' => 401 ) );
+			return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Invalid signature - signature method is invalid.', 'mystyle' ), array( 'status' => 401 ) );
 		}
 
 		$hash_algorithm = strtolower( str_replace( 'HMAC-', '', $params['oauth_signature_method'] ) );
@@ -384,7 +384,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 		$signature      = base64_encode( hash_hmac( $hash_algorithm, $string_to_sign, $secret, true ) );
 
 		if ( ! hash_equals( $signature, $consumer_signature ) ) { // @codingStandardsIgnoreLine
-			return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Invalid signature - provided signature does not match.', 'woocommerce' ), array( 'status' => 401 ) );
+			return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Invalid signature - provided signature does not match.', 'mystyle' ), array( 'status' => 401 ) );
 		}
 
 		return true;
@@ -460,7 +460,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 		$valid_window = 15 * 60; // 15 minute window.
 
 		if ( ( $timestamp < time() - $valid_window ) || ( $timestamp > time() + $valid_window ) ) {
-			return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Invalid timestamp.', 'woocommerce' ), array( 'status' => 401 ) );
+			return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Invalid timestamp.', 'mystyle' ), array( 'status' => 401 ) );
 		}
 
 		$used_nonces = maybe_unserialize( $user->nonces );
@@ -470,7 +470,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 		}
 
 		if ( in_array( $nonce, $used_nonces, true ) ) {
-			return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Invalid nonce - nonce has already been used.', 'woocommerce' ), array( 'status' => 401 ) );
+			return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Invalid nonce - nonce has already been used.', 'mystyle' ), array( 'status' => 401 ) );
 		}
 
 		$used_nonces[ $timestamp ] = $nonce;
@@ -532,7 +532,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 			case 'HEAD':
 			case 'GET':
 				if ( 'read' !== $permissions && 'read_write' !== $permissions ) {
-					return new WP_Error( 'woocommerce_rest_authentication_error', __( 'The API key provided does not have read permissions.', 'woocommerce' ), array( 'status' => 401 ) );
+					return new WP_Error( 'woocommerce_rest_authentication_error', __( 'The API key provided does not have read permissions.', 'mystyle' ), array( 'status' => 401 ) );
 				}
 				break;
 			case 'POST':
@@ -540,14 +540,14 @@ class MyStyle_Wp_Rest_Api_Authentication {
 			case 'PATCH':
 			case 'DELETE':
 				if ( 'write' !== $permissions && 'read_write' !== $permissions ) {
-					return new WP_Error( 'woocommerce_rest_authentication_error', __( 'The API key provided does not have write permissions.', 'woocommerce' ), array( 'status' => 401 ) );
+					return new WP_Error( 'woocommerce_rest_authentication_error', __( 'The API key provided does not have write permissions.', 'mystyle' ), array( 'status' => 401 ) );
 				}
 				break;
 			case 'OPTIONS':
 				return true;
 
 			default:
-				return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Unknown request method.', 'woocommerce' ), array( 'status' => 401 ) );
+				return new WP_Error( 'woocommerce_rest_authentication_error', __( 'Unknown request method.', 'mystyle' ), array( 'status' => 401 ) );
 		}
 
 		return true;
@@ -578,7 +578,7 @@ class MyStyle_Wp_Rest_Api_Authentication {
 	 */
 	public function send_unauthorized_headers( $response ) {
 		if ( is_wp_error( $this->get_error() ) && 'basic_auth' === $this->auth_method ) {
-			$auth_message = __( 'WooCommerce API. Use a consumer key in the username field and a consumer secret in the password field.', 'woocommerce' );
+			$auth_message = __( 'WooCommerce API. Use a consumer key in the username field and a consumer secret in the password field.', 'mystyle' );
 			$response->header( 'WWW-Authenticate', 'Basic realm="' . $auth_message . '"', true );
 		}
 

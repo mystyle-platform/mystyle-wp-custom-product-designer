@@ -23,7 +23,6 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 * Constructor, constructs the class and sets up the hooks.
 	 */
 	public function __construct() {
-		// add_filter( 'woocommerce_rest_is_request_to_rest_api', array( &$this, 'filter_is_request_to_rest_api' ), 10, 1 );
 		add_action( 'rest_api_init', array( &$this, 'register_routes' ), 10, 1 );
 	}
 
@@ -31,12 +30,12 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 * Filters the WC is_request_to_rest_api to include our endpoints for
 	 * authentication.
 	 *
-	 * @param $is_request_to_rest_api Whether or not the request is to the WC
-	 * REST API.
+	 * @param bool $is_request_to_rest_api Whether or not the request is to the
+	 * WC REST API.
 	 * @return bool
 	 */
 	protected function filter_is_request_to_rest_api( $is_request_to_rest_api ) {
-		if ( empty( $_SERVER['REQUEST_URI'] ) ) {
+		if ( empty( $_SERVER['REQUEST_URI'] ) ) { // @codingStandardsIgnoreLine
 			return false;
 		}
 
@@ -136,6 +135,8 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Response
+	 * @throws \MyStyle_Exception Throws a MyStyle_Exception if the design isn't
+	 * found.
 	 */
 	public function get_item( $request ) {
 		// Get parameters from request.
@@ -154,7 +155,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 
 			return new WP_REST_Response( $data, 200 );
 		} catch ( \Exception $ex ) {
-			return new WP_Error( $ex->getCode(), __( $ex->getMessage(), 'mystyle' ) );
+			return new WP_Error( $ex->getCode(), $ex->getMessage() );
 		}
 	}
 
@@ -178,7 +179,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 			return new WP_REST_Response( $data, 200 );
 
 		} catch ( \Exception $ex ) {
-			return new WP_Error( $ex->getCode(), __( $ex->getMessage(), 'mystyle' ) );
+			return new WP_Error( $ex->getCode(), $ex->getMessage() );
 		}
 	}
 
@@ -187,6 +188,8 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Request
+	 * @throws \MyStyle_Exception Throws a MyStyle_Exception if the design isn't
+	 * found.
 	 */
 	public function update_item( $request ) {
 		try {
@@ -212,7 +215,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 			return new WP_REST_Response( $data, 200 );
 
 		} catch ( \Exception $ex ) {
-			return new WP_Error( $ex->getCode(), __( $ex->getMessage(), 'mystyle' ) );
+			return new WP_Error( $ex->getCode(), $ex->getMessage() );
 		}
 	}
 
@@ -221,6 +224,8 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Request
+	 * @throws \MyStyle_Exception Throws a MyStyle_Exception if the design isn't
+	 * found.
 	 */
 	public function delete_item( $request ) {
 		try {
@@ -238,13 +243,13 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 			$deleted = MyStyle_DesignManager::delete( $design );
 
 			if ( ! $deleted ) {
-				throw new MyStyle_Exception( 'Can\'t delete design', 500 );
+				throw new \MyStyle_Exception( 'Can\'t delete design', 500 );
 			}
 
 			return new WP_REST_Response( true, 200 );
 
 		} catch ( \Exception $ex ) {
-			return new WP_Error( $ex->getCode(), __( $ex->getMessage(), 'mystyle' ) );
+			return new WP_Error( $ex->getCode(), $ex->getMessage() );
 		}
 	}
 
@@ -316,7 +321,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 * @return mixed
 	 */
 	public function prepare_item_for_response( $item, $request ) {
-		/* @var $item \MyStyle_Design */
+		/* @var $item \MyStyle_Design phpcs:ignore */
 		$design   = $item;
 		$itemdata = $design->json_encode();
 
