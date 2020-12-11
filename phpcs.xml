@@ -37,6 +37,7 @@
 		</properties>
 	</rule>
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>mystyle.php</exclude-pattern>
 		<exclude-pattern>includes/**/abstract-*.php</exclude-pattern>
 		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>

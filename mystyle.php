@@ -332,24 +332,24 @@ if ( ! class_exists( 'MyStyle' ) ) :
 		 * @todo Add unit testing for this function.
 		 */
 		public function register_taxonomy() {
-			// register design_tag taxonomy as of 3.13.9
+			// Register design_tag taxonomy as of 3.13.9.
 			if ( ! taxonomy_exists( MYSTYLE_TAXONOMY_NAME ) ) {
 				register_taxonomy(
 					MYSTYLE_TAXONOMY_NAME, 'design', array(
 						'labels'  => array(
-							'name'              => _x( 'Design Tags', 'taxonomy general name' ),
-							'singular_name'     => _x( 'Design Tag', 'taxonomy singular name' ),
-							'search_items'      => __( 'Search Design Tags' ),
-							'all_items'         => __( 'All Design Tags' ),
-							'parent_item'       => __( 'Parent Design Tag' ),
-							'parent_item_colon' => __( 'Parent Design Tag:' ),
-							'edit_item'         => __( 'Edit Design Tag' ),
-							'update_item'       => __( 'Update Design Tag' ),
-							'add_new_item'      => __( 'Add New Design Tag' ),
-							'new_item_name'     => __( 'New Design Tag Name' ),
-							'menu_name'         => __( 'Design Tags' ),
+							'name'              => _x( 'Design Tags', 'taxonomy general name', 'mystyle' ),
+							'singular_name'     => _x( 'Design Tag', 'taxonomy singular name', 'mystyle' ),
+							'search_items'      => __( 'Search Design Tags', 'mystyle' ),
+							'all_items'         => __( 'All Design Tags', 'mystyle' ),
+							'parent_item'       => __( 'Parent Design Tag', 'mystyle' ),
+							'parent_item_colon' => __( 'Parent Design Tag:', 'mystyle' ),
+							'edit_item'         => __( 'Edit Design Tag', 'mystyle' ),
+							'update_item'       => __( 'Update Design Tag', 'mystyle' ),
+							'add_new_item'      => __( 'Add New Design Tag', 'mystyle' ),
+							'new_item_name'     => __( 'New Design Tag Name', 'mystyle' ),
+							'menu_name'         => __( 'Design Tags', 'mystyle' ),
 						),
-						// Control the slugs used for this taxonomy
+						// Control the slugs used for this taxonomy.
 						'rewrite' => array(
 							'slug' => 'design-tags',
 						),
@@ -401,7 +401,9 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			$args = array(
 				'post_type'   => 'product',
 				'numberposts' => 1,
+				// phpcs:ignore WordPress.VIP.SlowDBQuery.slow_db_query_meta_key
 				'meta_key'    => '_mystyle_enabled',
+				// phpcs:ignore WordPress.VIP.SlowDBQuery.slow_db_query_meta_value
 				'meta_value'  => 'yes',
 			);
 
@@ -419,8 +421,10 @@ if ( ! class_exists( 'MyStyle' ) ) :
 		 *
 		 * @param MyStyle_WC_Interface $mystyle_wc_interface The WooCommerce
 		 * interface.
+		 * @codingStandardsIgnoreStart (ignoring incorrect case function name).
 		 */
 		public function set_WC( MyStyle_WC_Interface $mystyle_wc_interface ) {
+			// @codingStandardsIgnoreEnd
 			$this->wc = $mystyle_wc_interface;
 		}
 
@@ -428,8 +432,10 @@ if ( ! class_exists( 'MyStyle' ) ) :
 		 * Gets the WooCommerce interface.
 		 *
 		 * @return MyStyle_WC_Interface Returns the value of template_id.
+		 * @codingStandardsIgnoreStart (ignoring incorrect case function name).
 		 */
 		public function get_WC() {
+			// @codingStandardsIgnoreEnd
 			return $this->wc;
 		}
 
@@ -489,8 +495,10 @@ if ( ! class_exists( 'MyStyle' ) ) :
  * Returns the main instance of MyStyle to prevent the need to use globals.
  *
  * @return MyStyle
+ * @codingStandardsIgnoreStart (ignoring incorrect case function name).
  */
 function MyStyle() {
+	// @codingStandardsIgnoreStart
 	return MyStyle::get_instance();
 }
 
