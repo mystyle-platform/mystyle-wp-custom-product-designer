@@ -53,7 +53,8 @@ class MyStyle_WooCommerce_Admin_Order {
 	public function admin_order_item_values( $_product, $item, $item_id ) {
 
 		$design = null;
-		if ( isset( $item['mystyle_data'] ) ) {
+        
+		if ( get_class($item) == "WC_Order_Item_Product" && isset( $item['mystyle_data'] ) ) {
 			/**
 			 * NOTE: We aught to be able to get the data by unserializing
 			 * $item['mystyle_data'], this however fails because the data comes
