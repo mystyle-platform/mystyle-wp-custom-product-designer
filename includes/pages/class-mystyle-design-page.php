@@ -1,7 +1,8 @@
 <?php
 
 /**
- * The MyStyle Design Paage Singleton class for displaying random designs shortcode.
+ * The MyStyle Design Page Singleton class for displaying random designs
+ * shortcode.
  *
  * @package MyStyle
  * @since 3.14.3
