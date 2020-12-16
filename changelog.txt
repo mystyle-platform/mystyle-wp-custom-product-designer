@@ -1,3 +1,6 @@
+= 3.15.2 =
+* Fixed Order admin refund bug.
+
 = 3.15.1 =
 * Added Gallery and Tag attributes to mystyle_design shortcode, fixed design tag page bug.
 
