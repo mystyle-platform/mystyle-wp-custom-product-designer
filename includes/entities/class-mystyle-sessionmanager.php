@@ -104,11 +104,11 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
 	public static function purge_abandoned_sessions() {
 		global $wpdb;
 
-		$sessions_table_name       = MyStyle_Session::get_table_name();
-		$tmp_sessions_table_name   = $sessions_table_name . '_tmp';
+		$sessions_table_name     = MyStyle_Session::get_table_name();
+		$tmp_sessions_table_name = $sessions_table_name . '_tmp';
 
 		// ---------- STEP 1 ( Create temp session table ) -----------//
-		// get the schema of the session table.
+		// Get the schema of the session table.
 		$session_table_schema = MyStyle_Session::get_schema();
 
 		// Update the schema to append "_tmp" to the table name.
