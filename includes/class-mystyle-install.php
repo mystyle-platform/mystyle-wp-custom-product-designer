@@ -71,7 +71,7 @@ class MyStyle_Install {
 			MyStyle_Design_Profile_Page::create();
 		}
 
-		MyStyle_MyDesigns::get_instance()->flush_rewrite_rules();
+		MyStyle_My_Designs_Page::get_instance()->flush_rewrite_rules();
 
 		self::create_tables();
 	}

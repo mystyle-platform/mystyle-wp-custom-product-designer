@@ -1,28 +1,28 @@
 <?php
 /**
- * The MyStyle My Designs Singleton class has hooks for working with the
- * WooCommerce My Account page.
+ * The MyStyle_My_Designs_Page singleton class has hooks for working with the
+ * MyStyle My Designs page.
  *
  * @package MyStyle
  * @since 3.13.6
  */
 
 /**
- * MyStyle_MyDesigns class.
+ * MyStyle_My_Designs_Page class.
  */
-class MyStyle_MyDesigns {
+class MyStyle_My_Designs_Page {
 
 	/**
 	 * Singleton class instance.
 	 *
-	 * @var MyStyle_MyDesigns
+	 * @var \MyStyle_My_Designs_Page
 	 */
 	private static $instance;
 
 	/**
 	 * Stores the current user (when the class is instantiated as a singleton).
 	 *
-	 * @var WP_User
+	 * @var \WP_User
 	 */
 	private $user;
 
@@ -30,24 +30,16 @@ class MyStyle_MyDesigns {
 	 * Stores the current session (when the class is instantiated as a
 	 * singleton).
 	 *
-	 * @var MyStyle_Session
+	 * @var \MyStyle_Session
 	 */
 	private $session;
 
 	/**
 	 * Pager for the design profile index.
 	 *
-	 * @var MyStyle_Pager
+	 * @var \MyStyle_Pager
 	 */
 	private $pager;
-
-	/**
-	 * Stores the currently thrown exception (if any) (when the class is
-	 * instantiated as a singleton).
-	 *
-	 * @var MyStyle_Exception
-	 */
-	private $exception;
 
 	/**
 	 * Stores the current ( when the class is instantiated as a singleton ) status
@@ -83,7 +75,7 @@ class MyStyle_MyDesigns {
 	/**
 	 * Init the class.
 	 *
-	 * @global WP_Query $wp_query
+	 * @global \WP_Query $wp_query
 	 */
 	public function init() {
 
@@ -107,7 +99,7 @@ class MyStyle_MyDesigns {
 	}
 
 	/**
-	 * Register a new endpoint for the WC My Account page.
+	 * Register a new endpoint for the My Designs page.
 	 */
 	public function design_endpoints() {
 		add_rewrite_endpoint( 'my-designs', EP_ROOT | EP_PAGES );
@@ -126,17 +118,21 @@ class MyStyle_MyDesigns {
 	}
 
 	/**
-	 * Add menu item to My Account Page.
+	 * Add menu item to the WC My Account page.
+	 *
+	 * @param array $items The current menu items.
 	 */
 	public function my_account_menu_items( $items ) {
 		$new_items               = array();
-		$new_items['my-designs'] = __( 'My Designs', 'woocommerce' );
+		$new_items['my-designs'] = __( 'My Designs', 'mystyle' );
 
 		return $this->insert_after_helper( $items, $new_items, 'dashboard' );
 	}
 
 	/**
 	 * Add My Designs breadcrumb.
+	 *
+	 * @param array $defaults The default breadcrumbs.
 	 */
 	public function breadcrumbs( $defaults ) {
 		$defaults[] = 'My Designs';
@@ -148,14 +144,14 @@ class MyStyle_MyDesigns {
 	 * Private helper method that adds new items into an array after a selected
 	 * item.
 	 *
-	 * @param array  $items
-	 * @param array  $new_items
-	 * @param string $after
-	 * @return array
+	 * @param array  $items The current menu items.
+	 * @param array  $new_items The new items to insert.
+	 * @param string $after The item to insert after.
+	 * @return array Returns the modified items.
 	 */
 	private function insert_after_helper( $items, $new_items, $after ) {
 		// Search for the item position and +1 since is after the selected item key.
-		$position = array_search( $after, array_keys( $items ) ) + 1;
+		$position = array_search( $after, array_keys( $items ), true ) + 1;
 
 		// Insert the new item.
 		$array  = array_slice( $items, 0, $position, true );
@@ -174,10 +170,10 @@ class MyStyle_MyDesigns {
 	}
 
 	/**
-	 * Display user designs list
+	 * Display the user designs list.
 	 */
 	public function designs_list() {
-		$design_profile_page = MyStyle_MyDesigns::get_instance();
+		$design_profile_page = MyStyle_My_Designs_Page::get_instance();
 
 		/* @var $pager \Mystyle_Pager phpcs:ignore */
 		$pager = $design_profile_page->get_pager();
@@ -188,7 +184,7 @@ class MyStyle_MyDesigns {
 		$out = ob_get_contents();
 		ob_end_clean();
 
-		print $out;
+		echo $out; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 	}
 
 
@@ -206,7 +202,7 @@ class MyStyle_MyDesigns {
 
 		if ( $is_endpoint && ! is_admin() && is_main_query() && in_the_loop() && is_account_page() ) {
 			// New page title.
-			$title = __( 'My Designs', 'woocommerce' );
+			$title = __( 'My Designs', 'mystyle' );
 
 			remove_filter( 'the_title', array( &$this, 'filter_title' ) );
 		}
@@ -216,6 +212,8 @@ class MyStyle_MyDesigns {
 
 	/**
 	 * Add design profile body class name.
+	 *
+	 * @param string $classes Current assigned body classes.
 	 */
 	public function body_classes( $classes ) {
 		global $wp_query;
@@ -347,7 +345,7 @@ class MyStyle_MyDesigns {
 	/**
 	 * Gets the singleton instance.
 	 *
-	 * @return MyStyle_MyDesigns Returns the singleton instance of
+	 * @return MyStyle_My_Designs_Page Returns the singleton instance of
 	 * this class.
 	 */
 	public static function get_instance() {
