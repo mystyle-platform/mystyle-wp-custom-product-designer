@@ -143,7 +143,7 @@ class MyStyle_Session implements MyStyle_Entity {
 	/**
 	 * Gets the value of session_id.
 	 *
-	 * @return number Returns the value of session_id.
+	 * @return string Returns the value of session_id.
 	 */
 	public function get_session_id() {
 		return $this->session_id;
