@@ -1,58 +1,35 @@
 <?php
-
 /**
- * The MyStyle My Designs Singleton class has hooks for working with the WooCommerce Design Tag page.
+ * The MyStyle_Design_Tag_Page Singleton class has hooks for working with the
+ * MyStyle Design Tag page.
  *
  * @package MyStyle
  * @since 3.14.0
  */
 
 /**
- * MyStyle_MyDesigns class.
+ * MyStyle_Design_Tag_Page class.
  */
-class MyStyle_DesignTag_Page {
+class MyStyle_Design_Tag_Page {
 
 	/**
 	 * Singleton class instance.
 	 *
-	 * @var MyStyle_DesignTag_Page
+	 * @var \MyStyle_Design_Tag_Page
 	 */
 	private static $instance;
 
 	/**
-	 * Stores the current user (when the class is instantiated as a singleton).
-	 *
-	 * @var WP_User
-	 */
-	private $user;
-
-	/**
-	 * Stores the current session (when the class is instantiated as a
-	 * singleton).
-	 *
-	 * @var MyStyle_Session
-	 */
-	private $session;
-
-	/**
 	 * Pager for the design profile index.
 	 *
-	 * @var MyStyle_Pager
+	 * @var \MyStyle_Pager
 	 */
 	private $pager;
 
 	/**
-	 * Stores the currently thrown exception (if any) (when the class is
-	 * instantiated as a singleton).
-	 *
-	 * @var MyStyle_Exception
-	 */
-	private $exception;
-
-	/**
-	 * Stores the current ( when the class is instantiated as a singleton ) status
-	 * code.  We store it here since php's http_response_code() function wasn't
-	 * added until php 5.4.
+	 * Stores the current ( when the class is instantiated as a singleton )
+	 * status code. We store it here since PHP's http_response_code() function
+	 * wasn't added until PHP 5.4.
 	 *
 	 * See: http://php.net/manual/en/function.http-response-code.php
 	 *
@@ -60,6 +37,9 @@ class MyStyle_DesignTag_Page {
 	 */
 	private $http_response_code;
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		$this->http_response_code = 200;
 
@@ -92,8 +72,8 @@ class MyStyle_DesignTag_Page {
 	/**
 	 * Function to create the page.
 	 *
-	 * @return number Returns the page id of the Design Profile page.
-	 * @throws MyStyle_Exception Throws a MyStyle_Exception if unable to store
+	 * @return number Returns the page id of the Design Tag page.
+	 * @throws \MyStyle_Exception Throws a MyStyle_Exception if unable to store
 	 * the id of the created page in the db.
 	 */
 	public static function create() {
@@ -108,7 +88,7 @@ class MyStyle_DesignTag_Page {
 		$post_id         = wp_insert_post( $design_tag_page );
 		update_post_meta( $post_id, '_thumbnail_id', 1 );
 
-		// Store the design profile page's id in the database.
+		// Store the design tag page's id in the database.
 		$options                                   = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		$options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] = $post_id;
 		$updated                                   = update_option( MYSTYLE_OPTIONS_NAME, $options );
@@ -144,9 +124,12 @@ class MyStyle_DesignTag_Page {
 
 	/**
 	 * Alter WP_QUERY pager information based in the MyStyle_Pager class
+	 *
+	 * @global $wp_query
 	 */
 	public function set_pager() {
 		global $wp_query;
+
 		if ( isset( $wp_query->query['design_tag'] ) ) {
 
 			if ( ! $wp_query->is_main_query() ) {
@@ -158,92 +141,106 @@ class MyStyle_DesignTag_Page {
 	}
 
 	/**
-	 * Alter WP_QUERY to return designs based on URL query
+	 * Alter WP_QUERY to return designs based on URL query.
 	 *
+	 * @param array     $posts Current array of posts (still pre-query).
+	 * @param \WP_Query $query The WP_Query being filtered.
+	 * @global \wpdb $wpdb
 	 * @since 3.14.0
 	 */
-	public function alter_query( $posts, $q ) {
+	public function alter_query( $posts, $query ) {
+		global $wpdb;
 
-		if ( $q->is_main_query() ) {
+		// Just return if this isn't the query that we are looking for.
+		if (
+			( ! $query->is_main_query() )
+			|| ( ! isset( $query->query['design_tag'] ) )
+		) {
+			return $posts;
+		}
 
-			if ( isset( $q->query['design_tag'] ) ) {
-				global $wpdb;
+		$wp_user = wp_get_current_user();
 
-				$wp_user = wp_get_current_user();
+		$session = MyStyle()->get_session();
 
-				$session = MyStyle()->get_session();
+		$term_id = $query->queried_object->term_id;
 
-				$term_id = $q->queried_object->term_id;
+		// Create a new pager.
+		$this->pager = new MyStyle_Pager();
 
-				// Create a new pager.
-				$this->pager = new MyStyle_Pager();
+		// Designs per page.
+		$this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
 
-				// Designs per page.
-				$this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
+		// Current page number.
+		$this->pager->set_current_page_number(
+			max( 1, $query->query['paged'] )
+		);
 
-				// Current page number.
-				$this->pager->set_current_page_number(
-					max( 1, $q->query['paged'] )
-				);
+		$page_limit = $this->pager->get_items_per_page();
+		$page_num   = 1;
 
-				$page_limit = $this->pager->get_items_per_page();
-				$page_num   = 1;
+		if ( null !== $query->query['paged'] ) {
+			$page_num = ( $this->pager->get_current_page_number() - 1 ) * $page_limit;
+		}
 
-				if ( null !== $q->query['paged'] ) {
-					$page_num = ( $this->pager->get_current_page_number() - 1 ) * $page_limit;
-				}
+		$design_objs = MyStyle_DesignManager::get_designs_by_term_id(
+			$term_id,
+			$wp_user,
+			$session,
+			$page_limit,
+			$page_num
+		);
 
-				$design_objs = MyStyle_DesignManager::get_designs_by_term_id( $term_id, $wp_user, $session, $page_limit, $page_num );
+		$designs = array();
 
-				$designs = array();
+		foreach ( $design_objs as $design ) {
+			try {
+				$title = ( '' === $design->get_title() )
+					? 'Design ' . $design->get_design_id()
+					: $design->get_title();
 
-				foreach ( $design_objs as $design ) {
-					try {
-						$title = ( '' == $design->get_title() ? 'Design ' . $design->get_design_id() : $design->get_title() );
+				$product_id = $design->get_product_id();
 
-						$product_id = $design->get_product_id();
+				$product = wc_get_product( $product_id );
 
-						$product = wc_get_product( $product_id );
+				$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 
-						$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+				$design_post               = new stdClass();
+				$design_post->ID           = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
+				$design_post->design_id    = $design->get_design_id();
+				$design_post->post_author  = $design->get_user_id();
+				$design_post->post_name    = $title;
+				$design_post->post_type    = 'Design';
+				$design_post->post_title   = $title;
+				$design_post->post_content = $title . ' custom ' . $product->get_name();
 
-						$design_post               = new stdClass();
-						$design_post->ID           = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
-						$design_post->design_id    = $design->get_design_id();
-						$design_post->post_author  = $design->get_user_id();
-						$design_post->post_name    = $title;
-						$design_post->post_type    = 'Design';
-						$design_post->post_title   = $title;
-						$design_post->post_content = $title . ' custom ' . $product->get_name();
-
-						$designs[] = $design_post;
-					} catch ( MyStyle_Unauthorized_Exception $ex ) {
-
-					}
-				}
-
-				$this->pager->set_items( $designs );
-
-				// Total items.
-				$term_count = MyStyle_DesignManager::get_total_term_count( $term_id );
-
-				$this->pager->set_total_item_count(
-					$term_count
-				);
-
-				return $designs;
+				$designs[] = $design_post;
+			} catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+				// If unauthorized, skip and go onto the next one.
 			}
 		}
 
-		return $posts;
+		$this->pager->set_items( $designs );
 
+		// Total items.
+		$term_count = MyStyle_DesignManager::get_total_term_count( $term_id );
+
+		$this->pager->set_total_item_count(
+			$term_count
+		);
+
+		return $designs;
 	}
 
 	/**
-	 * Force showing post thumbnail on design archive pages
+	 * Force showing post thumbnail on design archive pages.
+	 *
+	 * @param bool              $has_thumbnail True if the post has a post thumbnail, otherwise false.
+	 * @param int|\WP_Post|null $post          Post ID or WP_Post object. Default is global `$post`.
+	 * @param int|false         $thumbnail_id  Post thumbnail ID or false if the post does not exist.
+	 * @global \wp_query $wp_query
 	 */
 	public function has_post_thumbnail( $has_thumbnail, $post, $thumbnail_id ) {
-
 		global $wp_query;
 
 		if ( isset( $wp_query->query['design_tag'] ) ) {
@@ -254,7 +251,21 @@ class MyStyle_DesignTag_Page {
 	}
 
 	/**
-	 * Load the current designs thumbnail image in The_Loop
+	 * Load the current design's thumbnail image in The_Loop.
+	 *
+	 * @param array|false  $image         {
+	 *     Array of image data, or boolean false if no image is available.
+	 *
+	 *     @type string $0 Image source URL.
+	 *     @type int    $1 Image width in pixels.
+	 *     @type int    $2 Image height in pixels.
+	 *     @type bool   $3 Whether the image is a resized image.
+	 * }
+	 * @param int          $attachment_id Image attachment ID.
+	 * @param string|int[] $size          Requested image size. Can be any registered image size name, or
+	 *                                    an array of width and height values in pixels (in that order).
+	 * @param bool         $icon          Whether the image should be treated as an icon.
+	 * @global \wp_query $wp_query
 	 */
 	public function wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) {
 		global $wp_query;
@@ -268,7 +279,7 @@ class MyStyle_DesignTag_Page {
 
 			$design = MyStyle_DesignManager::get( $post->design_id, $wp_user, $session );
 
-			if ( $design !== null ) {
+			if ( null !== $design ) {
 				$image[0] = $design->get_web_url();
 				$image[1] = 200;
 				$image[2] = 200;
@@ -281,10 +292,14 @@ class MyStyle_DesignTag_Page {
 	}
 
 	/**
-	 * Load the current designs permalink in The_Loop
+	 * Load the current design's permalink in The_Loop.
+	 *
+	 * @param string  $permalink The post's permalink.
+	 * @param WP_Post $post      The post in question.
+	 * @param bool    $leavename Whether to keep the post name.
+	 * @global \WP_Query $wp_query
 	 */
 	public function post_link( $permalink, $post, $leavename ) {
-
 		global $wp_query;
 
 		if ( isset( $wp_query->query['design_tag'] ) ) {
@@ -295,9 +310,9 @@ class MyStyle_DesignTag_Page {
 	}
 
 	/**
-	 * Sets the current http response code.
+	 * Sets the current HTTP response code.
 	 *
-	 * @param int $http_response_code The http response code to set as the
+	 * @param int $http_response_code The HTTP response code to set as the
 	 * currently set response code. This is used by the shortcode and view
 	 * layer.  We set it as a variable since it is difficult to retrieve in
 	 * php < 5.4.
@@ -310,9 +325,9 @@ class MyStyle_DesignTag_Page {
 	}
 
 	/**
-	 * Gets the current http response code.
+	 * Gets the current HTTP response code.
 	 *
-	 * @return int Returns the current http response code. This is used by the
+	 * @return int Returns the current HTTP response code. This is used by the
 	 * shortcode and view layer.
 	 */
 	public function get_http_response_code() {
@@ -326,7 +341,7 @@ class MyStyle_DesignTag_Page {
 	/**
 	 * Gets the singleton instance.
 	 *
-	 * @return MyStyle_MyDesigns Returns the singleton instance of
+	 * @return MyStyle_Design_Tag_Page Returns the singleton instance of
 	 * this class.
 	 */
 	public static function get_instance() {

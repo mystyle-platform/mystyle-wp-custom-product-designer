@@ -120,8 +120,8 @@ class MyStyle_Install {
 
 		// Add the Design tage page if upgrading from less than 3.14.0 ( versions that were before this page existed ).
 		if ( version_compare( $old_version, '3.14.0', '<' ) ) {
-			if ( ! MyStyle_DesignTag_Page::exists() ) {
-				MyStyle_DesignTag_Page::create();
+			if ( ! MyStyle_Design_Tag_Page::exists() ) {
+				MyStyle_Design_Tag_Page::create();
 			}
 		}
 
@@ -133,7 +133,7 @@ class MyStyle_Install {
 			$update_post = get_post( $post_id );
 
 			if ( $update_post->post_status == 'private' ) {
-				MyStyle_DesignTag_Page::fix();
+				MyStyle_Design_Tag_Page::fix();
 			}
 		}
 

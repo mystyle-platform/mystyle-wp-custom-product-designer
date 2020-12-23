@@ -287,7 +287,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				MyStyle_Configur8::get_instance();
 				MyStyle_MyDesigns::get_instance();
 				MyStyle_Author_Designs::get_instance();
-				MyStyle_DesignTag_Page::get_instance();
+				MyStyle_Design_Tag_Page::get_instance();
 				MyStyle_DesignPage::get_instance();
 			}
 		}
