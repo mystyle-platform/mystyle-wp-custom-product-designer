@@ -115,9 +115,10 @@ class MyStyle_Customize_Page {
 	 * the passed design.
 	 *
 	 * @param MyStyle_Design $design The design that you want a url for.
-	 * @param integer        $cart_item_key An optional cart_item_key.
-	 * @param array          $passthru Any passthru data to include in the url.
+	 * @param integer|null   $cart_item_key An optional cart_item_key.
+	 * @param array|null     $passthru Any passthru data to include in the url.
 	 * If none is passed, defaults are used.
+	 * @param integer|null   $product_id An optional product id.
 	 * @return string Returns a link that can be used to reload a design.
 	 * @todo Combine this code with the get_scratch_url and get_product_url
 	 * functions.
@@ -145,7 +146,7 @@ class MyStyle_Customize_Page {
 				'post' => $post_data,
 			);
 
-			// Add custom template data if enabled
+			// Add custom template data if enabled.
 			$mystyle_custom_template_enabled = get_post_meta( $design->get_product_id(), '_mystyle_custom_template', true );
 
 			if ( 'yes' === $mystyle_custom_template_enabled ) {
@@ -181,7 +182,7 @@ class MyStyle_Customize_Page {
 
 		$passthru_encoded = base64_encode( wp_json_encode( $passthru ) );
 		$customize_args   = array(
-			'product_id' => ( $product_id === null ? $design->get_product_id() : $product_id ),
+			'product_id' => ( ( null === $product_id ) ? $design->get_product_id() : $product_id ),
 			'design_id'  => $design->get_design_id(),
 			'h'          => $passthru_encoded,
 		);
@@ -231,7 +232,7 @@ class MyStyle_Customize_Page {
 				'post' => $post_data,
 			);
 
-			// Add custom template data if enabled
+			// Add custom template data if enabled.
 			$mystyle_custom_template_enabled = get_post_meta( $design->get_product_id(), '_mystyle_custom_template', true );
 
 			if ( 'yes' === $mystyle_custom_template_enabled ) {
@@ -337,7 +338,7 @@ class MyStyle_Customize_Page {
 			) {
 				$title = '';
 			}
-		} catch ( MyStyle_Exception $e ) {
+		} catch ( MyStyle_Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// This exception may be thrown if the Customize Page is missing.
 			// For this function, that is okay, just continue.
 		}
@@ -346,7 +347,7 @@ class MyStyle_Customize_Page {
 	}
 
 	/**
-	 * Filter the body class output.  Adds a "mystyle-customize" class if the
+	 * Filter the body class output. Adds a "mystyle-customize" class if the
 	 * page is the Customize page.
 	 *
 	 * @param array $classes An array of classes that are going to be outputed
@@ -359,13 +360,13 @@ class MyStyle_Customize_Page {
 		try {
 			if ( null !== $post ) {
 				if (
-						( $this->is_customize_page( $post->ID ) ) &&
-						( isset( $_GET['product_id'] ) )
+						( $this->is_customize_page( $post->ID ) )
+						&& ( isset( $_GET['product_id'] ) ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 				) {
 					$classes[] = 'mystyle-customize';
 				}
 			}
-		} catch ( MyStyle_Exception $e ) {
+		} catch ( MyStyle_Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// This exception may be thrown if the Customize Page is missing.
 			// For this function, that is okay, just continue.
 		}
@@ -382,14 +383,14 @@ class MyStyle_Customize_Page {
 		try {
 			if ( null !== $post ) {
 				if (
-						( $this->is_customize_page( $post->ID ) ) &&
-						( isset( $_GET['product_id'] ) )
+						( $this->is_customize_page( $post->ID ) )
+						&& ( isset( $_GET['product_id'] ) ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 				) {
 					wp_register_script( 'mystyle-customize', MYSTYLE_ASSETS_URL . 'js/customize.js' );
 					wp_enqueue_script( 'mystyle-customize' );
 				}
 			}
-		} catch ( MyStyle_Exception $e ) {
+		} catch ( MyStyle_Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// This exception may be thrown if the Customize Page is missing.
 			// For this function, that is okay, just continue.
 		}
