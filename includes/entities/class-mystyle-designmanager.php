@@ -610,8 +610,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * @param mixed    $user   The current user. Either WP_User OR user email
 	 *                         string.
 	 * @param int|null $access (optional) Design Access.
-	 * @global $wpdb
 	 * @return integer
+	 * @global wpdb $wpdb WordPress database abstraction object.
 	 */
 	public static function get_total_user_design_count( $user, $access = null ) {
 		global $wpdb;
@@ -639,6 +639,35 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		// phpcs:enable WordPress.WP.PreparedSQL.NotPrepared
 
 		return $count;
+	}
+
+	/**
+	 * Determines if the user owns the design using the user id and design id.
+	 *
+	 * @param int $user_id   The WordPress user id.
+	 * @param int $design_id The MyStyle design id.
+	 * @return bool Returns true if the user owns the design, otherwise, returns
+	 * false.
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 * @todo Add unit testing for this method.
+	 */
+	public static function does_user_own_design( $user_id, $design_id ) {
+		global $wpdb;
+
+		$ret = false;
+
+		$design_user_id = $wpdb->get_var(
+			'SELECT user_id '
+			. "FROM {$wpdb->prefix}mystyle_designs "
+			. 'WHERE ms_design_id = %d',
+			array( $design_id )
+		);
+
+		if ( $design_user_id === $user_id ) {
+			$ret = true;
+		}
+
+		return $ret;
 	}
 
 	/**

@@ -63,7 +63,7 @@ class MyStyle_Passthru_Codec {
 			$passthru['post'] = $post;
 		}
 
-		// Add all available product attributes ( if there are any ) to the pass
+		// Add all available product attributes (if there are any) to the pass
 		// through data.
 		$product    = new WC_Product_Variable( $mystyle_product->get_id() );
 		$attributes = $product->get_variation_attributes();

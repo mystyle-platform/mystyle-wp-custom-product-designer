@@ -250,10 +250,7 @@ class MyStyle_My_Designs_Page {
 		$this->pager->set_items( $designs );
 
 		// Total items.
-		$this->pager->set_total_item_count(
-			MyStyle_DesignManager::get_total_user_design_count( $this->user ),
-			$this->user
-		);
+		$this->pager->set_total_item_count( MyStyle_DesignManager::get_total_user_design_count( $this->user ) );
 
 		// Validate the requested page.
 		try {

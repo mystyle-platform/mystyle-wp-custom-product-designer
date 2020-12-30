@@ -152,10 +152,11 @@ class MyStyle_Pager {
 	/**
 	 * Gets the total number of available pages.
 	 *
-	 * @return int Returns the total number of available pages.
+	 * @return int Returns the total number of available pages. Always returns
+	 * at least 1.
 	 */
 	public function get_page_count() {
-		$this->page_count = ceil( $this->total_item_count / $this->items_per_page );
+		$this->page_count = max( ceil( $this->total_item_count / $this->items_per_page ), 1 );
 
 		return $this->page_count;
 	}
