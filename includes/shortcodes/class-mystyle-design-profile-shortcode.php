@@ -61,7 +61,7 @@ abstract class MyStyle_Design_Profile_Shortcode {
 	 */
 	public static function output_design_profile() {
 		$design_profile_page = MyStyle_Design_Profile_Page::get_instance();
-		$author_designs_page = MyStyle_Author_Designs::get_instance();
+		$author_designs_page = MyStyle_Author_Designs_Page::get_instance();
 
 		// ------------- Set the template variables -------------------//
 		$design = $design_profile_page->get_design();

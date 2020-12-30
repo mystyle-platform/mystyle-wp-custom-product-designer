@@ -3,16 +3,17 @@
 
 
 /**
- * The MyStyle Author Designs class has hooks for working with the WooCommerce My Account page.
+ * The MyStyle_Author_Designs_Page class has hooks for working with the MyStyle
+ * Author Designs page.
  *
  * @package MyStyle
  * @since 3.13.6
  */
 
 /**
- * MyStyle_Author_Designs class.
+ * MyStyle_Author_Designs_Page class.
  */
-class MyStyle_Author_Designs {
+class MyStyle_Author_Designs_Page {
 
 	/**
 	 * Singleton class instance.
