@@ -52,7 +52,7 @@ class MyStyle_WooCommerce_Admin_Product {
 	/**
 	 * Create the content of the MyStyle product options tab.
 	 *
-	 * @global WP_Post $post The post that is currently being edited
+	 * @global WP_Post $post The post that is currently being edited.
 	 */
 	public function add_mystyle_data_panel() {
 		global $post;
@@ -190,15 +190,15 @@ class MyStyle_WooCommerce_Admin_Product {
 					<p class="form-field _mystyle_custom_template_bgimg_field ">
 						<label for="_mystyle_custom_template_bgimg">Custom Template Background Image (BETA)</label>
 						<span class="woocommerce-help-tip" data-tip="Select a custom template background image (500px X 500px maximum size)"></span>
-						<input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_bgimg_button" id="_mystyle_custom_template_bgimg_button" value="SELECT" placeholder=""> 
-						<input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_bgimg" id="_mystyle_custom_template_bgimg" value="<?php print ( $mystyle_custom_template_bgimg ? $mystyle_custom_template_bgimg : '' ); ?>" placeholder=""> 
+						<input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_bgimg_button" id="_mystyle_custom_template_bgimg_button" value="SELECT" placeholder="">
+						<input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_bgimg" id="_mystyle_custom_template_bgimg" value="<?php print ( $mystyle_custom_template_bgimg ? $mystyle_custom_template_bgimg : '' ); ?>" placeholder="">
 					</p>
-					
+
 					<p class="form-field _mystyle_custom_template_fgimg_field ">
 						<label for="_mystyle_custom_template_fgimg">Custom Template Foreground Image (BETA)</label>
 						<span class="woocommerce-help-tip" data-tip="Select a custom template foreground image (500px X 500px maximum size)"></span>
-						<input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_fgimg_button" id="_mystyle_custom_template_fgimg_button" value="SELECT" placeholder=""> 
-						<input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_fgimg" id="_mystyle_custom_template_fgimg" value="<?php print ( $mystyle_custom_template_fgimg ? $mystyle_custom_template_fgimg : '' ); ?>" placeholder=""> 
+						<input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_fgimg_button" id="_mystyle_custom_template_fgimg_button" value="SELECT" placeholder="">
+						<input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_fgimg" id="_mystyle_custom_template_fgimg" value="<?php print ( $mystyle_custom_template_fgimg ? $mystyle_custom_template_fgimg : '' ); ?>" placeholder="">
 					</p>
 					<?php
 
