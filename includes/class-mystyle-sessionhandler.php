@@ -48,9 +48,11 @@ class MyStyle_SessionHandler {
 	 * Starts the session.
 	 */
 	public function start_session() {
+		// phpcs:disable WordPress.VIP.SessionFunctionsUsage
 		if ( ( ! headers_sent() ) && ( ! session_id() ) ) {
 			session_start();
 		}
+		// phpcs:enable WordPress.VIP.SessionFunctionsUsage
 
 		$this->get();
 	}
@@ -59,6 +61,7 @@ class MyStyle_SessionHandler {
 	 * Ends/destroys the session.
 	 */
 	public function end_session() {
+		// phpcs:ignore WordPress.VIP
 		session_destroy();
 	}
 
@@ -73,16 +76,15 @@ class MyStyle_SessionHandler {
 	 * Static function to get the current MyStyle Session. This function does
 	 * the following:
 	 *
-	 *  * Looks for the session in the session variables
+	 *  * Looks for the session in the session variables.
 	 *  * Looks for the session in the cookies.
 	 *  * If no session is found, it creates one.
 	 *  * Updates the modified date of the session and persists it to the
-	 *   database.
+	 *    database.
 	 *
 	 * @return \MyStyle_Session Returns the current mystyle session.
 	 */
 	public function get() {
-
 		if ( null !== $this->session ) {
 			return $this->session;
 		}
@@ -91,9 +93,11 @@ class MyStyle_SessionHandler {
 
 		try {
 			// First look in the session variables.
+			// phpcs:disable WordPress.VIP
 			if ( isset( $_SESSION[ MyStyle_Session::SESSION_KEY ] ) ) {
 				$session = $_SESSION[ MyStyle_Session::SESSION_KEY ];
 			}
+			// phpcs:enable WordPress.VIP
 
 			// Next look in their cookies and the db.
 			// Note: If deserialization failed, get_class may return "__PHP_Incomplete_Class".
@@ -103,17 +107,20 @@ class MyStyle_SessionHandler {
 			// TODO: Manual serialization/deserialization might be a better solution to this
 			// problem.
 			if ( ( null === $session ) || ( 'MyStyle_Session' !== get_class( $session ) ) ) {
+				// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 				if ( isset( $_COOKIE[ MyStyle_Session::COOKIE_NAME ] ) ) {
-					$session_id                               = wp_unslash( $_COOKIE[ MyStyle_Session::COOKIE_NAME ] );
+					$session_id                               = sanitize_key( wp_unslash( $_COOKIE[ MyStyle_Session::COOKIE_NAME ] ) );
 					$session                                  = MyStyle_SessionManager::get( $session_id );
-					$_SESSION[ MyStyle_Session::SESSION_KEY ] = $session;
+					$_SESSION[ MyStyle_Session::SESSION_KEY ] = $session; // phpcs:ignore WordPress.VIP.SessionVariableUsage.SessionVarsProhibited
 				}
+				// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 			}
 		} catch ( \Exception $ex ) {
 			// If an unexpected exception occurs when trying to retrieve the
 			// session, fail silently, write to the log, and null out the
 			// (possibly corrupted) session. In this scenario, a new session
 			// will be created below as if there never was one.
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( 'Exception caught while trying to retrieve the user\'s session ' . $ex );
 		}
 
@@ -127,7 +134,7 @@ class MyStyle_SessionHandler {
 		// If no session is found, create a new one and set the cookie.
 		if ( null === $session ) {
 			$session                                  = MyStyle_Session::create();
-			$_SESSION[ MyStyle_Session::SESSION_KEY ] = $session;
+			$_SESSION[ MyStyle_Session::SESSION_KEY ] = $session; // phpcs:ignore WordPress.VIP.SessionVariableUsage.SessionVarsProhibited
 			if ( ( $this->use_cookies ) && ( ! headers_sent() ) ) {
 				setcookie(
 					MyStyle_Session::COOKIE_NAME,
