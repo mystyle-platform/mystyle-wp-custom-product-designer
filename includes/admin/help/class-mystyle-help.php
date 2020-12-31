@@ -31,7 +31,7 @@ class MyStyle_Help {
 	 *
 	 * @global $mystyle_hook
 	 */
-	function add_help() {
+	public function add_help() {
 		global $mystyle_hook;
 
 		$screen = get_current_screen();
@@ -40,8 +40,8 @@ class MyStyle_Help {
 		if (
 			( ! $screen )
 			|| (
-					( $mystyle_hook !== substr( $screen->id, 0, strlen( $mystyle_hook ) ) )
-					&& ( $screen->id !== 'toplevel_page_' . $mystyle_hook )
+					( substr( $screen->id, 0, strlen( $mystyle_hook ) ) !== $mystyle_hook )
+					&& ( 'toplevel_page_' . $mystyle_hook !== $screen->id )
 				)
 		) {
 			return;

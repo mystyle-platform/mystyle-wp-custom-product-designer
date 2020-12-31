@@ -69,9 +69,12 @@ class MyStyle_Wpml {
 
 		$table_name = $this->get_translations_table_name();
 
-		$stmt = $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name );
-
-		$found_table_name = $wpdb->get_var( $stmt );
+		$found_table_name = $wpdb->get_var(
+			$wpdb->prepare(
+				'SHOW TABLES LIKE %s',
+				$table_name
+			)
+		);
 
 		if ( $found_table_name === $table_name ) {
 			$is_installed = true;
@@ -102,20 +105,21 @@ class MyStyle_Wpml {
 			return false;
 		}
 
-		$stmt = $wpdb->prepare(
-			"SELECT 1
-			 FROM {$this->get_translations_table_name()}
-			 WHERE element_type = 'post_page'
-			 AND element_id = %d
-			 AND trid = (SELECT trid
-				FROM {$this->get_translations_table_name()}
-				WHERE element_type = 'post_page'
-				AND element_id = %d
-				)
-			",
-			$translation_id, $parent_id
+		$ret = $wpdb->query(
+			$wpdb->prepare(
+				'SELECT 1 '
+				. "FROM {$wpdb->prefix}icl_translations "
+				. 'WHERE element_type = \'post_page\'
+				 AND element_id = %d
+				 AND trid = (SELECT trid '
+					. "FROM {$wpdb->prefix}icl_translations "
+					. 'WHERE element_type = \'post_page\'
+					AND element_id = %d
+					)
+				',
+				array( $translation_id, $parent_id )
+			)
 		);
-		$ret  = $wpdb->query( $stmt );
 
 		$is_translation_of_page = boolval( $ret );
 
@@ -149,9 +153,11 @@ class MyStyle_Wpml {
 	public function get_current_language() {
 		$language = null;
 
+		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 		if ( isset( $_COOKIE[ self::CURRENT_LANGUAGE_COOKIE_NAME ] ) ) {
-			$language = wp_unslash( $_COOKIE[ self::CURRENT_LANGUAGE_COOKIE_NAME ] );
+			$language = wp_unslash( sanitize_key( $_COOKIE[ self::CURRENT_LANGUAGE_COOKIE_NAME ] ) );
 		}
+		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 
 		return $language;
 	}

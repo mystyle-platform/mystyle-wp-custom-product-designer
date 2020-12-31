@@ -36,7 +36,7 @@ abstract class MyStyle_EntityManager {
 					$wpdb->last_error . "\n" .
 					$wpdb->last_query . "\n" .
 					$entity->get_table_name() . "\n\n" .
-					var_export( $entity->get_data_array() ) . "\n\n";
+					var_export( $entity->get_data_array() ) . "\n\n"; // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 			throw new MyStyle_Exception( $msg, 500 );
 		}
 

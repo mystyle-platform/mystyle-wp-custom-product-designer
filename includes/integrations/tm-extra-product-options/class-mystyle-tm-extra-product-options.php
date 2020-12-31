@@ -49,19 +49,19 @@ class MyStyle_Tm_Extra_Product_Options {
 	 * @return string|void
 	 */
 	public function stash_mystyle_data(
-						$passed,
-						$product_id,
-						$qty,
-						$variation_id = '',
-						$variations = array(),
-						$cart_item_data = array()
-					) {
+		$passed,
+		$product_id,
+		$qty,
+		$variation_id = '',
+		$variations = array(),
+		$cart_item_data = array()
+	) {
 
 		// Just return if this isn't the scenario that we are looking for.
 		if (
-				( ! self::is_tm_extra_product_options_edit_request( $_REQUEST ) ) ||
-				( ! function_exists( 'THEMECOMPLETE_EPO' ) ) ||
-				( ! THEMECOMPLETE_EPO()->cart_edit_key )
+				( ! self::is_tm_extra_product_options_edit_request( $_REQUEST ) ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+				|| ( ! function_exists( 'THEMECOMPLETE_EPO' ) )
+				|| ( ! THEMECOMPLETE_EPO()->cart_edit_key )
 		) {
 			return $passed;
 		}
@@ -69,7 +69,7 @@ class MyStyle_Tm_Extra_Product_Options {
 		global $woocommerce;
 
 		// Get the woocommerce cart.
-		/* @var $cart \WC_Cart */
+		/* @var $cart \WC_Cart phpcs:ignore */
 		$cart = $woocommerce->cart;
 
 		// Init the cart contents ( pull from memory, etc ).
@@ -108,8 +108,8 @@ class MyStyle_Tm_Extra_Product_Options {
 					) {
 		// Return if this isn't the scenario that we are looking for.
 		if (
-				( ! self::is_tm_extra_product_options_edit_request( $_REQUEST ) ) ||
-				( null === $this->mystyle_data )
+				( ! self::is_tm_extra_product_options_edit_request( $_REQUEST ) ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+				|| ( null === $this->mystyle_data )
 		) {
 			return;
 		}
@@ -117,7 +117,7 @@ class MyStyle_Tm_Extra_Product_Options {
 		global $woocommerce;
 
 		// Get the woocommerce cart.
-		/* @var $cart \WC_Cart */
+		/* @var $cart \WC_Cart phpcs:ignore */
 		$cart = $woocommerce->cart;
 
 		// Init the cart contents ( pull from memory, etc ).
@@ -139,8 +139,8 @@ class MyStyle_Tm_Extra_Product_Options {
 		$ret = false;
 
 		if (
-				( isset( $request['tm_cart_item_key'] ) ) ||
-				( isset( $request['tc_cart_edit_key'] ) )
+				( isset( $request['tm_cart_item_key'] ) )
+				|| ( isset( $request['tc_cart_edit_key'] ) )
 		) {
 			$ret = true;
 		}

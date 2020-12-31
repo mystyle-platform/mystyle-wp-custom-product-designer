@@ -71,7 +71,7 @@ class MyStyle_Passthru_Codec {
 			$passthru['attributes'] = $attributes;
 		}
 
-		// Add custom template data if enabled
+		// Add custom template data if enabled.
 		$mystyle_custom_template_enabled = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template', true );
 
 		if ( 'yes' === $mystyle_custom_template_enabled ) {

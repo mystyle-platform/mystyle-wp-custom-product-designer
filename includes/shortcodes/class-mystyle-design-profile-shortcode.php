@@ -68,9 +68,9 @@ abstract class MyStyle_Design_Profile_Shortcode {
 
 		$author = false;
 
-		if ( $design->get_user_id() != null ) {
+		if ( null !== $design->get_user_id() ) {
 			$author = get_user_by( 'ID', $design->get_user_id() );
-		} elseif ( $design->get_email() != null ) {
+		} elseif ( null !== $design->get_email() ) {
 			$author = $author_designs_page->encrypt_decrypt( 'encrypt', $design->get_email() );
 		}
 

@@ -74,6 +74,8 @@ abstract class MyStyle_Design_Shortcode {
 	 *
 	 * @param array $atts The attributes set on the shortcode.
 	 * @return string Returns the output for a design (as a string).
+	 * @throws MyStyle_Not_Found_Exception Throws a MyStyle_Not_Found_Exception
+	 * if the design isn't found.
 	 */
 	private static function output_design( $atts ) {
 		$mystyle_frontend = MyStyle_FrontEnd::get_instance();
