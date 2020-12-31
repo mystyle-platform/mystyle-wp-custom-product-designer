@@ -72,6 +72,7 @@ class MyStyle_API implements MyStyle_API_Interface {
 		if ( is_wp_error( $response ) ) {
 			// We fail silently and write to the log.
 			$error_message = $response->get_error_message();
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( $error_message );
 		} else {
 			$response_data = json_decode( $response['body'], true );
@@ -130,6 +131,7 @@ class MyStyle_API implements MyStyle_API_Interface {
 		if ( is_wp_error( $response ) ) {
 			// We fail silently and write to the log.
 			$error_message = $response->get_error_message();
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( $error_message );
 		} else {
 			$response_data = json_decode( $response['body'], true );
