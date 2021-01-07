@@ -39,7 +39,7 @@ abstract class MyStyle_Customizer_Shortcode {
 
 		$mystyle_app_id = MyStyle_Options::get_api_key();
 
-		if ( ! isset( $_GET['product_id'] ) ) {
+		if ( ! isset( $_GET['product_id'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 			$out = '';
 			add_filter( 'woocommerce_shortcode_products_query', array( 'MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query' ), 10, 1 );
 			$out = do_shortcode( '[products per_page="12" limit="12" paginate="true"]' );
@@ -63,13 +63,15 @@ abstract class MyStyle_Customizer_Shortcode {
 		}
 
 		// Get data.
-		$product_id          = htmlspecialchars( $_GET['product_id'] );
-		$design_id           = ( isset( $_GET['design_id'] ) ) ? htmlspecialchars( $_GET['design_id'] ) : null; // Reload design ID from URL.
+		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+		$product_id = intval( wp_unslash( $_GET['product_id'] ) );
+		$design_id  = ( isset( $_GET['design_id'] ) ) ? intval( $_GET['design_id'] ) : null; // Reload design ID from URL.
+		$passthru   = ( isset( $_GET['h'] ) ) ? sanitize_text_field( wp_unslash( $_GET['h'] ) ) : null;
+		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 		$default_design_id   = get_post_meta( $product_id, '_mystyle_design_id', true );
 		$mystyle_template_id = get_post_meta( $product_id, '_mystyle_template_id', true );
 		$customizer_ux       = get_post_meta( $product_id, '_mystyle_customizer_ux', true );
 		$print_type          = get_post_meta( $product_id, '_mystyle_print_type', true );
-		$passthru            = ( isset( $_GET['h'] ) ) ? $_GET['h'] : null;
 
 		// If no passthru (h) data was received in the GET vars, build some
 		// defaults to keep things working.
@@ -88,7 +90,8 @@ abstract class MyStyle_Customizer_Shortcode {
 		}
 
 		// Get any settings that were passed in via the url.
-		$settings_param = ( isset( $_GET['settings'] ) ) ? $_GET['settings'] : null;
+		// phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+		$settings_param = ( isset( $_GET['settings'] ) ) ? sanitize_text_field( wp_unslash( $_GET['settings'] ) ) : null;
 
 		if ( ! empty( $settings_param ) ) {
 			$settings = json_decode( base64_decode( $settings_param ), true );
@@ -106,7 +109,7 @@ abstract class MyStyle_Customizer_Shortcode {
 			}
 		}
 
-		// Set the email_skip ( if it wasn't passed in ).
+		// Set the email_skip (if it wasn't passed in).
 		if ( ! array_key_exists( 'email_skip', $settings ) ) {
 			$settings['email_skip'] = 0;
 		}
@@ -116,7 +119,8 @@ abstract class MyStyle_Customizer_Shortcode {
 			$settings['print_type'] = $print_type;
 		}
 
-		// Skip enter email step if logged in and email can be pulled from user acct.
+		// Skip enter email step if logged in and email can be pulled from user
+		// acct.
 		if ( is_user_logged_in() ) {
 			$settings['email_skip'] = 1;
 		}
@@ -124,7 +128,6 @@ abstract class MyStyle_Customizer_Shortcode {
 		// Base64 encode settings.
 		$encoded_settings = base64_encode( wp_json_encode( $settings ) );
 
-		// echo '<pre>' ; var_dump(json_decode(base64_decode($passthru))) ; echo '</pre>' ;
 		// Add all vars to URL.
 		$customizer_query_string = "?app_id=$mystyle_app_id" .
 				"&amp;product_id=$mystyle_template_id" .
@@ -136,8 +139,8 @@ abstract class MyStyle_Customizer_Shortcode {
 		// ---------- Variables for use by the view layer ---------
 		$flash_customizer_url = 'http://customizer.ogmystyle.com/' . $customizer_query_string;
 
-		// set the customizer to dev if parameter isset
-		if ( isset( $_GET['customizerdev'] ) ) {
+		// Set the customizer to dev if parameter isset.
+		if ( isset( $_GET['customizerdev'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 			$html5_customizer_url = 'http://sean.base.customizer-js.api.dev.ogmystyle.com/' . $customizer_query_string;
 		} else {
 			$html5_customizer_url = '//customizer-js.ogmystyle.com/' . $customizer_query_string;
@@ -146,8 +149,8 @@ abstract class MyStyle_Customizer_Shortcode {
 		// Force mobile from plugin admin settings?
 		$enable_flash = MyStyle_Options::enable_flash();
 
-		// Force mobile from GET var override?
-		if ( isset( $_GET['enable_flash'] ) ) {
+		// Force flash from GET var override?
+		if ( isset( $_GET['enable_flash'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 			$enable_flash = true;
 		}
 
