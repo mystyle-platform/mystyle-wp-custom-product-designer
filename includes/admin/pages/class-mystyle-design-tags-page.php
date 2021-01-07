@@ -8,14 +8,14 @@
  */
 
 /**
- * MyStyle_DesignTags_Page class.
+ * MyStyle_Design_Tags_Page class.
  */
-class MyStyle_DesignTags_Page {
+class MyStyle_Design_Tags_Page {
 
 	/**
 	 * Singleton instance.
 	 *
-	 * @var MyStyle_Dashboard_Page
+	 * @var MyStyle_Design_Tags_Page
 	 */
 	private static $instance;
 
@@ -48,7 +48,7 @@ class MyStyle_DesignTags_Page {
 	/**
 	 * Get the singleton instance.
 	 *
-	 * @return MyStyle_Addons_Page
+	 * @return MyStyle_Design_Tags_Page
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {

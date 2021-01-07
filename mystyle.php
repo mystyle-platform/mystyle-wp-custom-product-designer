@@ -250,7 +250,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				MyStyle_Addons_Page::get_instance();
 
 				// Set up the Design Tags page.
-				MyStyle_DesignTags_Page::get_instance();
+				MyStyle_Design_Tags_Page::get_instance();
 
 				// Set up the Help.
 				MyStyle_Help::get_instance();

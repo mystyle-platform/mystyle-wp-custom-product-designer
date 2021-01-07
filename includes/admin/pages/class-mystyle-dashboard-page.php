@@ -67,7 +67,6 @@ class MyStyle_Dashboard_Page {
 		$design_product_count = $this->get_total_customizable_products_count();
 		$options              = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		$api_key_status       = ( array_key_exists( 'api_key', $options ) ) ? true : false;
-		$settings_link        = '<a class="alert" href="options-general.php?page=mystyle_settings">INVALID</a>';
 		?>
 		<div class="wrap">
 			<h2 class="mystyle-admin-title">
@@ -81,24 +80,30 @@ class MyStyle_Dashboard_Page {
 					<li>
 						<div class="design-count">
 							<h3>Total Number of Designs</h3>
-							<p><?php print $design_count; ?></p>
+							<p><?php echo esc_html( $design_count ); ?></p>
 						</div>
 					</li>
 					<li>
 						<div class="design-products">
 							<h3>Total Customizable Products</h3>
-							<p><?php print $design_product_count; ?></p>
+							<p><?php echo esc_html( $design_product_count ); ?></p>
 						</div>
 					</li>
 					<li>
 						<div class="license-status">
 							<h3>MyStyle License Status</h3>
-							<p><?php print ( $api_key_status ? '<span class="dashicons dashicons-yes"></span>' : $settings_link ); ?></p>
+							<p>
+								<?php
+									echo ( $api_key_status )
+										? '<span class="dashicons dashicons-yes"></span>'
+										: '<a class="alert" href="options-general.php?page=mystyle_settings">INVALID</a>';
+								?>
+							</p>
 						</div>
 					</li>
 				</ul>
-				
-				
+
+
 			</div>
 			<p>&nbsp;</p>
 			<div class="mystyle-admin-box">
@@ -107,7 +112,7 @@ class MyStyle_Dashboard_Page {
 					<li>
 						<a href="http://www.mystyleplatform.com/product/design-manager-mystyle-wordpress-plugin/?ref=wpadmin" target="_blank">
 							<h3>MyStyle Design Manager</h3>
-							<img src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/design_manager.jpg'; ?>" alt="Design Manager" />
+							<img src="<?php echo esc_url( MYSTYLE_ASSETS_URL . 'images/addons/design_manager.jpg' ); ?>" alt="Design Manager" />
 							<p>
 								The MyStyle Design Manager allows you to manage the
 								designs made by users from within the WordPress
@@ -120,7 +125,7 @@ class MyStyle_Dashboard_Page {
 					<li>
 						<a href="http://www.mystyleplatform.com/product/email-manager-mystyle-wordpress-plugin/?ref=wpadmin" target="_blank">
 							<h3>MyStyle Email Manager</h3>
-							<img src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/email-manager-screenshot.jpg'; ?>" alt="Email Manager" />
+							<img src="<?php echo esc_url( MYSTYLE_ASSETS_URL . 'images/addons/email-manager-screenshot.jpg' ); ?>" alt="Email Manager" />
 							<p>
 								Our "MyStyle Email Manager" upgrades the emails that
 								are automatically sent when users save their designs
@@ -134,7 +139,7 @@ class MyStyle_Dashboard_Page {
 					<li>
 						<a href="http://www.mystyleplatform.com/product/edit-options-cart-woo-commerce-standalone-wordpress-plugin/?ref=wpadmin" target="_blank">
 							<h3>Edit Options in Cart*</h3>
-							<img src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/edit-options-in-cart.jpg'; ?>" alt="Edit Product Options" />
+							<img src="<?php echo esc_url( MYSTYLE_ASSETS_URL . 'images/addons/edit-options-in-cart.jpg' ); ?>" alt="Edit Product Options" />
 							<p>
 								Our "Edit Options in Cart Plugin" allows users to
 								change product options in the cart (and refreshes
@@ -195,7 +200,7 @@ class MyStyle_Dashboard_Page {
 	/**
 	 * Get the singleton instance.
 	 *
-	 * @return MyStyle_Addons_Page
+	 * @return MyStyle_Dashboard_Page
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {

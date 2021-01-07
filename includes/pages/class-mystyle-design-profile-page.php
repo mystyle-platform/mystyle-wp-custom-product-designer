@@ -574,7 +574,7 @@ class MyStyle_Design_Profile_Page {
 		}
 
 		header( 'Content-Type: application/json' );
-		print wp_json_encode( array( 'tag' => $tag ) );
+		echo wp_json_encode( array( 'tag' => $tag ) );
 		die();
 	}
 
@@ -606,7 +606,7 @@ class MyStyle_Design_Profile_Page {
 		}
 
 		header( 'Content-Type: application/json' );
-		print wp_json_encode( array( 'tag' => $tag ) );
+		echo wp_json_encode( array( 'tag' => $tag ) );
 		die();
 	}
 
