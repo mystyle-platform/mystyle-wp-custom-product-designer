@@ -82,7 +82,7 @@ class MyStyle_Notice_Controller {
 	public function set_notice_pref_callback() {
 		// Get the variables from the post request.
 		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
-		$notice_key  = ( isset( $_POST['form_id'] ) ) ? sanitize_key( $_POST['form_id'] ) : '';
+		$notice_key  = ( isset( $_POST['notice_key'] ) ) ? sanitize_key( $_POST['notice_key'] ) : '';
 		$remind_when = ( isset( $_POST['remind_when'] ) ) ? sanitize_key( $_POST['remind_when'] ) : '';
 		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 
