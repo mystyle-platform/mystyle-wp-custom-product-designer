@@ -290,7 +290,7 @@ class MyStyle_WooCommerce_Admin_Product {
 	 */
 	public function process_mystyle_data_panel( $post_id ) {
 
-		$mystyle_enabled                   = ( isset( $_POST['_mystyle_enabled'] ) && $_POST['_mystyle_enabled'] ) ? 'yes' : 'no';
+		$mystyle_enabled                   = ( isset( $_POST['_mystyle_enabled'] ) && ( boolval( $_POST['_mystyle_enabled'] ) ) ) ? 'yes' : 'no';
 		$template_id                       = $_POST['_mystyle_template_id'];
 		$mystyle_custom_template           = $_POST['_mystyle_custom_template'];
 		$mystyle_custom_template_width     = $_POST['_mystyle_custom_template_width'];
