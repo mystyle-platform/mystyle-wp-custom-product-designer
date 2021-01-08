@@ -1,7 +1,7 @@
 <?php
 /**
  * The MyStyle WooCommerce Admin Product class hooks MyStyle into the
- * WooCommerce Product admin interace.
+ * WooCommerce Product admin interface.
  *
  * @package MyStyle
  * @since 0.2.1
@@ -191,14 +191,14 @@ class MyStyle_WooCommerce_Admin_Product {
 						<label for="_mystyle_custom_template_bgimg">Custom Template Background Image (BETA)</label>
 						<span class="woocommerce-help-tip" data-tip="Select a custom template background image (500px X 500px maximum size)"></span>
 						<input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_bgimg_button" id="_mystyle_custom_template_bgimg_button" value="SELECT" placeholder="">
-						<input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_bgimg" id="_mystyle_custom_template_bgimg" value="<?php print ( $mystyle_custom_template_bgimg ? $mystyle_custom_template_bgimg : '' ); ?>" placeholder="">
+						<input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_bgimg" id="_mystyle_custom_template_bgimg" value="<?php echo ( $mystyle_custom_template_bgimg ) ? esc_attr( $mystyle_custom_template_bgimg ) : ''; ?>" placeholder="">
 					</p>
 
 					<p class="form-field _mystyle_custom_template_fgimg_field ">
 						<label for="_mystyle_custom_template_fgimg">Custom Template Foreground Image (BETA)</label>
 						<span class="woocommerce-help-tip" data-tip="Select a custom template foreground image (500px X 500px maximum size)"></span>
 						<input type="button" class="button" style="float:left;margin:0;" name="_mystyle_custom_template_fgimg_button" id="_mystyle_custom_template_fgimg_button" value="SELECT" placeholder="">
-						<input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_fgimg" id="_mystyle_custom_template_fgimg" value="<?php print ( $mystyle_custom_template_fgimg ? $mystyle_custom_template_fgimg : '' ); ?>" placeholder="">
+						<input type="text" class="short" style="width:62.5%;float:left; margin-left:4px;" name="_mystyle_custom_template_fgimg" id="_mystyle_custom_template_fgimg" value="<?php echo ( $mystyle_custom_template_fgimg ) ? esc_attr( $mystyle_custom_template_fgimg ) : ''; ?>" placeholder="">
 					</p>
 					<?php
 
@@ -290,24 +290,27 @@ class MyStyle_WooCommerce_Admin_Product {
 	 */
 	public function process_mystyle_data_panel( $post_id ) {
 
+		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 		$mystyle_enabled                   = ( isset( $_POST['_mystyle_enabled'] ) && ( boolval( $_POST['_mystyle_enabled'] ) ) ) ? 'yes' : 'no';
-		$template_id                       = $_POST['_mystyle_template_id'];
-		$mystyle_custom_template           = $_POST['_mystyle_custom_template'];
-		$mystyle_custom_template_width     = $_POST['_mystyle_custom_template_width'];
-		$mystyle_custom_template_height    = $_POST['_mystyle_custom_template_height'];
-		$mystyle_custom_template_shape     = $_POST['_mystyle_custom_template_shape'];
-		$mystyle_custom_template_color     = $_POST['_mystyle_custom_template_color'];
-		$mystyle_custom_template_bgimg     = $_POST['_mystyle_custom_template_bgimg'];
-		$mystyle_custom_template_fgimg     = $_POST['_mystyle_custom_template_fgimg'];
-		$mystyle_custom_template_bleed     = ( is_numeric( $_POST['_mystyle_custom_template_bleed'] ) ? $_POST['_mystyle_custom_template_bleed'] : '' );
-		$mystyle_custom_template_boxshadow = ( isset( $_POST['_mystyle_custom_template_boxshadow'] ) ? $_POST['_mystyle_custom_template_boxshadow'] : 'no' );
-		$mystyle_design_id                 = $_POST['_mystyle_design_id'];
-		$customizer_ux                     = $_POST['_mystyle_customizer_ux'];
-		$customizer_redirect               = $_POST['_mystyle_customizer_redirect'];
-		$mystyle_print_type                = $_POST['_mystyle_print_type'];
-		$mystyle_configur8_enabled         = ( isset( $_POST['_mystyle_configur8_enabled'] ) && $_POST['_mystyle_configur8_enabled'] ) ? 'yes' : 'no';
+		$template_id                       = ( isset( $_POST['_mystyle_template_id'] ) ) ? intval( $_POST['_mystyle_template_id'] ) : 0;
+		$mystyle_custom_template           = ( isset( $_POST['_mystyle_custom_template'] ) ) ? sanitize_key( $_POST['_mystyle_custom_template'] ) : 'no';
+		$mystyle_custom_template_width     = ( ! empty( $_POST['_mystyle_custom_template_width'] ) ) ? floatval( $_POST['_mystyle_custom_template_width'] ) : null;
+		$mystyle_custom_template_height    = ( ! empty( $_POST['_mystyle_custom_template_height'] ) ) ? floatval( $_POST['_mystyle_custom_template_height'] ) : null;
+		$mystyle_custom_template_shape     = ( isset( $_POST['_mystyle_custom_template_shape'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_shape'] ) ) : null;
+		$mystyle_custom_template_color     = ( isset( $_POST['_mystyle_custom_template_color'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_color'] ) ) : '';
+		$mystyle_custom_template_bgimg     = ( isset( $_POST['_mystyle_custom_template_bgimg'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_bgimg'] ) ) : '';
+		$mystyle_custom_template_fgimg     = ( isset( $_POST['_mystyle_custom_template_fgimg'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_fgimg'] ) ) : '';
+		$mystyle_custom_template_bleed     = ( ! empty( $_POST['_mystyle_custom_template_bleed'] ) ? floatval( $_POST['_mystyle_custom_template_bleed'] ) : null );
+		$mystyle_custom_template_boxshadow = ( isset( $_POST['_mystyle_custom_template_boxshadow'] ) ? sanitize_key( $_POST['_mystyle_custom_template_boxshadow'] ) : 'no' );
+		$mystyle_design_id                 = ( ! empty( $_POST['_mystyle_design_id'] ) ) ? intval( $_POST['_mystyle_design_id'] ) : '';
+		$customizer_ux                     = ( isset( $_POST['_mystyle_customizer_ux'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_customizer_ux'] ) ) : null;
+		$customizer_redirect               = ( isset( $_POST['_mystyle_customizer_redirect'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_customizer_redirect'] ) ) : null;
+		$mystyle_print_type                = ( isset( $_POST['_mystyle_print_type'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_print_type'] ) ) : null;
+		$mystyle_configur8_enabled         = ( isset( $_POST['_mystyle_configur8_enabled'] ) && boolval( $_POST['_mystyle_configur8_enabled'] ) ) ? 'yes' : 'no';
+		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+
 		if ( 'yes' === $mystyle_enabled ) {
-			if ( 'yes' === $mystyle_custom_template ) { // custom template is enabled, set template_id to 1
+			if ( 'yes' === $mystyle_custom_template ) { // Custom template is enabled, set template_id to 1.
 				update_post_meta( $post_id, '_mystyle_enabled', 'yes' );
 				update_post_meta( $post_id, '_mystyle_template_id', '1' );
 				update_post_meta( $post_id, '_mystyle_custom_template', $mystyle_custom_template );
@@ -385,15 +388,15 @@ class MyStyle_WooCommerce_Admin_Product {
 	}
 
 	/**
-	 * Add WP admin color picker js
+	 * Add WP admin color picker js.
 	 */
 	public function add_admin_js() {
 		if ( is_admin() ) {
 
-			// Add the color picker css file
+			// Add the color picker css file.
 			wp_enqueue_style( 'wp-color-picker' );
 
-			// Include our custom jQuery file with WordPress Color Picker dependency
+			// Include our custom jQuery file with WordPress Color Picker dependency.
 			wp_enqueue_script( 'mystyle-color-picker', MYSTYLE_ASSETS_URL . 'js/color-picker.js', array( 'wp-color-picker' ), false, true );
 			wp_enqueue_script( 'mystyle-media-select', MYSTYLE_ASSETS_URL . 'js/media-select.js', array(), false, true );
 		}

@@ -39,7 +39,7 @@ class MyStyle_WooCommerce_Admin_Order {
 	 */
 	public function add_order_item_header() {
 		?>
-		<th class="item-mystyle"><?php _e( 'MyStyle', 'mystyle' ); ?></th>
+		<th class="item-mystyle"><?php esc_html_e( 'MyStyle', 'mystyle' ); ?></th>
 		<?php
 	}
 
@@ -74,14 +74,14 @@ class MyStyle_WooCommerce_Admin_Order {
 		?>
 		<td class="item-mystyle">
 			<?php if ( null !== $design ) : ?>
-				<div class="mystyle-toggle" onclick="mystyleTogglePanelVis(<?php echo $item_id; ?>)">
+				<div class="mystyle-toggle" onclick="mystyleTogglePanelVis(<?php echo esc_js( $item_id ); ?>)">
 					<a class="mystyle-toggle-link button" title="Click to toggle">MyStyle Data</a>
-					<a id="mystyle-toggle-handle-<?php echo $item_id; ?>" class="mystyle-toggle-handle" title="Click to toggle" onclick="mystyleTogglePanelVis(<?php echo $item_id; ?>)"></a>
+					<a id="mystyle-toggle-handle-<?php echo esc_js( $item_id ); ?>" class="mystyle-toggle-handle" title="Click to toggle" onclick="mystyleTogglePanelVis(<?php echo esc_js( $item_id ); ?>)"></a>
 				</div>
-				<div class="mystyle-panel" id="mystyle-panel-<?php echo $item_id; ?>" style="display:none;">
+				<div class="mystyle-panel" id="mystyle-panel-<?php echo esc_js( $item_id ); ?>" style="display:none;">
 					<div>
 						<?php if ( ! MyStyle_Options::is_demo_mode() ) { ?>
-							Design Id: <a href="<?php echo $design->get_reload_url(); ?>" target="_blank"><?php echo $design->get_design_id(); ?></a><br/>
+							Design Id: <a href="<?php echo esc_url( $design->get_reload_url() ); ?>" target="_blank"><?php echo esc_html( $design->get_design_id() ); ?></a><br/>
 							<?php
 							$multi_print_file = false;
 							if ( ( preg_match( '/^(.+\_)(\d+)(\..+)$/', $design->get_print_url(), $matches ) ) && ( $matches[2] > 1 ) ) {
@@ -91,21 +91,21 @@ class MyStyle_WooCommerce_Admin_Order {
 								for ( $i = 1; $i <= $print_file_count; $i++ ) {
 									$curr_file_name = $file_name_base . $i . $file_name_extension;
 									if ( in_array( pathinfo( $curr_file_name, PATHINFO_EXTENSION ), array( 'png', 'jpg' ), true ) ) {
-										echo '<a class="button" href="' . $curr_file_name . '" target="_blank">Print Image ' . $i . '</a><br/>';
+										echo '<a class="button" href="' . esc_url( $curr_file_name ) . '" target="_blank">Print Image ' . esc_html( $i ) . '</a><br/>';
 									}
 								}
 							} else {
 								if ( in_array( pathinfo( $design->get_print_url(), PATHINFO_EXTENSION ), array( 'png', 'jpg' ), true ) ) {
-									echo '<a class="button" href="' . $design->get_print_url() . '" target="_blank">Print Image</a><br/>';
+									echo '<a class="button" href="' . esc_url( $design->get_print_url() ) . '" target="_blank">Print Image</a><br/>';
 								}
 							}
 							?>
 						<?php } ?>
-						<a class="button" href="<?php echo $design->get_web_url(); ?>" target="_blank">Web Preview</a><br/>
-						<a class="button" href="http://mystyleplatform.com/render/?design_url=<?php echo $design->get_design_url(); ?>" target="_blank">Render Print Image</a><br/>
+						<a class="button" href="<?php echo esc_url( $design->get_web_url() ); ?>" target="_blank">Web Preview</a><br/>
+						<a class="button" href="http://mystyleplatform.com/render/?design_url=<?php echo esc_url( $design->get_design_url() ); ?>" target="_blank">Render Print Image</a><br/>
 					</div>
 					<hr>
-					<img src="<?php echo $design->get_thumb_url(); ?>"/>
+					<img src="<?php echo esc_url( $design->get_thumb_url() ); ?>"/>
 
 				</div>
 			<?php endif; ?>

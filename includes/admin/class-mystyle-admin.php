@@ -66,11 +66,10 @@ class MyStyle_Admin {
 	 *
 	 * This function is mostly copy pasted from wp-admin/includes/template.php
 	 *
-	 * @global $wp_settings_sections Storage array of all settings sections added to admin pages.
-	 * @global $wp_settings_fields Storage array of settings fields and info about their pages/sections.
-	 * @since 2.7.0
-	 *
 	 * @param string $page The slug name of the page whose settings sections you want to output.
+	 * @global array $wp_settings_sections Storage array of all settings sections added to admin pages.
+	 * @global array $wp_settings_fields Storage array of settings fields and info about their pages/sections.
+	 * @since 2.7.0
 	 */
 	public static function do_settings_sections( $page ) {
 		global $wp_settings_sections, $wp_settings_fields;
@@ -82,15 +81,15 @@ class MyStyle_Admin {
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
 			echo '<div class="mystyle-admin-box">';
 			if ( $section['title'] ) {
-					echo "<h2>{$section['title']}</h2>\n";
+				echo '<h2>' . esc_html( $section['title'] ) . '</h2>' . "\n";
 			}
 
 			if ( $section['callback'] ) {
-					call_user_func( $section['callback'], $section );
+				call_user_func( $section['callback'], $section );
 			}
 
 			if ( ! isset( $wp_settings_fields ) || ! isset( $wp_settings_fields[ $page ] ) || ! isset( $wp_settings_fields[ $page ][ $section['id'] ] ) ) {
-					continue;
+				continue;
 			}
 			echo '<table class="form-table">';
 			do_settings_fields( $page, $section['id'] );
