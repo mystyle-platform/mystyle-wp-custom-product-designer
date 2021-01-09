@@ -73,6 +73,7 @@ class MyStyle_Handoff {
 	 */
 	public function override() {
 
+		// phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput
 		$url = $_SERVER['REQUEST_URI'];
 
 		if ( strpos( $url, self::SLUG ) !== false ) {
@@ -98,15 +99,16 @@ class MyStyle_Handoff {
 	 * @todo Make private.
 	 * @todo Unit test the variation support
 	 * @todo Break this long function up.
+	 * @global \WooCommerce $woocommerce
 	 */
 	public function handle() {
-		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
+		global $woocommerce;
+
+		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
 
 			// --- Add the product to the cart along with the mystyle variables. ---
-			global $woocommerce;
-
 			// Create a Design from the post.
-			$this->design = MyStyle_Design::create_from_post( $_POST );
+			$this->design = MyStyle_Design::create_from_post( $_POST ); // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 
 			// Get and persist the Design.
 			$session_handler = MyStyle_SessionHandler::get_instance();
@@ -120,7 +122,6 @@ class MyStyle_Handoff {
 			$this->design = $this->mystyle_api->add_api_data_to_design( $this->design );
 
 			// Get the mystyle user from the API.
-			/* @var $user \MyStyle_User */
 			$mystyle_user = $this->mystyle_api->get_user( $this->design->get_designer_id() );
 
 			// Add data from the user to the design.
@@ -144,7 +145,7 @@ class MyStyle_Handoff {
 			$this->design = MyStyle_DesignManager::persist( $this->design );
 
 			// Get the passthru data.
-			$passthru = json_decode( base64_decode( $_POST['h'] ), true );
+			$passthru = json_decode( base64_decode( $_POST['h'] ), true ); // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput, WordPress.CSRF.NonceVerification.NoNonceVerification
 
 			// ------------------- Send email to user. ---------------
 			if ( has_action( 'mystyle_send_design_complete_email' ) ) {
@@ -207,8 +208,8 @@ class MyStyle_Handoff {
 			}
 
 			// Get the woocommerce cart.
-			/* @var $cart \WC_Cart */
 			$cart = $woocommerce->cart;
+
 			// Init the cart contents ( pull from memory, etc ).
 			$cart->get_cart();
 
@@ -255,12 +256,13 @@ class MyStyle_Handoff {
 	 * 'handle' function above).
 	 *
 	 * @return string Returns the html to output to the browser.
+	 * @global \WooCommerce $woocommerce
 	 */
 	public function get_output() {
-		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-			// -- Add the product to the cart along with the mystyle variables. --
-			global $woocommerce;
+		global $woocommerce;
 
+		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
+			// -- Add the product to the cart along with the mystyle variables. --
 			// Get the woocommerce cart.
 			$cart = $woocommerce->cart;
 

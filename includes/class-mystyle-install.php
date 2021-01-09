@@ -115,29 +115,33 @@ class MyStyle_Install {
 			MyStyle_SessionManager::purge_abandoned_sessions();
 		}
 
-		// flush rewrite rules for newly created rewrites
+		// Flush rewrite rules for newly created rewrites.
 		flush_rewrite_rules();
 
-		// Add the Design tage page if upgrading from less than 3.14.0 ( versions that were before this page existed ).
+		// Add the Design tage page if upgrading from less than 3.14.0 (versions
+		// that were before this page existed).
 		if ( version_compare( $old_version, '3.14.0', '<' ) ) {
 			if ( ! MyStyle_Design_Tag_Page::exists() ) {
 				MyStyle_Design_Tag_Page::create();
 			}
 		}
 
-		// fix Design tag post status to 'draft'
+		// Fix Design tag post status to 'draft'.
 		if ( version_compare( $old_version, '3.14.6', '<' ) ) {
 			$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 			$post_id = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
 
 			$update_post = get_post( $post_id );
 
-			if ( $update_post->post_status == 'private' ) {
+			if ( 'private' === $update_post->post_status ) {
 				MyStyle_Design_Tag_Page::fix();
 			}
 		}
 
-		$upgrade_notice = MyStyle_Notice::create( 'notify_upgrade', 'Upgraded version from ' . $old_version . ' to ' . $new_version . '.' );
+		$upgrade_notice = MyStyle_Notice::create(
+			'notify_upgrade',
+			'Upgraded version from ' . $old_version . ' to ' . $new_version . '.'
+		);
 		mystyle_notice_add_to_queue( $upgrade_notice );
 	}
 

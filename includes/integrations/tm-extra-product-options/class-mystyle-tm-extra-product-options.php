@@ -47,6 +47,7 @@ class MyStyle_Tm_Extra_Product_Options {
 	 * @param array   $cart_item_data Extra cart item data that we want to pass
 	 *  into the item.
 	 * @return string|void
+	 * @global \WooCommerce $woocommerce
 	 */
 	public function stash_mystyle_data(
 		$passed,
@@ -56,6 +57,7 @@ class MyStyle_Tm_Extra_Product_Options {
 		$variations = array(),
 		$cart_item_data = array()
 	) {
+		global $woocommerce;
 
 		// Just return if this isn't the scenario that we are looking for.
 		if (
@@ -65,8 +67,6 @@ class MyStyle_Tm_Extra_Product_Options {
 		) {
 			return $passed;
 		}
-
-		global $woocommerce;
 
 		// Get the woocommerce cart.
 		/* @var $cart \WC_Cart phpcs:ignore */
@@ -97,15 +97,18 @@ class MyStyle_Tm_Extra_Product_Options {
 	 * @param array  $cart_item_data Extra cart item data that we want to pass
 	 * into the item.
 	 * @return string|void
+	 * @global \WooCommerce $woocommerce
 	 */
 	public function copy_mystyle_data(
-						$cart_item_key,
-						$product_id,
-						$quantity,
-						$variation_id,
-						$variation,
-						$cart_item_data
-					) {
+		$cart_item_key,
+		$product_id,
+		$quantity,
+		$variation_id,
+		$variation,
+		$cart_item_data
+	) {
+		global $woocommerce;
+
 		// Return if this isn't the scenario that we are looking for.
 		if (
 				( ! self::is_tm_extra_product_options_edit_request( $_REQUEST ) ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
@@ -113,8 +116,6 @@ class MyStyle_Tm_Extra_Product_Options {
 		) {
 			return;
 		}
-
-		global $woocommerce;
 
 		// Get the woocommerce cart.
 		/* @var $cart \WC_Cart phpcs:ignore */
