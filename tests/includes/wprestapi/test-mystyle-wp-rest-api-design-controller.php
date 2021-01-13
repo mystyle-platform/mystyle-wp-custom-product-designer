@@ -81,7 +81,7 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		$controller = new MyStyle_Wp_Rest_Api_Design_Controller();
 
 		// Call the function.
-		/* @var $response \WP_REST_Response */
+		/* @var $response \WP_REST_Response The response. */
 		$response = $controller->get_items( $request );
 
 		// Assert that the response is returned as expected.
@@ -111,7 +111,7 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		$controller = new MyStyle_Wp_Rest_Api_Design_Controller();
 
 		// Call the function.
-		/* @var $response \WP_REST_Response */
+		/* @var $response \WP_REST_Response The response. */
 		$response = $controller->get_item( $request );
 
 		// Assert that the response is returned as expected.
@@ -138,7 +138,7 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		$controller = new MyStyle_Wp_Rest_Api_Design_Controller();
 
 		// Call the function.
-		/* @var $response \WP_REST_Response */
+		/* @var $response \WP_REST_Response The response. */
 		$response = $controller->create_item( $request );
 
 		// Assert that the response is returned as expected.
@@ -177,7 +177,7 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		$controller = new MyStyle_Wp_Rest_Api_Design_Controller();
 
 		// Call the function.
-		/* @var $response \WP_REST_Response */
+		/* @var $response \WP_REST_Response The response. */
 		$response = $controller->create_item( $request );
 
 		// Assert that the response is returned as expected.
@@ -208,7 +208,7 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		$controller = new MyStyle_Wp_Rest_Api_Design_Controller();
 
 		// Call the function.
-		/* @var $response \WP_REST_Response */
+		/* @var $response \WP_REST_Response The response. */
 		$response = $controller->delete_item( $request );
 
 		// Assert that the response is returned as expected.

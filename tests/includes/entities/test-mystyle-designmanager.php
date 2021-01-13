@@ -494,13 +494,11 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		$user_2->ID = 200;
 
 		// Create a public design for user 1.
-		/* @var $design_1 \MyStyle_Design */
 		$design_1 = MyStyle_MockDesign::get_mock_design( 1 );
 		$design_1->set_user_id( $user_1->ID );
 		MyStyle_DesignManager::persist( $design_1 );
 
 		// Create a private design for user 2.
-		/* @var $design_2 \MyStyle_Design Create design_2  */
 		$design_2 = MyStyle_MockDesign::get_mock_design( 2 );
 		$design_2->set_user_id( $user_2->ID );
 		$design_2->set_access( MyStyle_Access::ACCESS_PRIVATE );
@@ -513,7 +511,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		$this->assertEquals( 1, count( $designs ) );
 
 		// Assert that the private design wasn't returned
-		/* @var $design \MyStyle_Design */
+		/* @var $design \MyStyle_Design The Design. */
 		$design = $designs[0];
 		$this->assertEquals( $user_1->ID, $design->get_user_id() );
 	}
@@ -529,7 +527,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		$user->ID = 100;
 
 		// Create a private design for the user.
-		/* @var $design \MyStyle_Design */
+		/* @var $design \MyStyle_Design The Design. */
 		$design = MyStyle_MockDesign::get_mock_design( 1 );
 		$design->set_user_id( $user->ID );
 		$design->set_access( MyStyle_Access::ACCESS_PRIVATE );

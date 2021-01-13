@@ -10,7 +10,7 @@
 /**
  * Mock the THEMECOMPLETE_EPO function.
  */
-function THEMECOMPLETE_EPO() {
+function THEMECOMPLETE_EPO() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
 
 	$mock                = new stdClass();
 	$mock->cart_edit_key = 'fake_old_cart_item_key';
@@ -155,7 +155,7 @@ class MyStyleTmExtraProductOptionsTest extends WP_UnitTestCase {
 		);
 
 		// Get the woocommerce cart.
-		/* @var $cart \WC_Cart */
+		/* @var $cart \WC_Cart The WooCommerce Cart. */
 		$cart = $woocommerce->cart;
 		$cart->get_cart();
 

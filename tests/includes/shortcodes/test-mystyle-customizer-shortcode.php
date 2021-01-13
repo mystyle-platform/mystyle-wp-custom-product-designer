@@ -26,7 +26,7 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 
 		// Mock the args.
 		$args               = array();
-		$args['meta_query'] = array();
+		$args['meta_query'] = array(); // phpcs:ignore WordPress.VIP.SlowDBQuery.slow_db_query_meta_query
 
 		$modified_args = MyStyle_Customizer_Shortcode::modify_woocommerce_shortcode_products_query( $args );
 
