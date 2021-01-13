@@ -228,8 +228,9 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
 	/**
 	 * Test the process_mystyle_data_panel function when customization is
 	 * enabled but no template id has been entered. In this case, we:
+	 *
 	 * * Store the submitted data
-	 * * Set customizable to false
+	 * * Set customizable to false/no
 	 * * Notify the user that the template id is required.
 	 *
 	 * @global $post
@@ -244,7 +245,7 @@ class MyStyleWooCommerceAdminProductTest extends WP_UnitTestCase {
 		$post->ID = $post_id;
 
 		$_POST                                    = array();
-		$_POST['_mystyle_enabled']                = true;
+		$_POST['_mystyle_enabled']                = 'yes';
 		$_POST['_mystyle_template_id']            = '';
 		$_POST['_mystyle_custom_template']        = false;
 		$_POST['_mystyle_custom_template_width']  = '';

@@ -29,9 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <script type="text/javascript">
 
+	<?php // phpcs:disable WordPress.WhiteSpace.PrecisionAlignment.Found ?>
 	/**
 	 * Waits for MyStyleCustomze to exist and then initializes it.
 	 */
+	<?php // phpcs:enable WordPress.WhiteSpace.PrecisionAlignment.Found ?>
 	function initMyStyleCustomizer(){
 		var hasMyStyle = Boolean(
 				( 'undefined' != typeof MyStyleCustomize )

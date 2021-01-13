@@ -7,6 +7,7 @@
  * @package MyStyle
  * @since 1.4.0
  */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -32,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							if ( '' !== $design->get_title() ) {
 								$title = $design->get_title();
 							}
-							echo $title;
+							echo esc_html( $title );
 							?>
 						</h3>
 					</a>

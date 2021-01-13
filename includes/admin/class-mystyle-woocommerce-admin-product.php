@@ -326,7 +326,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_customizer_ux', $customizer_ux );
 				update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
 				update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );
-			} elseif ( '' !== $template_id ) { // Both required options are set (store them).
+			} elseif ( 0 !== $template_id ) { // Both required options are set (store them).
 				update_post_meta( $post_id, '_mystyle_enabled', 'yes' );
 				update_post_meta( $post_id, '_mystyle_template_id', $template_id );
 				update_post_meta( $post_id, '_mystyle_custom_template', $mystyle_custom_template );
@@ -344,7 +344,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );
 			} else { // Enabled but no template id (store data, disable and notify).
 				update_post_meta( $post_id, '_mystyle_enabled', 'no' );
-				update_post_meta( $post_id, '_mystyle_template_id', $template_id );
+				update_post_meta( $post_id, '_mystyle_template_id', '' );
 				update_post_meta( $post_id, '_mystyle_custom_template', $mystyle_custom_template );
 				update_post_meta( $post_id, '_mystyle_custom_template_width', $mystyle_custom_template_width );
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
