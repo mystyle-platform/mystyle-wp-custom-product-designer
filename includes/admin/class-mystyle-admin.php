@@ -38,23 +38,23 @@ class MyStyle_Admin {
 		wp_enqueue_style( 'myStyleAdminStylesheet' );
 
 		// Add the MyStyle admin js file to the WP admin head.
-        wp_register_script( 'myStyleAdminSha', 'https://d203yb14zlmxwn.cloudfront.net/wp-content/uploads/2017/08/hmac-sha256.js' );
+		wp_register_script( 'myStyleAdminSha', 'https://d203yb14zlmxwn.cloudfront.net/wp-content/uploads/2017/08/hmac-sha256.js' );
 		wp_enqueue_script( 'myStyleAdminSha' );
-        
-        wp_register_script( 'myStyleAdminBase64', 'https://d203yb14zlmxwn.cloudfront.net/wp-content/uploads/2017/08/enc-base64.js' );
+
+		wp_register_script( 'myStyleAdminBase64', 'https://d203yb14zlmxwn.cloudfront.net/wp-content/uploads/2017/08/enc-base64.js' );
 		wp_enqueue_script( 'myStyleAdminBase64' );
-        
+
 		wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js?324' );
-        
-        $api_key = MyStyle_Options::get_api_key() ;
-        $api_secret = MyStyle_Options::get_secret() ;
-        
-        $setting_array = array(
-            'app_key' => $api_key,
-            'app_secret' => $api_secret
-        ) ;
-        
-        wp_localize_script( 'myStyleAdminJavaScript', 'mystyle_api', $setting_array );
+
+		$api_key    = MyStyle_Options::get_api_key();
+		$api_secret = MyStyle_Options::get_secret();
+
+		$setting_array = array(
+			'app_key'    => $api_key,
+			'app_secret' => $api_secret,
+		);
+
+		wp_localize_script( 'myStyleAdminJavaScript', 'mystyle_api', $setting_array );
 
 		wp_enqueue_script( 'myStyleAdminJavaScript' );
 	}

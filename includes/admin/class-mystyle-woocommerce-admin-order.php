@@ -53,13 +53,16 @@ class MyStyle_WooCommerce_Admin_Order {
 	public function admin_order_item_values( $_product, $item, $item_id ) {
 
 		$design = null;
-        
-		if ( get_class($item) == "WC_Order_Item_Product" && isset( $item['mystyle_data'] ) ) {
+
+		if (
+				( 'WC_Order_Item_Product' === get_class( $item ) )
+				&& ( isset( $item['mystyle_data'] ) )
+		) {
 			/**
 			 * NOTE: We aught to be able to get the data by unserializing
 			 * $item['mystyle_data'], this however fails because the data comes
 			 * through without the tabs and carriage returns which throws the
-			 * string counts off.  To work around this, we just get the data
+			 * string counts off. To work around this, we just get the data
 			 * directly using a database call.
 			 */
 			$mystyle_data = wc_get_order_item_meta( $item_id, 'mystyle_data' );
