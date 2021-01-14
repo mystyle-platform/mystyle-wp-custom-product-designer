@@ -98,7 +98,8 @@ MyStyleCustomize = ( function() {
 			appMinWidth,
 			scale,
 			finalScale,
-			newViewportTagHTML;
+			newViewportTagHTML,
+			hasViewport;
 
 		if ( self.config.disableViewportRewrite ) {
 			console.log( 'Note: Not setting viewport. Mystyle viewport page zooming disabled.' );
@@ -127,10 +128,12 @@ MyStyleCustomize = ( function() {
 
 		console.log( 'MyStyle customize page setting viewport: (' + orientation + ') final scale: ' + finalScale + ' ( orig: ' + scale + ') screen width: ' + screenWidthPx );
 
-		var hasViewport = typeof currentViewportTag$ !== 'undefined' 
-						&& currentViewportTag$ 
-						&& (0 < currentViewportTag$.length > 0);
-		
+		hasViewport = (
+			( 'undefined' !== typeof currentViewportTag$ ) &&
+			( currentViewportTag$ ) &&
+			( 0 < currentViewportTag$.length )
+		);
+
 		// Set the viewport.
 		if ( hasViewport ) {
 			jQuery( 'meta[name="viewport"]' ).remove(); // Removal (remove and re-add seems to trigger viewport update better).

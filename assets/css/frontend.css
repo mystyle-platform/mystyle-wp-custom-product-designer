@@ -10,7 +10,7 @@ ul.mystyle-button-group li {
 	display: inline-block;
 }
 
-/** hide unnecessary links in footer for better design thru conversion **/
+/* Hide unnecessary links in footer for better design thru conversion. */
 body.mystyle-customize .footer-widget,
 body.mystyle-customize li.et-social-icon.et-social-rss {
 	display: none;
@@ -23,6 +23,13 @@ body.mystyle-customize li.et-social-icon.et-social-rss {
 
 .mystyle-renderer-wrapper {
 	margin: 1em 0;
+}
+
+/* MyStyle: Show thumbnail in cart larger than default 32px. */
+.woocommerce-cart table.cart img {
+	width: auto;
+	min-width: 32px;
+	max-width: 100px;
 }
 
 /* MyStyle Customize Page */
@@ -188,6 +195,18 @@ body.mystyle-design-profile ul.mystyle-designs li a {
 	box-shadow: none;
 }
 
+/* Design profile page buttons. */
+body.mystyle-design-profile ul.mystyle-design-nav li a {
+	padding: 12px;
+	display: inline-block;
+	background: rgba(0, 0, 0, 0.2);
+	color: #fff;
+	font-size: 24px;
+	font-weight: 700;
+	min-width: 47px;
+	border-radius: 5px;
+}
+
 body.mystyle-design-profile ul.mystyle-designs li a:hover {
 	-webkit-box-shadow: 2px 2px 8px -3px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 2px 2px 8px -3px rgba(0, 0, 0, 0.5);
@@ -230,32 +249,16 @@ body.mystyle-design-profile ul.mystyle-designs li span.mystyle-design-id {
 	bottom: 7px;
 }
 
+@media (max-width: 768px) {
 
-/** MyStyle: Show thumbnail in cart larger than default 32px **/
-.woocommerce-cart table.cart img {
-width: auto;
-min-width: 32px;
-max-width: 100px;
-}
-@media(max-width:768px) {
-/** Show thumbnail row in cart on mobile **/
-.woocommerce-page table.cart .product-thumbnail {
-display: inline-block !important;
-}
-/** hide colon above thumbnail for mobile **/
-.woocommerce-page table.cart .product-thumbnail:before {
-display: none;
-}
-}
-/** design profile page buttons **/
-body.mystyle-design-profile ul.mystyle-design-nav li a {
-    padding: 12px;
-    display: inline-block;
-    background: rgba(0,0,0,.2);
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    min-width: 47px;
-    border-radius: 5px;
+	/* Show thumbnail row in cart on mobile. */
+	.woocommerce-page table.cart .product-thumbnail {
+		display: inline-block !important;
+	}
+
+	/* Hide colon above thumbnail for mobile. */
+	.woocommerce-page table.cart .product-thumbnail::before {
+		display: none;
+	}
 }
 

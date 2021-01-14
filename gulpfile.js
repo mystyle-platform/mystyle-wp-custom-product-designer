@@ -9,17 +9,22 @@ gulp.task('default', function(done) {
 	done();
 });
 
-gulp.task('lint', function(done) {
-    console.log('Linting...');
-    
-    // Lint our js files.
+gulp.task('lint-js', function(done) {
+    console.log('Linting JS...');
+
 	gulp.src(['assets/js/*.js'])
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError())
 		.on('error', function(e){console.log(e);});
-	
-	// Lint our css files.
+
+	// Call the callback.
+	done();
+});
+
+gulp.task('lint-css', function(done) {
+    console.log('Linting CSS...');
+
     gulp.src(['assets/css/*.css'])
 		// Lint the file.
 		.pipe(stylelint({
@@ -32,6 +37,8 @@ gulp.task('lint', function(done) {
 	// Call the callback.
 	done();
 });
+
+gulp.task('lint', gulp.series(['lint-js', 'lint-css']));
 
 function isFixed(file) {
 	return file.eslint != null && file.eslint.fixed;

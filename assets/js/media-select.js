@@ -1,11 +1,12 @@
-(function( $ ) {
+( function( $ ) {
+	var mystyleBGMediaLibrary, mystyleFGMediaLibrary;
 
 	// If there is no media on the page, just return.
 	if ( 'undefined' === typeof window.wp.media ) {
 		return;
 	}
 
-    var mystyleBGMediaLibrary = window.wp.media({
+    mystyleBGMediaLibrary = window.wp.media({
 
         // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
         // Determines what kind of library should be rendered.
@@ -14,7 +15,7 @@
         // Modal title.
         title: 'Select a Custom Template Background Image',
 
-        // Enable/disable multiple select
+        // Enable/disable multiple select.
         multiple: false,
 
         // Library wordpress query arguments.
@@ -40,7 +41,7 @@
 
     });
 
-    var mystyleFGMediaLibrary = window.wp.media({
+    mystyleFGMediaLibrary = window.wp.media({
 
         // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
         // Determines what kind of library should be rendered.
@@ -89,7 +90,7 @@
 
         var selectedImages = mystyleBGMediaLibrary.state().get( 'selection' );
 
-        $( '#_mystyle_custom_template_bgimg' ).val(selectedImages.first().toJSON().url) ;
+        $( '#_mystyle_custom_template_bgimg' ).val( selectedImages.first().toJSON().url ) ;
 
     });
 
@@ -98,8 +99,8 @@
 
         var selectedImages = mystyleFGMediaLibrary.state().get( 'selection' );
 
-        $( '#_mystyle_custom_template_fgimg' ).val(selectedImages.first().toJSON().url) ;
+        $( '#_mystyle_custom_template_fgimg' ).val( selectedImages.first().toJSON().url ) ;
 
     });
 
-})( jQuery );
+} ( jQuery ) );
