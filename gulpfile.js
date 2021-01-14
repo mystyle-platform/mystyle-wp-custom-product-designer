@@ -12,7 +12,7 @@ gulp.task('default', function(done) {
 gulp.task('lint-js', function(done) {
     console.log('Linting JS...');
 
-	gulp.src(['assets/js/*.js'])
+	gulp.src(['assets/js/*.js', 'javascript-tests/*.js'])
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError())
