@@ -14,13 +14,13 @@ module.exports = function(config) {
 
         // List of files / patterns to load in the browser.
         files: [
-            
+
             // Libraries.
             '../../../wp-includes/js/jquery/jquery.js',
-            
+
             // Our scripts.
 			'assets/js/**/*.js',
-            
+
             // The tests.
             'javascript-tests/**/*.js'
         ],

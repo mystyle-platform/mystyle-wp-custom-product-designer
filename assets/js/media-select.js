@@ -2,7 +2,10 @@
 	var mystyleBGMediaLibrary, mystyleFGMediaLibrary;
 
 	// If there is no media on the page, just return.
-	if ( 'undefined' === typeof window.wp.media ) {
+	if (
+		( 'undefined' === typeof window.wp )
+		|| ( 'undefined' === typeof window.wp.media )
+	) {
 		return;
 	}
 
