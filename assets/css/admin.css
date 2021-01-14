@@ -180,6 +180,19 @@ span#mystyle-icon-general.icon100 {
     color:green;
 }
 
+.toplevel_page_mystyle ul.statistics span.spinner {
+    font-size:2.5em;
+    width:150px;
+    height:103px
+}
+
+.toplevel_page_mystyle ul.statistics span a {
+    font-size:2.5em;
+    width:150px;
+    height:103px;
+    font-size: 0.5em;
+}
+
 .toplevel_page_mystyle ul.products p {
     padding: 1em;
     text-align: left;

@@ -95,7 +95,7 @@ class MyStyle_Dashboard_Page {
 							<p>
 								<?php
 									echo ( $api_key_status )
-										? '<span class="dashicons dashicons-yes"></span>'
+										? '<span class="spinner is-active"></span>'
 										: '<a class="alert" href="options-general.php?page=mystyle_settings">INVALID</a>';
 								?>
 							</p>
