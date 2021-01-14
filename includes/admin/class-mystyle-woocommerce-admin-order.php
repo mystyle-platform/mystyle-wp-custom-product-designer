@@ -46,11 +46,11 @@ class MyStyle_WooCommerce_Admin_Order {
 	/**
 	 * Add the mystyle column body to the order items table.
 	 *
-	 * @param type    $_product The current product.
-	 * @param type    $item The current item.
-	 * @param integer $item_id The current item id.
+	 * @param WC_Product    $product The current product.
+	 * @param WC_Order_Item $item The current item.
+	 * @param integer       $item_id The current item id.
 	 */
-	public function admin_order_item_values( $_product, $item, $item_id ) {
+	public function admin_order_item_values( $product, $item, $item_id ) {
 
 		$design = null;
 
