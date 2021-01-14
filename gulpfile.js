@@ -3,6 +3,7 @@ var gulpIf    = require('gulp-if');
 var eslint    = require('gulp-eslint');
 var stylelint = require('gulp-stylelint');
 var fs        = require('fs');
+var gulpif    = require('gulp-if');
 
 gulp.task('default', function(done) {
     console.log('Usage: gulp [lint|lint-n-fix]');
@@ -15,6 +16,20 @@ gulp.task('lint-js', function(done) {
 	gulp.src(['assets/js/*.js', 'javascript-tests/*.js'])
 		.pipe(eslint())
 		.pipe(eslint.format())
+		.pipe(eslint.failAfterError())
+		.on('error', function(e){console.log(e);});
+
+	// Call the callback.
+	done();
+});
+
+gulp.task('lint-js-fix', function(done) {
+    console.log('Lint Fixing JS...');
+
+	gulp.src(['assets/js/*.js', 'javascript-tests/*.js'])
+		.pipe(eslint({"fix": true}))
+		.pipe(eslint.format())
+		.pipe(gulp.dest(file => file.base))
 		.pipe(eslint.failAfterError())
 		.on('error', function(e){console.log(e);});
 

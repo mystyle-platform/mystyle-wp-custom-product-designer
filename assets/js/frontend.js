@@ -2,7 +2,7 @@
 
 	var designTags, designTagStatus;
 
-	designTags = (window.designTags || '');
+	designTags = ( window.designTags || '' );
 
     designTagStatus = function( status ) {
 		var text, color;
@@ -72,12 +72,12 @@
 					designTagStatus( 'removed' );
 				});
 			})
-			.each( function(){
+			.each( function() {
 				if ( ! $().tokenfield ) {
 					return;
 				}
 
-				$(this).tokenfield({
+				$( this ).tokenfield({
 					delimiter: ',',
 					tokens: designTags,
 					autocomplete: {
