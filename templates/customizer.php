@@ -29,45 +29,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <script type="text/javascript">
 
-	<?php // phpcs:disable WordPress.WhiteSpace.PrecisionAlignment.Found ?>
-	/**
-	 * Waits for MyStyleCustomze to exist and then initializes it.
-	 */
-	<?php // phpcs:enable WordPress.WhiteSpace.PrecisionAlignment.Found ?>
-	function initMyStyleCustomizer(){
-		var hasMyStyle = Boolean(
-				( 'undefined' != typeof MyStyleCustomize )
-				&& ( null !== MyStyleCustomize )
-				&& ( MyStyleCustomize )
-			);
-		if ( hasMyStyle ) {
-			console.log( 'has MyStyle... initializing.' );
-			MyStyleCustomize.init( {
-				"disableViewportRewrite": <?php echo ( $disable_viewport_rewrite ) ? 'true' : 'false'; ?>,
-				"enableFlash": <?php echo ( $enable_flash ) ? 'true' : 'false'; ?>,
-				"flashCustomizerUrl": "<?php echo esc_attr( $flash_customizer_url ); ?>",
-				"html5CustomizerUrl": "<?php echo esc_attr( $html5_customizer_url ); ?>"
-			} );
-			MyStyleCustomize.setOrientation();
-			MyStyleCustomize.renderCustomizer();
-		} else {
-			console.log( 'does not have MyStyle... waiting.' );
-			// Sometimes, MyStyleCustomize does not exist at first, wait.
-			setTimeout( initMyStyleCustomizer, 1000 ); // Retry every second until the object exists.
-		}
-	}
+	// On ready: load the MyStyle Customizer.
+	(MyStyleCustomize=window.MyStyleCustomize||[]).push(function() {
+		MyStyleCustomize.init({
+			"apiKey": "<?php echo intval( $mystyle_app_id ); ?>",
+			"templateId": "<?php echo intval( $mystyle_template_id ); ?>",
+			"enableFlash": <?php echo ( ( $enable_flash ) ? 'true' : 'false' ); ?>,
+			"disableViewportRewrite": <?php echo ( ( $disable_viewport_rewrite ) ? 'true' : 'false' ); ?>,
+			"skipEmail": <?php echo ( ( $skip_email ) ? 'true' : 'false' ); ?>,
+			"handoffUrl": "<?php echo esc_url( $redirect_url ); ?>",
+			"printType": "<?php echo esc_js( $print_type ); ?>",
+			<?php echo ( ! empty( $customizer_ux ) ) ? '"customizerUx": "' . esc_js( $customizer_ux ) . '",' : ''; ?>
+			"passthru": "<?php echo esc_js( $passthru ); ?>"
+		});
+		MyStyleCustomize.renderCustomizer('#customizer-wrapper');
+	});
 
-	// On ready.
-	jQuery( window ).ready( initMyStyleCustomizer );
+	// On resize: set the MyStyle customizer orientation.
+	jQuery( window ).resize(function () {
+		if (window.MyStyleCustomize) {
+			window.MyStyleCustomize.setOrientation();
+		};
+	});
 
-	// On resize.
-	jQuery( window ).resize(
-		function () {
-			var hasMyStyle	= Boolean(
-				typeof MyStyleCustomize !== 'undefined'
-				&& MyStyleCustomize !== null
-				&& MyStyleCustomize );
-			if( hasMyStyle) MyStyleCustomize.setOrientation();
-		}
-	);
 </script>

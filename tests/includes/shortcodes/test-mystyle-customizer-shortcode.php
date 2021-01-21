@@ -60,7 +60,7 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 		$this->assertContains( '<div id="customizer-wrapper">', $output );
 
 		// Assert that the expected passthru is included.
-		$expected_passthru = 'passthru=h,' . $passthru;
+		$expected_passthru = '"passthru": "' . $passthru . '"';
 		$this->assertContains( $expected_passthru, $output );
 	}
 
@@ -102,7 +102,7 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 				)
 			)
 		);
-		$expected_passthru = 'passthru=h,' . $passthru;
+		$expected_passthru = '"passthru": "' . $passthru . '"';
 
 		// Assert that the expected passthru is included.
 		$this->assertContains( $expected_passthru, $output );
@@ -148,12 +148,8 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 		$this->assertContains( '<div id="customizer-wrapper">', $output );
 
 		// Assert that the expected passthru is included.
-		$expected_passthru = 'passthru=h,' . $passthru;
+		$expected_passthru = '"passthru": "' . $passthru . '"';
 		$this->assertContains( $expected_passthru, $output );
-
-		// Assert that the expected settings are included.
-		$expected_settings = 'settings=' . $settings;
-		$this->assertContains( $expected_settings, $output );
 	}
 
 	/**
@@ -200,12 +196,8 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 		$this->assertContains( '<div id="customizer-wrapper">', $output );
 
 		// Assert that the expected passthru is included.
-		$expected_passthru = 'passthru=h,' . $passthru;
+		$expected_passthru = '"passthru": "' . $passthru . '"';
 		$this->assertContains( $expected_passthru, $output );
-
-		// Assert that the expected settings are included.
-		$expected_settings = 'settings=' . $settings;
-		$this->assertContains( $expected_settings, $output );
 	}
 
 }

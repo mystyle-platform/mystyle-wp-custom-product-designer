@@ -100,50 +100,23 @@ abstract class MyStyle_Customizer_Shortcode {
 		}
 
 		// Set the redirect_url (if it wasn't passed in).
-		if ( ! array_key_exists( 'redirect_url', $settings ) ) {
-			$settings['redirect_url'] = MyStyle_Handoff::get_url();
-		} else {
+		if ( array_key_exists( 'redirect_url', $settings ) ) {
 			// An array key was passed in, validate it.
-			if ( ! MyStyle_Options::is_redirect_url_permitted( $settings['redirect_url'] ) ) {
+			$redirect_url = $settings['redirect_url'];
+			if ( ! MyStyle_Options::is_redirect_url_permitted( $redirect_url ) ) {
 				throw new MyStyle_Bad_Request_Exception( 'The passed redirect url is not allowed. If you are the site admin, please add the domain to your MyStyle Redirect URL Whitelist.' );
 			}
-		}
-
-		// Set the email_skip (if it wasn't passed in).
-		if ( ! array_key_exists( 'email_skip', $settings ) ) {
-			$settings['email_skip'] = 0;
-		}
-
-		// Set the print_type (if it wasn't passed in).
-		if ( ! array_key_exists( 'print_type', $settings ) ) {
-			$settings['print_type'] = $print_type;
-		}
-
-		// Skip enter email step if logged in and email can be pulled from user
-		// acct.
-		if ( is_user_logged_in() ) {
-			$settings['email_skip'] = 1;
-		}
-
-		// Base64 encode settings.
-		$encoded_settings = base64_encode( wp_json_encode( $settings ) );
-
-		// Add all vars to URL.
-		$customizer_query_string = "?app_id=$mystyle_app_id" .
-				"&amp;product_id=$mystyle_template_id" .
-				( ( ! empty( $customizer_ux ) ) ? "&amp;ux=$customizer_ux" : '' ) .
-				( ( null !== $design_id ) ? "&amp;design_id=$design_id" : '' ) .
-				"&amp;settings=$encoded_settings" .
-				"&amp;passthru=h,$passthru";
-
-		// ---------- Variables for use by the view layer ---------
-		$flash_customizer_url = 'http://customizer.ogmystyle.com/' . $customizer_query_string;
-
-		// Set the customizer to dev if parameter isset.
-		if ( isset( $_GET['customizerdev'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
-			$html5_customizer_url = 'http://sean.base.customizer-js.api.dev.ogmystyle.com/' . $customizer_query_string;
 		} else {
-			$html5_customizer_url = '//customizer-js.ogmystyle.com/' . $customizer_query_string;
+			$redirect_url = MyStyle_Handoff::get_url();
+		}
+
+		// Set skip_email.
+		$skip_email = false;
+		if ( array_key_exists( 'email_skip', $settings ) ) {
+			$skip_email = true;
+		}
+		if ( is_user_logged_in() ) {
+			$skip_email = true;
 		}
 
 		// Force mobile from plugin admin settings?
