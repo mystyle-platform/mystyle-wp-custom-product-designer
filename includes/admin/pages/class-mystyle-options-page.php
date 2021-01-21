@@ -272,8 +272,9 @@ class MyStyle_Options_Page {
 		?>
 		<p>
 			To use the <a href="http://www.mystyleplatform.com" target="_blank">MyStyle</a> customizer,
-			<a href="http://www.mystyleplatform.com/?ref=wpcpd_settings" target="_blank" title="mystyleplatform.com">sign up for MyStyle</a> and then get your own MyStyle License
-			<br/>Once you have a license, enter your API Key and Secret below.
+			<a href="http://www.mystyleplatform.com/?ref=wpcpd_settings" target="_blank" title="mystyleplatform.com">
+			sign up with MyStyle</a> and get your own MyStyle License. Once you've
+			gotten a license, enter your API Key and Secret below.
 		</p>
 		<?php
 	}
