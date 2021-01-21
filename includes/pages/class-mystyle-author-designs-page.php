@@ -92,7 +92,7 @@ class MyStyle_Author_Designs_Page {
 	}
 
 	/**
-	 * Alter WP_QUERY pager information based in the MyStyle_Pager class
+	 * Alter the WP_QUERY pager information based on the MyStyle_Pager class.
 	 *
 	 * @global \WP_Query $wp_query
 	 */
@@ -101,7 +101,7 @@ class MyStyle_Author_Designs_Page {
 
 		if (
 				( false !== get_query_var( 'designpage' ) )
-				|| ( '' !== get_query_var( 'designpage' ) )
+				&& ( '' !== get_query_var( 'designpage' ) )
 		) {
 
 			if ( ! $wp_query->is_main_query() ) {
