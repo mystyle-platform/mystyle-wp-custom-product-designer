@@ -93,7 +93,7 @@
 
         var selectedImages = mystyleBGMediaLibrary.state().get( 'selection' );
 
-        $( '#_mystyle_custom_template_bgimg' ).val( selectedImages.first().toJSON().url ) ;
+        $( '#_mystyle_custom_template_bgimg' ).val( selectedImages.first().toJSON().url );
 
     });
 
@@ -102,7 +102,7 @@
 
         var selectedImages = mystyleFGMediaLibrary.state().get( 'selection' );
 
-        $( '#_mystyle_custom_template_fgimg' ).val( selectedImages.first().toJSON().url ) ;
+        $( '#_mystyle_custom_template_fgimg' ).val( selectedImages.first().toJSON().url );
 
     });
 

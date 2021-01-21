@@ -1030,8 +1030,8 @@ class MyStyle_Design_Profile_Page {
 					?>
 				<script>
 					var design_ajax_url = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
-					var designId = <?php echo esc_js( $design_id ); ?> ;
-					var designTags = '<?php echo ( count( $tags ) > 0 ) ? implode( ',', $tags ) : ''; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>' ;
+					var designId = <?php echo esc_js( $design_id ); ?>;
+					var designTags = '<?php echo ( count( $tags ) > 0 ) ? implode( ',', $tags ) : ''; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>';
 				</script>
 					<?php
 				}
