@@ -271,7 +271,7 @@ class MyStyle_Options_Page {
 	public function render_access_section_text() {
 		?>
 		<p>
-			To use the <a href="http://www.mystyleplatform.com">MyStyle</a> customizer,
+			To use the <a href="http://www.mystyleplatform.com" target="_blank">MyStyle</a> customizer,
 			<a href="http://www.mystyleplatform.com/?ref=wpcpd_settings" target="_blank" title="mystyleplatform.com">sign up for MyStyle</a> and then get your own MyStyle License
 			<br/>Once you have a license, enter your API Key and Secret below.
 		</p>
