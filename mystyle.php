@@ -225,6 +225,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				$this->set_WC( new MyStyle_WC() );
 			}
 
+			$mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
 			MyStyle_User_Interface::get_instance();
 			MyStyle_Order_Listener::get_instance();
 			MyStyle_Passthru_Codec::get_instance();
@@ -240,8 +241,9 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				// Set up the main admin class.
 				MyStyle_Admin::get_instance();
 
-				// Set up the Design Tags page.
-				MyStyle_Dashboard_Page::get_instance();
+				// Set up the Dashboard page.
+				$dashboard = MyStyle_Dashboard_Page::get_instance();
+				$dashboard->set_mystyle_api( $mystyle_api );
 
 				// Set up the options page.
 				MyStyle_Options_Page::get_instance();
@@ -275,7 +277,6 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				MyStyle_FrontEnd::get_instance();
 				MyStyle_Cart::get_instance();
 				MyStyle_Design_Complete::get_instance();
-				$mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
 
 				/* @var $mystyle_handoff MyStyle_Handoff The MyStyle_Handoff singleton. */
 				$mystyle_handoff = MyStyle_Handoff::get_instance();

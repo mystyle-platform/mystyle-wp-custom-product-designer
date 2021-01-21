@@ -26,9 +26,9 @@ class MyStyle_Handoff {
 	private static $instance;
 
 	/**
-	 * Injected reference to the MyStyle_Api_Interface.
+	 * Injected reference to the MyStyle_API_Interface.
 	 *
-	 * @var MyStyle_Api_Interface
+	 * @var MyStyle_API_Interface
 	 */
 	private $mystyle_api;
 

@@ -174,22 +174,23 @@ span#mystyle-icon-general.icon100 {
 
 
 .toplevel_page_mystyle ul.statistics span.dashicons {
-    margin-top:-20px;
-    font-size:2.5em;
-    width:130px;
-    color:green;
+    margin-top: -20px;
+    font-size: 2.5em;
+    width: 130px;
 }
 
-.toplevel_page_mystyle ul.statistics span.spinner {
-    font-size:2.5em;
-    width:150px;
-    height:103px
+.toplevel_page_mystyle ul.statistics span.dashicons-yes {
+	color: green;
+}
+
+.toplevel_page_mystyle ul.statistics span.dashicons-no {
+	color: #a00;
 }
 
 .toplevel_page_mystyle ul.statistics span a {
-    font-size:2.5em;
-    width:150px;
-    height:103px;
+    font-size: 2.5em;
+    width: 150px;
+    height: 103px;
     font-size: 0.5em;
 }
 

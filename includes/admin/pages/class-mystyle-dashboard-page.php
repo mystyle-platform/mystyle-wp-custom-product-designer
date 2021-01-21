@@ -20,6 +20,13 @@ class MyStyle_Dashboard_Page {
 	private static $instance;
 
 	/**
+	 * Injected reference to the MyStyle_API_Interface.
+	 *
+	 * @var MyStyle_API_Interface
+	 */
+	private $mystyle_api;
+
+	/**
 	 * Constructor, constructs the addons page and adds it to the Settings
 	 * menu.
 	 */
@@ -62,11 +69,10 @@ class MyStyle_Dashboard_Page {
 	 * Function to render the MyStyle Dashboard page.
 	 */
 	public function render_page() {
-		$admin_user           = wp_get_current_user();
-		$design_count         = MyStyle_DesignManager::get_total_design_count( $admin_user );
-		$design_product_count = $this->get_total_customizable_products_count();
-		$options              = get_option( MYSTYLE_OPTIONS_NAME, array() );
-		$api_key_status       = ( array_key_exists( 'api_key', $options ) ) ? true : false;
+		$admin_user            = wp_get_current_user();
+		$design_count          = MyStyle_DesignManager::get_total_design_count( $admin_user );
+		$design_product_count  = $this->get_total_customizable_products_count();
+		$has_valid_credentials = $this->mystyle_api->has_valid_credentials();
 		?>
 		<div class="wrap">
 			<h2 class="mystyle-admin-title">
@@ -93,11 +99,7 @@ class MyStyle_Dashboard_Page {
 						<div class="license-status">
 							<h3>MyStyle License Status</h3>
 							<p>
-								<?php
-									echo ( $api_key_status )
-										? '<span class="spinner is-active"></span>'
-										: '<a class="alert" href="options-general.php?page=mystyle_settings">INVALID</a>';
-								?>
+								<span class="dashicons dashicons-<?php echo ( ( $has_valid_credentials ) ? 'yes' : 'no' ); ?>"></span>
 							</p>
 						</div>
 					</li>
@@ -196,6 +198,15 @@ class MyStyle_Dashboard_Page {
 		return $query;
 	}
 
+	/**
+	 * Sets the mystyle_api.
+	 *
+	 * @param MyStyle_Api_Interface $mystyle_api The mystyle_api that you want
+	 * the class to use.
+	 */
+	public function set_mystyle_api( MyStyle_Api_Interface $mystyle_api ) {
+		$this->mystyle_api = $mystyle_api;
+	}
 
 	/**
 	 * Get the singleton instance.
