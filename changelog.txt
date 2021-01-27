@@ -1,59 +1,94 @@
+= 3.16.0 =
+
+* Switched from loading the customizer by rendering an iframe to loading the 
+  customizer by calling the new external MyStyle Customize script.
+* Updated the main plugin file to reflect that the plugin has been tested with 
+  up to WooCommerce 4.9.2.
+* Updated the readme.txt file to reflect that the plugin has been tested with
+  up to WordPress 5.6.0
+* Improved the text on the options page in the admin.
+* Fixed the API credentials check while moving it serverside.
+* Fixed and improved the contextual help.
+* Fixed a bunch of broken unit tests
+* Linted the whole plugin.
+* Removed some orphaned code.
+* Updated the copyright year to 2021.
+
 = 3.15.2 =
+
 * Fixed Order admin refund bug.
 
 = 3.15.1 =
+
 * Added Gallery and Tag attributes to mystyle_design shortcode, fixed design tag page bug.
 
 = 3.15.0 =
+
 * Added custom template box shadow option
 
 = 3.14.9 =
+
 * Fixed cart name access bug
 
 = 3.14.8 =
+
 * Fixed cart image access bug
 
 = 3.14.7 =
+
 * Updated Frontend CSS and DesignManager Class to add change design access function
 
 = 3.14.6 =
+
 * Added plugin admin dashboard page, more custom design template features (beta), random design shortcode
 
 = 3.14.5 =
+
 * Fixed Unauthorized Exception error
 
 = 3.14.4 =
+
 * Added feature for custom design templates, including rectangle and oval shapes defined in inches.
 
 = 3.14.3 =
+
 * Fixed body class from design profile page
 
 = 3.14.2 =
+
 * Fixed version numbers
 
 = 3.14.1 =
+
 * Fixed bug with table prefixes
 
 = 3.14.0 =
+
 * Added new Design Tags Feature.  
 * Optimized design archive pages to support standard WordPress Theme Development.
 
 = 3.13.11 =
+
 * Fixed Design profile pager bug.
 
 = 3.13.10 =
+
 * Fixed Bug associated with Divi themes.
 
 = 3.13.9 =
+
 * Fixed Bug associated with WordPress Version 5.5.
 
 = 3.13.8 =
+
 * Added My Designs page and Author Design pages.  Added the ability to add and edit design titles. 
 
 = 3.13.7 =
+
 * Fixed the ability to load designs on another product
 
 = 3.13.6 =
+
 * Minor bug fixes
 
 = 3.13.5 =
