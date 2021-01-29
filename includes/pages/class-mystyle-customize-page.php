@@ -386,7 +386,7 @@ class MyStyle_Customize_Page {
 						( $this->is_customize_page( $post->ID ) )
 						&& ( isset( $_GET['product_id'] ) ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 				) {
-					wp_register_script( 'mystyle-customize', 'https://static2.ogmystyle.com/mystyle-customize/0.1.1/customize.min.js' );
+					wp_register_script( 'mystyle-customize', 'https://static2.ogmystyle.com/mystyle-customize/0.1.2/customize.min.js' );
 					wp_enqueue_script( 'mystyle-customize' );
 				}
 			}
