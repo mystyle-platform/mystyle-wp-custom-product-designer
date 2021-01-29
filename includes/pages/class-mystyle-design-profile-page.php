@@ -133,6 +133,7 @@ class MyStyle_Design_Profile_Page {
 	 */
 	public function query_vars( $query_vars ) {
 		$query_vars[] = 'design_id';
+
 		return $query_vars;
 	}
 
@@ -934,9 +935,8 @@ class MyStyle_Design_Profile_Page {
 	/**
 	 * Filters the parts of the document title.
 	 *
-	 * This sets the title tag in the
-	 * HEAD of the HTML document to the title of the design (if a design title
-	 * is set).
+	 * This sets the title tag in the HEAD of the HTML document to the title of
+	 * the design (if a design title is set).
 	 *
 	 * @param array $title {
 	 *     The document title parts.
@@ -949,11 +949,9 @@ class MyStyle_Design_Profile_Page {
 	 * @todo Unit test this method.
 	 */
 	public function filter_document_title_parts( $title ) {
-		$design_id = self::get_design_id_from_url();
 
-		if ( $design_id ) {
-			$design = $this->get_design();
-			if ( '' !== $design->get_title() ) {
+		if ( $this->design ) {
+			if ( '' !== $this->design->get_title() ) {
 				$title['title'] = $design->get_title();
 			}
 		}

@@ -39,7 +39,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			"skipEmail": <?php echo ( ( $skip_email ) ? 'true' : 'false' ); ?>,
 			"handoffUrl": "<?php echo esc_url( $redirect_url ); ?>",
 			"printType": "<?php echo esc_js( $print_type ); ?>",
-			<?php echo ( ! empty( $customizer_ux ) ) ? '"customizerUx": "' . esc_js( $customizer_ux ) . '",' : ''; ?>
+			<?php echo ( null !== $design_id ) ? '"designId": "' . intval( $design_id ) . "\",\n" : ''; ?>
+			<?php echo ( ! empty( $customizer_ux ) ) ? '"customizerUx": "' . esc_js( $customizer_ux ) . "\",\n" : ''; ?>
 			"passthru": "<?php echo esc_js( $passthru ); ?>"
 		});
 		MyStyleCustomize.renderCustomizer('#customizer-wrapper');
