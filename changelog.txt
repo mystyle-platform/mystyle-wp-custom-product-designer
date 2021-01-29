@@ -1,3 +1,8 @@
+= 3.16.1 =
+
+* Updated to use v0.1.2 of the MyStyle Customize script (which fixes a bug with
+  loading extra customizer settings).
+
 = 3.16.0 =
 
 * Switched from loading the customizer by rendering an iframe to loading the 
