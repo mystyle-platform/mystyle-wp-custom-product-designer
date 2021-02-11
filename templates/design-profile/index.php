@@ -29,11 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<img src="<?php echo esc_attr( $design->get_thumb_url() ); ?>" />
 						<h3 class="mystyle-design-id">
 							<?php
-							$title = 'Custom ' . $product_title . ' <span>' . $design->get_design_id() . '</span>';
+							$title = 'Custom ' . esc_html($product_title) . ' <span>' . $design->get_design_id() . '</span>';
 							if ( '' !== $design->get_title() ) {
 								$title = $design->get_title();
 							}
-							echo esc_html( $title );
+							echo $title ;
 							?>
 						</h3>
 					</a>
