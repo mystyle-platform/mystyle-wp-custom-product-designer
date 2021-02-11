@@ -952,7 +952,7 @@ class MyStyle_Design_Profile_Page {
 
 		if ( $this->design ) {
 			if ( '' !== $this->design->get_title() ) {
-				$title['title'] = $design->get_title();
+				$title['title'] = $this->design->get_title();
 			}
 		}
 
