@@ -22,7 +22,7 @@ function mystyleTogglePanelVis( id ) {
 
 (function($){
     
-    $(window).ready(function(){
+    $(document).ready(function(){
         var appid = mystyle_api.app_key ;
         var appSecret = mystyle_api.app_secret ;
         var action = 'design' ;
