@@ -40,36 +40,36 @@ class MyStyle_Tm_Extra_Product_Options {
 	 * in later hooks).
 	 *
 	 * @param boolean $passed Whether or not the item passed validation.
-	 * @param int    $product_id The id of the product being added.
-	 * @param int    $qty The quantity of items being added.
-	 * @param int    $variation_id ID of the variation being added to the cart.
-	 * @param array  $variations Attribute values.
-	 * @param array  $cart_item_data Extra cart item data that we want to pass
-	 * into the item.
+	 * @param int     $product_id The id of the product being added.
+	 * @param int     $qty The quantity of items being added.
+	 * @param int     $variation_id ID of the variation being added to the cart.
+	 * @param array   $variations Attribute values.
+	 * @param array   $cart_item_data Extra cart item data that we want to pass
+	 *  into the item.
 	 * @return string|void
+	 * @global \WooCommerce $woocommerce
 	 */
 	public function stash_mystyle_data(
-						$passed,
-						$product_id,
-						$qty,
-						$variation_id = '',
-						$variations = array(),
-						$cart_item_data = array()
-					) {
+		$passed,
+		$product_id,
+		$qty,
+		$variation_id = '',
+		$variations = array(),
+		$cart_item_data = array()
+	) {
+		global $woocommerce;
 
 		// Just return if this isn't the scenario that we are looking for.
 		if (
-				( ! self::is_tm_extra_product_options_edit_request( $_REQUEST ) ) ||
-				( ! function_exists( 'THEMECOMPLETE_EPO' ) ) ||
-				( ! THEMECOMPLETE_EPO()->cart_edit_key )
+				( ! self::is_tm_extra_product_options_edit_request( $_REQUEST ) ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+				|| ( ! function_exists( 'THEMECOMPLETE_EPO' ) )
+				|| ( ! THEMECOMPLETE_EPO()->cart_edit_key )
 		) {
 			return $passed;
 		}
 
-		global $woocommerce;
-
 		// Get the woocommerce cart.
-		/* @var $cart \WC_Cart */
+		/* @var $cart \WC_Cart phpcs:ignore */
 		$cart = $woocommerce->cart;
 
 		// Init the cart contents ( pull from memory, etc ).
@@ -79,7 +79,7 @@ class MyStyle_Tm_Extra_Product_Options {
 		$old_cart_item_key = THEMECOMPLETE_EPO()->cart_edit_key;
 
 		// Stash the mystyle_data (if it exists).
-		if ( isset( $cart->cart_contents[ $old_cart_item_key ]['mystyle_data']) ) {
+		if ( isset( $cart->cart_contents[ $old_cart_item_key ]['mystyle_data'] ) ) {
 			$this->mystyle_data = $cart->cart_contents[ $old_cart_item_key ]['mystyle_data'];
 		}
 
@@ -97,27 +97,28 @@ class MyStyle_Tm_Extra_Product_Options {
 	 * @param array  $cart_item_data Extra cart item data that we want to pass
 	 * into the item.
 	 * @return string|void
+	 * @global \WooCommerce $woocommerce
 	 */
 	public function copy_mystyle_data(
-						$cart_item_key,
-						$product_id,
-						$quantity,
-						$variation_id,
-						$variation,
-						$cart_item_data
-					) {
+		$cart_item_key,
+		$product_id,
+		$quantity,
+		$variation_id,
+		$variation,
+		$cart_item_data
+	) {
+		global $woocommerce;
+
 		// Return if this isn't the scenario that we are looking for.
 		if (
-				( ! self::is_tm_extra_product_options_edit_request( $_REQUEST ) ) ||
-				( null === $this->mystyle_data )
+				( ! self::is_tm_extra_product_options_edit_request( $_REQUEST ) ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+				|| ( null === $this->mystyle_data )
 		) {
 			return;
 		}
 
-		global $woocommerce;
-
 		// Get the woocommerce cart.
-		/* @var $cart \WC_Cart */
+		/* @var $cart \WC_Cart phpcs:ignore */
 		$cart = $woocommerce->cart;
 
 		// Init the cart contents ( pull from memory, etc ).
@@ -139,8 +140,8 @@ class MyStyle_Tm_Extra_Product_Options {
 		$ret = false;
 
 		if (
-				( isset( $request['tm_cart_item_key'] ) ) ||
-				( isset( $request['tc_cart_edit_key'] ) )
+				( isset( $request['tm_cart_item_key'] ) )
+				|| ( isset( $request['tc_cart_edit_key'] ) )
 		) {
 			$ret = true;
 		}

@@ -1,8 +1,8 @@
-(function( $ ) {
- 
-    // Add Color Picker to all inputs that have 'color-field' class
-    $(function() {
-        $('#_mystyle_custom_template_color').wpColorPicker();
-    });
-     
-})( jQuery );
+( function( $ ) {
+
+    // Add Color Picker to the #_mystyle_custom_template_color field.
+	if ( $().wpColorPicker ) {
+		$( '#_mystyle_custom_template_color' ).wpColorPicker();
+	}
+
+} ( jQuery ) );

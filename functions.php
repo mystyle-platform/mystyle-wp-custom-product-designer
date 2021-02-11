@@ -91,7 +91,7 @@ function mystyle_get_template(
 
 	if ( ! file_exists( $located ) ) {
 		/* translators: %s template */
-		_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'mystyle' ), '<code>' . $located . '</code>' ), '2.1' );
+		_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'mystyle' ), '<code>' . $located . '</code>' ), '2.1' ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 		return;
 	}
 
@@ -132,21 +132,36 @@ function mystyle_get_template_html(
 	$default_path = '' ) {
 	ob_start();
 	mystyle_get_template( $template_name, $args, $template_path, $default_path );
+
 	return ob_get_clean();
 }
 
-if(!function_exists('et_divi_post_meta')) {
-    function et_divi_post_meta() {
-        if( get_query_var( 'designpage' ) != false || get_query_var( 'designpage' ) != '' ) {
-            return '' ;
-        }
+if ( ! function_exists( 'et_divi_post_meta' ) ) {
+	/**
+	 * Divi theme modification. If we are on the designpage, don't include the
+	 * postinfo_meta (post date, comments, etc).
+	 *
+	 * @return string Returns the post-meta or an empty string if we are on the
+	 * designpage.
+	 */
+	function et_divi_post_meta() {
+		// If we are on the design page, return ''.
+		if (
+			( false !== get_query_var( 'designpage' ) )
+			|| ( '' !== get_query_var( 'designpage' ) )
+		) {
+			return '';
+		}
 
-        $postinfo = is_single() ? et_get_option( 'divi_postinfo2' ) : et_get_option( 'divi_postinfo1' );
+		// This block is all copy/paste from the Divi theme.
+		// phpcs:disable
+		$postinfo = is_single() ? et_get_option( 'divi_postinfo2' ) : et_get_option( 'divi_postinfo1' );
 
-        if ( $postinfo ) :
-            echo '<p class="post-meta">';
-            echo et_pb_postinfo_meta( $postinfo, et_get_option( 'divi_date_format', 'M j, Y' ), esc_html__( '0 comments', 'Divi' ), esc_html__( '1 comment', 'Divi' ), '% ' . esc_html__( 'comments', 'Divi' ) );
-            echo '</p>';
-        endif;
-    }
+		if ( $postinfo ) :
+			echo '<p class="post-meta">';
+			echo et_pb_postinfo_meta( $postinfo, et_get_option( 'divi_date_format', 'M j, Y' ), esc_html__( '0 comments', 'Divi' ), esc_html__( '1 comment', 'Divi' ), '% ' . esc_html__( 'comments', 'Divi' ) );
+			echo '</p>';
+		endif;
+		// phpcs:enable
+	}
 }

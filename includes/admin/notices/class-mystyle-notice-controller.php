@@ -81,8 +81,10 @@ class MyStyle_Notice_Controller {
 	 */
 	public function set_notice_pref_callback() {
 		// Get the variables from the post request.
-		$notice_key  = $_POST['notice_key'];
-		$remind_when = $_POST['remind_when'];
+		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+		$notice_key  = ( isset( $_POST['notice_key'] ) ) ? sanitize_key( $_POST['notice_key'] ) : '';
+		$remind_when = ( isset( $_POST['remind_when'] ) ) ? sanitize_key( $_POST['remind_when'] ) : '';
+		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 
 		// Determine when to remind on.
 		$remind_on = null;
@@ -108,8 +110,8 @@ class MyStyle_Notice_Controller {
 	/**
 	 * Gets the singleton instance.
 	 *
-	 * @return MyStyle_Customize_Page Returns the singleton instance of
-	 * this class.
+	 * @return MyStyle_Notice_Controller Returns the singleton instance of this
+	 * class.
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {

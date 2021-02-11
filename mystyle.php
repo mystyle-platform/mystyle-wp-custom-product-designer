@@ -3,15 +3,15 @@
  * Plugin Name: MyStyle
  * Plugin URI: http://www.mystyleplatform.com
  * Description: The MyStyle Custom Product Designer is a simple plugin that allows your customers to customize products in WooCommerce.
- * Version: 3.15.2
+ * Version: 3.16.3
  * WC requires at least: 2.2.0
- * WC tested up to: 4.5.2
+ * WC tested up to: 4.9.2
  * Author: mystyleplatform
  * Author URI: www.mystyleplatform.com
  * License: GPL v3
  *
  * MyStyle Custom Product Designer
- * Copyright (c) 2019 MyStyle <contact@mystyleplatform.com>
+ * Copyright (c) 2021 MyStyle <contact@mystyleplatform.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,7 +92,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' );
 			}
 			if ( ! defined( 'MYSTYLE_VERSION' ) ) {
-				define( 'MYSTYLE_VERSION', '3.15.2' );
+				define( 'MYSTYLE_VERSION', '3.16.3' );
 			}
 			if ( ! defined( 'MYSTYLE_TEMPLATE_DEBUG_MODE' ) ) {
 				define( 'MYSTYLE_TEMPLATE_DEBUG_MODE', false );
@@ -104,7 +104,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			define( 'MYSTYLE_CUSTOMIZE_PAGEID_NAME', 'mystyle_customize_page_id' );
 			define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' );
 			define( 'MYSTYLE_DESIGN_TAG_PAGEID_NAME', 'mystyle_design_tag_page_id' );
-            define( 'MYSTYLE_TAXONOMY_NAME', 'design_tag' ) ;
+			define( 'MYSTYLE_TAXONOMY_NAME', 'design_tag' );
 		}
 
 		/**
@@ -159,7 +159,6 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-my-designs-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-author-designs-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-tag-page.php';
-			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-page.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-install.php';
 			require_once MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php';
@@ -201,7 +200,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-dashboard-page.php';
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php';
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-design-tags-page.php';
-			require_once MYSTYLE_INCLUDES . 'admin/help/help-dispatch.php';
+			require_once MYSTYLE_INCLUDES . 'admin/help/class-mystyle-help.php';
 			require_once MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php';
 			require_once MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php';
 		}
@@ -226,6 +225,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				$this->set_WC( new MyStyle_WC() );
 			}
 
+			$mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
 			MyStyle_User_Interface::get_instance();
 			MyStyle_Order_Listener::get_instance();
 			MyStyle_Passthru_Codec::get_instance();
@@ -240,19 +240,22 @@ if ( ! class_exists( 'MyStyle' ) ) :
 
 				// Set up the main admin class.
 				MyStyle_Admin::get_instance();
-                
-                // Set up the Design Tags page.
-                MyStyle_Dashboard_Page::get_instance() ;
-                
+
+				// Set up the Dashboard page.
+				$dashboard = MyStyle_Dashboard_Page::get_instance();
+				$dashboard->set_mystyle_api( $mystyle_api );
+
 				// Set up the options page.
 				MyStyle_Options_Page::get_instance();
-				add_filter( 'contextual_help', 'mystyle_help_dispatch', 10, 3 );
 
 				// Set up the addons page.
 				MyStyle_Addons_Page::get_instance();
-                
-                // Set up the Design Tags page.
-                MyStyle_DesignTags_Page::get_instance() ;
+
+				// Set up the Design Tags page.
+				MyStyle_Design_Tags_Page::get_instance();
+
+				// Set up the Help.
+				MyStyle_Help::get_instance();
 
 				// Hook into the WooCommerce admin.
 				MyStyle_WooCommerce_Admin_Product::get_instance();
@@ -274,7 +277,6 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				MyStyle_FrontEnd::get_instance();
 				MyStyle_Cart::get_instance();
 				MyStyle_Design_Complete::get_instance();
-				$mystyle_api = new MyStyle_API( MYSTYLE_SERVER );
 
 				/* @var $mystyle_handoff MyStyle_Handoff The MyStyle_Handoff singleton. */
 				$mystyle_handoff = MyStyle_Handoff::get_instance();
@@ -283,10 +285,9 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				MyStyle_Customize_Page::get_instance();
 				MyStyle_Design_Profile_Page::get_instance();
 				MyStyle_Configur8::get_instance();
-				MyStyle_MyDesigns::get_instance();
-				MyStyle_Author_Designs::get_instance();
-				MyStyle_DesignTag_Page::get_instance();
-                MyStyle_DesignPage::get_instance();
+				MyStyle_My_Designs_Page::get_instance();
+				MyStyle_Author_Designs_Page::get_instance();
+				MyStyle_Design_Tag_Page::get_instance();
 			}
 		}
 
@@ -321,8 +322,8 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
 		}
-        
-        /**
+
+		/**
 		 * Register our taxonomy.
 		 *
 		 * This is run during init.
@@ -330,30 +331,32 @@ if ( ! class_exists( 'MyStyle' ) ) :
 		 * @todo Add unit testing for this function.
 		 */
 		public function register_taxonomy() {
-            //register design_tag taxonomy as of 3.13.9
-            if ( ! taxonomy_exists( MYSTYLE_TAXONOMY_NAME ) ) {
-                register_taxonomy( MYSTYLE_TAXONOMY_NAME, 'design', array(
-                    'labels' => array(
-                      'name' => _x( 'Design Tags', 'taxonomy general name' ),
-                      'singular_name' => _x( 'Design Tag', 'taxonomy singular name' ),
-                      'search_items' =>  __( 'Search Design Tags' ),
-                      'all_items' => __( 'All Design Tags' ),
-                      'parent_item' => __( 'Parent Design Tag' ),
-                      'parent_item_colon' => __( 'Parent Design Tag:' ),
-                      'edit_item' => __( 'Edit Design Tag' ),
-                      'update_item' => __( 'Update Design Tag' ),
-                      'add_new_item' => __( 'Add New Design Tag' ),
-                      'new_item_name' => __( 'New Design Tag Name' ),
-                      'menu_name' => __( 'Design Tags' ),
-                    ),
-                    // Control the slugs used for this taxonomy
-                    'rewrite' => array(
-                      'slug' => 'design-tags'
-                    ),
-                    'public' => true
-                ) ) ;
-            }
-			
+			// Register design_tag taxonomy as of 3.13.9.
+			if ( ! taxonomy_exists( MYSTYLE_TAXONOMY_NAME ) ) {
+				register_taxonomy(
+					MYSTYLE_TAXONOMY_NAME, 'design', array(
+						'labels'  => array(
+							'name'              => _x( 'Design Tags', 'taxonomy general name', 'mystyle' ),
+							'singular_name'     => _x( 'Design Tag', 'taxonomy singular name', 'mystyle' ),
+							'search_items'      => __( 'Search Design Tags', 'mystyle' ),
+							'all_items'         => __( 'All Design Tags', 'mystyle' ),
+							'parent_item'       => __( 'Parent Design Tag', 'mystyle' ),
+							'parent_item_colon' => __( 'Parent Design Tag:', 'mystyle' ),
+							'edit_item'         => __( 'Edit Design Tag', 'mystyle' ),
+							'update_item'       => __( 'Update Design Tag', 'mystyle' ),
+							'add_new_item'      => __( 'Add New Design Tag', 'mystyle' ),
+							'new_item_name'     => __( 'New Design Tag Name', 'mystyle' ),
+							'menu_name'         => __( 'Design Tags', 'mystyle' ),
+						),
+						// Control the slugs used for this taxonomy.
+						'rewrite' => array(
+							'slug' => 'design-tags',
+						),
+						'public'  => true,
+					)
+				);
+			}
+
 		}
 
 		/**
@@ -397,7 +400,9 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			$args = array(
 				'post_type'   => 'product',
 				'numberposts' => 1,
+				// phpcs:ignore WordPress.VIP.SlowDBQuery.slow_db_query_meta_key
 				'meta_key'    => '_mystyle_enabled',
+				// phpcs:ignore WordPress.VIP.SlowDBQuery.slow_db_query_meta_value
 				'meta_value'  => 'yes',
 			);
 
@@ -415,8 +420,10 @@ if ( ! class_exists( 'MyStyle' ) ) :
 		 *
 		 * @param MyStyle_WC_Interface $mystyle_wc_interface The WooCommerce
 		 * interface.
+		 * @codingStandardsIgnoreStart (ignoring incorrect case function name).
 		 */
 		public function set_WC( MyStyle_WC_Interface $mystyle_wc_interface ) {
+			// @codingStandardsIgnoreEnd
 			$this->wc = $mystyle_wc_interface;
 		}
 
@@ -424,8 +431,10 @@ if ( ! class_exists( 'MyStyle' ) ) :
 		 * Gets the WooCommerce interface.
 		 *
 		 * @return MyStyle_WC_Interface Returns the value of template_id.
+		 * @codingStandardsIgnoreStart (ignoring incorrect case function name).
 		 */
 		public function get_WC() {
+			// @codingStandardsIgnoreEnd
 			return $this->wc;
 		}
 
@@ -485,8 +494,10 @@ if ( ! class_exists( 'MyStyle' ) ) :
  * Returns the main instance of MyStyle to prevent the need to use globals.
  *
  * @return MyStyle
+ * @codingStandardsIgnoreStart (ignoring incorrect case function name).
  */
 function MyStyle() {
+	// @codingStandardsIgnoreStart
 	return MyStyle::get_instance();
 }
 

@@ -49,11 +49,13 @@ class MyStyleDesignShortcodeTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the output function with valid design id.
+	 * Test the output function with valid design id in the query params and no
+	 * shortcode attributes.
 	 */
-	public function test_output_with_valid_design_id() {
-		// Set up the data.
+	public function test_output_with_valid_design_id_in_url() {
+		// Set up the test data.
 		$design_id = 1;
+		$atts      = array();
 
 		// Create a design.
 		$design = MyStyle_MockDesign::get_mock_design( $design_id );
@@ -63,46 +65,98 @@ class MyStyleDesignShortcodeTest extends WP_UnitTestCase {
 		MyStyle_FrontEnd::get_instance()->set_design( $design );
 
 		// Call the function.
-		$output = MyStyle_Design_Shortcode::output();
+		$output = MyStyle_Design_Shortcode::output( $atts );
 
 		// Assert that the output includes an img tag.
 		$this->assertContains( '<img', $output );
+		$this->assertNotContains(
+			'mystyle-design-profile-index-wrapper',
+			$output
+		);
 	}
 
 	/**
-	 * Test the output function with no design loaded. Should exit without
-	 * throwing an exception.
+	 * Test the output function with valid design id in the shortcode
+	 * attributes.
 	 */
-	public function test_output_with_no_design() {
+	public function test_output_with_valid_design_id_in_attr() {
+		// Set up the test data.
+		$design_id = 1;
+		$atts      = array(
+			'design_id' => $design_id,
+		);
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Call the function.
+		$output = MyStyle_Design_Shortcode::output( $atts );
+
+		// Assert that the output includes an img tag.
+		$this->assertContains( '<img', $output );
+		$this->assertNotContains(
+			'mystyle-design-profile-index-wrapper',
+			$output
+		);
+	}
+
+	/**
+	 * Test the output function with no design_id in the query params and no
+	 * attributes. This should load the gallery.
+	 */
+	public function test_output_returns_gallery_when_no_design_id() {
+		// Set up the test data.
+		$atts = array();
 
 		// Reset the MyStyle_FrontEnd.
 		MyStyle_FrontEnd::reset_instance();
 
-		// Call the function (should throw a MyStyle_Bad_Request_Exception).
-		$output = MyStyle_Design_Shortcode::output();
+		// Call the function.
+		$output = MyStyle_Design_Shortcode::output( $atts );
 
-		$this->assertEquals( '', $output );
+		$this->assertContains(
+			'mystyle-design-profile-index-wrapper',
+			$output
+		);
 	}
 
 	/**
-	 * Test the output_design function.
+	 * Test the output function with a random gallery requested (via the
+	 * shortcode attributes).
 	 */
-	public function test_output_design() {
-		// Set up the data.
-		$design_id = 1;
+	public function test_output_with_random_gallery_request() {
+		// Set up the test data.
+		$atts = array(
+			'gallery' => 1,
+			'count'   => 6,
+		);
+
+		// Reset the MyStyle_FrontEnd.
+		MyStyle_FrontEnd::reset_instance();
 
 		// Create a design.
-		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design = MyStyle_MockDesign::get_mock_design( 1 );
 
-		// Init the MyStyle_FrontEnd.
-		MyStyle_FrontEnd::reset_instance();
-		MyStyle_FrontEnd::get_instance()->set_design( $design );
+		// Create a real product for the design.
+		$product_id = create_wc_test_product();
+		$design->set_product_id( $product_id );
+
+		// Persist the design.
+		MyStyle_DesignManager::persist( $design );
+
+		// Create and init the MyStyle_Design_Profile page.
+		MyStyle_Design_Profile_Page::create();
+		MyStyle_Design_Profile_Page::get_instance()->init();
 
 		// Call the function.
-		$output = MyStyle_Design_Shortcode::output_design();
+		$output = MyStyle_Design_Shortcode::output( $atts );
 
-		// Assert that the output includes an img tag.
-		$this->assertContains( '<img', $output );
+		// Assert that the gallery is returned.
+		$this->assertContains(
+			'mystyle-design-profile-index-wrapper',
+			$output
+		);
 	}
 
 }

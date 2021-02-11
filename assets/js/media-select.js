@@ -1,6 +1,15 @@
-(function( $ ) {
- 
-    var mystyleBGMediaLibrary = window.wp.media({
+( function( $ ) {
+	var mystyleBGMediaLibrary, mystyleFGMediaLibrary;
+
+	// If there is no media on the page, just return.
+	if (
+		( 'undefined' === typeof window.wp ) ||
+		( 'undefined' === typeof window.wp.media )
+	) {
+		return;
+	}
+
+    mystyleBGMediaLibrary = window.wp.media({
 
         // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
         // Determines what kind of library should be rendered.
@@ -9,7 +18,7 @@
         // Modal title.
         title: 'Select a Custom Template Background Image',
 
-        // Enable/disable multiple select
+        // Enable/disable multiple select.
         multiple: false,
 
         // Library wordpress query arguments.
@@ -34,8 +43,8 @@
         }
 
     });
-    
-    var mystyleFGMediaLibrary = window.wp.media({
+
+    mystyleFGMediaLibrary = window.wp.media({
 
         // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
         // Determines what kind of library should be rendered.
@@ -69,32 +78,32 @@
         }
 
     });
-    
+
     $( '#_mystyle_custom_template_bgimg_button' ).on( 'click', function( e ) {
         e.preventDefault();
         mystyleBGMediaLibrary.open();
     });
-    
+
     $( '#_mystyle_custom_template_fgimg_button' ).on( 'click', function( e ) {
         e.preventDefault();
         mystyleFGMediaLibrary.open();
     });
-    
+
     mystyleBGMediaLibrary.on( 'select', function() {
-        
+
         var selectedImages = mystyleBGMediaLibrary.state().get( 'selection' );
-        
-        $( '#_mystyle_custom_template_bgimg' ).val(selectedImages.first().toJSON().url) ;
-        
+
+        $( '#_mystyle_custom_template_bgimg' ).val( selectedImages.first().toJSON().url );
+
     });
-    
-    
+
+
     mystyleFGMediaLibrary.on( 'select', function() {
-        
+
         var selectedImages = mystyleFGMediaLibrary.state().get( 'selection' );
-        
-        $( '#_mystyle_custom_template_fgimg' ).val(selectedImages.first().toJSON().url) ;
-        
+
+        $( '#_mystyle_custom_template_fgimg' ).val( selectedImages.first().toJSON().url );
+
     });
-     
-})( jQuery );
+
+} ( jQuery ) );

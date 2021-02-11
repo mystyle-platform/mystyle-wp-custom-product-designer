@@ -34,31 +34,14 @@ class MyStyle_Admin {
 	 */
 	public function admin_init() {
 		// Add the MyStyle admin stylesheet to the WP admin head.
-		wp_register_style( 'myStyleAdminStylesheet', MYSTYLE_ASSETS_URL . 'css/admin.css?234' );
+		wp_register_style( 'myStyleAdminStylesheet', MYSTYLE_ASSETS_URL . 'css/admin.css' );
 		wp_enqueue_style( 'myStyleAdminStylesheet' );
 
 		// Add the MyStyle admin js file to the WP admin head.
-        wp_register_script( 'myStyleAdminSha', 'https://d203yb14zlmxwn.cloudfront.net/wp-content/uploads/2017/08/hmac-sha256.js' );
-		wp_enqueue_script( 'myStyleAdminSha' );
-        
-        wp_register_script( 'myStyleAdminBase64', 'https://d203yb14zlmxwn.cloudfront.net/wp-content/uploads/2017/08/enc-base64.js' );
-		wp_enqueue_script( 'myStyleAdminBase64' );
-        
-		wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js?324' );
-        
-        $api_key = MyStyle_Options::get_api_key() ;
-        $api_secret = MyStyle_Options::get_secret() ;
-        
-        $setting_array = array(
-            'app_key' => $api_key,
-            'app_secret' => $api_secret
-        ) ;
-        
-        wp_localize_script( 'myStyleAdminJavaScript', 'mystyle_api', $setting_array );
-
+		wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js' );
 		wp_enqueue_script( 'myStyleAdminJavaScript' );
 	}
-    
+
 
 	/**
 	 * Add settings link on plugin page.
@@ -83,11 +66,10 @@ class MyStyle_Admin {
 	 *
 	 * This function is mostly copy pasted from wp-admin/includes/template.php
 	 *
-	 * @global $wp_settings_sections Storage array of all settings sections added to admin pages.
-	 * @global $wp_settings_fields Storage array of settings fields and info about their pages/sections.
-	 * @since 2.7.0
-	 *
 	 * @param string $page The slug name of the page whose settings sections you want to output.
+	 * @global array $wp_settings_sections Storage array of all settings sections added to admin pages.
+	 * @global array $wp_settings_fields Storage array of settings fields and info about their pages/sections.
+	 * @since 2.7.0
 	 */
 	public static function do_settings_sections( $page ) {
 		global $wp_settings_sections, $wp_settings_fields;
@@ -99,15 +81,15 @@ class MyStyle_Admin {
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
 			echo '<div class="mystyle-admin-box">';
 			if ( $section['title'] ) {
-					echo "<h2>{$section['title']}</h2>\n";
+				echo '<h2>' . esc_html( $section['title'] ) . '</h2>' . "\n";
 			}
 
 			if ( $section['callback'] ) {
-					call_user_func( $section['callback'], $section );
+				call_user_func( $section['callback'], $section );
 			}
 
 			if ( ! isset( $wp_settings_fields ) || ! isset( $wp_settings_fields[ $page ] ) || ! isset( $wp_settings_fields[ $page ][ $section['id'] ] ) ) {
-					continue;
+				continue;
 			}
 			echo '<table class="form-table">';
 			do_settings_fields( $page, $section['id'] );

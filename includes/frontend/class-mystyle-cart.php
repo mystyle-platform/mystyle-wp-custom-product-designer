@@ -72,7 +72,7 @@ class MyStyle_Cart {
 
 		// If this is a request from the WooCommerce TM Extra Product Options
 		// edit cart function, just return the handler unaltered.
-		if ( MyStyle_Tm_Extra_Product_Options::is_tm_extra_product_options_edit_request( $_REQUEST ) ) {
+		if ( MyStyle_Tm_Extra_Product_Options::is_tm_extra_product_options_edit_request( $_REQUEST ) ) { // phpcs:ignore
 			return $handler;
 		}
 
@@ -80,11 +80,11 @@ class MyStyle_Cart {
 			$mystyle_product = new \MyStyle_Product( $product );
 			$product_id      = $mystyle_product->get_id();
 		} else {
-			$product_id      = absint( $_REQUEST['add-to-cart'] );
+			$product_id      = ( ! empty( $_REQUEST['add-to-cart'] ) ) ? intval( $_REQUEST['add-to-cart'] ) : null; // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 			$mystyle_product = new Mystyle_Product( new WC_Product( $product_id ) );
 		}
 
-		if ( isset( $_REQUEST['design_id'] ) ) {
+		if ( isset( $_REQUEST['design_id'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 			$handler = 'mystyle_add_to_cart';
 			if ( MyStyle()->get_WC()->version_compare( '2.3', '<' ) ) {
 				// Old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
@@ -120,12 +120,11 @@ class MyStyle_Cart {
 		if ( ( $mystyle_product->is_customizable() ) && ( 'variable' !== $product_type ) ) {
 			$customize_page_id = MyStyle_Customize_Page::get_id();
 
-			// Build the url to the customizer including the poduct_id 
-            
+			// Build the url to the customizer including the product_id.
 			$customizer_url = add_query_arg( 'product_id', $product_id, get_permalink( $customize_page_id ) );
 
 			// Add the passthru data to the url.
-			$passthru = MyStyle_Passthru_Codec::get_instance()->build_passthru( $_REQUEST, $mystyle_product );
+			$passthru                        = MyStyle_Passthru_Codec::get_instance()->build_passthru( $_REQUEST, $mystyle_product ); // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 			$passthru['post']                = array();
 			$passthru['post']['quantity']    = 1;
 			$passthru['post']['add-to-cart'] = $product_id;
@@ -162,12 +161,12 @@ class MyStyle_Cart {
 	 * @param string $url The current url.
 	 */
 	public function mystyle_add_to_cart_handler_customize( $url ) {
-		$product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
+		$product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) ); //phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
 
 		/* @var $mystyle_product \MyStyle_Product The product. */
 		$mystyle_product = MyStyle_Product::get_by_id( $product_id );
 
-		$passthru = MyStyle_Passthru_Codec::get_instance()->build_passthru( $_REQUEST, $mystyle_product );
+		$passthru = MyStyle_Passthru_Codec::get_instance()->build_passthru( $_REQUEST, $mystyle_product ); // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.CSRF.NonceVerification.NoNonceVerification
 
 		$customize_page_id = MyStyle_Customize_Page::get_id();
 
@@ -195,22 +194,24 @@ class MyStyle_Cart {
 	 * function above.
 	 *
 	 * @param string $url The current url.
+	 * @global \WooCommerce $woocommerce
 	 */
 	public function mystyle_add_to_cart_handler( $url ) {
 		global $woocommerce;
 
-		$product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
-		$design_id  = absint( $_REQUEST['design_id'] );
-		$quantity   = absint( $_REQUEST['quantity'] );
+		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated, WordPress.CSRF.NonceVerification.NoNonceVerification
+		$product_id   = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) );
+		$design_id    = absint( $_REQUEST['design_id'] );
+		$quantity     = absint( $_REQUEST['quantity'] );
+		$variation_id = ( isset( $_REQUEST['variation_id'] ) ) ? intval( $_REQUEST['variation_id'] ) : null;
+		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
 
 		// Get the woocommerce cart.
 		$cart = $woocommerce->cart;
 
-		$variation_id = ( isset( $_REQUEST['variation_id'] ) ) ? $_REQUEST['variation_id'] : null;
-
 		// Get the variations (they should all be in the passthru post and start with "attribute_").
 		$variation = array();
-		foreach ( $_REQUEST as $key => $value ) {
+		foreach ( $_REQUEST as $key => $value ) { // phpcs:ignore
 			if ( 'attribute_' === substr( $key, 0, 10 ) ) {
 				$variation[ $key ] = $value;
 			}
@@ -294,10 +295,10 @@ class MyStyle_Cart {
 			$session = MyStyle()->get_session();
 
 			/* @var $design \MyStyle_Design phpcs:ignore */
-			$design = MyStyle_DesignManager::get( $design_id, $user, $session, true ); //skip the security check because the design is already in the cart.
-            
+			$design = MyStyle_DesignManager::get( $design_id, $user, $session, true ); // skip the security check because the design is already in the cart.
+
 			// Only proceed if we have a design to work with.
-			if ( null !== $design) {
+			if ( null !== $design ) {
 
 				// Overwrite the src attribute.
 				$new_src         = 'src="' . $design->get_thumb_url() . '"';
@@ -359,8 +360,8 @@ class MyStyle_Cart {
 			$session = MyStyle()->get_session();
 
 			/* @var $design \MyStyle_Design phpcs:ignore */
-			$design = MyStyle_DesignManager::get( $design_id, $user, $session, true ); //skip the security check because the design is already in the cart.
-            
+			$design = MyStyle_DesignManager::get( $design_id, $user, $session, true ); // skip the security check because the design is already in the cart.
+
 			// Ensure that the design is found. Note: it might be missing if
 			// they return to their cart after the admin deletes it for some
 			// reason.

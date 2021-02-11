@@ -169,9 +169,9 @@ class MyStyle_Options_Page {
 			'Settings',
 			'Settings',
 			'manage_options',
-            $mystyle_hook . '_settings',
+			$mystyle_hook . '_settings',
 			array( &$this, 'render_page' ),
-            100
+			100
 		);
 	}
 
@@ -184,13 +184,13 @@ class MyStyle_Options_Page {
 		$screen_id = ( ! empty( $screen ) ? $screen->id : null );
 		$handled   = false;
 		if (
-			( 'toplevel_page_mystyle' === $screen_id ) &&
-			( ! empty( $_GET['action'] ) ) &&
-			( 'POST' === $_SERVER['REQUEST_METHOD'] ) &&
-			( wp_verify_nonce( $_REQUEST['_wpnonce'], 'mystyle-admin-action' ) )
-		) { // phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
+			( 'toplevel_page_mystyle' === $screen_id )
+			&& ( ! empty( $_GET['action'] ) ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+			&& ( 'POST' === $_SERVER['REQUEST_METHOD'] ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
+			&& ( wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'mystyle-admin-action' ) ) // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
+		) {
 
-			switch ( $_GET['action'] ) {
+			switch ( $_GET['action'] ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 				case 'fix_customize_page':
 					// Attempt the fix.
 					$message = MyStyle_Customize_Page::fix();
@@ -242,7 +242,7 @@ class MyStyle_Options_Page {
 			<br/>
 			<div class="mystyle-admin-box">
 				<?php do_settings_sections( 'mystyle_tools' ); ?>
-				<form action="admin.php?page=mystyle&action=fix_customize_page&_wpnonce=<?php echo wp_create_nonce( 'mystyle-admin-action' ); ?>" method="post">
+				<form action="admin.php?page=mystyle&action=fix_customize_page&_wpnonce=<?php echo esc_url( wp_create_nonce( 'mystyle-admin-action' ) ); ?>" method="post">
 					<p class="submit">
 						<input type="submit" name="Submit" id="submit_fix_customize_page" class="button button-primary" value="<?php esc_attr_e( 'Fix Customize Page', 'mystyle' ); ?>" /><br/>
 						<small>This tool will attempt to fix the Customize page. This may involve creating, recreating, or restoring the page.</small>
@@ -271,9 +271,10 @@ class MyStyle_Options_Page {
 	public function render_access_section_text() {
 		?>
 		<p>
-			To use the <a href="http://www.mystyleplatform.com">MyStyle</a> customizer,
-			<a href="http://www.mystyleplatform.com/?ref=wpcpd_settings" target="_blank" title="mystyleplatform.com">sign up for MyStyle</a> and then get your own MyStyle License
-			<br/>Once you have a license, enter your API Key and Secret below.
+			To use the <a href="http://www.mystyleplatform.com" target="_blank">MyStyle</a> customizer,
+			<a href="http://www.mystyleplatform.com/?ref=wpcpd_settings" target="_blank" title="mystyleplatform.com">
+			sign up with MyStyle</a> and get your own MyStyle License. Once you've
+			gotten a license, enter your API Key and Secret below.
 		</p>
 		<?php
 	}
@@ -521,7 +522,7 @@ class MyStyle_Options_Page {
 	public function validate( $input ) {
 
 		// Return without doing any validation if a tools/action button pressed.
-		if ( ( ! empty( $_GET['action'] ) ) && ( 'POST' === $_SERVER['REQUEST_METHOD'] ) ) { // phpcs:ignore WordPress.VIP.ValidatedSanitizedInput, WordPress.CSRF.NonceVerification
+		if ( ( ! empty( $_GET['action'] ) ) && ( 'POST' === $_SERVER['REQUEST_METHOD'] ) ) { // phpcs:ignore WordPress.VIP.ValidatedSanitizedInput, WordPress.CSRF.NonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 			return $input;
 		}
 
@@ -634,7 +635,7 @@ class MyStyle_Options_Page {
 	/**
 	 * Get the singleton instance.
 	 *
-	 * @return MyStyle_Addons_Page
+	 * @return MyStyle_Options_Page
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {

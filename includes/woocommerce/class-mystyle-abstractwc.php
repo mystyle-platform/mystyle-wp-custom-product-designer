@@ -93,10 +93,10 @@ abstract class MyStyle_AbstractWC {
 		$variation_id = null;
 		if ( MyStyle()->get_WC()->version_compare( '3.0', '<' ) ) {
 			$variable_product = new \WC_Product_Variable( $product_id );
-			$variation_id = $variable_product->get_matching_variation( $variation );
+			$variation_id     = $variable_product->get_matching_variation( $variation );
 		} else {
-			$product    = new WC_Product( $product_id );
-			$data_store = \WC_Data_Store::load( 'product' );
+			$product      = new WC_Product( $product_id );
+			$data_store   = \WC_Data_Store::load( 'product' );
 			$variation_id = $data_store->find_matching_product_variation(
 				$product,
 				$variation

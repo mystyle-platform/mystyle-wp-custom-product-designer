@@ -39,10 +39,14 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
 
 		$session = null;
 
-		$query = 'SELECT * FROM ' . MyStyle_Session::get_table_name() . ' ' .
-				'WHERE ' . MyStyle_Session::get_primary_key() . ' = "' . $session_id . '"';
-
-		$result_object = $wpdb->get_row( $query );
+		$result_object = $wpdb->get_row(
+			$wpdb->prepare(
+				'SELECT *'
+				. "FROM {$wpdb->prefix}mystyle_sessions "
+				. 'WHERE session_id = %s',
+				$session_id
+			)
+		);
 
 		if ( null !== $result_object ) {
 			$session = MyStyle_Session::create_from_result_object( $result_object );
@@ -100,12 +104,11 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
 	public static function purge_abandoned_sessions() {
 		global $wpdb;
 
-		$sessions_table_name       = MyStyle_Session::get_table_name();
-		$tmp_sessions_table_name   = $sessions_table_name . '_tmp';
-		$trash_sessions_table_name = $sessions_table_name . '_trash';
+		$sessions_table_name     = MyStyle_Session::get_table_name();
+		$tmp_sessions_table_name = $sessions_table_name . '_tmp';
 
 		// ---------- STEP 1 ( Create temp session table ) -----------//
-		// get the schema of the session table.
+		// Get the schema of the session table.
 		$session_table_schema = MyStyle_Session::get_schema();
 
 		// Update the schema to append "_tmp" to the table name.
@@ -127,35 +130,42 @@ abstract class MyStyle_SessionManager extends \MyStyle_EntityManager {
 		$tmp_session_table_schema .= $collate . ';';
 
 		// Create the temp table.
+		// phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
 		$wpdb->query( $tmp_session_table_schema );
 
 		// ------ STEP 2 ( Copy Sessions with Designs to Temp Table ) ---------//
-		$sql     = 'SELECT session_id FROM ' . MyStyle_Design::get_table_name();
-		$results = $wpdb->get_results( $sql, 'OBJECT_K' );
+		$results = $wpdb->get_results(
+			'SELECT session_id '
+			. "FROM {$wpdb->prefix}mystyle_designs ",
+			'OBJECT_K'
+		);
 
 		// Loop through all designs and add their.
 		if ( null !== $results ) {
 			foreach ( $results as $session_id => $value ) {
 				// Add the design's session to the temp table.
-				$sql = 'INSERT IGNORE INTO ' . $tmp_sessions_table_name . '
-                        SELECT s.*
-                        FROM ' . $sessions_table_name . ' s
-                        WHERE session_id = \'' . $session_id . '\'';
-				$wpdb->query( $sql );
+				$wpdb->query(
+					$wpdb->prepare(
+						'INSERT IGNORE '
+						. " INTO {$wpdb->prefix}mystyle_sessions_tmp "
+						. ' SELECT s.* '
+						. " FROM {$wpdb->prefix}mystyle_sessions s "
+						. 'WHERE session_id = %s',
+						$session_id
+					)
+				);
 			}
 		}
 
 		// ------ STEP 3 (Rename the mystyle_sessions table) ---------//
-		$sql = 'RENAME TABLE ' . $sessions_table_name . ' TO ' . $trash_sessions_table_name;
-		$wpdb->query( $sql );
+		$wpdb->query( "RENAME TABLE {$wpdb->prefix}mystyle_sessions TO {$wpdb->prefix}mystyle_sessions_trash" );
 
 		// ------ STEP 4 (Rename the mystyle_sessions_tmp table) ---------//
-		$sql = 'RENAME TABLE ' . $tmp_sessions_table_name . ' TO ' . $sessions_table_name;
-		$wpdb->query( $sql );
+		$wpdb->query( "RENAME TABLE {$wpdb->prefix}mystyle_sessions_tmp TO {$wpdb->prefix}mystyle_sessions" );
 
 		// ------ STEP 5 (Drop the mystyle_sessions_trash table) ---------//
-		$sql = 'DROP TABLE ' . $trash_sessions_table_name;
-		$wpdb->query( $sql );
+		$wpdb->query( "DROP TABLE {$wpdb->prefix}mystyle_sessions_trash" );
+
 	}
 
 }

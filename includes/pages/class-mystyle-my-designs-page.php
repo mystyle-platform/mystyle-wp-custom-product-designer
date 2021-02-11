@@ -1,53 +1,45 @@
 <?php
-
 /**
- * The MyStyle My Designs Singleton class has hooks for working with the WooCommerce My Account page.
+ * The MyStyle_My_Designs_Page singleton class has hooks for working with the
+ * MyStyle My Designs page.
  *
  * @package MyStyle
  * @since 3.13.6
  */
 
 /**
- * MyStyle_MyDesigns class.
+ * MyStyle_My_Designs_Page class.
  */
-class MyStyle_MyDesigns {
-    
-    /**
+class MyStyle_My_Designs_Page {
+
+	/**
 	 * Singleton class instance.
 	 *
-	 * @var MyStyle_Design_Profile_Page
+	 * @var \MyStyle_My_Designs_Page
 	 */
 	private static $instance;
-    
-    /**
+
+	/**
 	 * Stores the current user (when the class is instantiated as a singleton).
 	 *
-	 * @var WP_User
+	 * @var \WP_User
 	 */
 	private $user;
-    
+
 	/**
 	 * Stores the current session (when the class is instantiated as a
 	 * singleton).
 	 *
-	 * @var MyStyle_Session
+	 * @var \MyStyle_Session
 	 */
 	private $session;
-    
+
 	/**
 	 * Pager for the design profile index.
 	 *
-	 * @var MyStyle_Pager
+	 * @var \MyStyle_Pager
 	 */
 	private $pager;
-    
-	/**
-	 * Stores the currently thrown exception (if any) (when the class is
-	 * instantiated as a singleton).
-	 *
-	 * @var MyStyle_Exception
-	 */
-	private $exception;
 
 	/**
 	 * Stores the current ( when the class is instantiated as a singleton ) status
@@ -59,127 +51,143 @@ class MyStyle_MyDesigns {
 	 * @var int
 	 */
 	private $http_response_code;
-    
-    public function __construct() {
-        $this->http_response_code = 200 ;
-        
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->http_response_code = 200;
+
 		add_action( 'init', array( &$this, 'design_endpoints' ) );
-        add_filter( 'query_vars', array( &$this, 'design_query_vars' ), 0 );
-        add_action( 'woocommerce_account_my-designs_endpoint', array( &$this, 'designs_list' )) ;
-        
-        //add My Account Menu Item
-        add_filter( 'woocommerce_account_menu_items', array( &$this, 'my_account_menu_items' ) );
-        
-        add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
-        add_filter( 'body_class', array( &$this, 'body_classes' ) ); 
-        add_action( 'template_redirect', array( &$this, 'init' ) );
-        add_filter( 'woocommerce_breadcrumb_defaults', array( &$this, 'breadcrumbs' ) );
+		add_filter( 'query_vars', array( &$this, 'design_query_vars' ), 0 );
+		add_action( 'woocommerce_account_my-designs_endpoint', array( &$this, 'designs_list' ) );
+
+		// Add My Account Menu Item.
+		add_filter( 'woocommerce_account_menu_items', array( &$this, 'my_account_menu_items' ) );
+
+		add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
+		add_filter( 'body_class', array( &$this, 'body_classes' ) );
+		add_action( 'template_redirect', array( &$this, 'init' ) );
+		add_filter( 'woocommerce_breadcrumb_defaults', array( &$this, 'breadcrumbs' ) );
 
 	}
-    
-    public function init() {
-        
-        global $wp_query ;
-        
-        if(isset($wp_query->query_vars['my-designs'])) {
-            $design_profile_page = self::get_instance();
 
-            // Set the user.
-            /* @var $user \WP_User phpcs:ignore */
-            $user = wp_get_current_user();
-            $design_profile_page->set_user( $user );
+	/**
+	 * Init the class.
+	 *
+	 * @global \WP_Query $wp_query
+	 */
+	public function init() {
 
-            // Set the session.
-            /* @var $session \MyStyle_Session phpcs:ignore */
-            $session = MyStyle()->get_session();
-            $design_profile_page->set_session( $session );
+		global $wp_query;
 
-            $design_profile_page->init_user_index_request();
-        }
+		if ( isset( $wp_query->query_vars['my-designs'] ) ) {
+			$design_profile_page = self::get_instance();
+
+			// Set the user.
+			/* @var $user \WP_User phpcs:ignore */
+			$user = wp_get_current_user();
+			$design_profile_page->set_user( $user );
+
+			// Set the session.
+			/* @var $session \MyStyle_Session phpcs:ignore */
+			$session = MyStyle()->get_session();
+			$design_profile_page->set_session( $session );
+
+			$design_profile_page->init_user_index_request();
+		}
 	}
-    
-    /**
-    *register new endpoint for WC My Account page
-    **/
-    public function design_endpoints() {
-        add_rewrite_endpoint( 'my-designs', EP_ROOT | EP_PAGES );
-    }
-    
-    /**
-    * register query variables
-    **/
-    public function design_query_vars( $vars ) {
-        $vars[] = 'my-designs';
-        $vars[] = 'paged' ;
-        return $vars;
-    }
-    
-    /**
-    * Add menu item to My Account Page
-    **/
-    public function my_account_menu_items( $items ) {
-        $new_items = array() ;
-        $new_items['my-designs'] = __( 'My Designs', 'woocommerce' );
 
-        return $this->insert_after_helper($items, $new_items, 'dashboard') ;
-    }
-    
-    /**
-    * Add My Designs breadcrumb
-    **/
-    public function breadcrumbs( $defaults ) {
-        $defaults[] = 'My Designs' ;
-        return $defaults ;
-    }
-    
-    /**
-     * Custom help to add new items into an array after a selected item.
-     *
-     * @param array $items
-     * @param array $new_items
-     * @param string $after
-     * @return array
-     */
-    function insert_after_helper( $items, $new_items, $after ) {
-        // Search for the item position and +1 since is after the selected item key.
-        $position = array_search( $after, array_keys( $items ) ) + 1;
+	/**
+	 * Register a new endpoint for the My Designs page.
+	 */
+	public function design_endpoints() {
+		add_rewrite_endpoint( 'my-designs', EP_ROOT | EP_PAGES );
+	}
 
-        // Insert the new item.
-        $array = array_slice( $items, 0, $position, true );
-        $array += $new_items;
-        $array += array_slice( $items, $position, count( $items ) - $position, true );
+	/**
+	 * Register query variables.
+	 *
+	 * @param array $vars The query variables.
+	 */
+	public function design_query_vars( $vars ) {
+		$vars[] = 'my-designs';
+		$vars[] = 'paged';
 
-        return $array;
-    }
-    
-    /**
-    * Flush rewrite rules on Plugin activation and deactivation
-    **/
-    public function flush_rewrite_rules() {
-        add_rewrite_endpoint( 'my-designs', EP_ROOT | EP_PAGES );
-        flush_rewrite_rules();
-    }
-    
-    /**
-    * Display user designs list
-    **/
-    public function designs_list() {
-        $design_profile_page = MyStyle_MyDesigns::get_instance();
-        
+		return $vars;
+	}
+
+	/**
+	 * Add menu item to the WC My Account page.
+	 *
+	 * @param array $items The current menu items.
+	 */
+	public function my_account_menu_items( $items ) {
+		$new_items               = array();
+		$new_items['my-designs'] = __( 'My Designs', 'mystyle' );
+
+		return $this->insert_after_helper( $items, $new_items, 'dashboard' );
+	}
+
+	/**
+	 * Add My Designs breadcrumb.
+	 *
+	 * @param array $defaults The default breadcrumbs.
+	 */
+	public function breadcrumbs( $defaults ) {
+		$defaults[] = 'My Designs';
+
+		return $defaults;
+	}
+
+	/**
+	 * Private helper method that adds new items into an array after a selected
+	 * item.
+	 *
+	 * @param array  $items The current menu items.
+	 * @param array  $new_items The new items to insert.
+	 * @param string $after The item to insert after.
+	 * @return array Returns the modified items.
+	 */
+	private function insert_after_helper( $items, $new_items, $after ) {
+		// Search for the item position and +1 since is after the selected item key.
+		$position = array_search( $after, array_keys( $items ), true ) + 1;
+
+		// Insert the new item.
+		$array  = array_slice( $items, 0, $position, true );
+		$array += $new_items;
+		$array += array_slice( $items, $position, count( $items ) - $position, true );
+
+		return $array;
+	}
+
+	/**
+	 * Flush rewrite rules on Plugin activation and deactivation.
+	 */
+	public function flush_rewrite_rules() {
+		add_rewrite_endpoint( 'my-designs', EP_ROOT | EP_PAGES );
+		flush_rewrite_rules();
+	}
+
+	/**
+	 * Display the user designs list.
+	 */
+	public function designs_list() {
+		$design_profile_page = MyStyle_My_Designs_Page::get_instance();
+
 		/* @var $pager \Mystyle_Pager phpcs:ignore */
 		$pager = $design_profile_page->get_pager();
-        
+
 		// ---------- Call the view layer ------------------ //
 		ob_start();
 		require MYSTYLE_TEMPLATES . 'design-profile/index.php';
 		$out = ob_get_contents();
 		ob_end_clean();
 
+		echo $out; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+	}
 
-		print $out;
-    }
-    
-    
+
 	/**
 	 * Filter the post title.
 	 *
@@ -188,33 +196,36 @@ class MyStyle_MyDesigns {
 	 * @return string Returns the filtered title.
 	 */
 	public function filter_title( $title, $id = null ) {
-        global $wp_query;
+		global $wp_query;
 
-        $is_endpoint = isset( $wp_query->query_vars['my-designs'] );
+		$is_endpoint = isset( $wp_query->query_vars['my-designs'] );
 
-        if ( $is_endpoint && ! is_admin() && is_main_query() && in_the_loop() && is_account_page() ) {
-            // New page title.
-            $title = __( 'My Designs', 'woocommerce' );
+		if ( $is_endpoint && ! is_admin() && is_main_query() && in_the_loop() && is_account_page() ) {
+			// New page title.
+			$title = __( 'My Designs', 'mystyle' );
 
-            remove_filter( 'the_title', array( &$this, 'filter_title' ) );
-        }
+			remove_filter( 'the_title', array( &$this, 'filter_title' ) );
+		}
 
-        return $title;
+		return $title;
 	}
-    
-    /**
-    * Add design profile body class name
-    **/
-    public function body_classes( $classes ) {
-        global $wp_query;
-        
-        if(isset( $wp_query->query_vars['my-designs'] ) ) {
-            $classes[] = 'mystyle-design-profile' ;
-        }
-        return $classes ;
-    }
-    
-    /**
+
+	/**
+	 * Add design profile body class name.
+	 *
+	 * @param string $classes Current assigned body classes.
+	 */
+	public function body_classes( $classes ) {
+		global $wp_query;
+
+		if ( isset( $wp_query->query_vars['my-designs'] ) ) {
+			$classes[] = 'mystyle-design-profile';
+		}
+
+		return $classes;
+	}
+
+	/**
 	 * Init the singleton for an user designindex request.
 	 */
 	private function init_user_index_request() {
@@ -223,13 +234,13 @@ class MyStyle_MyDesigns {
 		$this->pager = new MyStyle_Pager();
 
 		// Designs per page.
-		$this->pager->set_items_per_page( 100 ); //@TODO add pager for more then 100 designs
+		$this->pager->set_items_per_page( 100 ); // @TODO add pager for more then 100 designs
 
 		// Current page number.
 		$this->pager->set_current_page_number(
 			max( 1, get_query_var( 'paged' ) )
 		);
-        
+
 		// Pager items.
 		$designs = MyStyle_DesignManager::get_user_designs(
 			$this->pager->get_items_per_page(),
@@ -239,10 +250,7 @@ class MyStyle_MyDesigns {
 		$this->pager->set_items( $designs );
 
 		// Total items.
-		$this->pager->set_total_item_count(
-			MyStyle_DesignManager::get_total_user_design_count($this->user),
-			$this->user
-		);
+		$this->pager->set_total_item_count( MyStyle_DesignManager::get_total_user_design_count( $this->user ) );
 
 		// Validate the requested page.
 		try {
@@ -255,8 +263,8 @@ class MyStyle_MyDesigns {
 			$this->set_http_response_code( $response_code );
 		}
 	}
-    
-    /**
+
+	/**
 	 * Sets the current user.
 	 *
 	 * @param WP_User $user The user to set as the current user.
@@ -273,8 +281,8 @@ class MyStyle_MyDesigns {
 	public function get_user() {
 		return $this->user;
 	}
-    
-    /**
+
+	/**
 	 * Sets the current session.
 	 *
 	 * @param MyStyle_Session $session The session to set as the current session.
@@ -291,7 +299,7 @@ class MyStyle_MyDesigns {
 	public function get_session() {
 		return $this->session;
 	}
-    
+
 	/**
 	 * Gets the pager for the designs index.
 	 *
@@ -300,14 +308,14 @@ class MyStyle_MyDesigns {
 	public function get_pager() {
 		return $this->pager;
 	}
-    
-    
+
+
 	/**
 	 * Sets the current http response code.
 	 *
 	 * @param int $http_response_code The http response code to set as the
 	 * currently set response code. This is used by the shortcode and view
-	 * layer.  We set it as a variable since it is difficult to retrieve in
+	 * layer. We set it as a variable since it is difficult to retrieve in
 	 * php < 5.4.
 	 */
 	public function set_http_response_code( $http_response_code ) {
@@ -330,11 +338,11 @@ class MyStyle_MyDesigns {
 			return $this->http_response_code;
 		}
 	}
-    
-    /**
+
+	/**
 	 * Gets the singleton instance.
 	 *
-	 * @return MyStyle_MyDesigns Returns the singleton instance of
+	 * @return MyStyle_My_Designs_Page Returns the singleton instance of
 	 * this class.
 	 */
 	public static function get_instance() {

@@ -40,7 +40,7 @@ class MyStyle_Addons_Page {
 			'manage_options',
 			$mystyle_hook . '_addons',
 			array( $this, 'render_page' ),
-            99
+			99
 		);
 	}
 
@@ -59,7 +59,7 @@ class MyStyle_Addons_Page {
 				<li>
 					<a href="http://www.mystyleplatform.com/product/design-manager-mystyle-wordpress-plugin/?ref=wpadmin" target="_blank">
 						<h3>MyStyle Design Manager</h3>
-						<img src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/design_manager.jpg'; ?>" alt="Design Manager" />
+						<img src="<?php echo esc_url( MYSTYLE_ASSETS_URL . 'images/addons/design_manager.jpg' ); ?>" alt="Design Manager" />
 						<p>
 							The MyStyle Design Manager allows you to manage the
 							designs made by users from within the WordPress
@@ -72,7 +72,7 @@ class MyStyle_Addons_Page {
 				<li>
 					<a href="http://www.mystyleplatform.com/product/email-manager-mystyle-wordpress-plugin/?ref=wpadmin" target="_blank">
 						<h3>MyStyle Email Manager</h3>
-						<img src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/email-manager-screenshot.jpg'; ?>" alt="Email Manager" />
+						<img src="<?php echo esc_url( MYSTYLE_ASSETS_URL . 'images/addons/email-manager-screenshot.jpg' ); ?>" alt="Email Manager" />
 						<p>
 							Our "MyStyle Email Manager" upgrades the emails that
 							are automatically sent when users save their designs
@@ -86,7 +86,7 @@ class MyStyle_Addons_Page {
 				<li>
 					<a href="http://www.mystyleplatform.com/product/edit-options-cart-woo-commerce-standalone-wordpress-plugin/?ref=wpadmin" target="_blank">
 						<h3>Edit Options in Cart*</h3>
-						<img src="<?php echo MYSTYLE_ASSETS_URL . 'images/addons/edit-options-in-cart.jpg'; ?>" alt="Edit Product Options" />
+						<img src="<?php echo esc_url( MYSTYLE_ASSETS_URL . 'images/addons/edit-options-in-cart.jpg' ); ?>" alt="Edit Product Options" />
 						<p>
 							Our "Edit Options in Cart Plugin" allows users to
 							change product options in the cart (and refreshes

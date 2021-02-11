@@ -155,6 +155,7 @@ class MyStyle_FrontEnd {
 	public function render_form_integration_config() {
 		$form_integration_config = MyStyle_Options::get_form_integration_config();
 
+		// phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 		echo $form_integration_config;
 	}
 

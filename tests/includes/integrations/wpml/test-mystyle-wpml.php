@@ -133,7 +133,7 @@ class MyStyleWpmlTest extends WP_UnitTestCase {
 
 		// Insert the test data into the db.
 		$table_name = MyStyle_Wpml::get_instance()->get_translations_table_name();
-		$format     = array( '%d', '%s','%d', '%d', '%s', '%s' );
+		$format     = array( '%d', '%s', '%d', '%d', '%s', '%s' );
 		$parent_row = array(
 			'translation_id'       => 100,
 			'element_type'         => 'post_page',

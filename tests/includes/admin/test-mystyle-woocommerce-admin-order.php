@@ -68,11 +68,13 @@ class MyStyleWooCommerceAdminOrderTest extends WP_UnitTestCase {
 	 * Test the admin_order_item_values function.
 	 */
 	public function test_admin_order_item_values() {
+		$item = new WC_Order_Item_Product();
+
 		$mystyle_wc_admin_order = new MyStyle_WooCommerce_Admin_Order();
 
 		// Assert that the header was rendered.
 		ob_start();
-		$mystyle_wc_admin_order->admin_order_item_values( null, null, 0 );
+		$mystyle_wc_admin_order->admin_order_item_values( null, $item, 0 );
 		$outbound = ob_get_contents();
 		ob_end_clean();
 		$this->assertContains( '<td class="item-mystyle">', $outbound );

@@ -96,39 +96,46 @@ class MyStyle_Design_Profile_Page {
 	 */
 	public function __construct() {
 		$this->http_response_code = 200;
-        
-        add_action( 'init', array( &$this, 'rewrite_rules') ) ;
-        add_action( 'query_vars', array( &$this, 'query_vars') ) ;
+
+		add_action( 'init', array( &$this, 'rewrite_rules' ) );
+		add_action( 'query_vars', array( &$this, 'query_vars' ) );
 		add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
-        add_action( 'wp_head', array( &$this, 'wp_head' ), 2);
-        
-        add_action( 'wp_ajax_design_tag_search', array( &$this, 'design_tag_search' ) ) ;
-        add_action( 'wp_ajax_design_tag_add', array( &$this, 'design_tag_add' ) ) ;
-        add_action( 'wp_ajax_design_tag_remove', array( &$this, 'design_tag_remove' ) ) ;
-        
-        add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 ); 
+		add_action( 'wp_head', array( &$this, 'wp_head' ), 2 );
+
+		add_action( 'wp_ajax_design_tag_search', array( &$this, 'design_tag_search' ) );
+		add_action( 'wp_ajax_design_tag_add', array( &$this, 'design_tag_add' ) );
+		add_action( 'wp_ajax_design_tag_remove', array( &$this, 'design_tag_remove' ) );
+
+		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
 	}
-    
-    /**
-     * Added rewrite rule since WordPress 5.5
-     */
-    public function rewrite_rules() {
-        //flush rewrite rules for newly created rewrites
-        flush_rewrite_rules() ;
-        
-        add_rewrite_rule('designs/([a-zA-Z0-9_-].+)?$', 'index.php?pagename=designs&design_id=$matches[1]', 'top') ;
-    }
-    
-    
-    /**
-    * Add custom query vars
-    **/
-    public function query_vars( $query_vars ) {
-        $query_vars[] = 'design_id';
-        return $query_vars;
-    }
+
+	/**
+	 * Added rewrite rule since WordPress 5.5.
+	 */
+	public function rewrite_rules() {
+		// Flush rewrite rules for newly created rewrites.
+		flush_rewrite_rules();
+
+		add_rewrite_rule(
+			'designs/([a-zA-Z0-9_-].+)?$',
+			'index.php?pagename=designs&design_id=$matches[1]',
+			'top'
+		);
+	}
+
+
+	/**
+	 * Add custom query vars.
+	 *
+	 * @param array $query_vars Array of query vars.
+	 */
+	public function query_vars( $query_vars ) {
+		$query_vars[] = 'design_id';
+
+		return $query_vars;
+	}
 
 	/**
 	 * Function to create the page.
@@ -175,40 +182,48 @@ class MyStyle_Design_Profile_Page {
 	 * for use by functions that occur downstream (such as the
 	 * mystyle_design_profile shortcode).
 	 *
-	 * It loads early enough to set headers and status codes.  If an exception
-	 * is thrown, it catches it and attaches it to the singleton instance for
-	 * for further processing downstream.
+	 * It loads early enough to set headers and status codes. If an exception is
+	 * thrown, it catches it and attaches the exception to the singleton
+	 * instance for for further processing downstream.
 	 */
 	public function init() {
 		// Only run if we are currently serving the design profile page.
-		if ( self::is_current_post() ) {
-            
-			$design_profile_page = self::get_instance();
+		if ( ! self::is_current_post() ) {
+			return;
+		}
 
-			// Set the user.
-			/* @var $user \WP_User phpcs:ignore */
-			$user = wp_get_current_user();
-			$design_profile_page->set_user( $user );
+		$design_profile_page = self::get_instance();
 
-			// Set the session.
-			/* @var $session \MyStyle_Session phpcs:ignore */
-			$session = MyStyle()->get_session();
-			$design_profile_page->set_session( $session );
+		// Set the user.
+		/* @var $user \WP_User phpcs:ignore */
+		$user = wp_get_current_user();
+		$design_profile_page->set_user( $user );
 
-			// Get the design from the url, if it's not found, this function
-			// returns false.
-            $design_id = self::get_design_id_from_url();
-            
-			if ( false === $design_id || preg_match('/page/', $design_id ) ) {
-				$design_profile_page->init_index_request();
-			} else {
-                
-                if(isset($_POST['ms-title'])) {
-                    MyStyle_DesignManager::set_title($design_id, $_POST['ms-title']) ;
-                }
-                
-				$design_profile_page->init_design_request( $design_id );
+		// Set the session.
+		/* @var $session \MyStyle_Session phpcs:ignore */
+		$session = MyStyle()->get_session();
+		$design_profile_page->set_session( $session );
+
+		// Get the design from the url, if it's not found, this function
+		// returns false.
+		$design_id = self::get_design_id_from_url();
+
+		if ( false === $design_id || preg_match( '/page/', $design_id ) ) {
+			$design_profile_page->init_index_request();
+		} else {
+
+			// Handle post requests to update the design title (from the design
+			// owner and the site admin).
+			//phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+			if ( isset( $_POST['ms-title'] ) ) {
+				MyStyle_DesignManager::set_title(
+					$design_id,
+					sanitize_text_field( wp_unslash( $_POST['ms-title'] ) )
+				);
 			}
+			//phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+
+			$design_profile_page->init_design_request( $design_id );
 		}
 	}
 
@@ -239,42 +254,42 @@ class MyStyle_Design_Profile_Page {
 				$this->user,
 				$this->session
 			);
-            
-            
+
 			// Throw exception if design isn't found (it's caught at the bottom
 			// of this function.
 			if ( null === $design ) {
 				throw new MyStyle_Not_Found_Exception( 'Design not found.' );
 			}
-            
-            
-            if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
-                
-                
-                wp_register_style( 'jquery-ui-styles','http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
-                wp_enqueue_style( 'jquery-ui-styles' );
-                
-                wp_register_style( 'tokenfield-styles','https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css' );
-                wp_enqueue_style( 'tokenfield-styles' );
-                
-                wp_register_script( 'tokenfield', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.js', null, null, true );
-                wp_enqueue_script('tokenfield');
-                
-                wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', null, null, true );
-                wp_enqueue_script( 'jquery-ui' );
-                
-                wp_enqueue_script( 'frontend_js', MYSTYLE_ASSETS_URL . 'js/frontend.js', array(), // deps.
-				'1.1.0', // version.
-				true);
-                
-                wp_register_style( 'tokenfield-custom-styles', MYSTYLE_ASSETS_URL . 'css/tokenfield.css' );
-                wp_enqueue_style( 'tokenfield-custom-styles' );
-                
-            }
+
+			if (
+					( get_current_user_id() === $design->get_user_id() )
+					|| ( current_user_can( 'administrator' ) )
+			) {
+				wp_register_style( 'jquery-ui-styles', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
+				wp_enqueue_style( 'jquery-ui-styles' );
+
+				wp_register_style( 'tokenfield-styles', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css' );
+				wp_enqueue_style( 'tokenfield-styles' );
+
+				wp_register_script( 'tokenfield', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.js', null, null, true );
+				wp_enqueue_script( 'tokenfield' );
+
+				wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', null, null, true );
+				wp_enqueue_script( 'jquery-ui' );
+
+				wp_enqueue_script(
+					'frontend_js', MYSTYLE_ASSETS_URL . 'js/frontend.js', array(), // deps.
+					'1.1.0', // version.
+					true
+				);
+
+				wp_register_style( 'tokenfield-custom-styles', MYSTYLE_ASSETS_URL . 'css/tokenfield.css' );
+				wp_enqueue_style( 'tokenfield-custom-styles' );
+			}
 
 			// Set the current design in the singleton instance.
 			$this->set_design( $design );
-            
+
 			// When an exception is thrown, set the status code and set the
 			// exception in the singleton instance, it will later be used by
 			// the shortcode and view layer.
@@ -313,13 +328,12 @@ class MyStyle_Design_Profile_Page {
 
 		// Designs per page.
 		$this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE );
-        
+
 		// Current page number.
-        $page_array = explode('/', get_query_var( 'design_id' )) ; //not the best solution @TODO cleaner fix for this
-        
-		$this->pager->set_current_page_number(
-			max( 1, $page_array[1] )
-		);
+		$page_array = explode( '/', get_query_var( 'design_id' ) ); // Not the best solution @TODO cleaner fix for this.
+		$page_num   = max( 1, ( isset( $page_array[1] ) ? $page_array[1] : 0 ) );
+
+		$this->pager->set_current_page_number( $page_num );
 
 		// Pager items.
 		$designs = MyStyle_DesignManager::get_designs(
@@ -331,8 +345,7 @@ class MyStyle_Design_Profile_Page {
 
 		// Total items.
 		$this->pager->set_total_item_count(
-			MyStyle_DesignManager::get_total_design_count(),
-			$this->user
+			MyStyle_DesignManager::get_total_design_count()
 		);
 
 		// Validate the requested page.
@@ -380,7 +393,7 @@ class MyStyle_Design_Profile_Page {
 					( self::get_id() === $current_post->ID ) ) {
 				$ret = true;
 			}
-		} catch ( Exception $ex ) {
+		} catch ( Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// Do nothing ( return false ).
 		}
 
@@ -446,157 +459,174 @@ class MyStyle_Design_Profile_Page {
 
 		return $url;
 	}
-    
-    /**
-     * Get design tags 
-     *
-     *
-     */
-    public static function get_design_tags( $design_id = null, $slug = false ) {
-        if( null == $design_id ) {
-            $design_id = self::get_design_id_from_url() ;
-        }
-        
-        $tag_names = array() ;
-        $terms = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME ) ;
-        
-        foreach( $terms as $term ) {
-            if($slug) {
-                $tag_names[] = array( 'name' => $term->name, 'slug' => $term->slug ) ;
-            }
-            else {
-                $tag_names[] = $term->name ;
-            }
-        }
-        
-        return $tag_names ;
-    }
-    
-    /**
-     * Search design tags for ajax
-     *
-     */
-    public static function design_tag_search() {
-        $taxonomy = MYSTYLE_TAXONOMY_NAME ;
-        $s = wp_unslash( $_GET['q'] );
- 
-        $comma = _x( ',', 'tag delimiter' );
-        if ( ',' !== $comma ) {
-            $s = str_replace( $comma, ',', $s );
-        }
-
-        if ( false !== strpos( $s, ',' ) ) {
-            $s = explode( ',', $s );
-            $s = $s[ count( $s ) - 1 ];
-        }
-
-        $s = trim( $s );
-
-        /**
-         * Filters the minimum number of characters required to fire a tag search via Ajax.
-         *
-         * @since 4.0.0
-         *
-         * @param int         $characters The minimum number of characters required. Default 2.
-         * @param WP_Taxonomy $tax        The taxonomy object.
-         * @param string      $s          The search term.
-         */
-        $term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
-
-        /*
-         * Require $term_search_min_chars chars for matching (default: 2)
-         * ensure it's a non-negative, non-zero integer.
-         */
-        if ( ( 0 == $term_search_min_chars ) || ( strlen( $s ) < $term_search_min_chars ) ) {
-            wp_die();
-        }
-
-        $results = get_terms(
-            array(
-                'taxonomy'   => $taxonomy,
-                'name__like' => $s,
-                'fields'     => 'names',
-                'hide_empty' => false,
-            )
-        );
-
-        header('Content-Type: application/json');
-        echo json_encode( $results ) ;
-        wp_die();
-    }
-    
-    /**
-     * Save design tag
-     *
-     */
-    public static function design_tag_add() {
-        $taxonomy = MYSTYLE_TAXONOMY_NAME ;
-        $tag = $_POST['tag'] ;
-        $design_id = intval($_POST['design_id']) ;
-        
-        $user_id = get_current_user_id() ;
-        
-        global $wpdb ;
-        
-        $table_name = $wpdb->prefix . MyStyle_Design::TABLE_NAME;
-        
-        $sql = "SELECT user_id FROM " . $table_name . " WHERE ms_design_id = " . $design_id ;
-        
-        $design_user_id = $wpdb->get_var($sql) ;
-        
-        if( ( $design_user_id == $user_id ) || current_user_can('administrator') ) {
-            wp_add_object_terms($design_id, $tag, $taxonomy) ;  
-        }
-        
-        header('Content-Type: application/json');
-        print json_encode(array('tag' => $tag)) ;
-        die() ;
-    }
-    
-    /**
-     * Remove design tag
-     *
-     */
-    public static function design_tag_remove() {
-        $taxonomy = MYSTYLE_TAXONOMY_NAME ;
-        $tag = $_POST['tag'] ;
-        $design_id = intval($_POST['design_id']) ;
-        
-        $user_id = get_current_user_id() ;
-        
-        global $wpdb ;
-        
-        $table_name = $wpdb->prefix . MyStyle_Design::TABLE_NAME;
-        
-        $sql = "SELECT user_id FROM " . $table_name . " WHERE ms_design_id = " . $design_id ;
-        
-        $design_user_id = $wpdb->get_var($sql) ;
-        
-        if( ( $design_user_id == $user_id ) || current_user_can('administrator') ) {
-            wp_remove_object_terms($design_id, $tag, $taxonomy) ;
-        }
-        
-        header('Content-Type: application/json');
-        print json_encode(array('tag' => $tag)) ;
-        die() ;
-    }
-    
 
 	/**
-	 * Gets the design id from the url. If it can't find the design id in the
-	 * url, this function returns false.
+	 * Get design tags.
 	 *
-	 * @return int|false Returns the design id from the url or false if none
+	 * @param int|null $design_id The id of the design that you want to get. If
+	 *                            null, the function will attempt to get the
+	 *                            design id from the URL.
+	 * @param bool     $slug      Set to true (default is false) to include the
+	 *                            term slug in the tags.
+	 * @return array Returns an array of tags.
+	 */
+	public static function get_design_tags( $design_id = null, $slug = false ) {
+		if ( null === $design_id ) {
+			$design_id = self::get_design_id_from_url();
+		}
+
+		$tag_names = array();
+		$terms     = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME );
+
+		foreach ( $terms as $term ) {
+			if ( $slug ) {
+				$tag_names[] = array(
+					'name' => esc_html( $term->name ),
+					'slug' => esc_html( $term->slug ),
+				);
+			} else {
+				$tag_names[] = $term->name;
+			}
+		}
+
+		return $tag_names;
+	}
+
+	/**
+	 * Search design tags. Registered for use via ajax.
+	 *
+	 * This is mostly copy/paste from the wp_ajax_ajax_tag_search function.
+	 */
+	public static function design_tag_search() {
+		$taxonomy = MYSTYLE_TAXONOMY_NAME;
+		// phpcs:ignore
+		$s        = wp_unslash( $_GET['q'] );
+
+		$comma = _x( ',', 'tag delimiter', 'mystyle' );
+		if ( ',' !== $comma ) {
+			$s = str_replace( $comma, ',', $s );
+		}
+
+		if ( false !== strpos( $s, ',' ) ) {
+			$s = explode( ',', $s );
+			$s = $s[ count( $s ) - 1 ];
+		}
+
+		$s = trim( $s );
+
+		/**
+		 * Filters the minimum number of characters required to fire a tag search via Ajax.
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param int         $characters The minimum number of characters required. Default 2.
+		 * @param WP_Taxonomy $tax        The taxonomy object.
+		 * @param string      $s          The search term.
+		 */
+		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
+
+		/*
+		 * Require $term_search_min_chars chars for matching (default: 2)
+		 * ensure it's a non-negative, non-zero integer.
+		 */
+		if ( ( 0 === $term_search_min_chars ) || ( strlen( $s ) < $term_search_min_chars ) ) {
+			wp_die();
+		}
+
+		$results = get_terms(
+			array(
+				'taxonomy'   => $taxonomy,
+				'name__like' => $s,
+				'fields'     => 'names',
+				'hide_empty' => false,
+			)
+		);
+
+		header( 'Content-Type: application/json' );
+		echo wp_json_encode( $results );
+		wp_die();
+	}
+
+	/**
+	 * Save design tag. Registered for use via AJAX. Called to add a new tag to
+	 * a design.
+	 *
+	 * @todo Add unit testing for this method.
+	 */
+	public static function design_tag_add() {
+		$taxonomy = MYSTYLE_TAXONOMY_NAME;
+		// phpcs:disable
+		$tag       = sanitize_text_field( wp_unslash( $_POST['tag'] ) );
+		$design_id = intval( wp_unslash( $_POST['design_id'] ) );
+		// phpcs:enable
+
+		$user_id = get_current_user_id();
+
+		$user_owns_design = MyStyle_DesignManager::does_user_own_design(
+			$user_id,
+			$design_id
+		);
+
+		if (
+				( $user_owns_design )
+				|| current_user_can( 'administrator' )
+		) {
+			wp_add_object_terms( $design_id, $tag, $taxonomy );
+		}
+
+		header( 'Content-Type: application/json' );
+		echo wp_json_encode( array( 'tag' => $tag ) );
+		die();
+	}
+
+	/**
+	 * Remove design tag. Registered for use via AJAX. Called to remove a tag
+	 * from a design.
+	 *
+	 * @todo Add unit testing for this method.
+	 */
+	public static function design_tag_remove() {
+		$taxonomy = MYSTYLE_TAXONOMY_NAME;
+		// phpcs:disable
+		$tag       = sanitize_text_field( wp_unslash( $_POST['tag'] ) );
+		$design_id = intval( $_POST['design_id'] );
+		// phpcs:enable
+
+		$user_id = get_current_user_id();
+
+		$user_owns_design = MyStyle_DesignManager::does_user_own_design(
+			$user_id,
+			$design_id
+		);
+
+		if (
+				( $user_owns_design )
+				|| current_user_can( 'administrator' )
+		) {
+			wp_remove_object_terms( $design_id, $tag, $taxonomy );
+		}
+
+		header( 'Content-Type: application/json' );
+		echo wp_json_encode( array( 'tag' => $tag ) );
+		die();
+	}
+
+
+	/**
+	 * Gets the design id from the URL. If it can't find the design id in the
+	 * URL, this function returns false.
+	 *
+	 * @return int|false Returns the design id from the URL or false if none
 	 * found.
 	 */
 	public static function get_design_id_from_url() {
 		// Try the query vars ( ex: &design_id=10 ).
 		$design_id = get_query_var( 'design_id' );
-        if(preg_match('/page/', $design_id)) {
-            $design_id = false ;
-        }
-        elseif ( empty( $design_id ) ) {
+		if ( preg_match( '/page/', $design_id ) ) {
+			$design_id = false;
+		} elseif ( empty( $design_id ) ) {
 			// ---------- try at /designs/10. --------
+			// phpcs:ignore
 			$path = $_SERVER['REQUEST_URI'];
 
 			// Get the design profile page's WP_Post slug.
@@ -612,7 +642,7 @@ class MyStyle_Design_Profile_Page {
 			}
 			// -------------------------------------
 		}
-        
+
 		return $design_id;
 	}
 
@@ -745,12 +775,12 @@ class MyStyle_Design_Profile_Page {
 	}
 
 	/**
-	 * Sets the current http response code.
+	 * Sets the current HTTP response code.
 	 *
 	 * @param int $http_response_code The http response code to set as the
 	 * currently set response code. This is used by the shortcode and view
-	 * layer.  We set it as a variable since it is difficult to retrieve in
-	 * php < 5.4.
+	 * layer. We set it as a variable since it is difficult to retrieve in
+	 * PHP < 5.4.
 	 */
 	public function set_http_response_code( $http_response_code ) {
 		$this->http_response_code = $http_response_code;
@@ -887,39 +917,47 @@ class MyStyle_Design_Profile_Page {
 			) {
 				$design = $this->get_design();
 				if ( null !== $design ) {
-                    if("" !== $design->get_title()) {
-                        $title = $design->get_title() ;
-                    }
-                    else {
-                        $title = 'Design ' . $design->get_design_id();
-                    }
+					if ( '' !== $design->get_title() ) {
+						$title = $design->get_title();
+					} else {
+						$title = 'Design ' . $design->get_design_id();
+					}
 				}
 			}
-		} catch ( MyStyle_Exception $e ) {
+		} catch ( MyStyle_Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// This exception may be thrown if the Design Profile Page is
 			// missing. For this function, that is okay, just continue.
 		}
 
 		return $title;
 	}
-    
-    /**
-     * Filter Document Title Parts
-     *
-     */
-    public function filter_document_title_parts( $title ) {
-        $design_id = self::get_design_id_from_url();
-        
-        if ( $design_id && !isset($_GET['design_id'])) {
-            $design = $this->get_design() ;
-            if("" !== $design->get_title() ) {
-                $title['page'] = $design->get_title() ;
-            }
-        }
-        
-        return $title ;
-        
-    }
+
+	/**
+	 * Filters the parts of the document title.
+	 *
+	 * This sets the title tag in the HEAD of the HTML document to the title of
+	 * the design (if a design title is set).
+	 *
+	 * @param array $title {
+	 *     The document title parts.
+	 *
+	 *     @type string $title   Title of the viewed page.
+	 *     @type string $page    Optional. Page number if paginated.
+	 *     @type string $tagline Optional. Site description when on home page.
+	 *     @type string $site    Optional. Site title when not on home page.
+	 * }
+	 * @todo Unit test this method.
+	 */
+	public function filter_document_title_parts( $title ) {
+
+		if ( $this->design ) {
+			if ( '' !== $this->design->get_title() ) {
+				$title['title'] = $design->get_title();
+			}
+		}
+
+		return $title;
+	}
 
 	/**
 	 * Filter the body class output. Adds a "mystyle-design-profile" class if
@@ -933,12 +971,13 @@ class MyStyle_Design_Profile_Page {
 		global $post;
 
 		try {
-			if ( null !== $post ) {
-				if ( self::get_id() === $post->ID ) {
-					$classes[] = 'mystyle-design-profile';
-				}
+			if (
+					( null !== $post )
+					&& ( self::get_id() === $post->ID )
+			) {
+				$classes[] = 'mystyle-design-profile';
 			}
-		} catch ( MyStyle_Exception $e ) {
+		} catch ( MyStyle_Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// This exception may be thrown if the Customize Page or Design
 			// Profile Page is missing. For this function, that is okay, just
 			// continue.
@@ -946,48 +985,57 @@ class MyStyle_Design_Profile_Page {
 
 		return $classes;
 	}
-    
-    /**
-    * Generate Author metatag for individual design pages
-    **/
-    public function wp_head() {
-        $design_id = self::get_design_id_from_url();
 
-        if ( $design_id && !isset($_GET['design_id'])) {
-            $design = $this->get_design() ;
-            if(null !== $design) {
-                $user_id = $design->get_user_id() ;
-                $product_id = $design->get_product_id() ;
-                $product = wc_get_product($product_id) ;
-                $user = get_user_by('id', $user_id) ;
-                $design_title = ' Design ' . $design_id ;
+	/**
+	 * Generate author meta tag for individual design pages.
+	 */
+	public function wp_head() {
+		$design_id = self::get_design_id_from_url();
 
-                if("" !== $design->get_title()) {
-                    $design_title = $design->get_title() ;
-                }
-                
-                $tags = $this->get_design_tags() ;
-                
-                ?>
-                <meta name="author" content="<?php print $user->user_nicename ; ?>">
-                <meta name="description" content="<?php print $product->name . ' ' . $design_title ; ?>">
-                <meta name="keywords" content="<?php print $product->name . ', ' . $design_title ; ?>,<?php echo ( (count($tags) > 0) ? implode(",", $tags) : '') ; ?>">
-                <?php
-                
-                if(get_current_user_id() == $design->get_user_id() || current_user_can('administrator')) {
-                    
-                ?>
-                <script>
-                    var design_ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
-                    var designId = <?php echo $design_id ; ?> ;
-                    var designTags = '<?php echo ( (count($tags) > 0) ? implode(",", $tags) : '') ; ?>' ;
-                </script>
-                <?php
-                }
-            }
-            
-        }
-    }
+		if ( $design_id ) {
+			$design = $this->get_design();
+			if ( null !== $design ) {
+				$user_id    = $design->get_user_id();
+				$product_id = $design->get_product_id();
+				$wc_product = wc_get_product( $product_id );
+				$product    = new \MyStyle_Product( $wc_product );
+				$user       = get_user_by( 'id', $user_id );
+
+				$design_title = ' Design ' . $design_id;
+				if ( '' !== $design->get_title() ) {
+					$design_title = $design->get_title();
+				}
+
+				$tags = $this->get_design_tags();
+
+				if ( $user ) {
+					?>
+					<meta name="author" content="<?php echo esc_html( $user->user_nicename ); ?>">
+					<?php
+				}
+
+				?>
+				<meta name="description" content="<?php echo esc_html( $product->get_title() ) . ' ' . esc_html( $design_title ); ?>">
+				<meta name="keywords" content="<?php echo esc_html( $product->get_title() ) . ', ' . esc_html( $design_title ); ?>,<?php echo ( count( $tags ) > 0 ) ? implode( ',', $tags ) : ''; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>">
+				<?php
+
+				// If current user is the Design owner or the site adminstrator,
+				// drop the JS for editing the design meta data.
+				if (
+						( get_current_user_id() === $design->get_user_id() )
+						|| ( current_user_can( 'administrator' ) )
+				) {
+					?>
+				<script>
+					var design_ajax_url = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
+					var designId = <?php echo esc_js( $design_id ); ?>;
+					var designTags = '<?php echo ( count( $tags ) > 0 ) ? implode( ',', $tags ) : ''; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>';
+				</script>
+					<?php
+				}
+			}
+		}
+	}
 
 	/**
 	 * Gets the list of products for the design profile page as an HTML string.
@@ -998,7 +1046,7 @@ class MyStyle_Design_Profile_Page {
 	public function get_product_list_html() {
 		// Hook the WooCommerce [products] shortcode to modify the output.
 		add_filter( 'woocommerce_loop_product_link', array( &$this, 'modify_woocommerce_loop_product_link' ), 10, 1 );
-        add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
+		add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
 		add_filter( 'woocommerce_shortcode_products_query', array( &$this, 'modify_woocommerce_shortcode_products_query' ), 10, 1 );
 
 		// Get the shortcode output.
@@ -1006,7 +1054,7 @@ class MyStyle_Design_Profile_Page {
 
 		// Undo our hooks.
 		remove_filter( 'woocommerce_loop_product_link', array( &$this, 'modify_woocommerce_loop_product_link' ) );
-        remove_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ) );
+		remove_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ) );
 		remove_filter( 'woocommerce_shortcode_products_query', array( &$this, 'modify_woocommerce_shortcode_products_query' ) );
 
 		return $out;
@@ -1024,15 +1072,15 @@ class MyStyle_Design_Profile_Page {
 	 * @todo Unit test this function.
 	 */
 	public function modify_woocommerce_loop_product_link() {
-		global $product ;
-        $product_id = $product->get_id() ;
-		$mystyle_design = $this->get_design() ;
-		$customizer_url  = MyStyle_Customize_Page::get_design_url( $mystyle_design, null, null, $product_id );
-        
+		global $product;
+		$product_id     = $product->get_id();
+		$mystyle_design = $this->get_design();
+		$customizer_url = MyStyle_Customize_Page::get_design_url( $mystyle_design, null, null, $product_id );
+
 		return $customizer_url;
 	}
-    
-    /**
+
+	/**
 	 * Modify the add to cart link for product listings.
 	 *
 	 * @param type $link The "Add to Cart" link (html).
@@ -1047,12 +1095,11 @@ class MyStyle_Design_Profile_Page {
 		if ( ( $mystyle_product->is_customizable() ) && ( 'variable' !== $product_type ) ) {
 			$customize_page_id = MyStyle_Customize_Page::get_id();
 
-			// Build the url to the customizer including the poduct_id 
-            
-			$mystyle_design = $this->get_design() ;
-		    $customizer_url  = MyStyle_Customize_Page::get_design_url( $mystyle_design, null, null, $product_id );
+			// Build the URL to the customizer including the product_id.
+			$mystyle_design = $this->get_design();
+			$customizer_url = MyStyle_Customize_Page::get_design_url( $mystyle_design, null, null, $product_id );
 
-			// Add the passthru data to the url.
+			// Add the passthru data to the URL.
 			$passthru                        = array();
 			$passthru['post']                = array();
 			$passthru['post']['quantity']    = 1;
@@ -1060,7 +1107,7 @@ class MyStyle_Design_Profile_Page {
 			$passthru_encoded                = base64_encode( wp_json_encode( $passthru ) );
 			$customizer_url                  = add_query_arg( 'h', $passthru_encoded, $customizer_url );
 
-			// Build the link ( a tag ) to the customizer.
+			// Build the link (A tag) to the customizer.
 			$customize_link = sprintf(
 				'<a ' .
 				'href="%s" ' .

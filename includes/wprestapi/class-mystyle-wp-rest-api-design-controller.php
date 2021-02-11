@@ -23,7 +23,6 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 * Constructor, constructs the class and sets up the hooks.
 	 */
 	public function __construct() {
-		//add_filter( 'woocommerce_rest_is_request_to_rest_api', array( &$this, 'filter_is_request_to_rest_api' ), 10, 1 );
 		add_action( 'rest_api_init', array( &$this, 'register_routes' ), 10, 1 );
 	}
 
@@ -31,12 +30,12 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 * Filters the WC is_request_to_rest_api to include our endpoints for
 	 * authentication.
 	 *
-	 * @param $is_request_to_rest_api Whether or not the request is to the WC
-	 * REST API.
+	 * @param bool $is_request_to_rest_api Whether or not the request is to the
+	 * WC REST API.
 	 * @return bool
 	 */
 	protected function filter_is_request_to_rest_api( $is_request_to_rest_api ) {
-		if ( empty( $_SERVER['REQUEST_URI'] ) ) {
+		if ( empty( $_SERVER['REQUEST_URI'] ) ) { // @codingStandardsIgnoreLine
 			return false;
 		}
 
@@ -57,52 +56,52 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 		$vendor    = 'wc-mystyle';
 		$namespace = $vendor . '/v' . $version;
 		$base      = 'designs';
-		register_rest_route( $namespace, '/' . $base, array(
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_items' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
-				'args'                => array(),
-			),
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'create_item' ),
-				'permission_callback' => array( $this, 'create_item_permissions_check' ),
-				'args'                => $this->get_endpoint_args_for_item_schema( true ),
-			),
-		) );
-		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)', array(
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_item' ),
-				'permission_callback' => array( $this, 'get_item_permissions_check' ),
-				'args'                => array(
-					'context' => array(
-						'default' => 'view',
+		register_rest_route(
+			$namespace, '/' . $base, array(
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_items' ),
+					'permission_callback' => array( $this, 'get_items_permissions_check' ),
+					'args'                => array(),
+				),
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'create_item' ),
+					'permission_callback' => array( $this, 'create_item_permissions_check' ),
+					'args'                => $this->get_endpoint_args_for_item_schema( true ),
+				),
+			)
+		);
+		register_rest_route(
+			$namespace, '/' . $base . '/(?P<id>[\d]+)', array(
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_item' ),
+					'permission_callback' => array( $this, 'get_item_permissions_check' ),
+					'args'                => array(
+						'context' => array(
+							'default' => 'view',
+						),
 					),
 				),
-			),
-			array(
-				'methods'             => WP_REST_Server::EDITABLE,
-				'callback'            => array( $this, 'update_item' ),
-				'permission_callback' => array( $this, 'update_item_permissions_check' ),
-				'args'                => $this->get_endpoint_args_for_item_schema( false ),
-			),
-			array(
-				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => array( $this, 'delete_item' ),
-				'permission_callback' => array( $this, 'delete_item_permissions_check' ),
-				'args'                => array(
-					'force' => array(
-						'default' => false,
+				array(
+					'methods'             => WP_REST_Server::EDITABLE,
+					'callback'            => array( $this, 'update_item' ),
+					'permission_callback' => array( $this, 'update_item_permissions_check' ),
+					'args'                => $this->get_endpoint_args_for_item_schema( false ),
+				),
+				array(
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => array( $this, 'delete_item' ),
+					'permission_callback' => array( $this, 'delete_item_permissions_check' ),
+					'args'                => array(
+						'force' => array(
+							'default' => false,
+						),
 					),
 				),
-			),
-		) );
-		register_rest_route( $namespace, '/' . $base . '/schema', array(
-			'methods'  => WP_REST_Server::READABLE,
-			'callback' => array( $this, 'get_public_item_schema' ),
-		) );
+			)
+		);
 	}
 
 	/**
@@ -113,16 +112,16 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 */
 	public function get_items( $request ) {
 		// TODO: Retrieve these values from the request params.
-		$items_per_page = 250;
+		$items_per_page      = 250;
 		$current_page_number = 1;
-		$current_user = wp_get_current_user();
-		$designs = MyStyle_DesignManager::get_designs(
+		$current_user        = wp_get_current_user();
+		$designs             = MyStyle_DesignManager::get_designs(
 			$items_per_page,
 			$current_page_number,
 			$current_user
 		);
 
-		$data  = array();
+		$data = array();
 		foreach ( $designs as $design ) {
 			$itemdata = $this->prepare_item_for_response( $design, $request );
 			$data[]   = $this->prepare_response_for_collection( $itemdata );
@@ -136,10 +135,12 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Response
+	 * @throws \MyStyle_Exception Throws a MyStyle_Exception if the design isn't
+	 * found.
 	 */
 	public function get_item( $request ) {
 		// Get parameters from request.
-		$params = $request->get_params();
+		$params       = $request->get_params();
 		$current_user = wp_get_current_user();
 		try {
 			$design_id = $params['id'];
@@ -150,11 +151,11 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 				throw new \MyStyle_Exception( 'Design not found.', 404 );
 			}
 
-			$data   = $this->prepare_item_for_response( $design, $request );
+			$data = $this->prepare_item_for_response( $design, $request );
 
 			return new WP_REST_Response( $data, 200 );
 		} catch ( \Exception $ex ) {
-			return new WP_Error( $ex->getCode() , __( $ex->getMessage(), 'mystyle' ) );
+			return new WP_Error( $ex->getCode(), $ex->getMessage() );
 		}
 	}
 
@@ -167,7 +168,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	public function create_item( $request ) {
 		try {
 			// Get parameters from request.
-			$json_body_str   = $request->get_body();
+			$json_body_str = $request->get_body();
 
 			/* @var $design \MyStyle_Design The design. */
 			$design = MyStyle_Design::create_from_json( $json_body_str );
@@ -178,7 +179,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 			return new WP_REST_Response( $data, 200 );
 
 		} catch ( \Exception $ex ) {
-			return new WP_Error( $ex->getCode() , __( $ex->getMessage(), 'mystyle' ) );
+			return new WP_Error( $ex->getCode(), $ex->getMessage() );
 		}
 	}
 
@@ -187,14 +188,16 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Request
+	 * @throws \MyStyle_Exception Throws a MyStyle_Exception if the design isn't
+	 * found.
 	 */
 	public function update_item( $request ) {
 		try {
 			// Get parameters from request.
-			$params = $request->get_params();
-			$design_id = $params['id'];
-			$json_body_str   = $request->get_body();
-			$current_user = wp_get_current_user();
+			$params        = $request->get_params();
+			$design_id     = $params['id'];
+			$json_body_str = $request->get_body();
+			$current_user  = wp_get_current_user();
 
 			/* @var $design_orig \MyStyle_Design The design that is being updated. */
 			$design_orig = MyStyle_DesignManager::get( $design_id, $current_user );
@@ -212,7 +215,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 			return new WP_REST_Response( $data, 200 );
 
 		} catch ( \Exception $ex ) {
-			return new WP_Error( $ex->getCode() , __( $ex->getMessage(), 'mystyle' ) );
+			return new WP_Error( $ex->getCode(), $ex->getMessage() );
 		}
 	}
 
@@ -221,13 +224,15 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Request
+	 * @throws \MyStyle_Exception Throws a MyStyle_Exception if the design isn't
+	 * found.
 	 */
 	public function delete_item( $request ) {
 		try {
 			// Get parameters from request.
-			$params = $request->get_params();
+			$params       = $request->get_params();
 			$current_user = wp_get_current_user();
-			$design_id = $params['id'];
+			$design_id    = $params['id'];
 			/* @var $design \MyStyle_Design The requested design. */
 			$design = MyStyle_DesignManager::get( $design_id, $current_user );
 
@@ -235,16 +240,16 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 				throw new \MyStyle_Exception( 'Design not found.', 404 );
 			}
 
-			$deleted = MyStyle_DesignManager::delete ( $design );
+			$deleted = MyStyle_DesignManager::delete( $design );
 
 			if ( ! $deleted ) {
-				throw new MyStyle_Exception( 'Can\'t delete design', 500 );
+				throw new \MyStyle_Exception( 'Can\'t delete design', 500 );
 			}
 
 			return new WP_REST_Response( true, 200 );
 
 		} catch ( \Exception $ex ) {
-			return new WP_Error( $ex->getCode() , __( $ex->getMessage(), 'mystyle' ) );
+			return new WP_Error( $ex->getCode(), $ex->getMessage() );
 		}
 	}
 
@@ -316,8 +321,8 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 * @return mixed
 	 */
 	public function prepare_item_for_response( $item, $request ) {
-		/* @var $item \MyStyle_Design */
-		$design = $item;
+		/* @var $item \MyStyle_Design phpcs:ignore */
+		$design   = $item;
 		$itemdata = $design->json_encode();
 
 		return $itemdata;

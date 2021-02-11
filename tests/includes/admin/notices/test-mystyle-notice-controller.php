@@ -65,7 +65,7 @@ class MyStyleNoticeControllerTest extends WP_UnitTestCase {
 		$this->expectOutputString( $expected );
 		try {
 			MyStyle_Notice_Controller::get_instance()->set_notice_pref_callback();
-		} catch ( WPDieException $ex ) {
+		} catch ( WPDieException $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// Do nothing.
 		}
 	}

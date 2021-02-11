@@ -8,14 +8,14 @@
  */
 
 /**
- * MyStyle_DesignTags_Page class.
+ * MyStyle_Design_Tags_Page class.
  */
-class MyStyle_DesignTags_Page {
+class MyStyle_Design_Tags_Page {
 
 	/**
 	 * Singleton instance.
 	 *
-	 * @var MyStyle_Dashboard_Page
+	 * @var MyStyle_Design_Tags_Page
 	 */
 	private static $instance;
 
@@ -27,29 +27,28 @@ class MyStyle_DesignTags_Page {
 		add_action( 'admin_menu', array( &$this, 'add_page_to_menu' ) );
 	}
 
-	
-    /** 
-     * Add Design Tags link to admin menu
-     *
-     */
-    public function add_page_to_menu() {
-        $mystyle_hook = 'mystyle';
-        
+
+	/**
+	 * Add Design Tags link to admin menu
+	 */
+	public function add_page_to_menu() {
+		$mystyle_hook = 'mystyle';
+
 		add_submenu_page(
-            $mystyle_hook, 
-            'Design Tags', 
-            'Design Tags', 
-            'manage_options',  
-            'edit-tags.php?taxonomy=design_tag',
-            '',
-            62
-        );
-    }
+			$mystyle_hook,
+			'Design Tags',
+			'Design Tags',
+			'manage_options',
+			'edit-tags.php?taxonomy=design_tag',
+			'',
+			62
+		);
+	}
 
 	/**
 	 * Get the singleton instance.
 	 *
-	 * @return MyStyle_Addons_Page
+	 * @return MyStyle_Design_Tags_Page
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {

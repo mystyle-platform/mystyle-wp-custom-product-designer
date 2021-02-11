@@ -27,6 +27,32 @@ class MyStyleAPITest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the has_valid_credentials function.
+	 */
+	public function test_has_valid_credentials() {
+		$design_id = 1;
+
+		// Init the MyStyle_API.
+		$mystyle_api = new MyStyle_API( 'http://localhost' );
+
+		// Mock the API response.
+		add_filter( 'pre_http_request', array( 'MyStyle_MockAPI', 'mock_api_call' ), 10, 3 );
+
+		// Install the api_key.
+		$options = array();
+		update_option( MYSTYLE_OPTIONS_NAME, $options );
+		$options['api_key'] = '0';
+		$options['secret']  = 'fake-secret';
+		update_option( MYSTYLE_OPTIONS_NAME, $options );
+
+		// Call the method.
+		$has_valid_credentials = $mystyle_api->has_valid_credentials();
+
+		// Assert that true is returned.
+		$this->assertTrue( $has_valid_credentials );
+	}
+
+	/**
 	 * Test the add_api_data_to_design function
 	 */
 	public function test_add_api_data_to_design() {

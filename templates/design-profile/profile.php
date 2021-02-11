@@ -13,15 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div id="mystyle-design-profile-wrapper" class="woocommerce">
-    <?php if(($design->get_user_id() !== 0 && get_current_user_id() == $design->get_user_id()) || current_user_can('administrator')) : ?>
-    <a id="ms-edit-title-form-show" href="#">Edit Title</a>
-    <div id="ms-edit-title-form">
-        <form method="post" id="ms-edit-title-form">
-            <input type="text" name="ms-title" value="<?php echo ($design->get_title() !== "" ? $design->get_title() : "Design " . $design->get_design_id()) ; ?>" />
-            <input type="submit" class="button" value="Save Title" />
-        </form>
-    </div>
-    <?php endif ; ?>
+	<?php if ( ( ( 0 !== $design->get_user_id() ) && ( get_current_user_id() === $design->get_user_id() ) ) || ( current_user_can( 'administrator' ) ) ) : ?>
+	<a id="ms-edit-title-form-show" href="#">Edit Title</a>
+	<div id="ms-edit-title-form">
+		<form method="post" id="ms-edit-title-form">
+			<input type="text" name="ms-title" value="<?php echo ( ( ! empty( $design->get_title() ) ) ? esc_attr( $design->get_title() ) : ( 'Design ' . esc_attr( $design->get_design_id() ) ) ); ?>" />
+			<input type="submit" class="button" value="Save Title" />
+		</form>
+	</div>
+	<?php endif; ?>
 	<ul class="mystyle-button-group mystyle-design-nav">
 		<?php if ( ! empty( $previous_design_url ) ) { ?>
 			<li><a href="<?php echo esc_attr( $previous_design_url ); ?>">&larr;</a></li>
@@ -61,7 +61,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<li><a href="<?php echo esc_attr( $design->get_scratch_url() ); ?>" class="button">Design from scratch</a></li>
 
 	</ul>
-    
+
 	<div class="product_description">
 		<h2 class='linked_title'>
 			<a href="<?php echo esc_attr( $product->get_permalink() ); ?>">
@@ -71,31 +71,37 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class='linked_desc'>
 			<?php echo ( $product->get_description() ) ?: 'No description.'; ?>
 		</div>
-        <?php if($author) : ?>
-        <div class="linked_user">
-            Designer: <a href="/author/<?php print (is_string($author) ? $author : $author->user_nicename) ; ?>/designs/" title="<?php print (is_string($author) ? "Anonymous User" : $author->user_nicename) ?> Designs"><?php print (is_string($author) ? "Anonymous User" : $author->user_nicename) ?></a>
-        </div>
-        <?php endif ; ?>
-        <?php if(($design->get_user_id() !== 0 && get_current_user_id() == $design->get_user_id()) || current_user_can('administrator')) : ?>
-        <div class="edit-design-tags">
-            <br />
-            <b>Add or Edit Design Tags</b>
-            <form method="post">
-                <input type="text" class="edit-design-tag-input" name="edit-design-tag" />
-                <input type="submit" class="button" value="SAVE TAGS" />
-            </form>
-            <div class="design-tag-status"></div>
-        </div>
-        <?php else : ?>
-        <div class="design-tags">
-            <?php $design_tags = MyStyle_Design_Profile_Page::get_design_tags($design->get_design_id(), true) ; ?>
-            Design Tags:
-            <?php foreach($design_tags as $i => $tag) : ?>
-            <?php if( $i > 0 ) echo ', ' ?>
-            <a href="/design-tags/<?php print $tag['slug'] ; ?>" title="<?php print $tag['name'] ; ?> Design Tags"><?php print $tag['name'] ; ?></a>
-            <?php endforeach ; ?>
-        </div>
-        <?php endif; ?>
+		<?php if ( $author ) : ?>
+		<div class="linked_user">
+			Designer: <a
+				href="/author/<?php echo ( ( is_string( $author ) ) ? esc_url( $author ) : esc_url( $author->user_nicename ) ); ?>/designs/"
+				title="<?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_attr( $author->user_nicename ) ); ?> Designs"
+				><?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_html( $author->user_nicename ) ); ?></a>
+		</div>
+		<?php endif; ?>
+		<?php if ( ( ( 0 !== $design->get_user_id() ) && ( get_current_user_id() === $design->get_user_id() ) ) || ( current_user_can( 'administrator' ) ) ) : ?>
+		<div class="edit-design-tags">
+			<br />
+			<b>Add or Edit Design Tags</b>
+			<form method="post">
+				<input type="text" class="edit-design-tag-input" name="edit-design-tag" />
+				<input type="submit" class="button" value="SAVE TAGS" />
+			</form>
+			<div class="design-tag-status"></div>
+		</div>
+		<?php else : ?>
+		<div class="design-tags">
+			<?php $design_tags = MyStyle_Design_Profile_Page::get_design_tags( $design->get_design_id(), true ); ?>
+			Design Tags:
+			<?php foreach ( $design_tags as $i => $tag ) : ?>
+				<?php
+				if ( $i > 0 ) {
+					echo ', ';}
+				?>
+			<a href="/design-tags/<?php echo esc_url( $tag['slug'] ); ?>" title="<?php echo esc_attr( $tag['name'] ); ?> Design Tags"><?php echo esc_html( $tag['name'] ); ?></a>
+			<?php endforeach; ?>
+		</div>
+		<?php endif; ?>
 	</div>
 <?php if ( 'disabled' !== $product_menu_type ) { ?>
 	<div class="customize_products <?php echo esc_attr( $product_menu_type ); ?>">

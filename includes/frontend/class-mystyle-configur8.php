@@ -44,7 +44,7 @@ class MyStyle_Configur8 {
 		) {
 			?>
 
-			<!-- MyStyle Configur8 - MyStyle Custom Product Designer v<?php echo MYSTYLE_VERSION; ?> - https://www.mystyleplatform.com -->
+			<!-- MyStyle Configur8 - MyStyle Custom Product Designer v<?php echo esc_html( MYSTYLE_VERSION ); ?> - https://www.mystyleplatform.com -->
 			<script>
 				( function ( ) {
 					var d = document, s = 'script', id = 'configur8';

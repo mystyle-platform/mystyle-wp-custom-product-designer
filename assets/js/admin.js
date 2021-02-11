@@ -2,7 +2,7 @@
  * Toggles a panel so that its contents can be seen or hidden.
  *
  * @param {integer} id The id of the panel being toggled.
- * @returns {Boolean} Returns false;
+ * @returns {boolean} Returns false.
  */
 function mystyleTogglePanelVis( id ) {
 	var panelObj  = document.getElementById( 'mystyle-panel-' + id );
@@ -18,7 +18,6 @@ function mystyleTogglePanelVis( id ) {
 
 	return false;
 }
-
 
 (function($){
     

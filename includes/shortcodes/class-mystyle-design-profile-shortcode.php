@@ -61,23 +61,19 @@ abstract class MyStyle_Design_Profile_Shortcode {
 	 */
 	public static function output_design_profile() {
 		$design_profile_page = MyStyle_Design_Profile_Page::get_instance();
-        $author_designs_page = MyStyle_Author_Designs::get_instance() ;
-        
+		$author_designs_page = MyStyle_Author_Designs_Page::get_instance();
 
 		// ------------- Set the template variables -------------------//
 		$design = $design_profile_page->get_design();
-        
-        $author = false ;
-        
-        if($design->get_user_id() != null) {
-            $author = get_user_by('ID', $design->get_user_id()) ;
-        }
-        elseif($design->get_email() != null) {
-            $author = $author_designs_page->encrypt_decrypt('encrypt', $design->get_email()) ;
-        }
-        
-        
-        
+
+		$author = false;
+
+		if ( null !== $design->get_user_id() ) {
+			$author = get_user_by( 'ID', $design->get_user_id() );
+		} elseif ( null !== $design->get_email() ) {
+			$author = $author_designs_page->encrypt_decrypt( 'encrypt', $design->get_email() );
+		}
+
 		$previous_design = $design_profile_page->get_previous_design();
 		if ( null !== $previous_design ) {
 			$previous_design_url = MyStyle_Design_Profile_Page::get_design_url( $previous_design );
@@ -88,7 +84,7 @@ abstract class MyStyle_Design_Profile_Shortcode {
 			$next_design_url = MyStyle_Design_Profile_Page::get_design_url( $next_design );
 		}
 
-		$product     = $design->get_Product();
+		$product           = $design->get_Product();
 		$product_menu_type = MyStyle_Options::get_design_profile_product_menu_type();
 
 		// ---------- Call the view layer -------------------- //
