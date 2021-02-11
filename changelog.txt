@@ -1,3 +1,6 @@
+= 3.16.4 =
+* Fixed span tag showing in design titles
+
 = 3.16.3 =
 
 * Updated to use v0.1.4 of the MyStyle Customize script (which fixes a bug 
