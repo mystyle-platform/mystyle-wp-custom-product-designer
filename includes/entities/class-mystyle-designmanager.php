@@ -420,7 +420,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT * '
-				> "FROM {$wpdb->prefix}mystyle_designs "
+				. "FROM {$wpdb->prefix}mystyle_designs "
 				. $sql
 				. ' LIMIT %d
 				OFFSET %d',
