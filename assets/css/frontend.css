@@ -188,6 +188,11 @@ body.mystyle-design-profile ul.mystyle-designs li {
 	max-width: 300px;
 }
 
+ul.mystyle-designs li h3.mystyle-design-id {
+    font-size: 18px;
+    text-align: center;
+}
+
 body.mystyle-design-profile ul.mystyle-designs li a {
 	display: block;
 	padding: 2em;
@@ -195,7 +200,18 @@ body.mystyle-design-profile ul.mystyle-designs li a {
 	box-shadow: none;
 }
 
+ul.mystyle-designs li a img {
+    display: block;
+    margin: auto;
+}
+
 /* Design profile page buttons. */
+
+
+body.mystyle-design-profile ul.mystyle-button-group li {
+    margin: 15px;
+}
+
 body.mystyle-design-profile ul.mystyle-design-nav li a {
 	padding: 12px;
 	display: inline-block;
@@ -206,6 +222,8 @@ body.mystyle-design-profile ul.mystyle-design-nav li a {
 	min-width: 47px;
 	border-radius: 5px;
 }
+
+
 
 body.mystyle-design-profile ul.mystyle-designs li a:hover {
 	-webkit-box-shadow: 2px 2px 8px -3px rgba(0, 0, 0, 0.5);
