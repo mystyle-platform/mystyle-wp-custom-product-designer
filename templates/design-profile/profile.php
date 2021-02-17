@@ -74,7 +74,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php if ( $author ) : ?>
 		<div class="linked_user">
 			Designer: <a
-				href="/author/<?php echo ( ( is_string( $author ) ) ? esc_url( $author ) : esc_url( $author->user_nicename ) ); ?>/designs/"
+				href="/author/<?php echo ( ( is_string( $author ) ) ? $author : $author->user_nicename ); ?>/designs/"
 				title="<?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_attr( $author->user_nicename ) ); ?> Designs"
 				><?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_html( $author->user_nicename ) ); ?></a>
 		</div>
@@ -98,7 +98,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				if ( $i > 0 ) {
 					echo ', ';}
 				?>
-			<a href="/design-tags/<?php echo esc_url( $tag['slug'] ); ?>" title="<?php echo esc_attr( $tag['name'] ); ?> Design Tags"><?php echo esc_html( $tag['name'] ); ?></a>
+			<a href="/design-tags/<?php echo $tag['slug'] ; ?>" title="<?php echo esc_attr( $tag['name'] ); ?> Design Tags"><?php echo esc_html( $tag['name'] ); ?></a>
 			<?php endforeach; ?>
 		</div>
 		<?php endif; ?>
