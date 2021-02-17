@@ -38,7 +38,7 @@ class MyStyle_Admin {
 		wp_enqueue_style( 'myStyleAdminStylesheet' );
 
 		// Add the MyStyle admin js file to the WP admin head.
-		wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js' );
+		wp_register_script( 'myStyleAdminJavaScript', MYSTYLE_ASSETS_URL . 'js/admin.js', array(), MYSTYLE_VERSION );
 		wp_enqueue_script( 'myStyleAdminJavaScript' );
 	}
 

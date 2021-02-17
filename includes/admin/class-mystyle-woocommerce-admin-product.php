@@ -69,6 +69,7 @@ class MyStyle_WooCommerce_Admin_Product {
 		$mystyle_custom_template_fgimg     = get_post_meta( $post->ID, '_mystyle_custom_template_fgimg', true );
 		$mystyle_custom_template_bleed     = get_post_meta( $post->ID, '_mystyle_custom_template_bleed', true );
 		$mystyle_custom_template_boxshadow = get_post_meta( $post->ID, '_mystyle_custom_template_boxshadow', true );
+        $mystyle_custom_template_default_text_color = get_post_meta( $post->ID, '_mystyle_custom_template_default_text_color', true );
 		$customizer_ux                     = get_post_meta( $post->ID, '_mystyle_customizer_ux', true );
 		$customizer_redirect               = get_post_meta( $post->ID, '_mystyle_customizer_redirect', true );
 		$mystyle_design_id                 = get_post_meta( $post->ID, '_mystyle_design_id', true );
@@ -173,6 +174,17 @@ class MyStyle_WooCommerce_Admin_Product {
 							'placeholder' => '',
 							'desc_tip'    => 'false',
 							'value'       => $mystyle_custom_template_color,
+						)
+					);
+        
+        
+					woocommerce_wp_text_input(
+						array(
+							'id'          => '_mystyle_custom_template_default_text_color',
+							'label'       => __( 'Default Text Color', 'mystyle' ),
+							'placeholder' => '',
+							'desc_tip'    => 'false',
+							'value'       => $mystyle_custom_template_default_text_color,
 						)
 					);
 
@@ -298,6 +310,7 @@ class MyStyle_WooCommerce_Admin_Product {
 		$mystyle_custom_template_height    = ( ! empty( $_POST['_mystyle_custom_template_height'] ) ) ? floatval( $_POST['_mystyle_custom_template_height'] ) : null;
 		$mystyle_custom_template_shape     = ( isset( $_POST['_mystyle_custom_template_shape'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_shape'] ) ) : null;
 		$mystyle_custom_template_color     = ( isset( $_POST['_mystyle_custom_template_color'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_color'] ) ) : '';
+		$mystyle_custom_template_default_text_color = ( isset( $_POST['_mystyle_custom_template_default_text_color'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_default_text_color'] ) ) : '';
 		$mystyle_custom_template_bgimg     = ( isset( $_POST['_mystyle_custom_template_bgimg'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_bgimg'] ) ) : '';
 		$mystyle_custom_template_fgimg     = ( isset( $_POST['_mystyle_custom_template_fgimg'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_fgimg'] ) ) : '';
 		$mystyle_custom_template_bleed     = ( ! empty( $_POST['_mystyle_custom_template_bleed'] ) ? floatval( $_POST['_mystyle_custom_template_bleed'] ) : null );
@@ -318,6 +331,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
+				update_post_meta( $post_id, '_mystyle_custom_template_default_text_color', $mystyle_custom_template_default_text_color );
 				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
@@ -334,6 +348,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
+                update_post_meta( $post_id, '_mystyle_custom_template_default_text_color', $mystyle_custom_template_default_text_color );
 				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
@@ -350,6 +365,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
+                update_post_meta( $post_id, '_mystyle_custom_template_default_text_color', $mystyle_custom_template_default_text_color );
 				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
@@ -374,6 +390,7 @@ class MyStyle_WooCommerce_Admin_Product {
 			update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 			update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 			update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
+            update_post_meta( $post_id, '_mystyle_custom_template_default_text_color', $mystyle_custom_template_default_text_color );
 			update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
 			update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
 			update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
@@ -397,7 +414,7 @@ class MyStyle_WooCommerce_Admin_Product {
 			wp_enqueue_style( 'wp-color-picker' );
 
 			// Include our custom jQuery file with WordPress Color Picker dependency.
-			wp_enqueue_script( 'mystyle-color-picker', MYSTYLE_ASSETS_URL . 'js/color-picker.js', array( 'wp-color-picker' ), false, true );
+			wp_enqueue_script( 'mystyle-color-picker', MYSTYLE_ASSETS_URL . 'js/color-picker.js', array( 'wp-color-picker' ), MYSTYLE_VERSION, true );
 			wp_enqueue_script( 'mystyle-media-select', MYSTYLE_ASSETS_URL . 'js/media-select.js', array(), false, true );
 		}
 	}
