@@ -1,3 +1,6 @@
+= 3.16.5 =
+* Fixed broken post link
+
 = 3.16.4 =
 * Fixed span tag showing in design titles
 
