@@ -268,13 +268,13 @@ class MyStyle_Author_Designs_Page {
 	 * @param bool    $leavename Whether to keep the post name.
 	 */
 	public function post_link( $permalink, $post, $leavename ) {
-		if (
-				( false !== get_query_var( 'designpage' ) )
-				|| ( '' !== get_query_var( 'designpage' ) )
-		) {
-			$permalink = get_site_url() . '/designs/' . $post->design_id;
+        
+        if ( false !== get_query_var( 'designpage' ) ) {
+			if ( '' !== get_query_var( 'designpage' ) ) {
+                $permalink = get_site_url() . '/designs/' . $post->design_id;
+            }
 		}
-
+        
 		return $permalink;
 	}
 
