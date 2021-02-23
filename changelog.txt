@@ -1,3 +1,6 @@
+= 3.16.6 =
+* Fixed random designs shortcode access bug
+
 = 3.16.5 =
 * Fixed broken post link
 
