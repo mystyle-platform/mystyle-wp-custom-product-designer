@@ -555,7 +555,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			try {
 
 				$design = MyStyle_DesignManager::get( $term->object_id, $user, $session );
-
+                
 				array_push( $designs, $design );
 
 			} catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
