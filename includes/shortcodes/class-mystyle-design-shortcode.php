@@ -151,8 +151,8 @@ abstract class MyStyle_Design_Shortcode {
 	 * (string).
 	 */
 	private static function output_random_designs( $count ) {
-        $user = wp_get_current_user() ;
-        
+		$user = wp_get_current_user();
+
 		// Create a new pager.
 		$pager = new MyStyle_Pager();
 
@@ -163,7 +163,7 @@ abstract class MyStyle_Design_Shortcode {
 
 		// Pager items.
 		$designs = MyStyle_DesignManager::get_random_designs( $count, 1, $user );
-        
+
 		$pager->set_items( $designs );
 
 		// ---------- Call the view layer ------------------ //

@@ -51,11 +51,11 @@ class MyStyle_Author_Designs_Page {
 	 */
 	public function __construct() {
 		add_action( 'init', array( &$this, 'rewrite_rules' ) );
-        add_action( 'query_vars', array( &$this, 'query_vars' ) );
+		add_action( 'query_vars', array( &$this, 'query_vars' ) );
 		add_action( 'template_redirect', array( &$this, 'set_pager' ) );
 		add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 30, 2 );
-        
-        add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
+
+		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
 	}
@@ -64,7 +64,7 @@ class MyStyle_Author_Designs_Page {
 	 * Add rewrite rules for custom author pages.
 	 */
 	public function rewrite_rules() {
-        
+
 		add_rewrite_rule(
 			'author/([a-zA-Z0-9_-].+)/([a-z]+)/?$',
 			'index.php?designpage=$matches[2]&username=$matches[1]',
@@ -130,7 +130,7 @@ class MyStyle_Author_Designs_Page {
 		) {
 			return $posts;
 		}
-        
+
 		$username  = get_query_var( 'username' );
 		$decrypted = $this->encrypt_decrypt( 'decrypt', $username );
 
@@ -190,7 +190,7 @@ class MyStyle_Author_Designs_Page {
 
 			$design_posts[] = $design_post;
 		}
-        
+
 		return $design_posts;
 	}
 
@@ -268,13 +268,13 @@ class MyStyle_Author_Designs_Page {
 	 * @param bool    $leavename Whether to keep the post name.
 	 */
 	public function post_link( $permalink, $post, $leavename ) {
-        
-        if ( false !== get_query_var( 'designpage' ) ) {
+
+		if ( false !== get_query_var( 'designpage' ) ) {
 			if ( '' !== get_query_var( 'designpage' ) ) {
-                $permalink = get_site_url() . '/designs/' . $post->design_id;
-            }
+				$permalink = get_site_url() . '/designs/' . $post->design_id;
+			}
 		}
-        
+
 		return $permalink;
 	}
 

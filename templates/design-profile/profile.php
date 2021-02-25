@@ -98,7 +98,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				if ( $i > 0 ) {
 					echo ', ';}
 				?>
-			<a href="/design-tags/<?php echo $tag['slug'] ; ?>" title="<?php echo esc_attr( $tag['name'] ); ?> Design Tags"><?php echo esc_html( $tag['name'] ); ?></a>
+			<a href="/design-tags/<?php echo $tag['slug']; ?>" title="<?php echo esc_attr( $tag['name'] ); ?> Design Tags"><?php echo esc_html( $tag['name'] ); ?></a>
 			<?php endforeach; ?>
 		</div>
 		<?php endif; ?>

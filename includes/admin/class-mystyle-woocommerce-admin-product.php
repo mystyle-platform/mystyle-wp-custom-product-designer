@@ -58,23 +58,23 @@ class MyStyle_WooCommerce_Admin_Product {
 		global $post;
 
 		// Pull existing values.
-		$mystyle_enabled                   = get_post_meta( $post->ID, '_mystyle_enabled', true );
-		$template_id                       = get_post_meta( $post->ID, '_mystyle_template_id', true );
-		$mystyle_custom_template           = get_post_meta( $post->ID, '_mystyle_custom_template', true );
-		$mystyle_custom_template_width     = get_post_meta( $post->ID, '_mystyle_custom_template_width', true );
-		$mystyle_custom_template_height    = get_post_meta( $post->ID, '_mystyle_custom_template_height', true );
-		$mystyle_custom_template_shape     = get_post_meta( $post->ID, '_mystyle_custom_template_shape', true );
-		$mystyle_custom_template_color     = get_post_meta( $post->ID, '_mystyle_custom_template_color', true );
-		$mystyle_custom_template_bgimg     = get_post_meta( $post->ID, '_mystyle_custom_template_bgimg', true );
-		$mystyle_custom_template_fgimg     = get_post_meta( $post->ID, '_mystyle_custom_template_fgimg', true );
-		$mystyle_custom_template_bleed     = get_post_meta( $post->ID, '_mystyle_custom_template_bleed', true );
-		$mystyle_custom_template_boxshadow = get_post_meta( $post->ID, '_mystyle_custom_template_boxshadow', true );
-        $mystyle_custom_template_default_text_color = get_post_meta( $post->ID, '_mystyle_custom_template_default_text_color', true );
-		$customizer_ux                     = get_post_meta( $post->ID, '_mystyle_customizer_ux', true );
-		$customizer_redirect               = get_post_meta( $post->ID, '_mystyle_customizer_redirect', true );
-		$mystyle_design_id                 = get_post_meta( $post->ID, '_mystyle_design_id', true );
-		$mystyle_print_type                = get_post_meta( $post->ID, '_mystyle_print_type', true );
-		$mystyle_configur8_enabled         = get_post_meta( $post->ID, '_mystyle_configur8_enabled', true );
+		$mystyle_enabled                            = get_post_meta( $post->ID, '_mystyle_enabled', true );
+		$template_id                                = get_post_meta( $post->ID, '_mystyle_template_id', true );
+		$mystyle_custom_template                    = get_post_meta( $post->ID, '_mystyle_custom_template', true );
+		$mystyle_custom_template_width              = get_post_meta( $post->ID, '_mystyle_custom_template_width', true );
+		$mystyle_custom_template_height             = get_post_meta( $post->ID, '_mystyle_custom_template_height', true );
+		$mystyle_custom_template_shape              = get_post_meta( $post->ID, '_mystyle_custom_template_shape', true );
+		$mystyle_custom_template_color              = get_post_meta( $post->ID, '_mystyle_custom_template_color', true );
+		$mystyle_custom_template_bgimg              = get_post_meta( $post->ID, '_mystyle_custom_template_bgimg', true );
+		$mystyle_custom_template_fgimg              = get_post_meta( $post->ID, '_mystyle_custom_template_fgimg', true );
+		$mystyle_custom_template_bleed              = get_post_meta( $post->ID, '_mystyle_custom_template_bleed', true );
+		$mystyle_custom_template_boxshadow          = get_post_meta( $post->ID, '_mystyle_custom_template_boxshadow', true );
+		$mystyle_custom_template_default_text_color = get_post_meta( $post->ID, '_mystyle_custom_template_default_text_color', true );
+		$customizer_ux                              = get_post_meta( $post->ID, '_mystyle_customizer_ux', true );
+		$customizer_redirect                        = get_post_meta( $post->ID, '_mystyle_customizer_redirect', true );
+		$mystyle_design_id                          = get_post_meta( $post->ID, '_mystyle_design_id', true );
+		$mystyle_print_type                         = get_post_meta( $post->ID, '_mystyle_print_type', true );
+		$mystyle_configur8_enabled                  = get_post_meta( $post->ID, '_mystyle_configur8_enabled', true );
 
 		?>
 		<div id="mystyle_product_data" class="panel woocommerce_options_panel">
@@ -176,8 +176,7 @@ class MyStyle_WooCommerce_Admin_Product {
 							'value'       => $mystyle_custom_template_color,
 						)
 					);
-        
-        
+
 					woocommerce_wp_text_input(
 						array(
 							'id'          => '_mystyle_custom_template_default_text_color',
@@ -303,23 +302,23 @@ class MyStyle_WooCommerce_Admin_Product {
 	public function process_mystyle_data_panel( $post_id ) {
 
 		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
-		$mystyle_enabled                   = ( isset( $_POST['_mystyle_enabled'] ) && ( boolval( $_POST['_mystyle_enabled'] ) ) ) ? 'yes' : 'no';
-		$template_id                       = ( isset( $_POST['_mystyle_template_id'] ) ) ? intval( $_POST['_mystyle_template_id'] ) : 0;
-		$mystyle_custom_template           = ( isset( $_POST['_mystyle_custom_template'] ) ) ? sanitize_key( $_POST['_mystyle_custom_template'] ) : 'no';
-		$mystyle_custom_template_width     = ( ! empty( $_POST['_mystyle_custom_template_width'] ) ) ? floatval( $_POST['_mystyle_custom_template_width'] ) : null;
-		$mystyle_custom_template_height    = ( ! empty( $_POST['_mystyle_custom_template_height'] ) ) ? floatval( $_POST['_mystyle_custom_template_height'] ) : null;
-		$mystyle_custom_template_shape     = ( isset( $_POST['_mystyle_custom_template_shape'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_shape'] ) ) : null;
-		$mystyle_custom_template_color     = ( isset( $_POST['_mystyle_custom_template_color'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_color'] ) ) : '';
+		$mystyle_enabled                            = ( isset( $_POST['_mystyle_enabled'] ) && ( boolval( $_POST['_mystyle_enabled'] ) ) ) ? 'yes' : 'no';
+		$template_id                                = ( isset( $_POST['_mystyle_template_id'] ) ) ? intval( $_POST['_mystyle_template_id'] ) : 0;
+		$mystyle_custom_template                    = ( isset( $_POST['_mystyle_custom_template'] ) ) ? sanitize_key( $_POST['_mystyle_custom_template'] ) : 'no';
+		$mystyle_custom_template_width              = ( ! empty( $_POST['_mystyle_custom_template_width'] ) ) ? floatval( $_POST['_mystyle_custom_template_width'] ) : null;
+		$mystyle_custom_template_height             = ( ! empty( $_POST['_mystyle_custom_template_height'] ) ) ? floatval( $_POST['_mystyle_custom_template_height'] ) : null;
+		$mystyle_custom_template_shape              = ( isset( $_POST['_mystyle_custom_template_shape'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_shape'] ) ) : null;
+		$mystyle_custom_template_color              = ( isset( $_POST['_mystyle_custom_template_color'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_color'] ) ) : '';
 		$mystyle_custom_template_default_text_color = ( isset( $_POST['_mystyle_custom_template_default_text_color'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_default_text_color'] ) ) : '';
-		$mystyle_custom_template_bgimg     = ( isset( $_POST['_mystyle_custom_template_bgimg'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_bgimg'] ) ) : '';
-		$mystyle_custom_template_fgimg     = ( isset( $_POST['_mystyle_custom_template_fgimg'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_fgimg'] ) ) : '';
-		$mystyle_custom_template_bleed     = ( ! empty( $_POST['_mystyle_custom_template_bleed'] ) ? floatval( $_POST['_mystyle_custom_template_bleed'] ) : null );
-		$mystyle_custom_template_boxshadow = ( isset( $_POST['_mystyle_custom_template_boxshadow'] ) ? sanitize_key( $_POST['_mystyle_custom_template_boxshadow'] ) : 'no' );
-		$mystyle_design_id                 = ( ! empty( $_POST['_mystyle_design_id'] ) ) ? intval( $_POST['_mystyle_design_id'] ) : '';
-		$customizer_ux                     = ( isset( $_POST['_mystyle_customizer_ux'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_customizer_ux'] ) ) : null;
-		$customizer_redirect               = ( isset( $_POST['_mystyle_customizer_redirect'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_customizer_redirect'] ) ) : null;
-		$mystyle_print_type                = ( isset( $_POST['_mystyle_print_type'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_print_type'] ) ) : null;
-		$mystyle_configur8_enabled         = ( isset( $_POST['_mystyle_configur8_enabled'] ) && boolval( $_POST['_mystyle_configur8_enabled'] ) ) ? 'yes' : 'no';
+		$mystyle_custom_template_bgimg              = ( isset( $_POST['_mystyle_custom_template_bgimg'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_bgimg'] ) ) : '';
+		$mystyle_custom_template_fgimg              = ( isset( $_POST['_mystyle_custom_template_fgimg'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_custom_template_fgimg'] ) ) : '';
+		$mystyle_custom_template_bleed              = ( ! empty( $_POST['_mystyle_custom_template_bleed'] ) ? floatval( $_POST['_mystyle_custom_template_bleed'] ) : null );
+		$mystyle_custom_template_boxshadow          = ( isset( $_POST['_mystyle_custom_template_boxshadow'] ) ? sanitize_key( $_POST['_mystyle_custom_template_boxshadow'] ) : 'no' );
+		$mystyle_design_id                          = ( ! empty( $_POST['_mystyle_design_id'] ) ) ? intval( $_POST['_mystyle_design_id'] ) : '';
+		$customizer_ux                              = ( isset( $_POST['_mystyle_customizer_ux'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_customizer_ux'] ) ) : null;
+		$customizer_redirect                        = ( isset( $_POST['_mystyle_customizer_redirect'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_customizer_redirect'] ) ) : null;
+		$mystyle_print_type                         = ( isset( $_POST['_mystyle_print_type'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_print_type'] ) ) : null;
+		$mystyle_configur8_enabled                  = ( isset( $_POST['_mystyle_configur8_enabled'] ) && boolval( $_POST['_mystyle_configur8_enabled'] ) ) ? 'yes' : 'no';
 		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 
 		if ( 'yes' === $mystyle_enabled ) {
@@ -348,7 +347,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
-                update_post_meta( $post_id, '_mystyle_custom_template_default_text_color', $mystyle_custom_template_default_text_color );
+				update_post_meta( $post_id, '_mystyle_custom_template_default_text_color', $mystyle_custom_template_default_text_color );
 				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
@@ -365,7 +364,7 @@ class MyStyle_WooCommerce_Admin_Product {
 				update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 				update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 				update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
-                update_post_meta( $post_id, '_mystyle_custom_template_default_text_color', $mystyle_custom_template_default_text_color );
+				update_post_meta( $post_id, '_mystyle_custom_template_default_text_color', $mystyle_custom_template_default_text_color );
 				update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
 				update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
@@ -390,7 +389,7 @@ class MyStyle_WooCommerce_Admin_Product {
 			update_post_meta( $post_id, '_mystyle_custom_template_height', $mystyle_custom_template_height );
 			update_post_meta( $post_id, '_mystyle_custom_template_shape', $mystyle_custom_template_shape );
 			update_post_meta( $post_id, '_mystyle_custom_template_color', $mystyle_custom_template_color );
-            update_post_meta( $post_id, '_mystyle_custom_template_default_text_color', $mystyle_custom_template_default_text_color );
+			update_post_meta( $post_id, '_mystyle_custom_template_default_text_color', $mystyle_custom_template_default_text_color );
 			update_post_meta( $post_id, '_mystyle_custom_template_bgimg', $mystyle_custom_template_bgimg );
 			update_post_meta( $post_id, '_mystyle_custom_template_fgimg', $mystyle_custom_template_fgimg );
 			update_post_meta( $post_id, '_mystyle_custom_template_bleed', $mystyle_custom_template_bleed );
