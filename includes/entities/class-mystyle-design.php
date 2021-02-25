@@ -306,6 +306,7 @@ class MyStyle_Design implements MyStyle_Entity {
 		$instance->template_id    = (int) htmlspecialchars( $result_array['ms_product_id'] );
 		$instance->designer_id    = (int) htmlspecialchars( $result_array['ms_user_id'] );
 		$instance->email          = htmlspecialchars( $result_array['ms_email'] );
+		$instance->title          = htmlspecialchars( $result_array['ms_title'] );
 		$instance->description    = htmlspecialchars( $result_array['ms_description'] );
 		$instance->price          = (int) htmlspecialchars( $result_array['ms_price'] );
 		$instance->print_url      = htmlspecialchars( $result_array['ms_print_url'] );
@@ -346,6 +347,7 @@ class MyStyle_Design implements MyStyle_Entity {
 		$instance->template_id    = (int) htmlspecialchars( $json_arr['template_id'] );
 		$instance->designer_id    = (int) htmlspecialchars( $json_arr['designer_id'] );
 		$instance->email          = htmlspecialchars( $json_arr['email'] );
+		$instance->title          = htmlspecialchars( $json_arr['title'] );
 		$instance->description    = htmlspecialchars( $json_arr['description'] );
 		$instance->price          = (int) htmlspecialchars( $json_arr['price'] );
 		$instance->print_url      = htmlspecialchars( $json_arr['print_url'] );
@@ -640,6 +642,15 @@ class MyStyle_Design implements MyStyle_Entity {
 	}
 
 	/**
+	 * Sets the title.
+	 *
+	 * @param string|null $title The new title.
+	 */
+	public function set_title( $title ) {
+		$this->title = $title;
+	}
+
+	/**
 	 * Gets the value of title.
 	 *
 	 * @return string Returns the value of title.
@@ -851,6 +862,7 @@ class MyStyle_Design implements MyStyle_Entity {
 		$data['ms_product_id']         = $this->template_id;
 		$data['ms_user_id']            = $this->designer_id;
 		$data['ms_email']              = $this->email;
+		$data['ms_title']              = $this->title;
 		$data['ms_description']        = $this->description;
 		$data['ms_price']              = $this->price;
 		$data['ms_print_url']          = $this->print_url;
@@ -888,6 +900,7 @@ class MyStyle_Design implements MyStyle_Entity {
 			'%d', // ms_product_id.
 			'%d', // ms_user_id.
 			'%s', // ms_email.
+			'%s', // ms_title.
 			'%s', // ms_description.
 			'%d', // ms_price.
 			'%s', // ms_print_url.
@@ -1001,6 +1014,7 @@ class MyStyle_Design implements MyStyle_Entity {
 			'template_id'    => MyStyle_Util::prep_rest_val( $this->template_id ),
 			'designer_id'    => MyStyle_Util::prep_rest_val( $this->designer_id ),
 			'email'          => MyStyle_Util::prep_rest_val( $this->email ),
+			'title'          => MyStyle_Util::prep_rest_val( $this->title ),
 			'description'    => MyStyle_Util::prep_rest_val( $this->description ),
 			'price'          => MyStyle_Util::prep_rest_val( $this->price ),
 			'print_url'      => MyStyle_Util::prep_rest_val( $this->print_url ),

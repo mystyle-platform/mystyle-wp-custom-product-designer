@@ -87,6 +87,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 			"template_id": 0,
 			"designer_id": null,
 			"email": null,
+			"title": null,
 			"description": null,
 			"price": null,
 			"print_url": null,
@@ -244,6 +245,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 			'ms_product_id'         => 0,
 			'ms_user_id'            => 0,
 			'ms_email'              => 'someone@example.com',
+			'ms_title'              => 'Design 1',
 			'ms_description'        => 'test description',
 			'ms_price'              => 0,
 			'ms_print_url'          => 'http://www.example.com/example.jpg',
@@ -286,6 +288,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 			'%d', // ms_product_id.
 			'%d', // ms_user_id.
 			'%s', // ms_email.
+			'%s', // ms_title.
 			'%s', // ms_description.
 			'%d', // ms_price.
 			'%s', // ms_print_url.
@@ -379,6 +382,7 @@ class MyStyleDesignTest extends WP_UnitTestCase {
 			"template_id": 0,
 			"designer_id": null,
 			"email": null,
+			"title": null,
 			"description": null,
 			"price": null,
 			"print_url": null,

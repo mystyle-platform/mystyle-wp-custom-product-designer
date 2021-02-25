@@ -93,7 +93,7 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the output function with no design id.  Should load the design
+	 * Test the output function with no design id. Should load the design
 	 * index.
 	 *
 	 * @global stdClass $post
@@ -135,8 +135,9 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
 		// Call the function.
 		$output = MyStyle_Design_Profile_Shortcode::output();
 
-		// Assert that the output includes 'mystyle-design-profile-index-wrapper'.
+		// Assert that the output is as expected.
 		$this->assertContains( 'mystyle-design-profile-index-wrapper', $output );
+		$this->assertContains( 'Custom Test Product <span>1</span>', $output );
 	}
 
 	/**
@@ -166,6 +167,54 @@ class MyStyleDesignProfileShortcodeTest extends WP_UnitTestCase {
 
 		// Assert that the output includes includes 'Design Not Found'.
 		$this->assertContains( 'Design not found', $output );
+	}
+
+	/**
+	 * Test the output function displays a custom design title (if set).
+	 *
+	 * @global stdClass $post
+	 */
+	public function test_output_index_displays_design_title() {
+		global $post;
+
+		if ( ! defined( 'MYSTYLE_DESIGNS_PER_PAGE' ) ) {
+			define( 'MYSTYLE_DESIGNS_PER_PAGE', 25 );
+		}
+
+		$design_id = 1;
+		$title     = 'Test Title';
+
+		// Create the MyStyle_Design_Profile page.
+		MyStyle_Design_Profile_Page::create();
+
+		// Create a design (with a custom title).
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_title( $title );
+
+		// Create a real product for the design.
+		$product_id = create_wc_test_product();
+		$design->set_product_id( $product_id );
+
+		// Persist the design.
+		MyStyle_DesignManager::persist( $design );
+
+		// Reset the singleton instance (to clear out any previously set
+		// values).
+		MyStyle_Design_Profile_Page::reset_instance();
+
+		// Mock the request uri.
+		$_SERVER['REQUEST_URI'] = 'http://localhost/designs/';
+		$post                   = new stdClass();
+		$post->ID               = MyStyle_Design_Profile_Page::get_id();
+
+		// Init the MyStyle_Design_Profile_Page.
+		MyStyle_Design_Profile_Page::get_instance()->init();
+
+		// Call the function.
+		$output = MyStyle_Design_Profile_Shortcode::output();
+
+		// Assert that the output includes the custom title as expected.
+		$this->assertContains( 'Test Title', $output );
 	}
 
 }

@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?>
 		<ul class="mystyle-designs">
 			<?php
-			/* @var $design \MyStyle_Design The current MyStyleDesign. */
+			/* @var $design \MyStyle_Design The current MyStyle_Design. */
 			foreach ( $pager->get_items() as $design ) {
 				$design_url    = MyStyle_Design_Profile_page::get_design_url( $design );
 				$product_id    = $design->get_product_id();
@@ -29,11 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<img src="<?php echo esc_attr( $design->get_thumb_url() ); ?>" />
 						<h3 class="mystyle-design-id">
 							<?php
-							$title = 'Custom ' . esc_html( $product_title ) . ' <span>' . $design->get_design_id() . '</span>';
-							if ( '' !== $design->get_title() ) {
-								$title = $design->get_title();
+							if ( ! empty( $design->get_title() ) ) {
+								echo esc_html( $design->get_title() );
+							} else {
+								echo 'Custom ' . esc_html( $product_title ) . ' <span>' . esc_html( $design->get_design_id() ) . '</span>';
 							}
-							echo $title;
 							?>
 						</h3>
 					</a>

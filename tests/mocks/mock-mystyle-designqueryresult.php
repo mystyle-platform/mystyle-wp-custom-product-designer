@@ -210,6 +210,7 @@ class MyStyle_MockDesignQueryResult {
 		$arr['ms_product_id']         = $this->ms_product_id;
 		$arr['ms_user_id']            = $this->ms_user_id;
 		$arr['ms_email']              = $this->ms_email;
+		$arr['ms_title']              = $this->ms_title;
 		$arr['ms_description']        = $this->ms_description;
 		$arr['ms_price']              = $this->ms_price;
 		$arr['ms_print_url']          = $this->ms_print_url;
