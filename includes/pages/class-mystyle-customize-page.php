@@ -158,7 +158,7 @@ class MyStyle_Customize_Page {
 					$passthru['color'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true );
 				}
                 
-                if ( get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_default_text_color', true ) ) {
+                if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_default_text_color', true ) ) {
                     $passthru['textColorDefault'] = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_default_text_color', true );
                 }
 
@@ -248,7 +248,7 @@ class MyStyle_Customize_Page {
 					$passthru['color'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true );
 				}
                 
-                if ( get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_default_text_color', true ) ) {
+                if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_default_text_color', true ) ) {
                     $passthru['textColorDefault'] = get_post_meta( $mystyle_product->get_id(), '_mystyle_custom_template_default_text_color', true );
                 }
 
