@@ -1,3 +1,6 @@
+= 3.16.7 =
+* Fixed ShipStation integration design status bug
+
 = 3.16.6 =
 * Fixed random designs shortcode access bug
 

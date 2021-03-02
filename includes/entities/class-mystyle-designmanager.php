@@ -71,7 +71,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 							throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
 						}
 						if ( $design->get_user_id() !== $user->ID ) {
-							if ( ! $user->has_cap( 'read_private_posts' ) ) {
+							if ( ! $user->has_cap( 'read_private_posts' || is_admin() ) ) {
 								throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
 							}
 						}

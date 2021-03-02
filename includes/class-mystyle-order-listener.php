@@ -106,8 +106,13 @@ class MyStyle_Order_Listener {
 					$design_id    = $mystyle_data['design_id'];
 
 					/* @var $design \MyStyle_Design The design. */
-					$design = MyStyle_DesignManager::get( $design_id, $current_user, $session );
-
+                    $skip_security = false ;
+                    if( isset($_REQUEST['wc-api']) ) { //shipstation bug
+                        $skip_security = true ;
+                    }
+				    
+                    $design = MyStyle_DesignManager::get( $design_id, $current_user, $session, $skip_security );
+                    
 					// Increment the design purchase count.
 					$design->increment_purchase_count();
 					MyStyle_DesignManager::persist( $design );
