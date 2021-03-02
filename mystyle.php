@@ -118,7 +118,6 @@ if ( ! class_exists( 'MyStyle' ) ) :
 
 			add_action( 'init', array( $this, 'check_version' ), 10, 0 );
 			add_action( 'init', array( $this, 'register_shortcodes' ), 10, 0 );
-			add_action( 'init', array( $this, 'register_taxonomy' ), 10, 0 );
 			add_action( 'admin_init', array( $this, 'check_woocommerce' ), 10, 0 );
 		}
 
@@ -175,6 +174,9 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			// shortcode classes (which are used both on the frontend and the admin).
 			require_once MYSTYLE_INCLUDES . 'frontend/class-mystyle-frontend.php';
 
+			// Taxonomy includes.
+			require_once MYSTYLE_INCLUDES . 'taxonomies/class-mystyle-design-tag-taxonomy.php';
+
 			// Shortcode includes.
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php';
@@ -230,6 +232,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			MyStyle_Order_Listener::get_instance();
 			MyStyle_Passthru_Codec::get_instance();
 			MyStyle_Wp_Rest_Api_Design_Controller::get_instance();
+			MyStyle_Design_Tag_Taxonomy::get_instance();
 			MyStyle_Tm_Extra_Product_Options::get_instance();
 			MyStyle_Wpml::get_instance();
 
@@ -321,42 +324,6 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
-		}
-
-		/**
-		 * Register our taxonomy.
-		 *
-		 * This is run during init.
-		 *
-		 * @todo Add unit testing for this function.
-		 */
-		public function register_taxonomy() {
-			// Register design_tag taxonomy as of 3.13.9.
-			if ( ! taxonomy_exists( MYSTYLE_TAXONOMY_NAME ) ) {
-				register_taxonomy(
-					MYSTYLE_TAXONOMY_NAME, 'design', array(
-						'labels'  => array(
-							'name'              => _x( 'Design Tags', 'taxonomy general name', 'mystyle' ),
-							'singular_name'     => _x( 'Design Tag', 'taxonomy singular name', 'mystyle' ),
-							'search_items'      => __( 'Search Design Tags', 'mystyle' ),
-							'all_items'         => __( 'All Design Tags', 'mystyle' ),
-							'parent_item'       => __( 'Parent Design Tag', 'mystyle' ),
-							'parent_item_colon' => __( 'Parent Design Tag:', 'mystyle' ),
-							'edit_item'         => __( 'Edit Design Tag', 'mystyle' ),
-							'update_item'       => __( 'Update Design Tag', 'mystyle' ),
-							'add_new_item'      => __( 'Add New Design Tag', 'mystyle' ),
-							'new_item_name'     => __( 'New Design Tag Name', 'mystyle' ),
-							'menu_name'         => __( 'Design Tags', 'mystyle' ),
-						),
-						// Control the slugs used for this taxonomy.
-						'rewrite' => array(
-							'slug' => 'design-tags',
-						),
-						'public'  => true,
-					)
-				);
-			}
-
 		}
 
 		/**
