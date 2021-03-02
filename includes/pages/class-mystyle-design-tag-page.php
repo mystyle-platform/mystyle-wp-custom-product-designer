@@ -173,13 +173,13 @@ class MyStyle_Design_Tag_Page {
 
 		// Current page number.
 		$this->pager->set_current_page_number(
-			max( 1, $query->query['paged'] )
+			max( 1, ( isset( $query->query['paged'] ) ? $query->query['paged'] : 0 ) )
 		);
 
 		$page_limit = $this->pager->get_items_per_page();
 		$page_num   = 1;
 
-		if ( null !== $query->query['paged'] ) {
+		if ( ( isset( $query->query['paged'] ) ) && ( null !== $query->query['paged'] ) ) {
 			$page_num = ( $this->pager->get_current_page_number() - 1 ) * $page_limit;
 		}
 
