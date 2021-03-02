@@ -70,6 +70,9 @@ class MyStyle_Install {
 		if ( ! MyStyle_Design_Profile_Page::exists() ) {
 			MyStyle_Design_Profile_Page::create();
 		}
+		if ( ! MyStyle_Design_Tag_Page::exists() ) {
+			MyStyle_Design_Tag_Page::create();
+		}
 
 		MyStyle_My_Designs_Page::get_instance()->flush_rewrite_rules();
 
