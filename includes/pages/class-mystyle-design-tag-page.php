@@ -308,6 +308,19 @@ class MyStyle_Design_Tag_Page {
 	}
 
 	/**
+	 * Static function that builds a URL to the page for the tag.
+	 *
+	 * @param string $slug The tag slug.
+	 * @return string Returns a URL that can be used to access the page for the
+	 * tag.
+	 */
+	public static function get_tag_url( $slug ) {
+		$url = site_url( 'design-tags' ) . '/' . $slug;
+
+		return $url;
+	}
+
+	/**
 	 * Sets the current HTTP response code.
 	 *
 	 * @param int $http_response_code The HTTP response code to set as the

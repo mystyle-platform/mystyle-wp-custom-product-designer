@@ -281,12 +281,11 @@ class MyStyle_Author_Designs_Page {
 	}
 
 	/**
-	 * Static function that builds a URL to the Author Desings Page including
-	 * URL paramaters to load the page for the passed author.
+	 * Static function that builds a URL to the Author Designs Page including
+	 * URL parameters to load the page for the passed author.
 	 *
 	 * @param mixed $author The author.
 	 * @return string Returns a URL that can be used to view the page.
-	 * @global WP_Rewrite $wp_rewrite
 	 */
 	public static function get_author_url( $author ) {
 		$url = site_url( 'author' )
