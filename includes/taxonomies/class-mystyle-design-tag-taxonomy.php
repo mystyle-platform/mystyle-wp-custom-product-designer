@@ -25,7 +25,7 @@ class MyStyle_Design_Tag_Taxonomy {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'init', array( &$this, 'register_taxonomy' ), 10, 0 );
+		add_action( 'init', array( &$this, 'register' ), 10, 0 );
 	}
 
 	/**
@@ -41,7 +41,7 @@ class MyStyle_Design_Tag_Taxonomy {
 	/**
 	 * Register the taxonomy.
 	 */
-	public function register_taxonomy() {
+	public function register() {
 		// If the taxonomy already exists, return.
 		if ( $this->exists() ) {
 			return;

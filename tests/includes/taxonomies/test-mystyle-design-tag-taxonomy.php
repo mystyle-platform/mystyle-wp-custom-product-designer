@@ -42,14 +42,14 @@ class MyStyleDesignTagTaxonomyTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the register_taxonomy function.
+	 * Test the register function.
 	 */
-	public function test_register_taxonomy() {
+	public function test_register() {
 
 		$taxonomy = MyStyle_Design_Tag_Taxonomy::get_instance();
 
 		// Call the function.
-		$taxonomy->register_taxonomy();
+		$taxonomy->register();
 
 		// Assert that the taxonomy now exists.
 		$this->assertTrue( taxonomy_exists( MYSTYLE_TAXONOMY_NAME ) );
