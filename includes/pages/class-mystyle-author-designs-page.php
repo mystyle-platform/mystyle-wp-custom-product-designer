@@ -3,6 +3,8 @@
  * The MyStyle_Author_Designs_Page class has hooks for working with the MyStyle
  * Author Designs page.
  *
+ * It registers endpoints at /author using WordPress' add_rewrite_rule function.
+ *
  * @package MyStyle
  * @since 3.13.6
  */
@@ -279,18 +281,19 @@ class MyStyle_Author_Designs_Page {
 	}
 
 	/**
-	 * Sets the current http response code.
+	 * Static function that builds a URL to the Author Desings Page including
+	 * URL paramaters to load the page for the passed author.
 	 *
-	 * @param int $http_response_code The http response code to set as the
-	 * currently set response code. This is used by the shortcode and view
-	 * layer.  We set it as a variable since it is difficult to retrieve in
-	 * php < 5.4.
+	 * @param mixed $author The author.
+	 * @return string Returns a URL that can be used to view the page.
+	 * @global WP_Rewrite $wp_rewrite
 	 */
-	public function set_http_response_code( $http_response_code ) {
-		$this->http_response_code = $http_response_code;
-		if ( function_exists( 'http_response_code' ) ) {
-			http_response_code( $http_response_code );
-		}
+	public static function get_author_url( $author ) {
+		$url = site_url( 'author' )
+			. '/' . ( ( is_string( $author ) ) ? $author : $author->user_nicename )
+			. '/designs/';
+
+		return $url;
 	}
 
 	/**
@@ -325,10 +328,25 @@ class MyStyle_Author_Designs_Page {
 	}
 
 	/**
-	 * Gets the current http response code.
+	 * Sets the current http response code.
 	 *
-	 * @return int Returns the current http response code. This is used by the
-	 * shortcode and view layer.
+	 * @param int $http_response_code The http response code to set as the
+	 * currently set response code. This is used by the shortcode and view
+	 * layer.  We set it as a variable since it is difficult to retrieve in
+	 * php < 5.4.
+	 */
+	public function set_http_response_code( $http_response_code ) {
+		$this->http_response_code = $http_response_code;
+		if ( function_exists( 'http_response_code' ) ) {
+			http_response_code( $http_response_code );
+		}
+	}
+
+	/**
+	 * Gets the current HTTP response code.
+	 *
+	 * @return int Returns the current HTTP response code. This is used by
+	 * the shortcode and view layer.
 	 */
 	public function get_http_response_code() {
 		if ( function_exists( 'http_response_code' ) ) {
@@ -337,7 +355,6 @@ class MyStyle_Author_Designs_Page {
 			return $this->http_response_code;
 		}
 	}
-
 
 	/**
 	 * Sets the current exception.

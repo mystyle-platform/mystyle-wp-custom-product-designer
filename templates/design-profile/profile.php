@@ -74,7 +74,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php if ( $author ) : ?>
 		<div class="linked_user">
 			Designer: <a
-				href="/author/<?php echo ( ( is_string( $author ) ) ? $author : $author->user_nicename ); ?>/designs/"
+				href="<?php echo esc_url( MyStyle_Author_Designs_Page::get_author_url( $author ) ); ?>"
 				title="<?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_attr( $author->user_nicename ) ); ?> Designs"
 				><?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_html( $author->user_nicename ) ); ?></a>
 		</div>
