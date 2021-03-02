@@ -29,35 +29,46 @@ class MyStyle_Design_Tag_Taxonomy {
 	}
 
 	/**
-	 * Register the taxonomy.
+	 * Returns whether or not the taxonomy exists (is registered with
+	 * WordPress).
 	 *
 	 * @todo Add unit testing for this function.
 	 */
+	public function exists() {
+		return taxonomy_exists( MYSTYLE_TAXONOMY_NAME );
+	}
+
+	/**
+	 * Register the taxonomy.
+	 */
 	public function register_taxonomy() {
-		if ( ! taxonomy_exists( MYSTYLE_TAXONOMY_NAME ) ) {
-			register_taxonomy(
-				MYSTYLE_TAXONOMY_NAME, 'design', array(
-					'labels'  => array(
-						'name'              => _x( 'Design Tags', 'taxonomy general name', 'mystyle' ),
-						'singular_name'     => _x( 'Design Tag', 'taxonomy singular name', 'mystyle' ),
-						'search_items'      => __( 'Search Design Tags', 'mystyle' ),
-						'all_items'         => __( 'All Design Tags', 'mystyle' ),
-						'parent_item'       => __( 'Parent Design Tag', 'mystyle' ),
-						'parent_item_colon' => __( 'Parent Design Tag:', 'mystyle' ),
-						'edit_item'         => __( 'Edit Design Tag', 'mystyle' ),
-						'update_item'       => __( 'Update Design Tag', 'mystyle' ),
-						'add_new_item'      => __( 'Add New Design Tag', 'mystyle' ),
-						'new_item_name'     => __( 'New Design Tag Name', 'mystyle' ),
-						'menu_name'         => __( 'Design Tags', 'mystyle' ),
-					),
-					// Control the slugs used for this taxonomy.
-					'rewrite' => array(
-						'slug' => 'design-tags',
-					),
-					'public'  => true,
-				)
-			);
+		// If the taxonomy already exists, return.
+		if ( $this->exists() ) {
+			return;
 		}
+
+		register_taxonomy(
+			MYSTYLE_TAXONOMY_NAME, 'design', array(
+				'labels'  => array(
+					'name'              => _x( 'Design Tags', 'taxonomy general name', 'mystyle' ),
+					'singular_name'     => _x( 'Design Tag', 'taxonomy singular name', 'mystyle' ),
+					'search_items'      => __( 'Search Design Tags', 'mystyle' ),
+					'all_items'         => __( 'All Design Tags', 'mystyle' ),
+					'parent_item'       => __( 'Parent Design Tag', 'mystyle' ),
+					'parent_item_colon' => __( 'Parent Design Tag:', 'mystyle' ),
+					'edit_item'         => __( 'Edit Design Tag', 'mystyle' ),
+					'update_item'       => __( 'Update Design Tag', 'mystyle' ),
+					'add_new_item'      => __( 'Add New Design Tag', 'mystyle' ),
+					'new_item_name'     => __( 'New Design Tag Name', 'mystyle' ),
+					'menu_name'         => __( 'Design Tags', 'mystyle' ),
+				),
+				// Control the slugs used for this taxonomy.
+				'rewrite' => array(
+					'slug' => 'design-tags',
+				),
+				'public'  => true,
+			)
+		);
 
 	}
 

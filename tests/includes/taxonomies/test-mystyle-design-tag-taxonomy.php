@@ -28,6 +28,20 @@ class MyStyleDesignTagTaxonomyTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the exists function.
+	 */
+	public function test_exists() {
+
+		$taxonomy = MyStyle_Design_Tag_Taxonomy::get_instance();
+
+		// Call the function.
+		$ret = $taxonomy->exists();
+
+		// Assert that the function returned true as expected.
+		$this->assertTrue( $ret );
+	}
+
+	/**
 	 * Test the register_taxonomy function.
 	 */
 	public function test_register_taxonomy() {
