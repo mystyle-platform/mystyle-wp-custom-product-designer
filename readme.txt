@@ -6,7 +6,7 @@ Tags: customization, designer, personalization, product-preview, woocommerce, cu
 Requires at least: 3.3
 Tested up to: 5.7.0
 Requires PHP: 5.3
-Stable tag: 3.16.7
+Stable tag: 3.17.0
 
 The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
@@ -81,17 +81,29 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 
 == Changelog ==
 
+= 3.17.0 =
+* The design tag taxonomy (design_tag) is now available via the REST API.
+* The design title is now available via the REST API.
+* Updated the main plugin file to reflect that the plugin has been tested with 
+  up to WC 5.1.0.
+* Updated the readme.txt to reflect that the plugin has been tested with up to 
+  WP 5.7.0.
+* Fixed a bug with the author designs link. It was broken if WordPress wasn't
+  installed at the root of the domain (ex: at /blog/).
+* Fixed broken unit tests.
+* Fixed linter flagged issues.
+
 = 3.16.7 =
-* Fixed ShipStation integration design status bug
+* Fixed ShipStation integration design status bug.
 
 = 3.16.6 =
-* Fixed random designs shortcode access bug
+* Fixed random designs shortcode access bug.
 
 = 3.16.5 =
-* Fixed broken post link
+* Fixed broken post link.
 
 = 3.16.4 =
-* Fixed span tag showing in design titles
+* Fixed span tag showing in design titles.
 
 = 3.16.3 =
 * Updated to use v0.1.4 of the MyStyle Customize script (which fixes a bug 
@@ -118,7 +130,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Improved the text on the options page in the admin.
 * Fixed the API credentials check while moving it serverside.
 * Fixed and improved the contextual help.
-* Fixed a bunch of broken unit tests
+* Fixed a bunch of broken unit tests.
 * Linted the whole plugin.
 * Removed some orphaned code.
 * Updated the copyright year to 2021.

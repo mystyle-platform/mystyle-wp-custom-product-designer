@@ -4,7 +4,7 @@
  * MyStyle_Design_Tag_Page class.
  *
  * @package MyStyle
- * @since 3.16.7
+ * @since 3.17.0
  */
 
 /**

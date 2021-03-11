@@ -6,7 +6,7 @@
  * instantiated as a singleton instance with various methods.
  *
  * @package MyStyle
- * @since 3.16.7
+ * @since 3.17.0
  */
 
 /**
