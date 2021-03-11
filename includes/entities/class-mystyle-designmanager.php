@@ -55,8 +55,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		// -------------- SECURITY CHECK ------------ //
-		if ( null !== $design && ! $skip_security ) {
-			if ( $design->get_access() === MyStyle_Access::ACCESS_PRIVATE ) {
+		if ( ( null !== $design ) && ( ! $skip_security ) ) {
+			if ( MyStyle_Access::ACCESS_PRIVATE === $design->get_access() ) {
 				// Check if created by current/passed session.
 				if ( // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
 						( null !== $session ) &&
@@ -71,7 +71,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 							throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
 						}
 						if ( $design->get_user_id() !== $user->ID ) {
-							if ( ! $user->has_cap( 'read_private_posts' || is_admin() ) ) {
+							if ( ! $user->has_cap( 'read_private_posts' ) ) {
 								throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
 							}
 						}

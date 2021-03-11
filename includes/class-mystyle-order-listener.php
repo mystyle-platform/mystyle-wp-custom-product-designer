@@ -106,13 +106,14 @@ class MyStyle_Order_Listener {
 					$design_id    = $mystyle_data['design_id'];
 
 					/* @var $design \MyStyle_Design The design. */
-                    $skip_security = false ;
-                    if( isset($_REQUEST['wc-api']) ) { //shipstation bug
-                        $skip_security = true ;
-                    }
-				    
-                    $design = MyStyle_DesignManager::get( $design_id, $current_user, $session, $skip_security );
-                    
+					$skip_security = false;
+					// Shipstation bug.
+					if ( isset( $_REQUEST['wc-api'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+						$skip_security = true;
+					}
+
+					$design = MyStyle_DesignManager::get( $design_id, $current_user, $session, $skip_security );
+
 					// Increment the design purchase count.
 					$design->increment_purchase_count();
 					MyStyle_DesignManager::persist( $design );
