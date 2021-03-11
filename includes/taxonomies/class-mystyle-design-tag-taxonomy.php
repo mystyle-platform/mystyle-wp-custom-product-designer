@@ -49,7 +49,7 @@ class MyStyle_Design_Tag_Taxonomy {
 
 		register_taxonomy(
 			MYSTYLE_TAXONOMY_NAME, 'design', array(
-				'labels'  => array(
+				'labels'       => array(
 					'name'              => _x( 'Design Tags', 'taxonomy general name', 'mystyle' ),
 					'singular_name'     => _x( 'Design Tag', 'taxonomy singular name', 'mystyle' ),
 					'search_items'      => __( 'Search Design Tags', 'mystyle' ),
@@ -63,10 +63,11 @@ class MyStyle_Design_Tag_Taxonomy {
 					'menu_name'         => __( 'Design Tags', 'mystyle' ),
 				),
 				// Control the slugs used for this taxonomy.
-				'rewrite' => array(
+				'rewrite'      => array(
 					'slug' => 'design-tags',
 				),
-				'public'  => true,
+				'public'       => true,
+				'show_in_rest' => true,
 			)
 		);
 
