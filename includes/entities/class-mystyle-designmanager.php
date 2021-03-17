@@ -671,13 +671,13 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	}
 
 	/**
-	 * Retrieve the total number of terms.
+	 * Retrieve the total number of designs having the passed term.
 	 *
 	 * @param int $term_id The term id.
-	 * @global $wpdb
 	 * @return integer Returns the total number of terms.
+	 * @global $wpdb
 	 */
-	public static function get_total_term_count( $term_id ) {
+	public static function get_design_count_by_term( $term_id ) {
 		global $wpdb;
 
 		$count = $wpdb->get_var(
