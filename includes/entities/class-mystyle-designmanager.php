@@ -642,42 +642,13 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	}
 
 	/**
-	 * Determines if the user owns the design using the user id and design id.
-	 *
-	 * @param int $user_id   The WordPress user id.
-	 * @param int $design_id The MyStyle design id.
-	 * @return bool Returns true if the user owns the design, otherwise, returns
-	 * false.
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 * @todo Add unit testing for this method.
-	 */
-	public static function does_user_own_design( $user_id, $design_id ) {
-		global $wpdb;
-
-		$ret = false;
-
-		$design_user_id = $wpdb->get_var(
-			'SELECT user_id '
-			. "FROM {$wpdb->prefix}mystyle_designs "
-			. 'WHERE ms_design_id = %d',
-			array( $design_id )
-		);
-
-		if ( $design_user_id === $user_id ) {
-			$ret = true;
-		}
-
-		return $ret;
-	}
-
-	/**
 	 * Retrieve the total number of designs having the passed term.
 	 *
 	 * @param int $term_id The term id.
 	 * @return integer Returns the total number of terms.
 	 * @global $wpdb
 	 */
-	public static function get_design_count_by_term( $term_id ) {
+	public static function get_total_term_design_count( $term_id ) {
 		global $wpdb;
 
 		$count = $wpdb->get_var(
@@ -690,6 +661,142 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		);
 
 		return $count;
+	}
+
+	/**
+	 * Determines if the user owns the design using the user id and design id.
+	 *
+	 * @param int $user_id   The WordPress user id.
+	 * @param int $design_id The MyStyle design id.
+	 * @return bool Returns true if the user owns the design, otherwise, returns
+	 * false.
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 * @todo Add unit testing for this method.
+	 */
+	public static function is_user_design_owner( $user_id, $design_id ) {
+		global $wpdb;
+
+		$ret = false;
+
+		$design_user_id = intval( $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT user_id '
+				. "FROM {$wpdb->prefix}mystyle_designs "
+				. 'WHERE ms_design_id = %d',
+				array( $design_id )
+			)
+		) );
+
+		if ( $design_user_id === $user_id ) {
+			$ret = true;
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Get the tags for the design with the passed design id. See below for more
+	 * info about the return value.
+	 *
+	 * @param int  $design_id The id of the design that you want to get. If
+	 *                        null, the function will attempt to get the
+	 *                        design id from the URL.
+	 * @param bool $with_slug Set to true (default is false) to include the
+	 *                        term slug in the returned tags. If true, the
+	 *                        returned array becomes two dimmensional with each
+	 *                        entry having a 'name' and a 'slug'.
+	 * @return array Returns an array of tags. If the slug param is false, it
+	 * will return a one dimmensional array like ["Foo", "Bar"]. If the slug
+	 * param is true, it will return a two dimmensional array like
+	 * [["name" => "Foo", "slug" => "foo"], ["name" => "Bar", "slug" => "bar"]].
+	 */
+	public static function get_design_tags( $design_id, $with_slug = false ) {
+		$tags  = array();
+		$terms = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME );
+
+		foreach ( $terms as $term ) {
+			if ( $with_slug ) {
+				$tags[] = array(
+					'name' => esc_html( $term->name ),
+					'slug' => esc_html( $term->slug ),
+				);
+			} else {
+				$tags[] = $term->name;
+			}
+		}
+
+		return $tags;
+	}
+
+	/**
+	 * Add a design tag. Called to add a tag to a design.
+	 *
+	 * @param int     $design_id The id of the design to add the tag to.
+	 * @param string  $tag       The tag to add.
+	 * @param WP_User $user      The current user.
+	 * @throws MyStyle_Unauthorized_Exception Throws a
+	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
+	 * and isn't an administrator.
+	 * @return int Returns the id of the tag.
+	 * @todo Add unit testing for this method.
+	 */
+	public static function add_tag_to_design(
+		$design_id,
+		$tag,
+		WP_User $user
+	) {
+		$taxonomy = MYSTYLE_TAXONOMY_NAME;
+
+		// ---- Security Check ---- //
+		if (
+				( ! self::is_user_design_owner( $user->ID, $design_id ) )
+				&& ( ! $user->has_cap( 'administrator' ) )
+		) {
+			throw new MyStyle_Unauthorized_Exception(
+				'Only the design owner or an administrator can add tags to a design.'
+			);
+		}
+
+		// Add the tag.
+		$term_ids = wp_add_object_terms( $design_id, $tag, $taxonomy );
+		$term_id  = $term_ids[0];
+
+		return $term_id;
+	}
+
+	/**
+	 * Removes a tag from a design.
+	 *
+	 * @param int     $design_id The id of the design to remove the tag from.
+	 * @param string  $tag       The tag to remove.
+	 * @param WP_User $user      The current user.
+	 * @throws MyStyle_Unauthorized_Exception Throws a
+	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
+	 * and isn't an administrator.
+	 * @return int Returns true on success, false on failure.
+	 * @todo Add unit testing for this method.
+	 */
+	public static function remove_tag_from_design(
+		$design_id,
+		$tag,
+		WP_User $user
+	) {
+		$taxonomy = MYSTYLE_TAXONOMY_NAME;
+
+		// ---- Security Check ---- //
+		if (
+				( ! self::is_user_design_owner( $user->ID, $design_id ) )
+				&& ( ! $user->has_cap( 'administrator' ) )
+		) {
+			throw new MyStyle_Unauthorized_Exception(
+				'Only the design owner or an administrator can add tags to a design.'
+			);
+		}
+
+		// Remove the tag.
+		$success = wp_remove_object_terms( $design_id, $tag, $taxonomy );
+
+		return $success;
 	}
 
 	/**

@@ -593,4 +593,178 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		$this->assertEquals( 2, $count );
 	}
 
+	/**
+	 * Test the get_total_term_design_count function.
+	 */
+	public function test_get_total_term_design_count() {
+
+		// Create a design.
+		$design_1 = MyStyle_MockDesign::get_mock_design( 1 );
+		MyStyle_DesignManager::persist( $design_1 );
+
+		// Give the design the term.
+		$tag_name      = 'test_tag';
+		$taxonomy_name = MYSTYLE_TAXONOMY_NAME;
+		$term_ids      = wp_add_object_terms(
+			$design_1->get_design_id(),
+			$tag_name,
+			$taxonomy_name
+		);
+		$term_id       = $term_ids[0];
+
+		// Create another design.
+		$design_2 = MyStyle_MockDesign::get_mock_design( 2 );
+		MyStyle_DesignManager::persist( $design_2 );
+
+		// Call the function.
+		$count = MyStyle_DesignManager::get_total_term_design_count( $term_id );
+
+		// Assert that the expected count is returned.
+		$this->assertEquals( 1, $count );
+	}
+
+	/**
+	 * Test the is_user_design_owner function for a design that the user owns.
+	 */
+	public function test_is_user_design_owner_when_user_is_owner() {
+
+		// Mock a WP_User.
+		$user_id  = 100;
+		$user     = new WP_User();
+		$user->ID = $user_id;
+
+		// Create a design.
+		$design_id = 1;
+		$design    = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $user_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Call the function.
+		$ret = MyStyle_DesignManager::is_user_design_owner(
+			$user_id,
+			$design_id
+		);
+
+		// Assert that true is returned as expected.
+		$this->assertTrue( $ret );
+	}
+
+	/**
+	 * Test the is_user_design_owner function for a design that the user DOES
+	 * NOT own.
+	 */
+	public function test_is_user_design_owner_when_user_is_not_owner() {
+
+		// Mock a WP_User.
+		$user_id_1  = 100;
+		$user_1     = new WP_User();
+		$user_1->ID = $user_id_1;
+
+		// Another user.
+		$user_id_2 = 200;
+
+		// Create a design.
+		$design_id = 1;
+		$design    = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $user_id_1 );
+		MyStyle_DesignManager::persist( $design );
+
+		// Call the function (with the second user's id).
+		$ret = MyStyle_DesignManager::is_user_design_owner(
+			$user_id_2,
+			$design_id
+		);
+
+		// Assert that false is returned as expected.
+		$this->assertFalse( $ret );
+	}
+
+	/**
+	 * Test the get_design_tags function with the with_slugs param turned off.
+	 */
+	public function test_get_design_tags() {
+
+		// Create a design.
+		$design_1 = MyStyle_MockDesign::get_mock_design( 1 );
+		MyStyle_DesignManager::persist( $design_1 );
+
+		// Give the design the term.
+		$tag_name      = 'test_tag';
+		$taxonomy_name = MYSTYLE_TAXONOMY_NAME;
+		$term_ids      = wp_add_object_terms(
+			$design_1->get_design_id(),
+			$tag_name,
+			$taxonomy_name
+		);
+		$term_id       = $term_ids[0];
+
+		// Call the function.
+		$tags = MyStyle_DesignManager::get_design_tags(
+			$design_1->get_design_id()
+		);
+
+		// Assert that the expected count is returned.
+		$this->assertEquals( 1, count( $tags ) );
+		$this->assertEquals( $tag_name, $tags[0] );
+	}
+
+	/**
+	 * Test the get_design_tags function with the with_slugs param turned ON.
+	 */
+	public function test_get_design_tags_with_slugs() {
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( 1 );
+		MyStyle_DesignManager::persist( $design );
+
+		// Give the design the term.
+		$tag_name      = 'Test Tag';
+		$taxonomy_name = MYSTYLE_TAXONOMY_NAME;
+		$term_ids      = wp_add_object_terms(
+			$design->get_design_id(),
+			$tag_name,
+			$taxonomy_name
+		);
+		$term_id       = $term_ids[0];
+
+		// Call the function.
+		$tags = MyStyle_DesignManager::get_design_tags(
+			$design->get_design_id(),
+			true // with_slugs.
+		);
+
+		// Assert that the expected count is returned.
+		$this->assertEquals( 1, count( $tags ) );
+		$this->assertEquals( $tag_name, $tags[0]['name'] );
+		$this->assertEquals( 'test-tag', $tags[0]['slug'] );
+	}
+
+	/**
+	 * Test the add_tag_to_design function.
+	 */
+	public function test_add_tag_to_design() {
+		$tag_name  = 'Test Tag';
+		$design_id = 1;
+		$user_id   = 1;
+
+		// Mock a WP_User.
+		$user     = new WP_User();
+		$user->ID = $user_id;
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $user_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Call the function.
+		$tag_id = MyStyle_DesignManager::add_tag_to_design(
+			$design_id,
+			$tag_name,
+			$user
+		);
+
+		// Assert that the expected tag id is returned.
+		$this->assertGreaterThan( 0, intval( $tag_id ) );
+	}
+
 }

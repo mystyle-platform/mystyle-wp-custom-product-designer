@@ -74,6 +74,42 @@ class MyStyle_Design_Tag_Taxonomy {
 	}
 
 	/**
+	 * Static function that searches for and returns existing design tags using
+	 * the passed search phrase.
+	 *
+	 * This is mostly copy/paste from the wp_ajax_ajax_tag_search function.
+	 *
+	 * @param string $s The search phase to use.
+	 * @return array Returns an array of results.
+	 */
+	public static function search( $s ) {
+		$taxonomy = MYSTYLE_TAXONOMY_NAME;
+
+		$comma = _x( ',', 'tag delimiter', 'mystyle' );
+		if ( ',' !== $comma ) {
+			$s = str_replace( $comma, ',', $s );
+		}
+
+		if ( false !== strpos( $s, ',' ) ) {
+			$s = explode( ',', $s );
+			$s = $s[ count( $s ) - 1 ];
+		}
+
+		$s = trim( $s );
+
+		$results = get_terms(
+			array(
+				'taxonomy'   => $taxonomy,
+				'name__like' => $s,
+				'fields'     => 'names',
+				'hide_empty' => false,
+			)
+		);
+
+		return $results;
+	}
+
+	/**
 	 * Resets the singleton instance. This is used during testing if we want to
 	 * clear out the existing singleton instance.
 	 *

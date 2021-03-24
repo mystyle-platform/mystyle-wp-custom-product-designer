@@ -299,6 +299,54 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the get_index_url function without permalinks.
+	 *
+	 * @global WP_Rewrite $wp_rewrite
+	 */
+	public function test_get_index_url_without_permalinks() {
+		global $wp_rewrite;
+
+		// disable page permalinks.
+		$wp_rewrite->page_structure = null;
+
+		// Create the MyStyle Design Profile page.
+		$page_id = MyStyle_Design_Profile_Page::create();
+
+		// Build the expected url.
+		$expected_url = 'http://example.org/?page_id=' . $page_id;
+
+		// Call the function.
+		$url = MyStyle_Design_Profile_Page::get_index_url();
+
+		// Assert that the exepected $url was returned.
+		$this->assertEquals( $expected_url, $url );
+	}
+
+	/**
+	 * Test the get_index_url function with permalinks.
+	 *
+	 * @global WP_Rewrite $wp_rewrite
+	 */
+	public function test_get_index_url_with_permalinks() {
+		global $wp_rewrite;
+
+		// Enable page permalinks.
+		$wp_rewrite->page_structure = '%pagename%';
+
+		$design_id    = 1;
+		$expected_url = 'http://example.org/designs';
+
+		// Create the MyStyle Design Profile page.
+		MyStyle_Design_Profile_Page::create();
+
+		// Call the function.
+		$url = MyStyle_Design_Profile_Page::get_index_url();
+
+		// Assert that the exepected $url was returned.
+		$this->assertEquals( $expected_url, $url );
+	}
+
+	/**
 	 * Test the get_design_url function without permalinks.
 	 *
 	 * @global WP_Rewrite $wp_rewrite

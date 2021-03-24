@@ -84,8 +84,10 @@ abstract class MyStyle_Design_Profile_Shortcode {
 			$next_design_url = MyStyle_Design_Profile_Page::get_design_url( $next_design );
 		}
 
-		$product           = $design->get_Product();
-		$product_menu_type = MyStyle_Options::get_design_profile_product_menu_type();
+		$product                 = $design->get_Product();
+		$product_menu_type       = MyStyle_Options::get_design_profile_product_menu_type();
+		$show_add_to_cart_button = MyStyle_Design_Profile_Page::show_add_to_cart_button();
+		$design_tags             = MyStyle_DesignManager::get_design_tags( $design->get_design_id(), true );
 
 		// ---------- Call the view layer -------------------- //
 		ob_start();

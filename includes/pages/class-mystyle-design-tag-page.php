@@ -223,7 +223,7 @@ class MyStyle_Design_Tag_Page {
 		$this->pager->set_items( $designs );
 
 		// Total items.
-		$term_count = MyStyle_DesignManager::get_design_count_by_term( $term_id );
+		$term_count = MyStyle_DesignManager::get_total_term_design_count( $term_id );
 
 		$this->pager->set_total_item_count( $term_count );
 
