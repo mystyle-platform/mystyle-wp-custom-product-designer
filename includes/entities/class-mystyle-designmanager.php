@@ -738,7 +738,6 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
 	 * and isn't an administrator.
 	 * @return int Returns the id of the tag.
-	 * @todo Add unit testing for this method.
 	 */
 	public static function add_tag_to_design(
 		$design_id,
@@ -774,7 +773,6 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
 	 * and isn't an administrator.
 	 * @return int Returns true on success, false on failure.
-	 * @todo Add unit testing for this method.
 	 */
 	public static function remove_tag_from_design(
 		$design_id,

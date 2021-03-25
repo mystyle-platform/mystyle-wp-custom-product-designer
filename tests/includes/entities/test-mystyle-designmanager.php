@@ -685,14 +685,14 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 	public function test_get_design_tags() {
 
 		// Create a design.
-		$design_1 = MyStyle_MockDesign::get_mock_design( 1 );
-		MyStyle_DesignManager::persist( $design_1 );
+		$design = MyStyle_MockDesign::get_mock_design( 1 );
+		MyStyle_DesignManager::persist( $design );
 
 		// Give the design the term.
 		$tag_name      = 'test_tag';
 		$taxonomy_name = MYSTYLE_TAXONOMY_NAME;
 		$term_ids      = wp_add_object_terms(
-			$design_1->get_design_id(),
+			$design->get_design_id(),
 			$tag_name,
 			$taxonomy_name
 		);
@@ -700,7 +700,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 
 		// Call the function.
 		$tags = MyStyle_DesignManager::get_design_tags(
-			$design_1->get_design_id()
+			$design->get_design_id()
 		);
 
 		// Assert that the expected count is returned.
@@ -763,8 +763,56 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 			$user
 		);
 
-		// Assert that the expected tag id is returned.
+		// Assert that a tag id is returned as expected.
 		$this->assertGreaterThan( 0, intval( $tag_id ) );
+	}
+
+	/**
+	 * Test the remove_tag_from_design function.
+	 */
+	public function test_remove_tag_from_design() {
+		$tag_name  = 'Test Tag';
+		$design_id = 1;
+		$user_id   = 1;
+
+		// Mock a WP_User.
+		$user     = new WP_User();
+		$user->ID = $user_id;
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $user_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Add the Tag to the design.
+		$tag_id = MyStyle_DesignManager::add_tag_to_design(
+			$design_id,
+			$tag_name,
+			$user
+		);
+
+		// Get the tags for the design.
+		$tags = MyStyle_DesignManager::get_design_tags(
+			$design->get_design_id()
+		);
+
+		// Assert that the design has 1 tag.
+		$this->assertEquals( 1, count( $tags ) );
+
+		// Call the method.
+		$tags = MyStyle_DesignManager::remove_tag_from_design(
+			$design->get_design_id(),
+			$tag_name,
+			$user
+		);
+
+		// Get the tags for the design (again).
+		$tags = MyStyle_DesignManager::get_design_tags(
+			$design->get_design_id()
+		);
+
+		// Assert that the design now has 0 tags.
+		$this->assertEquals( 0, count( $tags ) );
 	}
 
 }
