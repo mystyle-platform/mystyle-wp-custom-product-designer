@@ -506,10 +506,7 @@ class MyStyle_Design_Profile_Page {
 	}
 
 	/**
-	 * Save design tag. Registered for use via AJAX. Called to add a new tag to
-	 * a design.
-	 *
-	 * @todo Add unit testing for this method.
+	 * Add a tag to the design. Registered for use via AJAX.
 	 */
 	public static function design_tag_add() {
 		// phpcs:disable
@@ -517,7 +514,7 @@ class MyStyle_Design_Profile_Page {
 		$design_id = intval( wp_unslash( $_POST['design_id'] ) );
 		// phpcs:enable
 
-		$user = get_current_user();
+		$user = wp_get_current_user();
 
 		// Adds the tag - throws exception is user isn't authorized.
 		MyStyle_DesignManager::add_tag_to_design(
@@ -526,16 +523,15 @@ class MyStyle_Design_Profile_Page {
 			$user
 		);
 
-		header( 'Content-Type: application/json' );
+		if ( ! headers_sent() ) {
+			header( 'Content-Type: application/json' );
+		}
 		echo wp_json_encode( array( 'tag' => $tag ) );
-		die();
+		wp_die();
 	}
 
 	/**
-	 * Remove design tag. Registered for use via AJAX. Called to remove a tag
-	 * from a design.
-	 *
-	 * @todo Add unit testing for this method.
+	 * Remove a tag from the design. Registered for use via AJAX.
 	 */
 	public static function design_tag_remove() {
 		// phpcs:disable
@@ -543,7 +539,7 @@ class MyStyle_Design_Profile_Page {
 		$design_id = intval( $_POST['design_id'] );
 		// phpcs:enable
 
-		$user = get_current_user();
+		$user = wp_get_current_user();
 
 		// Removes the tag - throws exception is user isn't authorized.
 		MyStyle_DesignManager::remove_tag_from_design(
@@ -552,9 +548,11 @@ class MyStyle_Design_Profile_Page {
 			$user
 		);
 
-		header( 'Content-Type: application/json' );
+		if ( ! headers_sent() ) {
+			header( 'Content-Type: application/json' );
+		}
 		echo wp_json_encode( array( 'tag' => $tag ) );
-		die();
+		wp_die();
 	}
 
 

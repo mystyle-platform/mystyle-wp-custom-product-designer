@@ -299,6 +299,83 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the design_tag_add function.
+	 */
+	public function test_design_tag_add() {
+
+		// Set up the test data.
+		$tag_name        = 'Test Tag';
+		$design_id       = 1;
+		$user_id         = get_current_user_id();
+		$expected_output = '{"tag":"Test Tag"}';
+
+		// Mock a WP_User.
+		$user     = new WP_User();
+		$user->ID = $user_id;
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $user_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Mock the POST.
+		$_POST['tag']       = $tag_name;
+		$_POST['design_id'] = $design_id;
+		$_POST['user_id']   = $user_id;
+
+		// Assert that the expected output string is returned.
+		$this->expectOutputString( $expected_output );
+		try {
+			// Call the function (args passed in via the mocked POST from above).
+			MyStyle_Design_Profile_Page::get_instance()->design_tag_add();
+		} catch ( WPDieException $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// Do nothing.
+		}
+	}
+
+	/**
+	 * Test the design_tag_remove function.
+	 */
+	public function test_design_tag_remove() {
+
+		// Set up the test data.
+		$tag_name        = 'Test Tag';
+		$design_id       = 1;
+		$user_id         = get_current_user_id();
+		$expected_output = '{"tag":"Test Tag"}';
+
+		// Mock a WP_User.
+		$user     = new WP_User();
+		$user->ID = $user_id;
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $user_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Add the tag to the design.
+		$tag_id = MyStyle_DesignManager::add_tag_to_design(
+			$design_id,
+			$tag_name,
+			$user
+		);
+
+		// Mock the POST.
+		$_POST['tag']       = $tag_name;
+		$_POST['design_id'] = $design_id;
+		$_POST['user_id']   = $user_id;
+
+		// Assert that the expected output string is returned.
+		$this->expectOutputString( $expected_output );
+		try {
+			// Call the function (args passed in via the mocked POST from above).
+			MyStyle_Design_Profile_Page::get_instance()->design_tag_remove();
+		} catch ( WPDieException $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// Do nothing.
+		}
+	}
+
+	/**
 	 * Test the get_index_url function without permalinks.
 	 *
 	 * @global WP_Rewrite $wp_rewrite
