@@ -1,3 +1,6 @@
+= 3.17.1 =
+* Modified design manager security
+
 = 3.17.0 =
 
 * The design tag taxonomy (design_tag) is now available via the REST API.
