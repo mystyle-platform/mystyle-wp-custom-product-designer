@@ -1,3 +1,6 @@
+= 3.17.2 =
+* Altered design manager security
+
 = 3.17.1 =
 * Modified design manager security
 
