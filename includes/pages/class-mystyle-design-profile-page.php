@@ -257,7 +257,7 @@ class MyStyle_Design_Profile_Page {
 
 			// Throw exception if design isn't found (it's caught at the bottom
 			// of this function.
-			if ( null === $design ) {
+			if ( null === $design || false === $design ) {
 				throw new MyStyle_Not_Found_Exception( 'Design not found.' );
 			}
 

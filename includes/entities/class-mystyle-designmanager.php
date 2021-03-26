@@ -65,18 +65,24 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 				) {
 					// Design was created by the passed session, continue.
 				} else {
-					// Check for wp user match.
-					if ( null !== $design->get_user_id() ) {
-						if ( ( null === $user ) || ( 0 === $user->ID ) || ( ! is_admin() ) ) {
-							return false ;
-                            //throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
-						}
-						if ( $design->get_user_id() !== $user->ID ) {
-							if ( ( ! $user->has_cap( 'read_private_posts' ) ) || ( ! is_admin() ) ) {
-								return false ;
-                                //throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+					if( ( ! current_user_can('administrator') ) ) {
+						
+						if ( null !== $design->get_user_id() ) {
+						
+							if ( ( null === $user ) || ( 0 === $user->ID ) ) {
+                                return false ;
+								//throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
+							}
+							if ( $design->get_user_id() !== $user->ID ) {
+								if ( ( ! $user->has_cap( 'read_private_posts' ) ) || ( ! is_admin() ) ) {
+									return false ;
+                                    //throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+								}
 							}
 						}
+					}
+					else {
+						return $design ;
 					}
 				}
 			}
