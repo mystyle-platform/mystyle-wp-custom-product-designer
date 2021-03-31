@@ -65,23 +65,16 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 				) {
 					// Design was created by the passed session, continue.
 				} else {
-					if ( ( ! current_user_can( 'administrator' ) ) ) {
-
-						if ( null !== $design->get_user_id() ) {
-
-							if ( ( null === $user ) || ( 0 === $user->ID ) ) {
-								return false;
-								// throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
-							}
-							if ( $design->get_user_id() !== $user->ID ) {
-								if ( ( ! $user->has_cap( 'read_private_posts' ) ) || ( ! is_admin() ) ) {
-									return false;
-									// throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
-								}
+					// Check for wp user match.
+					if ( null !== $design->get_user_id() ) {
+						if ( ( null === $user ) || ( 0 === $user->ID ) ) {
+							throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
+						}
+						if ( $design->get_user_id() !== $user->ID ) {
+							if ( ! $user->has_cap( 'read_private_posts' ) ) {
+								throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
 							}
 						}
-					} else {
-						return $design;
 					}
 				}
 			}
@@ -685,14 +678,16 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		$ret = false;
 
-		$design_user_id = intval( $wpdb->get_var(
-			$wpdb->prepare(
-				'SELECT user_id '
-				. "FROM {$wpdb->prefix}mystyle_designs "
-				. 'WHERE ms_design_id = %d',
-				array( $design_id )
+		$design_user_id = intval(
+			$wpdb->get_var(
+				$wpdb->prepare(
+					'SELECT user_id '
+					. "FROM {$wpdb->prefix}mystyle_designs "
+					. 'WHERE ms_design_id = %d',
+					array( $design_id )
+				)
 			)
-		) );
+		);
 
 		if ( $design_user_id === $user_id ) {
 			$ret = true;

@@ -248,7 +248,7 @@ class MyStyle_Design_Profile_Page {
 			);
 
 			// Get the design. If the user doesn't have access, an exception is
-			// thrown.
+			// thrown (and caught at the bottom of this function).
 			$design = MyStyle_DesignManager::get(
 				$design_id,
 				$this->user,
@@ -256,8 +256,8 @@ class MyStyle_Design_Profile_Page {
 			);
 
 			// Throw exception if design isn't found (it's caught at the bottom
-			// of this function.
-			if ( null === $design || false === $design ) {
+			// of this function).
+			if ( null === $design ) {
 				throw new MyStyle_Not_Found_Exception( 'Design not found.' );
 			}
 
