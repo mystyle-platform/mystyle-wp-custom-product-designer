@@ -188,7 +188,7 @@ class MyStyle_Author_Designs_Page {
 			$design_post->post_name    = $title;
 			$design_post->post_type    = 'Design';
 			$design_post->post_title   = $title;
-			$design_post->post_content = $title . ' custom ' . $product->get_name();
+			$design_post->post_content = $title . ' custom ' . $product->get_title();
 
 			$design_posts[] = $design_post;
 		}

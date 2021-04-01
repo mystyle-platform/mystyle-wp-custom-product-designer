@@ -22,7 +22,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 			foreach ( $pager->get_items() as $design ) {
 				$design_url    = MyStyle_Design_Profile_page::get_design_url( $design );
 				$product_id    = $design->get_product_id();
-				$product_title = $design->get_product()->get_title();
+                if($product_id != 0) {
+					$product       = $design->get_product() ;
+					$product_title = $product->get_title();	
+				}
+				else {
+					$product       = "" ;
+					$product_title = "" ;
+				}
 				?>
 				<li>
 					<a href="<?php echo esc_attr( $design_url ); ?>">
