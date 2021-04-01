@@ -1,3 +1,6 @@
+= 3.17.4 =
+* Fixed design profile and tags index page bug
+
 = 3.17.3 =
 * Altered design manager security for admin users
 
