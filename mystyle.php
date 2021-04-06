@@ -180,6 +180,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			// Shortcode includes.
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php';
+			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-tag-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php';
 
 			require_once MYSTYLE_PATH . 'functions.php';
@@ -324,6 +325,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
+			add_shortcode( 'mystyle_design_tags', array( 'MyStyle_Design_Tag_Shortcode', 'output' ) );
 		}
 
 		/**
