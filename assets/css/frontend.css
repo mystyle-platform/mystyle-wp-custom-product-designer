@@ -480,3 +480,30 @@ body.archive.tax-design_tag article {
     min-width: 300px;
 	font-size: 16px;
 }
+
+/* Design tag index */
+#mystyle-design-tag-index-wrapper li, #mystyle-design-tag-index-wrapper ul {
+    display:inline-block ;
+    list-style-type: none ;
+}
+
+#mystyle-design-tag-index-wrapper li {
+    text-align: center ;
+    font-size: 0.5em ;
+}
+
+#mystyle-design-tag-index-wrapper li img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
+
+#mystyle-design-tag-index-wrapper .pager {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#mystyle-design-tag-index-wrapper .pager a {
+    padding: 0 20px;
+}

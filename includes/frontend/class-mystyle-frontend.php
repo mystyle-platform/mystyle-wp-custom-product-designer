@@ -79,7 +79,7 @@ class MyStyle_FrontEnd {
 	 */
 	public function init() {
 		// Add the MyStyle frontend stylesheet to the WP frontend head.
-		wp_register_style( 'myStyleFrontendStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css' );
+		wp_register_style( 'myStyleFrontendStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css?789' );
 		wp_enqueue_style( 'myStyleFrontendStylesheet' );
 
 		// Add the WordPress Dashicons icon font to the frontend.

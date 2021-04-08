@@ -35,7 +35,9 @@ abstract class MyStyle_Design_Tag_Shortcode {
             'offset' => $offset
         ) );
         
-        for($i=0;$i < count($terms);$i++) {
+        $terms_count = count($terms) ;
+        
+        for($i=0;$i < $terms_count;$i++) {
             $design_objs = MyStyle_DesignManager::get_designs_by_term_id(
                 $terms[$i]->term_id,
                 $wp_user,
@@ -43,12 +45,18 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 6,
                 1
             );
-            $terms[$i]->designs = $design_objs ;
+            
+            if(count($design_objs) == 0) {
+                unset($terms[$i]) ;
+            }
+            else {
+                $terms[$i]->designs = $design_objs ;
+            }
         }
         
-        echo '<pre>' ; var_dump($terms) ; die() ;
+        //echo '<pre>' ; var_dump($terms) ; die() ;
         
-        $pager_array = self::pager($pager, $limit, count($terms)) ;
+        $pager_array = self::pager($pager, $limit, $terms_count) ;
         $next = $pager_array['next'] ;
         $prev = $pager_array['prev'] ;
         
