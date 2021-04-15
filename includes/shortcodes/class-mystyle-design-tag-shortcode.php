@@ -3,7 +3,7 @@
  * Class for the MyStyle Design Tag Shortcode.
  *
  * @package MyStyle
- * @since 3.17.4
+ * @since 3.17.5
  */
 
 /**
