@@ -507,3 +507,474 @@ body.archive.tax-design_tag article {
 #mystyle-design-tag-index-wrapper .pager a {
     padding: 0 20px;
 }
+
+/* Hide unnecessary links in footer for better design thru conversion. */
+body.mystyle-customize .footer-widget,
+body.mystyle-customize li.et-social-icon.et-social-rss {
+	display: none;
+}
+
+.mystyle-centered {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.mystyle-renderer-wrapper {
+	margin: 1em 0;
+}
+
+/* MyStyle: Show thumbnail in cart larger than default 32px. */
+.woocommerce-cart table.cart img {
+	width: auto;
+	min-width: 32px;
+	max-width: 100px;
+}
+
+/* MyStyle Customize Page */
+
+body.mystyle-customize #customizer-wrapper {
+	padding: 0;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+body.mystyle-customize .customizer-under-app-wrapper {
+	position: relative;
+	display: block;
+	width: auto;
+	margin: auto;
+	max-width: 950px;
+	font-size: 12px;
+	padding: 15px;
+	min-height: 0;
+	margin-bottom: 15px;
+}
+
+body.mystyle-customize .customizer-under-app-wrapper a.button {
+	display: table;
+	margin: 0 auto;
+}
+
+body.mystyle-customize .customizer-under-app-wrapper a.button span {
+	margin-right: 0.25em;
+}
+
+body.mystyle-customize .entry-content,
+body.mystyle-customize article {
+	max-width: none;
+}
+
+body.mystyle-customize .entry-header {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+body.mystyle-customize #primary {
+	width: 100%;
+}
+
+body.mystyle-customize #secondary,
+body.mystyle-customize .site::before {
+	display: none;
+}
+
+div.mystyle-fullscreen#customizer-wrapper {
+	width: 100% !important;
+	height: 100% !important;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+iframe.mystyle-fullscreen#customizer-iframe {
+	width: 100% !important;
+	height: 100% !important;
+}
+
+#customizer-close-button,
+#customizer-fullscreen-button,
+#customizer-fullscreen-button label {
+	cursor: pointer;
+	font-size: 16px;
+}
+
+body.mystyle-customize #customizer-close-button {
+	position: fixed;
+	top: 0;
+	right: 0;
+	z-index: 10001;
+}
+
+body.mystyle-customize #customizer-close-button .dashicons,
+body.mystyle-customize #customizer-close-button .dashicons-before::before {
+	width: 30px;
+	height: 30px;
+	font-size: 30px;
+}
+
+.above-customizer-wrapper {
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.mystyle-fullscreen-hidden {
+	display: none;
+}
+
+iframe#customizer-iframe {
+	width: 100%;
+	min-height: 550px;
+}
+
+@media all and (orientation: portrait) {
+
+	body.mystyle-customize #customizer-iframe,
+	body.mystyle-customizer #customizer-wrapper {
+		height: 1000px;
+	}
+}
+
+@media all and (orientation: landscape) {
+
+	body.mystyle-customize #customizer-iframe,
+	body.mystyle-customizer #customizer-wrapper {
+		height: 550px;
+	}
+}
+
+/* Fixes the margins for the Customize page for Divi on mobile. */
+
+body.mystyle-customize #et-main-area > #main-content > .container {
+	width: auto;
+	max-width: 100%;
+}
+
+@media (max-width: 600px) {
+
+	body.mystyle-customize #et-main-area > #main-content > .container {
+		width: calc(100vw - 10px);
+	}
+}
+
+.mystyle-customize #et-main-area h1.entry-title.main_title {
+	text-align: center;
+}
+
+/* MyStyle Design Profile Page */
+body.mystyle-design-profile img#mystyle-design-profile-img {
+	display: block;
+	max-width: 100%;
+	width: auto;
+	margin: auto;
+	margin-bottom: 1em;
+}
+
+body.mystyle-design-profile ul.mystyle-design-nav li {
+	margin: 5em;
+}
+
+/* MyStyle Design Profile Index */
+body.mystyle-design-profile ul.mystyle-designs {
+	list-style: none;
+}
+
+body.mystyle-design-profile ul.mystyle-designs li {
+	display: inline-block;
+	margin: 1em;
+	max-width: 300px;
+}
+
+ul.mystyle-designs li h3.mystyle-design-id {
+    font-size: 18px;
+    text-align: center;
+}
+
+body.mystyle-design-profile ul.mystyle-designs li a {
+	display: block;
+	padding: 2em;
+	text-decoration: none;
+	box-shadow: none;
+}
+
+ul.mystyle-designs li a img {
+    display: block;
+    margin: auto;
+}
+
+/* Design profile page buttons. */
+
+
+body.mystyle-design-profile ul.mystyle-button-group li {
+    margin: 15px;
+}
+
+body.mystyle-design-profile ul.mystyle-design-nav li a {
+	padding: 12px;
+	display: inline-block;
+	background: rgba(0, 0, 0, 0.2);
+	color: #fff;
+	font-size: 24px;
+	font-weight: 700;
+	min-width: 47px;
+	border-radius: 5px;
+}
+
+
+
+body.mystyle-design-profile ul.mystyle-designs li a:hover {
+	-webkit-box-shadow: 2px 2px 8px -3px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 2px 2px 8px -3px rgba(0, 0, 0, 0.5);
+	box-shadow: 2px 2px 8px -3px rgba(0, 0, 0, 0.5);
+}
+
+body.mystyle-design-profile ul.mystyle-designs li span.mystyle-design-id {
+	display: block;
+}
+
+/* List/grid styling rules start */
+#mystyle-design-profile-wrapper .product_description {
+	margin-bottom: 60px;
+}
+
+#mystyle-design-profile-wrapper .customize_products.list ul.products li {
+	display: block;
+	width: 100% !important;
+	text-align: left;
+}
+
+#mystyle-design-profile-wrapper .customize_products.list ul.products li h2,
+#mystyle-design-profile-wrapper .customize_products.list ul.products li a {
+	float: left;
+}
+
+#mystyle-design-profile-wrapper .customize_products.list ul.products li img,
+#mystyle-design-profile-wrapper .customize_products.list ul.products li span.onsale {
+	display: none;
+}
+
+#mystyle-design-profile-wrapper .customize_products.list ul.products li .price {
+	display: inline-block;
+	margin-left: 10px;
+}
+
+#mystyle-design-profile-wrapper .customize_products.list ul.products li a.button.add_to_cart_button {
+	margin-left: 10px;
+	position: relative;
+	bottom: 7px;
+}
+
+@media (max-width: 768px) {
+
+	/* Show thumbnail row in cart on mobile. */
+	.woocommerce-page table.cart .product-thumbnail {
+		display: inline-block !important;
+	}
+
+	/* Hide colon above thumbnail for mobile. */
+	.woocommerce-page table.cart .product-thumbnail::before {
+		display: none;
+	}
+}
+
+
+/* new additions */
+
+.cart img {
+	min-width: 100px;
+}
+
+#add_payment_method table.cart img, .woocommerce-cart table.cart img, .woocommerce-checkout table.cart img {
+    width: auto;
+    box-shadow: none;
+    min-width: 100px;
+    display: block;
+}
+
+.mystyle-design-profile h1.entry-title.main_title { 
+	margin-bottom: -10px; 
+	 padding-bottom: 0; 
+}
+
+ul.mystyle-button-group {
+	z-index: 2;
+}
+
+ul.mystyle-button-group.mystyle-design-nav {
+    margin-top: -35px !important;
+    position: relative;
+    display: inline-block;
+    float: right;
+}
+
+body.mystyle-design-profile img#mystyle-design-profile-img {
+	clear: both;
+	margin: auto;
+	transition-duration: 1s;
+}
+
+body.mystyle-design-profile .product_description {
+	padding-top: 30px;
+}
+
+body.mystyle-design-profile ul.mystyle-design-nav li {
+    margin: 15px;
+}
+
+a#ms-edit-title-form-show { 
+	float: left; 
+	background: #eee; 
+	padding: 0 4px; 
+	margin: 5px; 
+	vertical-align: top; 
+	display: inline-block; 
+}
+
+
+
+.mystyle-preview-image-controls button {
+	margin: 5px;
+}
+
+div#mystyle-design-profile-wrapper {
+    position: relative;
+}
+
+.mystyle-preview-image-controls button {
+	opacity: .7;
+	border-radius: 4px;
+	border: 1px solid #ccc;
+	background: #eee;
+	cursor: pointer;
+}
+
+.mystyle-preview-image-controls:hover button {
+	opacity: 1;
+}
+
+.mystyle-preview-image-controls button:hover {
+	opacity: 1;
+}
+
+body.mystyle-design-profile ul.mystyle-designs li {
+    display: inline-block;
+    margin: 1em;
+    max-width: 300px;
+    text-align: center;
+	font-size: 16px;
+	transition-duration: 1s;
+}
+
+body.mystyle-design-profile ul.mystyle-designs li a {
+	padding: 1em;
+}
+
+div#ms-edit-title-form {
+    display: inline-block;
+    clear: both;
+    z-index: 3;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px !important;
+    background: white;
+    padding: 20px;
+    border-top: 5px solid #3280d0;
+	max-width: 420px;
+}
+
+div#ms-edit-title-form input {
+    padding: 7px 10px;
+    font-size: 16px;
+}
+
+
+
+/* preview image control buttons */
+.mystyle-preview-image-controls {
+	position: relative;
+	margin: auto;
+    text-align: center;
+	z-index: 2;
+	padding: 15px;
+	display: block;
+}
+
+
+
+@media(min-width: 600px){
+	.mystyle-preview-image-controls {
+		position: absolute;
+		top: 20px;
+		left: -23px;
+		width: 130px;
+		padding-left: 0;
+	}
+}
+
+
+/**
+* mini gallery of designs
+*/
+.mystyle-designs li h3 {
+	font-size: 16px !important;
+	padding: 15px 4px;
+	position: relative;
+	z-index: 2;
+}
+
+.mystyle-mini-gallery li {
+	display: inline-block; 
+	min-width: 200px;
+	width: 20% !important;
+	max-width: 300px;
+	vertical-align: middle;
+}
+
+.mystyle-designs li a {
+	position: relative;
+	box-shadow: 0 0 0 rgba(0,0,0,0);
+	transition-duration: 1s;
+	top: 0;
+}
+
+.mystyle-designs li a:hover {
+	transition-duration: .3s;
+	top: -5px;
+	box-shadow: none !important;
+}
+
+.mystyle-designs li img {
+	position: relative;
+	width: auto;
+	margin: auto;
+	max-width: 100%;
+	display: block;
+	transition-duration: 1s;
+	z-index: 1;
+}
+
+.mystyle-designs li img:hover, 
+.mystyle-designs li:hover img:hover {
+    transform: scale(1.2);
+    transition-duration: .3s;
+}
+
+.mystyle-mini-gallery {
+    text-align: center;
+}
+
+/* design tag archive */
+
+body.mystyle-design-tag-gallery article {
+	max-width: 300px;
+	display: inline-block;
+	margin-right: 15px;
+}
+
+body.archive.tax-design_tag article {
+    display: inline-block;
+    max-width: 800px;
+    width: 25%;
+    min-width: 300px;
+	font-size: 16px;
+}
