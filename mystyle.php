@@ -464,7 +464,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
  * @codingStandardsIgnoreStart (ignoring incorrect case function name).
  */
 function MyStyle() {
-	// @codingStandardsIgnoreStart
+	// @codingStandardsIgnoreEnd
 	return MyStyle::get_instance();
 }
 
