@@ -109,7 +109,7 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		MyStyle_DesignManager::persist( $design );
 
 		// Mock a WP_User.
-		$user = new WP_User();
+		$user     = new WP_User();
 		$user->ID = $design->get_user_id();
 
 		// Give the Design some tags.
@@ -162,6 +162,40 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		$this->assertEquals( 'WP_REST_Response', get_class( $response ) );
 		$this->assertEquals( 200, $response->status );
 		$this->assertEquals( $design_id, $response->data['design_id'] );
+	}
+
+	/**
+	 * Test the create_item function for design input that includes design tags.
+	 */
+	public function test_create_item_with_tags() {
+
+		$design_id = 1;
+		$tag1      = 'tag1';
+		$tag2      = 'tag2';
+
+		// Create a design.
+		$design             = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design_arr         = $design->json_encode();
+		$design_arr['tags'] = array( 'tag1', 'tag2' );
+
+		// Mock the request.
+		$request = new WP_REST_Request( 'POST' );
+		$request->set_body( wp_json_encode( $design_arr ) );
+
+		// Instantiate the SUT (System Under Test) class.
+		$controller = new MyStyle_Wp_Rest_Api_Design_Controller();
+
+		// Call the function.
+		/* @var $response \WP_REST_Response The response. */
+		$response = $controller->create_item( $request );
+
+		// Assert that the response is returned as expected.
+		$this->assertEquals( 'WP_REST_Response', get_class( $response ) );
+		$this->assertEquals( 200, $response->status );
+		$this->assertEquals( $design_id, $response->data['design_id'] );
+		$this->assertEquals( 2, count( $response->data['tags'] ) );
+		$this->assertEquals( $tag1, $response->data['tags'][0]['slug'] );
+		$this->assertEquals( $tag2, $response->data['tags'][1]['slug'] );
 	}
 
 	/**
