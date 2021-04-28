@@ -325,6 +325,19 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 		$design   = $item;
 		$itemdata = $design->json_encode();
 
+		// Add any design tags.
+		$tags = MyStyle_DesignManager::get_design_tags(
+			$design->get_design_id(),
+			true, // with_slug.
+			true // with_id.
+		);
+		if ( 0 < count( $tags ) ) {
+			$itemdata['tags'] = array();
+			foreach ( $tags as $tag ) {
+				$itemdata['tags'][] = $tag;
+			}
+		}
+
 		return $itemdata;
 	}
 

@@ -705,26 +705,42 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 *                        design id from the URL.
 	 * @param bool $with_slug Set to true (default is false) to include the
 	 *                        term slug in the returned tags. If true, the
-	 *                        returned array becomes two dimmensional with each
-	 *                        entry having a 'name' and a 'slug'.
+	 *                        returned array becomes two dimensional with each
+	 *                        entry having a 'name' and a 'slug' (and possibly
+	 *                        an id.
+	 * @param bool $with_id   Set to true (default is false) to include the
+	 *                        term id in the returned tags. If true, the
+	 *                        returned array becomes two dimensional with each
+	 *                        entry having a 'name' and an 'id' (and possibly a
+	 *                        'slug'.
 	 * @return array Returns an array of tags. If the slug param is false, it
-	 * will return a one dimmensional array like ["Foo", "Bar"]. If the slug
-	 * param is true, it will return a two dimmensional array like
+	 * will return a one dimensional array like ["Foo", "Bar"]. If the slug
+	 * param is true, it will return a two dimensional array like
 	 * [["name" => "Foo", "slug" => "foo"], ["name" => "Bar", "slug" => "bar"]].
 	 */
-	public static function get_design_tags( $design_id, $with_slug = false ) {
+	public static function get_design_tags(
+		$design_id,
+		$with_slug = false,
+		$with_id = false
+	) {
 		$tags  = array();
 		$terms = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME );
 
 		foreach ( $terms as $term ) {
-			if ( $with_slug ) {
-				$tags[] = array(
-					'name' => esc_html( $term->name ),
-					'slug' => esc_html( $term->slug ),
+			if ( $with_slug || $with_id ) {
+				$entry = array(
+					'name' => $term->name,
 				);
+				if ( $with_slug ) {
+					$entry['slug'] = $term->slug;
+				}
+				if ( $with_id ) {
+					$entry['id'] = $term->term_id;
+				}
 			} else {
-				$tags[] = $term->name;
+				$entry = $term->name;
 			}
+			$tags[] = $entry;
 		}
 
 		return $tags;

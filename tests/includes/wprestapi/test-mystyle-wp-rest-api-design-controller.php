@@ -95,13 +95,29 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 	 */
 	public function test_get_item() {
 
+		$tag_name  = 'Test Tag';
 		$design_id = 1;
+		$user_id   = 1;
+
+		// Mock a WP_User.
+		$user     = new WP_User();
+		$user->ID = $user_id;
 
 		// Create a design.
 		$design = MyStyle_MockDesign::get_mock_design( $design_id );
-
-		// Persist the design.
+		$design->set_user_id( $user_id );
 		MyStyle_DesignManager::persist( $design );
+
+		// Mock a WP_User.
+		$user = new WP_User();
+		$user->ID = $design->get_user_id();
+
+		// Give the Design some tags.
+		MyStyle_DesignManager::add_tag_to_design(
+			$design->get_design_id(),
+			$tag_name,
+			$user
+		);
 
 		// Mock the request.
 		$request = new WP_REST_Request( 'GET' );
@@ -118,6 +134,7 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		$this->assertEquals( 'WP_REST_Response', get_class( $response ) );
 		$this->assertEquals( 200, $response->status );
 		$this->assertEquals( $design_id, $response->data['design_id'] );
+		$this->assertEquals( 'test-tag', $response->data['tags'][0]['slug'] );
 	}
 
 	/**
