@@ -211,6 +211,33 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test that the get function returns a design when accessed by a user with
+	 * the "shop_manager" role.
+	 */
+	public function test_get_private_when_shop_manager() {
+
+		$design_id = 1;
+
+		// Create a private design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_access( MyStyle_Access::ACCESS_PRIVATE );
+
+		// Persist the design.
+		MyStyle_DesignManager::persist( $design );
+
+		// Mock a WP_User with admin privileges.
+		$user     = new WP_User();
+		$user->ID = 101;
+		$user->add_cap( 'shop_manager' );
+
+		// Call the function.
+		$design_from_db = MyStyle_DesignManager::get( $design_id, $user );
+
+		// Assert that the design is returned.
+		$this->assertEquals( $design_id, $design_from_db->get_design_id() );
+	}
+
+	/**
 	 * Test the delete function.
 	 */
 	public function test_delete() {
