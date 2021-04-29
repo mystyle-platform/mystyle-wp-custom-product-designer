@@ -94,6 +94,16 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	public static function delete( MyStyle_Design $design ) {
 		global $wpdb;
 
+		// Delete any Design Tags (terms).
+		$terms = wp_get_object_terms( $design->get_design_id(), MYSTYLE_TAXONOMY_NAME );
+		if ( ! empty( $terms ) ) {
+			$term_ids = array();
+			foreach ( $terms as $term ) {
+				$term_ids[] = $term->term_id;
+			}
+			wp_remove_object_terms( $design->get_design_id(), $term_ids, MYSTYLE_TAXONOMY_NAME );
+		}
+
 		$ret = $wpdb->delete(
 			MyStyle_Design::get_table_name(),
 			array( MyStyle_Design::get_primary_key() => $design->get_design_id() ),
@@ -851,7 +861,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		if ( ! empty( $old_terms ) ) {
 			$old_term_ids = array();
 			foreach ( $old_terms as $old_term ) {
-				$old_term_ids = $old_term->term_id;
+				$old_term_ids[] = $old_term->term_id;
 			}
 
 			$removed = wp_remove_object_terms( $design_id, $old_term_ids, $taxonomy );
