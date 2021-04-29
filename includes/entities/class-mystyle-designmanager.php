@@ -278,38 +278,6 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	}
 
 	/**
-	 * Sets the Design access.
-	 *
-	 * @param int $design_id The design_id of the design that you want to set
-	 * the access of.
-	 * @param int $access    The new access visibility (1,2,3, etc). See the
-	 * MyStyle_Design class for valid values and what they do.
-	 * @return int Returns the number or designs that were updated or false
-	 * if no rows were updated.
-	 * @global wpdb $wpdb
-	 */
-	public static function set_access( $design_id, $access ) {
-		global $wpdb;
-
-		$where = array(
-			MyStyle_Design::get_primary_key() => $design_id,
-			'user_id'                         => get_current_user_id(),
-		);
-
-		if ( current_user_can( 'administrator' ) ) {
-			$where = array( MyStyle_Design::get_primary_key() => $design_id );
-		}
-
-		$result = $wpdb->update(
-			MyStyle_Design::get_table_name(),
-			array( 'ms_access' => $access ),
-			$where
-		);
-
-		return $result;
-	}
-
-	/**
 	 * Retrieve designs from the database.
 	 *
 	 * The designs are filtered for the passed user based on these rules:
