@@ -816,6 +816,57 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	}
 
 	/**
+	 * Updates a design's tags. Called to update all tags on a design to match
+	 * the passed array of tags.
+	 *
+	 * @param int     $design_id The id of the design to update.
+	 * @param array   $tags      The array of tags. Should be an array of
+	 *                           strings (ex: ["tag1", "tag2"]).
+	 * @param WP_User $user      The current user.
+	 * @throws MyStyle_Unauthorized_Exception Throws a
+	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
+	 * and isn't an administrator.
+	 * @throws MyStyle_Exception Throws a MyStyle_Exception if the function
+	 * fails.
+	 */
+	public static function update_design_tags(
+		$design_id,
+		$tags,
+		WP_User $user
+	) {
+		$taxonomy = MYSTYLE_TAXONOMY_NAME;
+
+		// ---- Security Check ---- //
+		if (
+				( ! self::is_user_design_owner( $user->ID, $design_id ) )
+				&& ( ! $user->has_cap( 'administrator' ) )
+		) {
+			throw new MyStyle_Unauthorized_Exception(
+				'Only the design owner or an administrator can update a design\'s tags.'
+			);
+		}
+
+		// Remove all current tags from the design.
+		$old_terms = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME );
+		if ( ! empty( $old_terms ) ) {
+			$old_term_ids = array();
+			foreach ( $old_terms as $old_term ) {
+				$old_term_ids = $old_term->term_id;
+			}
+
+			$removed = wp_remove_object_terms( $design_id, $old_term_ids, $taxonomy );
+			if ( ! $removed ) {
+				throw new MyStyle_Exception( 'Couldn`t remove existing tags.' );
+			}
+		}
+
+		// Add the passed tags to the design.
+		if ( ! empty( $tags ) ) {
+			$term_ids = wp_add_object_terms( $design_id, $tags, $taxonomy );
+		}
+	}
+
+	/**
 	 * Helper method that returns the security WHERE clause ( EX: ' WHERE
 	 * ms_access = 0 ').
 	 *

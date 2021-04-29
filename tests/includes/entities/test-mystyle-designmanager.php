@@ -815,4 +815,103 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		$this->assertEquals( 0, count( $tags ) );
 	}
 
+	/**
+	 * Test the update_design_tags function.
+	 */
+	public function test_update_design_tags() {
+		$orig_tag_name = 'Orig Tag';
+		$design_id     = 1;
+		$user_id       = 1;
+		$new_tags      = array( $orig_tag_name, 'New Tag 1', 'New Tag 2' );
+
+		// Mock a WP_User.
+		$user     = new WP_User();
+		$user->ID = $user_id;
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $user_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Add the Tag to the design.
+		$tag_id = MyStyle_DesignManager::add_tag_to_design(
+			$design_id,
+			$orig_tag_name,
+			$user
+		);
+
+		// Get the tags for the design.
+		$tags = MyStyle_DesignManager::get_design_tags(
+			$design->get_design_id()
+		);
+
+		// Assert that the design has 1 tag.
+		$this->assertEquals( 1, count( $tags ) );
+
+		// Call the method.
+		$tags = MyStyle_DesignManager::update_design_tags(
+			$design->get_design_id(),
+			$new_tags,
+			$user
+		);
+
+		// Get the tags for the design (again).
+		$tags = MyStyle_DesignManager::get_design_tags(
+			$design->get_design_id()
+		);
+
+		// Assert that the design now has 3 tags.
+		$this->assertEquals( 3, count( $tags ) );
+	}
+
+	/**
+	 * Test that the update_design_tags function removes all tags when passed
+	 * an empty array.
+	 */
+	public function test_update_design_tags_removes_all_tags_when_passed_empty_array() {
+		$orig_tag_name = 'Orig Tag';
+		$design_id     = 1;
+		$user_id       = 1;
+		$new_tags      = array();
+
+		// Mock a WP_User.
+		$user     = new WP_User();
+		$user->ID = $user_id;
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $user_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Add the Tag to the design.
+		$tag_id = MyStyle_DesignManager::add_tag_to_design(
+			$design_id,
+			$orig_tag_name,
+			$user
+		);
+
+		// Get the tags for the design.
+		$tags = MyStyle_DesignManager::get_design_tags(
+			$design->get_design_id()
+		);
+
+		// Assert that the design has 1 tag.
+		$this->assertEquals( 1, count( $tags ) );
+
+		// Call the method.
+		$tags = MyStyle_DesignManager::update_design_tags(
+			$design->get_design_id(),
+			$new_tags,
+			$user
+		);
+
+		// Get the tags for the design (again).
+		$tags = MyStyle_DesignManager::get_design_tags(
+			$design->get_design_id()
+		);
+
+		// Assert that the design now has 0 tags.
+		$this->assertEquals( 0, count( $tags ) );
+	}
+
 }
