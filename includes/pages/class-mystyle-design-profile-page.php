@@ -566,7 +566,7 @@ class MyStyle_Design_Profile_Page {
 			$user_id,
 			$design_id
 		);
-        
+
 		if (
 				( $user_owns_design )
 				|| current_user_can( 'administrator' )
