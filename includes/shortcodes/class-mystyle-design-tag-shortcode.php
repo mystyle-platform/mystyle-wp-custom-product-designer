@@ -13,6 +13,8 @@ abstract class MyStyle_Design_Tag_Shortcode {
 
 	/**
 	 * Output the design tag shortcode.
+	 *
+	 * @param array $atts The attributes set on the shortcode.
 	 */
 	public static function output( $atts ) {
 
@@ -23,10 +25,12 @@ abstract class MyStyle_Design_Tag_Shortcode {
 		$pager = 0;
 		$limit = 4;
 
+		// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 		if ( isset( $_GET['pager'] ) ) {
-			$pager  = $_GET['pager'];
+			$pager  = intval( $_GET['pager'] );
 			$offset = ( $pager * $limit );
 		}
+		// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 
 		$terms = get_terms(
 			array(
@@ -48,14 +52,13 @@ abstract class MyStyle_Design_Tag_Shortcode {
 				1
 			);
 
-			if ( count( $design_objs ) == 0 ) {
+			if ( 0 === count( $design_objs ) ) {
 				unset( $terms[ $i ] );
 			} else {
 				$terms[ $i ]->designs = $design_objs;
 			}
 		}
 
-		// echo '<pre>' ; var_dump($terms) ; die() ;
 		$pager_array = self::pager( $pager, $limit, $terms_count );
 		$next        = $pager_array['next'];
 		$prev        = $pager_array['prev'];
@@ -68,7 +71,14 @@ abstract class MyStyle_Design_Tag_Shortcode {
 		return $out;
 	}
 
-
+	/**
+	 * Helper method that returns the pager array.
+	 *
+	 * @param int $pager The current page.
+	 * @param int $limit The limit.
+	 * @param int $term_count The total number of terms.
+	 * @return array Returns the pager array.
+	 */
 	public function pager( $pager, $limit, $term_count ) {
 		$next = $pager + 1;
 		$prev = $pager - 1;
@@ -77,7 +87,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
 			$next = null;
 		}
 
-		if ( $pager == 0 ) {
+		if ( 0 === $pager ) {
 			$prev = null;
 		}
 
@@ -86,7 +96,5 @@ abstract class MyStyle_Design_Tag_Shortcode {
 			'next' => $next,
 		);
 	}
-
-
 
 }

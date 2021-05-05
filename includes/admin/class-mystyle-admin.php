@@ -47,7 +47,7 @@ class MyStyle_Admin {
 	 * Add settings link on plugin page.
 	 *
 	 * @param array $links An array of existing links for the plugin.
-	 * @return array The new array of links
+	 * @return array The new array of links.
 	 */
 	public function add_settings_link( $links ) {
 		$settings_link = '<a href="options-general.php?page=mystyle_settings">Settings</a>';

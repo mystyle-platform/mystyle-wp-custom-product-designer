@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			foreach ( $pager->get_items() as $design ) {
 				$design_url = MyStyle_Design_Profile_page::get_design_url( $design );
 				$product_id = $design->get_product_id();
-				if ( $product_id != 0 ) {
+				if ( 0 !== $product_id ) {
 					$product       = $design->get_product();
 					$product_title = $product->get_title();
 				} else {
