@@ -95,6 +95,11 @@ iframe.mystyle-fullscreen#customizer-iframe {
 	height: 100% !important;
 }
 
+/* fix for static navs overtop of full screen app in DIVI */
+.mystyle-fullscreen header#main-header {
+    z-index: auto;
+}
+
 #customizer-close-button,
 #customizer-fullscreen-button,
 #customizer-fullscreen-button label {
