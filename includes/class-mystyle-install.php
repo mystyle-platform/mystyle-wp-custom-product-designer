@@ -121,7 +121,7 @@ class MyStyle_Install {
 		// Flush rewrite rules for newly created rewrites.
 		flush_rewrite_rules();
 
-		// Add the Design tage page if upgrading from less than 3.14.0 (versions
+		// Add the Design tag page if upgrading from less than 3.14.0 (versions
 		// that were before this page existed).
 		if ( version_compare( $old_version, '3.14.0', '<' ) ) {
 			if ( ! MyStyle_Design_Tag_Page::exists() ) {

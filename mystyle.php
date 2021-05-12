@@ -3,7 +3,7 @@
  * Plugin Name: MyStyle
  * Plugin URI: http://www.mystyleplatform.com
  * Description: The MyStyle Custom Product Designer is a simple plugin that allows your customers to customize products in WooCommerce.
- * Version: 3.17.3
+ * Version: 3.17.5
  * GitHub Plugin URI: https://github.com/mystyle-platform/mystyle-wp-custom-product-designer
  * WC requires at least: 2.2.0
  * WC tested up to: 5.2.2
@@ -93,7 +93,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' );
 			}
 			if ( ! defined( 'MYSTYLE_VERSION' ) ) {
-				define( 'MYSTYLE_VERSION', '3.17.3' );
+				define( 'MYSTYLE_VERSION', '3.17.5' );
 			}
 			if ( ! defined( 'MYSTYLE_TEMPLATE_DEBUG_MODE' ) ) {
 				define( 'MYSTYLE_TEMPLATE_DEBUG_MODE', false );
@@ -181,6 +181,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			// Shortcode includes.
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php';
+			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-tag-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php';
 
 			require_once MYSTYLE_PATH . 'functions.php';
@@ -325,6 +326,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			add_shortcode( 'mystyle_customizer', array( 'MyStyle_Customizer_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
+			add_shortcode( 'mystyle_design_tags', array( 'MyStyle_Design_Tag_Shortcode', 'output' ) );
 		}
 
 		/**

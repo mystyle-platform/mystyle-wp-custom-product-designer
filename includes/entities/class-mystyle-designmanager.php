@@ -571,10 +571,12 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
-		$count = $wpdb->get_var(
-			'SELECT COUNT(ms_design_id) '
-			. "FROM {$wpdb->prefix}mystyle_designs "
-			. $where
+		$count = intval(
+			$wpdb->get_var(
+				'SELECT COUNT(ms_design_id) '
+				. "FROM {$wpdb->prefix}mystyle_designs "
+				. $where
+			)
 		);
 		// phpcs:enable WordPress.WP.PreparedSQL.NotPrepared
 
@@ -598,17 +600,17 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			$access = MyStyle_Access::ACCESS_PUBLIC;
 		}
 
-		$where = ' WHERE ms_access = ' . $access;
+		$where = ' WHERE ms_access = ' . esc_sql( $access );
 
 		if ( is_string( $user ) ) {
-			$where .= ' AND ms_email = ' . $user;
+			$where .= ' AND ms_email = ' . esc_sql( $user );
 		} else {
-			$where .= ' AND user_id = ' . $user->ID;
+			$where .= ' AND user_id = ' . esc_sql( $user->ID );
 		}
 
 		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
-		$count = $wpdb->get_var(
-			$wpdb->prepare(
+		$count = intval(
+			$wpdb->get_var(
 				'SELECT COUNT(ms_design_id) '
 				. "FROM {$wpdb->prefix}mystyle_designs "
 				. $where
@@ -667,7 +669,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			)
 		);
 
-		if ( $design_user_id === $user_id ) {
+		if ( intval( $design_user_id ) === $user_id ) {
 			$ret = true;
 		}
 

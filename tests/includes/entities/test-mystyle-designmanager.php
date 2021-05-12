@@ -621,6 +621,36 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the get_total_user_design_count function.
+	 */
+	public function test_get_total_user_design_count() {
+
+		// Create a user.
+		$user_1     = new WP_User();
+		$user_1->ID = 1;
+
+		// Create another user.
+		$user_2     = new WP_User();
+		$user_2->ID = 2;
+
+		// Create a design for user_1.
+		$design_1 = MyStyle_MockDesign::get_mock_design( 1 );
+		$design_1->set_user_id( $user_1->ID );
+		MyStyle_DesignManager::persist( $design_1 );
+
+		// Create a design for user_2.
+		$design_2 = MyStyle_MockDesign::get_mock_design( 2 );
+		$design_2->set_user_id( $user_2->ID );
+		MyStyle_DesignManager::persist( $design_2 );
+
+		// Call the function.
+		$count = MyStyle_DesignManager::get_total_user_design_count( $user_1 );
+
+		// Assert that the expected count is returned.
+		$this->assertEquals( 1, $count );
+	}
+
+	/**
 	 * Test the get_total_term_design_count function.
 	 */
 	public function test_get_total_term_design_count() {
