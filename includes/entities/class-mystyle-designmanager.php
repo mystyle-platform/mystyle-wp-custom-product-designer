@@ -281,6 +281,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * Retrieve designs from the database.
 	 *
 	 * The designs are filtered for the passed user based on these rules:
+	 *
 	 *  * If no user is specified, only public designs are returned.
 	 *  * If the passed user is an admin (or has the 'read_private_posts'
 	 *    capability, all designs are returned).
@@ -350,6 +351,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * Retrieve user designs from the database.
 	 *
 	 * The designs are filtered for the passed user based on these rules:
+	 *
 	 *  * If no user is specified, only public designs are returned.
 	 *  * If the passed user is an admin (or has the 'read_private_posts'
 	 *    capability, all designs are returned).
@@ -428,24 +430,21 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * Retrieve random designs from the database.
 	 *
 	 * The designs are filtered for the passed user based on these rules:
+	 *
 	 *  * If no user is specified, only public designs are returned.
 	 *  * If the passed user is an admin (or has the 'read_private_posts'
 	 *    capability, all designs are returned).
 	 *  * If the passed user is a regular user, all public designs are returned
 	 *    along with any private designs that the user owns.
 	 *
-	 * @param int     $per_page The number of designs to show per page (default:
-	 * 250).
-	 * @param int     $page_number The page number of the set of designs that you
-	 * want to get (default: 1).
+	 * @param int     $count The number of designs to return (default: 250).
 	 * @param WP_User $user (optional) The current user.
-	 * @global $wpdb;
+	 * @global \wpdb $wpdb
 	 * @return mixed Returns an array of MyStyle_Design objects or null if none
 	 * are found.
 	 */
 	public static function get_random_designs(
-		$per_page = 250,
-		$page_number = 1,
+		$count = 250,
 		WP_User $user = null
 	) {
 		global $wpdb;
@@ -464,12 +463,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 				. "FROM {$wpdb->prefix}mystyle_designs "
 				. $where
 				. ' ORDER BY RAND()
-				LIMIT %d
-				OFFSET %d',
-				array(
-					$per_page,
-					( $page_number - 1 ) * $per_page,
-				)
+				LIMIT %d',
+				array( $count )
 			),
 			'OBJECT'
 		);
@@ -499,7 +494,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * @param int                   $page_number The page number of the set of
 	 *                                           designs that you want to get
 	 *                                           (default: 1).
-	 * @global $wpdb;
+	 * @global \wpdb $wpdb
 	 * @return mixed Returns an array of MyStyle_Design objects or null if none
 	 * are found.
 	 */
@@ -532,10 +527,11 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		foreach ( $terms as $term ) {
 			try {
 
-				$design = MyStyle_DesignManager::get( $term->object_id, $user, $session );
+				$design = self::get( $term->object_id, $user, $session );
 
-				array_push( $designs, $design );
-
+				if ( null !== $design ) {
+					array_push( $designs, $design );
+				}
 			} catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 				// If unauthorized, skip and continue on to the next one.
 			}

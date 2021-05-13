@@ -162,7 +162,7 @@ abstract class MyStyle_Design_Shortcode {
 		$pager->set_current_page_number( 1 );
 
 		// Pager items.
-		$designs = MyStyle_DesignManager::get_random_designs( $count, 1, $user );
+		$designs = MyStyle_DesignManager::get_random_designs( $count, $user );
 
 		$pager->set_items( $designs );
 

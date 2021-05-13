@@ -22,8 +22,9 @@ abstract class MyStyle_Design_Tag_Shortcode {
 
 		$session = MyStyle()->get_session();
 
-		$pager = 0;
-		$limit = 4;
+		$pager  = 0;
+		$limit  = 4;
+		$offset = 0;
 
 		// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 		if ( isset( $_GET['pager'] ) ) {
@@ -43,8 +44,8 @@ abstract class MyStyle_Design_Tag_Shortcode {
 
 		$terms_count = count( $terms );
 
-		for ( $i = 0;$i < $terms_count;$i++ ) {
-			$design_objs = MyStyle_DesignManager::get_designs_by_term_id(
+		for ( $i = 0; $i < $terms_count; $i++ ) {
+			$designs = MyStyle_DesignManager::get_designs_by_term_id(
 				$terms[ $i ]->term_id,
 				$wp_user,
 				$session,
@@ -52,10 +53,10 @@ abstract class MyStyle_Design_Tag_Shortcode {
 				1
 			);
 
-			if ( 0 === count( $design_objs ) ) {
+			if ( 0 === count( $designs ) ) {
 				unset( $terms[ $i ] );
 			} else {
-				$terms[ $i ]->designs = $design_objs;
+				$terms[ $i ]->designs = $designs;
 			}
 		}
 
@@ -79,7 +80,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
 	 * @param int $term_count The total number of terms.
 	 * @return array Returns the pager array.
 	 */
-	public function pager( $pager, $limit, $term_count ) {
+	private static function pager( $pager, $limit, $term_count ) {
 		$next = $pager + 1;
 		$prev = $pager - 1;
 

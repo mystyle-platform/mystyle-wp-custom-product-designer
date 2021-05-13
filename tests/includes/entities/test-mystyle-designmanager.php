@@ -301,7 +301,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		// Call the function.
 		$next_design = MyStyle_DesignManager::get_next_design( 1 );
 
-		// Assert that the design design was found and has the expected id.
+		// Assert that the design was found and has the expected id.
 		$this->assertEquals( 2, $next_design->get_design_id() );
 	}
 
@@ -502,7 +502,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		// Call the function.
 		$designs = MyStyle_DesignManager::get_designs();
 
-		// Assert that the design design was found and has the expected id.
+		// Assert that the design was found and has the expected id.
 		$this->assertEquals( 2, count( $designs ) );
 	}
 
@@ -598,6 +598,58 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		/* @var $returned_design \MyStyle_Design The returned_design. */
 		$returned_design = $designs[0];
 		$this->assertEquals( MyStyle_Access::ACCESS_PRIVATE, $returned_design->get_access() );
+	}
+
+	/**
+	 * Test the get_random_designs function.
+	 */
+	public function test_get_random_designs() {
+
+		// Create a design.
+		$design_1 = MyStyle_MockDesign::get_mock_design( 1 );
+		MyStyle_DesignManager::persist( $design_1 );
+
+		// Create another design.
+		$design_2 = MyStyle_MockDesign::get_mock_design( 2 );
+		MyStyle_DesignManager::persist( $design_2 );
+
+		// Call the function.
+		$designs = MyStyle_DesignManager::get_random_designs();
+
+		// Assert that the designs were returned.
+		$this->assertEquals( 2, count( $designs ) );
+	}
+
+	/**
+	 * Test the get_designs_by_term_id function.
+	 */
+	public function test_get_designs_by_term_id() {
+
+		// Create a design.
+		$design_1 = MyStyle_MockDesign::get_mock_design( 1 );
+		MyStyle_DesignManager::persist( $design_1 );
+
+		// Give the design the term.
+		$tag_name      = 'test_tag';
+		$taxonomy_name = MYSTYLE_TAXONOMY_NAME;
+		$term_ids      = wp_add_object_terms(
+			$design_1->get_design_id(),
+			$tag_name,
+			$taxonomy_name
+		);
+		$term_id       = $term_ids[0];
+
+		// Create another design.
+		$design_2 = MyStyle_MockDesign::get_mock_design( 2 );
+		MyStyle_DesignManager::persist( $design_2 );
+
+		// Call the function.
+		$designs = MyStyle_DesignManager::get_designs_by_term_id( $term_id );
+
+		// Assert that only the design with the term was returned.
+		$this->assertEquals( 1, count( $designs ) );
+		$returned_design = $designs[0];
+		$this->assertEquals( 'MyStyle_Design', get_class( $returned_design ) );
 	}
 
 	/**
