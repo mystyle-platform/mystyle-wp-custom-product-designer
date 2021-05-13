@@ -122,10 +122,18 @@ class MyStyle_Handoff {
 			$this->design = $this->mystyle_api->add_api_data_to_design( $this->design );
 
 			// Get the mystyle user from the API.
-			$mystyle_user = $this->mystyle_api->get_user( $this->design->get_designer_id() );
+			// Note: the user_id isn't returned by the API if the user is already
+			// logged in locally (in which case, no email is captured or passed
+			// to the API).
+			$mystyle_user = null;
+			if ( null !== $this->design->get_designer_id() ) {
+				$mystyle_user = $this->mystyle_api->get_user(
+					$this->design->get_designer_id()
+				);
 
-			// Add data from the user to the design.
-			$this->design->set_email( $mystyle_user->get_email() );
+				// Add data from the user to the design.
+				$this->design->set_email( $mystyle_user->get_email() );
+			}
 
 			// If the user is logged in to WordPress, store their user id with their design.
 			$wp_user_id = get_current_user_id();
@@ -133,7 +141,7 @@ class MyStyle_Handoff {
 				$user = get_userdata( $wp_user_id );
 				$this->design->set_user_id( $wp_user_id );
 				$this->design->set_email( $user->user_email );
-			} else {
+			} elseif ( null !== $mystyle_user ) {
 				// If the user isn't logged in, see if their email matches an existing user and store that id with the design.
 				$user = get_user_by( 'email', $mystyle_user->get_email() );
 				if ( false !== $user ) {
@@ -175,7 +183,7 @@ class MyStyle_Handoff {
 				}
 
 				wp_mail(
-					$mystyle_user->get_email(),
+					$this->design->get_email(),
 					'Design Created!',
 					$message,
 					$headers
