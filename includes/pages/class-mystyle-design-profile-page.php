@@ -43,6 +43,12 @@ class MyStyle_Design_Profile_Page {
 	 * @var MyStyle_Session
 	 */
 	private $session;
+    
+    /**
+	 * Stores the Boolean value as to whether the design can have the access permissions changed
+	 *
+	 */
+	private $enable_edit_access = false ;
 
 	/**
 	 * The design that comes immediately before this one in the collection.
@@ -265,6 +271,7 @@ class MyStyle_Design_Profile_Page {
 					( get_current_user_id() === $design->get_user_id() )
 					|| ( current_user_can( 'administrator' ) )
 			) {
+                
 				wp_register_style( 'jquery-ui-styles', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
 				wp_enqueue_style( 'jquery-ui-styles' );
 
@@ -285,6 +292,24 @@ class MyStyle_Design_Profile_Page {
 
 				wp_register_style( 'tokenfield-custom-styles', MYSTYLE_ASSETS_URL . 'css/tokenfield.css' );
 				wp_enqueue_style( 'tokenfield-custom-styles' );
+                
+                //Check for correct version of design manager and enable ability for user to update the design access permissions.
+                include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+                if ( is_plugin_active( 'mystyle-wp-design-manager/mystyle-design-manager.php' ) ) {
+                    require_once MYSTYLE_DM_INCLUDES . 'admin/pages/class-mystyle-designs-page.php';
+                    $design_manager = MyStyle_Designs_Page::get_instance();
+                    
+                    if( method_exists( $design_manager, 'change_design_access' ) ) {
+                        $this->set_enable_edit_access(true) ;
+                        if ( !function_exists( 'woocommerce_wp_select' ) ) {
+                            require_once WP_PLUGIN_DIR . '/woocommerce/includes/admin/wc-meta-box-functions.php' ; 
+                        }
+
+                        wp_register_script( 'mystyle-dm-admin-js', MYSTYLE_DM_ASSETS_URL . 'js/admin.js?79879', null, null, true );
+                        wp_enqueue_script('mystyle-dm-admin-js');
+                    }
+                }
+                
 			}
 
 			// Set the current design in the singleton instance.
@@ -699,7 +724,24 @@ class MyStyle_Design_Profile_Page {
 	public function get_session() {
 		return $this->session;
 	}
-
+    
+    /**
+	 * Sets the enable edit access boolean.
+	 *
+	 * @param $enable_edit_access
+	 */
+	public function set_enable_edit_access( $enable_edit_access ) {
+		$this->enable_edit_access = $enable_edit_access ;
+	}
+    
+    /**
+	 * Gets the enable edit access boolean.
+	 *
+	 */
+	public function get_enable_edit_access() {
+		return $this->enable_edit_access ;
+	}
+    
 	/**
 	 * Sets the previous design.
 	 *

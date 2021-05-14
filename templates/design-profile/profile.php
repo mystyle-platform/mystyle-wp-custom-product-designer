@@ -80,15 +80,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<?php endif; ?>
 		<?php if ( ( ( 0 !== $design->get_user_id() ) && ( get_current_user_id() === $design->get_user_id() ) ) || ( current_user_can( 'administrator' ) ) ) : ?>
-		<div class="edit-design-tags">
-			<br />
-			<b>Add or Edit Design Tags</b>
-			<form method="post">
-				<input type="text" class="edit-design-tag-input" name="edit-design-tag" />
-				<input type="submit" class="button" value="SAVE TAGS" />
-			</form>
-			<div class="design-tag-status"></div>
-		</div>
+        <div class="design-manager-menu">
+        <?php if($design_profile_page->get_enable_edit_access()) : ?>
+            <br />
+            <b>Change the design access level</b>
+            <form action="#" class="form-change-design-access" method="post">
+                <?php
+                woocommerce_wp_select(
+						array(
+							'id'          => '_mystyle_design_access_' . $design->get_design_id(),
+							'label'       => __( '', 'mystyle' ),
+							'placeholder' => $design->get_access(),
+							'desc_tip'    => 'true',
+							'description' => __( 'Change the design access policy', 'mystyle' ),
+							'value'       => $design->get_access(),
+							'options'     => array(
+								0     => 'PUBLIC',
+								1     => 'PRIVATE'
+							),
+						)
+					);
+                ?>
+                <input type="hidden" name="nonce" value="<?php print wp_create_nonce("change_design_access_nonce"); ?>" />
+                <input type="hidden" name="design_id" value="<?php print $design->get_design_id() ?>" />
+            </form>
+        <?php endif ; ?>
+        
+            <div class="edit-design-tags">
+                <b>Add or Edit Design Tags</b>
+                <form method="post">
+                    <input type="text" class="edit-design-tag-input" name="edit-design-tag" />
+                    <input type="submit" class="button" value="SAVE TAGS" />
+                </form>
+                <div class="design-tag-status"></div>
+            </div>
+        </div>
 		<?php else : ?>
 		<div class="design-tags">
 			<?php $design_tags = MyStyle_Design_Profile_Page::get_design_tags( $design->get_design_id(), true ); ?>
