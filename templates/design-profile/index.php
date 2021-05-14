@@ -20,15 +20,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php
 			/* @var $design \MyStyle_Design The current MyStyle_Design. */
 			foreach ( $pager->get_items() as $design ) {
-				$design_url    = MyStyle_Design_Profile_page::get_design_url( $design );
-				$product_id    = $design->get_product_id();
-                if($product_id != 0) {
-					$product       = $design->get_product() ;
-					$product_title = $product->get_title();	
-				}
-				else {
-					$product       = "" ;
-					$product_title = "" ;
+				$design_url = MyStyle_Design_Profile_page::get_design_url( $design );
+				$product_id = $design->get_product_id();
+				if ( 0 !== $product_id ) {
+					$product       = $design->get_product();
+					$product_title = $product->get_title();
+				} else {
+					$product       = '';
+					$product_title = '';
 				}
 				?>
 				<li>

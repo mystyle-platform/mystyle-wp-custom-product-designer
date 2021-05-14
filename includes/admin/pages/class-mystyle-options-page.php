@@ -242,7 +242,7 @@ class MyStyle_Options_Page {
 			<br/>
 			<div class="mystyle-admin-box">
 				<?php do_settings_sections( 'mystyle_tools' ); ?>
-				<form action="admin.php?page=mystyle&action=fix_customize_page&_wpnonce=<?php echo esc_url( wp_create_nonce( 'mystyle-admin-action' ) ); ?>" method="post">
+				<form action="<?php echo esc_url( 'admin.php?page=mystyle&action=fix_customize_page&_wpnonce=' . wp_create_nonce( 'mystyle-admin-action' ) ); ?>" method="post">
 					<p class="submit">
 						<input type="submit" name="Submit" id="submit_fix_customize_page" class="button button-primary" value="<?php esc_attr_e( 'Fix Customize Page', 'mystyle' ); ?>" /><br/>
 						<small>This tool will attempt to fix the Customize page. This may involve creating, recreating, or restoring the page.</small>

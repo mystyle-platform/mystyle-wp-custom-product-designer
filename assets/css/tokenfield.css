@@ -13,6 +13,9 @@
 	background-color: #fff;
 }
 
+.tokenfield .token .close {
+	text-decoration: none;
+}
 
 .edit-design-tags .button {
 	float: left;

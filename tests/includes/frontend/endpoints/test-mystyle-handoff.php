@@ -402,6 +402,67 @@ class MyStyleHandoffTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the handle function for a POST request without a user_id. If the
+	 * user is logged into WordPress/WooCommerce, we don't capture their email
+	 * when saving the design and the API doesn't return a user_id.
+	 */
+	public function test_handle_post_request_without_user_id() {
+		global $post;
+		global $woocommerce;
+		global $mail_message;
+
+		$GLOBALS['skip_ob_start'] = true;
+		$session_handler          = MyStyle_SessionHandler::get_instance();
+		$session_handler->disable_cookies();
+
+		// Create the MyStyle Customize page (needed for the link in the email).
+		MyStyle_Customize_Page::create();
+
+		// Create the MyStyle Design Profile page (needed for the link in the email).
+		MyStyle_Design_Profile_Page::create();
+
+		// Mock woocommerce.
+		$woocommerce = new MyStyle_MockWooCommerce();
+
+		// Init the MyStyle_Handoff.
+		$mystyle_handoff = new MyStyle_Handoff();
+		$mystyle_handoff->set_mystyle_api( new MyStyle_MockAPI() );
+
+		// Mock the POST.
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$post                      = array();
+		$post['description']       = 'test description';
+		$post['design_id']         = 1;
+		$post['product_id']        = 0;
+		$post['h']                 = base64_encode(
+			wp_json_encode(
+				array(
+					'post' => array(
+						'add-to-cart' => 0,
+						'quantity'    => 1,
+					),
+				)
+			)
+		);
+		$post['price']             = 0;
+		$_POST                     = $post;
+
+		// Call the function.
+		$mystyle_handoff->handle();
+		$html = $mystyle_handoff->get_output();
+
+		// Assert that the 'product added to cart' message is displayed.
+		$this->assertContains( 'Product added to cart', $html );
+
+		// Assert that add_to_cart was called.
+		$this->assertEquals( 1, $woocommerce->cart->add_to_cart_call_count );
+
+		// Assert that the email was sent.
+		$this->assertEquals( 'Design Created!', $mail_message['subject'] );
+		$this->assertContains( 'http://', $mail_message['message'] );
+	}
+
+	/**
 	 * Test the get_output method with GET request.
 	 *
 	 * @global $woocommerce

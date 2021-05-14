@@ -254,7 +254,7 @@ class MyStyle_Design_Profile_Page {
 			);
 
 			// Get the design. If the user doesn't have access, an exception is
-			// thrown.
+			// thrown (and caught at the bottom of this function).
 			$design = MyStyle_DesignManager::get(
 				$design_id,
 				$this->user,
@@ -262,8 +262,8 @@ class MyStyle_Design_Profile_Page {
 			);
 
 			// Throw exception if design isn't found (it's caught at the bottom
-			// of this function.
-			if ( null === $design || false === $design ) {
+			// of this function).
+			if ( null === $design ) {
 				throw new MyStyle_Not_Found_Exception( 'Design not found.' );
 			}
 
@@ -459,6 +459,15 @@ class MyStyle_Design_Profile_Page {
 	}
 
 	/**
+	 * Static function that builds a url to the Design Profile index page.
+	 *
+	 * @return string Returns a URL to the Design Profile index page.
+	 */
+	public static function get_index_url() {
+		return get_permalink( MyStyle_Design_Profile_Page::get_id() );
+	}
+
+	/**
 	 * Static function that builds a url to the Design Profile page including
 	 * url paramaters to load the passed design.
 	 *
@@ -486,38 +495,6 @@ class MyStyle_Design_Profile_Page {
 	}
 
 	/**
-	 * Get design tags.
-	 *
-	 * @param int|null $design_id The id of the design that you want to get. If
-	 *                            null, the function will attempt to get the
-	 *                            design id from the URL.
-	 * @param bool     $slug      Set to true (default is false) to include the
-	 *                            term slug in the tags.
-	 * @return array Returns an array of tags.
-	 */
-	public static function get_design_tags( $design_id = null, $slug = false ) {
-		if ( null === $design_id ) {
-			$design_id = self::get_design_id_from_url();
-		}
-
-		$tag_names = array();
-		$terms     = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME );
-
-		foreach ( $terms as $term ) {
-			if ( $slug ) {
-				$tag_names[] = array(
-					'name' => esc_html( $term->name ),
-					'slug' => esc_html( $term->slug ),
-				);
-			} else {
-				$tag_names[] = $term->name;
-			}
-		}
-
-		return $tag_names;
-	}
-
-	/**
 	 * Search design tags. Registered for use via ajax.
 	 *
 	 * This is mostly copy/paste from the wp_ajax_ajax_tag_search function.
@@ -526,18 +503,6 @@ class MyStyle_Design_Profile_Page {
 		$taxonomy = MYSTYLE_TAXONOMY_NAME;
 		// phpcs:ignore
 		$s        = wp_unslash( $_GET['q'] );
-
-		$comma = _x( ',', 'tag delimiter', 'mystyle' );
-		if ( ',' !== $comma ) {
-			$s = str_replace( $comma, ',', $s );
-		}
-
-		if ( false !== strpos( $s, ',' ) ) {
-			$s = explode( ',', $s );
-			$s = $s[ count( $s ) - 1 ];
-		}
-
-		$s = trim( $s );
 
 		/**
 		 * Filters the minimum number of characters required to fire a tag search via Ajax.
@@ -558,14 +523,7 @@ class MyStyle_Design_Profile_Page {
 			wp_die();
 		}
 
-		$results = get_terms(
-			array(
-				'taxonomy'   => $taxonomy,
-				'name__like' => $s,
-				'fields'     => 'names',
-				'hide_empty' => false,
-			)
-		);
+		$results = MyStyle_Design_Tag_Taxonomy::search( $s );
 
 		header( 'Content-Type: application/json' );
 		echo wp_json_encode( $results );
@@ -573,67 +531,53 @@ class MyStyle_Design_Profile_Page {
 	}
 
 	/**
-	 * Save design tag. Registered for use via AJAX. Called to add a new tag to
-	 * a design.
-	 *
-	 * @todo Add unit testing for this method.
+	 * Add a tag to the design. Registered for use via AJAX.
 	 */
 	public static function design_tag_add() {
-		$taxonomy = MYSTYLE_TAXONOMY_NAME;
 		// phpcs:disable
 		$tag       = sanitize_text_field( wp_unslash( $_POST['tag'] ) );
 		$design_id = intval( wp_unslash( $_POST['design_id'] ) );
 		// phpcs:enable
 
-		$user_id = get_current_user_id();
+		$user = wp_get_current_user();
 
-		$user_owns_design = MyStyle_DesignManager::does_user_own_design(
-			$user_id,
-			$design_id
+		// Adds the tag - throws exception is user isn't authorized.
+		MyStyle_DesignManager::add_tag_to_design(
+			$design_id,
+			$tag,
+			$user
 		);
-        
-		if (
-				( $user_owns_design )
-				|| current_user_can( 'administrator' )
-		) {
-			wp_add_object_terms( $design_id, $tag, $taxonomy );
-		}
 
-		header( 'Content-Type: application/json' );
+		if ( ! headers_sent() ) {
+			header( 'Content-Type: application/json' );
+		}
 		echo wp_json_encode( array( 'tag' => $tag ) );
-		die();
+		wp_die();
 	}
 
 	/**
-	 * Remove design tag. Registered for use via AJAX. Called to remove a tag
-	 * from a design.
-	 *
-	 * @todo Add unit testing for this method.
+	 * Remove a tag from the design. Registered for use via AJAX.
 	 */
 	public static function design_tag_remove() {
-		$taxonomy = MYSTYLE_TAXONOMY_NAME;
 		// phpcs:disable
 		$tag       = sanitize_text_field( wp_unslash( $_POST['tag'] ) );
 		$design_id = intval( $_POST['design_id'] );
 		// phpcs:enable
 
-		$user_id = get_current_user_id();
+		$user = wp_get_current_user();
 
-		$user_owns_design = MyStyle_DesignManager::does_user_own_design(
-			$user_id,
-			$design_id
+		// Removes the tag - throws exception is user isn't authorized.
+		MyStyle_DesignManager::remove_tag_from_design(
+			$design_id,
+			$tag,
+			$user
 		);
 
-		if (
-				( $user_owns_design )
-				|| current_user_can( 'administrator' )
-		) {
-			wp_remove_object_terms( $design_id, $tag, $taxonomy );
+		if ( ! headers_sent() ) {
+			header( 'Content-Type: application/json' );
 		}
-
-		header( 'Content-Type: application/json' );
 		echo wp_json_encode( array( 'tag' => $tag ) );
-		die();
+		wp_die();
 	}
 
 
@@ -1048,7 +992,7 @@ class MyStyle_Design_Profile_Page {
 					$design_title = $design->get_title();
 				}
 
-				$tags = $this->get_design_tags();
+				$tags = MyStyle_DesignManager::get_design_tags( $design_id );
 
 				if ( $user ) {
 					?>

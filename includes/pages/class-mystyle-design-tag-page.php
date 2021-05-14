@@ -194,39 +194,38 @@ class MyStyle_Design_Tag_Page {
 		$designs = array();
 
 		foreach ( $design_objs as $design ) {
-			if($design) {
-                try { 
-                    $title = ( '' === $design->get_title() )
-                        ? 'Design ' . $design->get_design_id()
-                        : $design->get_title();
+			if ( $design ) {
+				try {
+					$title = ( '' === $design->get_title() )
+						? 'Design ' . $design->get_design_id()
+						: $design->get_title();
 
-                    $product_id = $design->get_product_id();
+					$product_id = $design->get_product_id();
 
-                    $product = wc_get_product( $product_id );
+					$product = wc_get_product( $product_id );
 
-                    $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+					$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 
-                    $design_post               = new stdClass();
-                    $design_post->ID           = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
-                    $design_post->design_id    = $design->get_design_id();
-                    $design_post->post_author  = $design->get_user_id();
-                    $design_post->post_name    = $title;
-                    $design_post->post_type    = 'Design';
-                    $design_post->post_title   = $title;
-                    $design_post->post_content = $title . ' custom ' . $product->get_name();
+					$design_post               = new stdClass();
+					$design_post->ID           = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
+					$design_post->design_id    = $design->get_design_id();
+					$design_post->post_author  = $design->get_user_id();
+					$design_post->post_name    = $title;
+					$design_post->post_type    = 'Design';
+					$design_post->post_title   = $title;
+					$design_post->post_content = $title . ' custom ' . $product->get_name();
 
-                    $designs[] = $design_post;
-                } catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-                    // If unauthorized, skip and go onto the next one.
-                }
-            }
-            
+					$designs[] = $design_post;
+				} catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+					// If unauthorized, skip and go onto the next one.
+				}
+			}
 		}
 
 		$this->pager->set_items( $designs );
 
 		// Total items.
-		$term_count = MyStyle_DesignManager::get_total_term_count( $term_id );
+		$term_count = MyStyle_DesignManager::get_total_term_design_count( $term_id );
 
 		$this->pager->set_total_item_count( $term_count );
 

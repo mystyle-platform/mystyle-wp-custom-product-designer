@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php } else { ?>
 			<li>&nbsp;</li>
 		<?php } ?>
-		<li><a href="<?php echo esc_attr( get_permalink( MyStyle_Design_Profile_Page::get_id() ) ); ?>">&uarr;</a></li>
+		<li><a href="<?php echo esc_attr( MyStyle_Design_Profile_Page::get_index_url() ); ?>">&uarr;</a></li>
 		<?php if ( ! empty( $next_design_url ) ) { ?>
 			<li><a href="<?php echo esc_attr( $next_design_url ); ?>">&rarr;</a></li>
 		<?php } else { ?>
@@ -52,9 +52,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 				}
 				?>
 				<input type="hidden" name="design_id" value="<?php echo esc_attr( $design->get_design_id() ); ?>" />
-				<?php if ( MyStyle_Design_Profile_Page::show_add_to_cart_button() ) { ?>
+				<?php if ( $show_add_to_cart_button ) { ?>
 					<button type="submit" class="button">Add to Cart</a>
-					<?php } ?>
+				<?php } ?>
 			</form>
 		</li>
 		<li><a href="<?php echo esc_attr( $design->get_reload_url() ); ?>" class="button">Customize</a></li>
@@ -117,7 +117,6 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
 		<?php else : ?>
 		<div class="design-tags">
-			<?php $design_tags = MyStyle_Design_Profile_Page::get_design_tags( $design->get_design_id(), true ); ?>
 			Design Tags:
 			<?php foreach ( $design_tags as $i => $tag ) : ?>
 				<?php

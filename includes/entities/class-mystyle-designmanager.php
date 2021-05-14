@@ -65,24 +65,16 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 				) {
 					// Design was created by the passed session, continue.
 				} else {
-					if( ( ! current_user_can('administrator') ) ) {
-						
-						if ( null !== $design->get_user_id() ) {
-						
-							if ( ( null === $user ) || ( 0 === $user->ID ) ) {
-                                //return false ;
-								throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
-							}
-							if ( $design->get_user_id() !== $user->ID ) {
-								if ( ( ! $user->has_cap( 'read_private_posts' ) ) || ( ! is_admin() ) ) {
-									//return false ;
-                                    throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
-								}
+					// Check for wp user match.
+					if ( null !== $design->get_user_id() ) {
+						if ( ( null === $user ) || ( 0 === $user->ID ) ) {
+							throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
+						}
+						if ( $design->get_user_id() !== $user->ID ) {
+							if ( ! $user->has_cap( 'read_private_posts' ) ) {
+								throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
 							}
 						}
-					}
-					else {
-						return $design ;
 					}
 				}
 			}
@@ -101,6 +93,16 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 */
 	public static function delete( MyStyle_Design $design ) {
 		global $wpdb;
+
+		// Delete any Design Tags (terms).
+		$terms = wp_get_object_terms( $design->get_design_id(), MYSTYLE_TAXONOMY_NAME );
+		if ( ! empty( $terms ) ) {
+			$term_ids = array();
+			foreach ( $terms as $term ) {
+				$term_ids[] = $term->term_id;
+			}
+			wp_remove_object_terms( $design->get_design_id(), $term_ids, MYSTYLE_TAXONOMY_NAME );
+		}
 
 		$ret = $wpdb->delete(
 			MyStyle_Design::get_table_name(),
@@ -276,41 +278,10 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	}
 
 	/**
-	 * Sets the Design access.
-	 *
-	 * @param int $design_id The design_id of the design that you want to set
-	 * the access of.
-	 * @param int $access    The new access visibility (1,2,3, etc). See the
-	 * MyStyle_Design class for valid values and what they do.
-	 * @return int Returns the number or designs that were updated or false
-	 * if no rows were updated.
-	 * @global wpdb $wpdb
-	 */
-	public static function set_access( $design_id, $access ) {
-		global $wpdb;
-
-		$where = array(
-			MyStyle_Design::get_primary_key() => $design_id,
-			'user_id'                         => get_current_user_id(),
-		);
-
-		if ( current_user_can( 'administrator' ) ) {
-			$where = array( MyStyle_Design::get_primary_key() => $design_id );
-		}
-
-		$result = $wpdb->update(
-			MyStyle_Design::get_table_name(),
-			array( 'ms_access' => $access ),
-			$where
-		);
-
-		return $result;
-	}
-
-	/**
 	 * Retrieve designs from the database.
 	 *
 	 * The designs are filtered for the passed user based on these rules:
+	 *
 	 *  * If no user is specified, only public designs are returned.
 	 *  * If the passed user is an admin (or has the 'read_private_posts'
 	 *    capability, all designs are returned).
@@ -380,6 +351,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * Retrieve user designs from the database.
 	 *
 	 * The designs are filtered for the passed user based on these rules:
+	 *
 	 *  * If no user is specified, only public designs are returned.
 	 *  * If the passed user is an admin (or has the 'read_private_posts'
 	 *    capability, all designs are returned).
@@ -458,24 +430,21 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * Retrieve random designs from the database.
 	 *
 	 * The designs are filtered for the passed user based on these rules:
+	 *
 	 *  * If no user is specified, only public designs are returned.
 	 *  * If the passed user is an admin (or has the 'read_private_posts'
 	 *    capability, all designs are returned).
 	 *  * If the passed user is a regular user, all public designs are returned
 	 *    along with any private designs that the user owns.
 	 *
-	 * @param int     $per_page The number of designs to show per page (default:
-	 * 250).
-	 * @param int     $page_number The page number of the set of designs that you
-	 * want to get (default: 1).
+	 * @param int     $count The number of designs to return (default: 250).
 	 * @param WP_User $user (optional) The current user.
-	 * @global $wpdb;
+	 * @global \wpdb $wpdb
 	 * @return mixed Returns an array of MyStyle_Design objects or null if none
 	 * are found.
 	 */
 	public static function get_random_designs(
-		$per_page = 250,
-		$page_number = 1,
+		$count = 250,
 		WP_User $user = null
 	) {
 		global $wpdb;
@@ -494,12 +463,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 				. "FROM {$wpdb->prefix}mystyle_designs "
 				. $where
 				. ' ORDER BY RAND()
-				LIMIT %d
-				OFFSET %d',
-				array(
-					$per_page,
-					( $page_number - 1 ) * $per_page,
-				)
+				LIMIT %d',
+				array( $count )
 			),
 			'OBJECT'
 		);
@@ -529,7 +494,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * @param int                   $page_number The page number of the set of
 	 *                                           designs that you want to get
 	 *                                           (default: 1).
-	 * @global $wpdb;
+	 * @global \wpdb $wpdb
 	 * @return mixed Returns an array of MyStyle_Design objects or null if none
 	 * are found.
 	 */
@@ -562,10 +527,11 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		foreach ( $terms as $term ) {
 			try {
 
-				$design = MyStyle_DesignManager::get( $term->object_id, $user, $session );
+				$design = self::get( $term->object_id, $user, $session );
 
-				array_push( $designs, $design );
-
+				if ( null !== $design ) {
+					array_push( $designs, $design );
+				}
 			} catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 				// If unauthorized, skip and continue on to the next one.
 			}
@@ -601,10 +567,12 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
-		$count = $wpdb->get_var(
-			'SELECT COUNT(ms_design_id) '
-			. "FROM {$wpdb->prefix}mystyle_designs "
-			. $where
+		$count = intval(
+			$wpdb->get_var(
+				'SELECT COUNT(ms_design_id) '
+				. "FROM {$wpdb->prefix}mystyle_designs "
+				. $where
+			)
 		);
 		// phpcs:enable WordPress.WP.PreparedSQL.NotPrepared
 
@@ -628,23 +596,45 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			$access = MyStyle_Access::ACCESS_PUBLIC;
 		}
 
-		$where = ' WHERE ms_access = ' . $access;
+		$where = ' WHERE ms_access = ' . esc_sql( $access );
 
 		if ( is_string( $user ) ) {
-			$where .= ' AND ms_email = ' . $user;
+			$where .= ' AND ms_email = ' . esc_sql( $user );
 		} else {
-			$where .= ' AND user_id = ' . $user->ID;
+			$where .= ' AND user_id = ' . esc_sql( $user->ID );
 		}
 
 		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
-		$count = $wpdb->get_var(
-			$wpdb->prepare(
+		$count = intval(
+			$wpdb->get_var(
 				'SELECT COUNT(ms_design_id) '
 				. "FROM {$wpdb->prefix}mystyle_designs "
 				. $where
 			)
 		);
 		// phpcs:enable WordPress.WP.PreparedSQL.NotPrepared
+
+		return $count;
+	}
+
+	/**
+	 * Retrieve the total number of designs having the passed term.
+	 *
+	 * @param int $term_id The term id.
+	 * @return integer Returns the total number of terms.
+	 * @global $wpdb
+	 */
+	public static function get_total_term_design_count( $term_id ) {
+		global $wpdb;
+
+		$count = $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT COUNT(object_id) '
+				. "FROM {$wpdb->prefix}term_relationships "
+				. 'WHERE term_taxonomy_id = %d',
+				array( $term_id )
+			)
+		);
 
 		return $count;
 	}
@@ -659,18 +649,23 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * @global wpdb $wpdb WordPress database abstraction object.
 	 * @todo Add unit testing for this method.
 	 */
-	public static function does_user_own_design( $user_id, $design_id ) {
+	public static function is_user_design_owner( $user_id, $design_id ) {
 		global $wpdb;
 
 		$ret = false;
 
-		$design_user_id = $wpdb->get_var(
-			'SELECT user_id '
-			. "FROM {$wpdb->prefix}mystyle_designs "
-			. 'WHERE ms_design_id = ' . $design_id
+		$design_user_id = intval(
+			$wpdb->get_var(
+				$wpdb->prepare(
+					'SELECT user_id '
+					. "FROM {$wpdb->prefix}mystyle_designs "
+					. 'WHERE ms_design_id = %d',
+					array( $design_id )
+				)
+			)
 		);
-        
-		if ( intval($design_user_id) === $user_id ) {
+
+		if ( intval( $design_user_id ) === $user_id ) {
 			$ret = true;
 		}
 
@@ -678,25 +673,173 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	}
 
 	/**
-	 * Retrieve the total number of terms.
+	 * Get the tags for the design with the passed design id. See below for more
+	 * info about the return value.
 	 *
-	 * @param int $term_id The term id.
-	 * @global $wpdb
-	 * @return integer Returns the total number of terms.
+	 * @param int  $design_id The id of the design that you want to get. If
+	 *                        null, the function will attempt to get the
+	 *                        design id from the URL.
+	 * @param bool $with_slug Set to true (default is false) to include the
+	 *                        term slug in the returned tags. If true, the
+	 *                        returned array becomes two dimensional with each
+	 *                        entry having a 'name' and a 'slug' (and possibly
+	 *                        an id.
+	 * @param bool $with_id   Set to true (default is false) to include the
+	 *                        term id in the returned tags. If true, the
+	 *                        returned array becomes two dimensional with each
+	 *                        entry having a 'name' and an 'id' (and possibly a
+	 *                        'slug'.
+	 * @return array Returns an array of tags. If the slug param is false, it
+	 * will return a one dimensional array like ["Foo", "Bar"]. If the slug
+	 * param is true, it will return a two dimensional array like
+	 * [["name" => "Foo", "slug" => "foo"], ["name" => "Bar", "slug" => "bar"]].
 	 */
-	public static function get_total_term_count( $term_id ) {
-		global $wpdb;
+	public static function get_design_tags(
+		$design_id,
+		$with_slug = false,
+		$with_id = false
+	) {
+		$tags  = array();
+		$terms = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME );
 
-		$count = $wpdb->get_var(
-			$wpdb->prepare(
-				'SELECT COUNT(object_id) '
-				. "FROM {$wpdb->prefix}term_relationships "
-				. 'WHERE term_taxonomy_id = %d',
-				array( $term_id )
-			)
-		);
+		foreach ( $terms as $term ) {
+			if ( $with_slug || $with_id ) {
+				$entry = array(
+					'name' => $term->name,
+				);
+				if ( $with_slug ) {
+					$entry['slug'] = $term->slug;
+				}
+				if ( $with_id ) {
+					$entry['id'] = $term->term_id;
+				}
+			} else {
+				$entry = $term->name;
+			}
+			$tags[] = $entry;
+		}
 
-		return $count;
+		return $tags;
+	}
+
+	/**
+	 * Add a design tag. Called to add a tag to a design.
+	 *
+	 * @param int     $design_id The id of the design to add the tag to.
+	 * @param string  $tag       The tag to add.
+	 * @param WP_User $user      The current user.
+	 * @throws MyStyle_Unauthorized_Exception Throws a
+	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
+	 * and isn't an administrator.
+	 * @return int Returns the id of the tag.
+	 */
+	public static function add_tag_to_design(
+		$design_id,
+		$tag,
+		WP_User $user
+	) {
+		$taxonomy = MYSTYLE_TAXONOMY_NAME;
+
+		// ---- Security Check ---- //
+		if (
+				( ! self::is_user_design_owner( $user->ID, $design_id ) )
+				&& ( ! $user->has_cap( 'administrator' ) )
+		) {
+			throw new MyStyle_Unauthorized_Exception(
+				'Only the design owner or an administrator can add tags to a design.'
+			);
+		}
+
+		// Add the tag.
+		$term_ids = wp_add_object_terms( $design_id, $tag, $taxonomy );
+		$term_id  = $term_ids[0];
+
+		return $term_id;
+	}
+
+	/**
+	 * Removes a tag from a design.
+	 *
+	 * @param int     $design_id The id of the design to remove the tag from.
+	 * @param string  $tag       The tag to remove.
+	 * @param WP_User $user      The current user.
+	 * @throws MyStyle_Unauthorized_Exception Throws a
+	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
+	 * and isn't an administrator.
+	 * @return int Returns true on success, false on failure.
+	 */
+	public static function remove_tag_from_design(
+		$design_id,
+		$tag,
+		WP_User $user
+	) {
+		$taxonomy = MYSTYLE_TAXONOMY_NAME;
+
+		// ---- Security Check ---- //
+		if (
+				( ! self::is_user_design_owner( $user->ID, $design_id ) )
+				&& ( ! $user->has_cap( 'administrator' ) )
+		) {
+			throw new MyStyle_Unauthorized_Exception(
+				'Only the design owner or an administrator can add tags to a design.'
+			);
+		}
+
+		// Remove the tag.
+		$success = wp_remove_object_terms( $design_id, $tag, $taxonomy );
+
+		return $success;
+	}
+
+	/**
+	 * Updates a design's tags. Called to update all tags on a design to match
+	 * the passed array of tags.
+	 *
+	 * @param int     $design_id The id of the design to update.
+	 * @param array   $tags      The array of tags. Should be an array of
+	 *                           strings (ex: ["tag1", "tag2"]).
+	 * @param WP_User $user      The current user.
+	 * @throws MyStyle_Unauthorized_Exception Throws a
+	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
+	 * and isn't an administrator.
+	 * @throws MyStyle_Exception Throws a MyStyle_Exception if the function
+	 * fails.
+	 */
+	public static function update_design_tags(
+		$design_id,
+		$tags,
+		WP_User $user
+	) {
+		$taxonomy = MYSTYLE_TAXONOMY_NAME;
+
+		// ---- Security Check ---- //
+		if (
+				( ! self::is_user_design_owner( $user->ID, $design_id ) )
+				&& ( ! $user->has_cap( 'administrator' ) )
+		) {
+			throw new MyStyle_Unauthorized_Exception(
+				'Only the design owner or an administrator can update a design\'s tags.'
+			);
+		}
+
+		// Remove all current tags from the design.
+		$old_terms = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME );
+		if ( ! empty( $old_terms ) ) {
+			$old_term_ids = array();
+			foreach ( $old_terms as $old_term ) {
+				$old_term_ids[] = $old_term->term_id;
+			}
+
+			$removed = wp_remove_object_terms( $design_id, $old_term_ids, $taxonomy );
+			if ( ! $removed ) {
+				throw new MyStyle_Exception( 'Couldn`t remove existing tags.' );
+			}
+		}
+
+		// Add the passed tags to the design.
+		if ( ! empty( $tags ) ) {
+			$term_ids = wp_add_object_terms( $design_id, $tags, $taxonomy );
+		}
 	}
 
 	/**

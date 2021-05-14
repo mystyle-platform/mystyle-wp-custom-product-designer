@@ -60,7 +60,7 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 		$this->assertContains( '<div id="customizer-wrapper">', $output );
 
 		// Assert that the expected passthru is included.
-		$expected_passthru = '"passthru": "' . $passthru . '"';
+		$expected_passthru = '"passthru": [{"fieldName": "h", "fieldValue": "' . $passthru . '"';
 		$this->assertContains( $expected_passthru, $output );
 	}
 
@@ -102,7 +102,7 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 				)
 			)
 		);
-		$expected_passthru = '"passthru": "' . $passthru . '"';
+		$expected_passthru = '"passthru": [{"fieldName": "h", "fieldValue": "' . $passthru . '"}]';
 
 		// Assert that the expected passthru is included.
 		$this->assertContains( $expected_passthru, $output );
@@ -196,7 +196,7 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 		$this->assertContains( '<div id="customizer-wrapper">', $output );
 
 		// Assert that the expected passthru is included.
-		$expected_passthru = '"passthru": "' . $passthru . '"';
+		$expected_passthru = '"passthru": [{"fieldName": "h", "fieldValue": "' . $passthru . '"}]';
 		$this->assertContains( $expected_passthru, $output );
 	}
 

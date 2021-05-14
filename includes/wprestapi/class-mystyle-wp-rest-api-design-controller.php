@@ -167,14 +167,32 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 	 */
 	public function create_item( $request ) {
 		try {
+			$current_user = wp_get_current_user();
+
 			// Get parameters from request.
 			$json_body_str = $request->get_body();
+			$json_arr      = json_decode( $json_body_str, true );
 
 			/* @var $design \MyStyle_Design The design. */
 			$design = MyStyle_Design::create_from_json( $json_body_str );
 
 			$design = MyStyle_DesignManager::persist( $design );
-			$data   = $this->prepare_item_for_response( $design, $request );
+
+			// Tags.
+			if ( isset( $json_arr['tags'] ) ) {
+				foreach ( $json_arr['tags'] as $tag_elem ) {
+					$tag = ( is_array( $tag_elem ) )
+						? $tag_elem['slug']
+						: $tag_elem;
+					MyStyle_DesignManager::add_tag_to_design(
+						$design->get_design_id(),
+						$tag,
+						$current_user
+					);
+				}
+			}
+
+			$data = $this->prepare_item_for_response( $design, $request );
 
 			return new WP_REST_Response( $data, 200 );
 
@@ -197,6 +215,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 			$params        = $request->get_params();
 			$design_id     = $params['id'];
 			$json_body_str = $request->get_body();
+			$json_arr      = json_decode( $json_body_str, true );
 			$current_user  = wp_get_current_user();
 
 			/* @var $design_orig \MyStyle_Design The design that is being updated. */
@@ -210,7 +229,24 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 			$design = MyStyle_Design::create_from_json( $json_body_str );
 
 			$design = MyStyle_DesignManager::persist( $design );
-			$data   = $this->prepare_item_for_response( $design, $request );
+
+			// Tags.
+			$tags = array();
+			if ( isset( $json_arr['tags'] ) ) {
+				foreach ( $json_arr['tags'] as $tag_elem ) {
+					$tag    = ( is_array( $tag_elem ) )
+						? $tag_elem['slug']
+						: $tag_elem;
+					$tags[] = $tag;
+				}
+			}
+			MyStyle_DesignManager::update_design_tags(
+				$design->get_design_id(),
+				$tags,
+				$current_user
+			);
+
+			$data = $this->prepare_item_for_response( $design, $request );
 
 			return new WP_REST_Response( $data, 200 );
 
@@ -324,6 +360,19 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 		/* @var $item \MyStyle_Design phpcs:ignore */
 		$design   = $item;
 		$itemdata = $design->json_encode();
+
+		// Add any design tags.
+		$tags = MyStyle_DesignManager::get_design_tags(
+			$design->get_design_id(),
+			true, // with_slug.
+			true // with_id.
+		);
+		if ( 0 < count( $tags ) ) {
+			$itemdata['tags'] = array();
+			foreach ( $tags as $tag ) {
+				$itemdata['tags'][] = $tag;
+			}
+		}
 
 		return $itemdata;
 	}

@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			"printType": "<?php echo esc_js( $print_type ); ?>",
 			<?php echo ( null !== $design_id ) ? '"designId": "' . intval( $design_id ) . "\",\n" : ''; ?>
 			<?php echo ( ! empty( $customizer_ux ) ) ? '"customizerUx": "' . esc_js( $customizer_ux ) . "\",\n" : ''; ?>
-			"passthru": "<?php echo esc_js( $passthru ); ?>"
+			"passthru": [{"fieldName": "h", "fieldValue": "<?php echo esc_js( $passthru ); ?>"}]
 		});
 		MyStyleCustomize.renderCustomizer('#customizer-wrapper');
 	});

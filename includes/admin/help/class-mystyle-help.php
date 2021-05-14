@@ -114,8 +114,9 @@ class MyStyle_Help {
 				designs with the provided tag
 				(example: [mystyle-design gallery=1 tag="anime"]).
 			</li>
-
-			<h4>Available Query Params:
+		</ul>
+		<h4>Available Query Params:</h4>
+		<ul>
 			<li>
 				<strong>design_id:</strong> The id of the design to show. The
 				design_id can be passed to the shortcode either through a shortcode
@@ -123,6 +124,20 @@ class MyStyle_Help {
 				(example: "http://www.example.com/somepage?design_id=123"). Note
 				that the design_id parameter is automatically added to the
 				Alternate Design Complete URL (see the Advanced Settings).
+			</li>
+		</ul>
+		<h3>The [mystyle_design_tags] Shortcode</h3>
+		<p>
+			The [mystyle_design_tags] Shortcode adds a pageable list of design
+			tags with the designs that have the tag to the page.
+		</p>
+		<h4>Available attributes</h4>
+		<p>(none)</p>
+		<h4>Available Query Params:</h4>
+		<ul>
+			<li>
+				<strong>pager:</strong> The page to show
+				(example: "http://www.example.com/somepage?pager=2").
 			</li>
 		</ul>
 		';
