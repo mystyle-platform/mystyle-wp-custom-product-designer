@@ -286,7 +286,7 @@ class MyStyle_Design_Profile_Page {
 
 				wp_enqueue_script(
 					'frontend_js', MYSTYLE_ASSETS_URL . 'js/frontend.js', array(), // deps.
-					'1.1.0', // version.
+					MYSTYLE_VERSION, // version.
 					true
 				);
 
@@ -304,9 +304,6 @@ class MyStyle_Design_Profile_Page {
                         if ( !function_exists( 'woocommerce_wp_select' ) ) {
                             require_once WP_PLUGIN_DIR . '/woocommerce/includes/admin/wc-meta-box-functions.php' ; 
                         }
-
-                        wp_register_script( 'mystyle-dm-admin-js', MYSTYLE_DM_ASSETS_URL . 'js/admin.js?79879', null, null, true );
-                        wp_enqueue_script('mystyle-dm-admin-js');
                     }
                 }
                 

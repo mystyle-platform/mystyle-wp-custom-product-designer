@@ -94,6 +94,28 @@
 					}
 				});
 			});
+        
+        $('.form-change-design-access select').change(function(e){
+            e.preventDefault() ;
+            var access_id = $(this).val() ;
+            var design_id = $(this).parent().nextAll('input[name=design_id]').val() ;
+            var nonce = $(this).parent().nextAll('input[name=nonce]').val() ;
+
+            $.ajax({
+                type : "post",
+                dataType : "json",
+                url : '/wp-admin/admin-ajax.php',
+                data : {action: "change_design_access", design_id : design_id, access_id: access_id, nonce: nonce},
+                success: function(response) {
+                    $('#_mystyle_design_access_'+design_id).after('<span style="width:30px;height:30px;font-size:30px;color:green" class="dashicons dashicons-yes"></span>') ;
+
+                    setTimeout(function(){
+                        $('.form-change-design-access .dashicons-yes').fadeOut() ;
+                    }, 1000) ;
+                }
+            }) ; 
+
+        }) ;
 
     });
 
