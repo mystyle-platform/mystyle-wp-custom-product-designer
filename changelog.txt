@@ -1,3 +1,6 @@
+= 3.18.1 =
+* Added ability for user to change design access policy
+
 = 3.18.0 =
 
 * Fixed a bug with the handoff when the user is logged in.
