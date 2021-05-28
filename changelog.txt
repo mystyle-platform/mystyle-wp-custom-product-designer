@@ -1,3 +1,6 @@
+= 3.18.2 =
+* Added hook to after product description of design profile page
+
 = 3.18.1 =
 * Added ability for user to change design access policy
 
