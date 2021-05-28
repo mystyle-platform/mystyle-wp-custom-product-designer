@@ -127,6 +127,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php endforeach; ?>
 		</div>
 		<?php endif; ?>
+        
+        <?php do_action( 'mystyle_design_profile_description_after', array( $design ) ) ; ?>
 	</div>
 <?php if ( 'disabled' !== $product_menu_type ) { ?>
 	<div class="customize_products <?php echo esc_attr( $product_menu_type ); ?>">
