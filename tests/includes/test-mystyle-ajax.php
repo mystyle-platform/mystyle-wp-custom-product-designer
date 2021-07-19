@@ -4,7 +4,7 @@
  * MyStyle_Ajax class.
  *
  * @package MyStyle
- * @since 3.18.2
+ * @since 3.18.3
  */
 
 /**

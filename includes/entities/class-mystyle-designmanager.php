@@ -228,7 +228,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	/**
 	 * Sets the Design access, used by the design manager and design profile pages
 	 *
-	 * @deprecated Depricated since 3.19.0. Use get and persist instead.
+	 * @deprecated Depricated since 3.18.3. Use get and persist instead.
 	 * @param int $design_id The design_id of the design that you want to set
 	 * the access of.
 	 * @param int $access    The new access visibility (1,2,3, etc). See the
@@ -311,7 +311,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	/**
 	 * Sets the Design title.
 	 *
-	 * @deprecated Depricated since 3.19.0. Use get and persist instead.
+	 * @deprecated Depricated since 3.18.3. Use get and persist instead.
 	 * @param int    $design_id The design_id of the design that you want to set
 	 * the title of.
 	 * @param string $title     The new title.

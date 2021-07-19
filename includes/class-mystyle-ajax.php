@@ -3,7 +3,7 @@
  * The MyStyle_Ajax class has hooks AJAX functionality.
  *
  * @package MyStyle
- * @since 3.18.2
+ * @since 3.18.3
  */
 
 /**
