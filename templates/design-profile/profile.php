@@ -48,8 +48,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 						echo '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '" />';
 					}
 				} else {
-					// If we don't have the cart data just use the product_id.
+					// If we don't have the cart data just use the product_id
+					// and a quantity of 1.
 					echo '<input type="hidden" name="add-to-cart" value="' . esc_attr( $design->get_product_id() ) . '" />';
+					echo '<input type="hidden" name="quantity" value="1" />';
 				}
 				?>
 				<input type="hidden" name="design_id" value="<?php echo esc_attr( $design->get_design_id() ); ?>" />
