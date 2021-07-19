@@ -6,7 +6,7 @@
  * Version: 3.18.2
  * GitHub Plugin URI: https://github.com/mystyle-platform/mystyle-wp-custom-product-designer
  * WC requires at least: 2.2.0
- * WC tested up to: 5.3.0
+ * WC tested up to: 5.5.1
  * Author: mystyleplatform
  * Author URI: www.mystyleplatform.com
  * License: GPL v3
