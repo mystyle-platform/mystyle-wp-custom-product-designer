@@ -13,6 +13,35 @@
 abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 	/**
+	 * Gets whether or not the passed user has authority to edit the passed
+	 * design.
+	 *
+	 * @param MyStyle_Design $design The design to check.
+	 * @param WP_User        $user (optional) The current user.
+	 * @return boolean Returns true if the user has the authority to edit the
+	 * passed design, otherwise, returns false.
+	 */
+	public static function can_user_edit( MyStyle_Design $design, WP_User $user ) {
+		$authorized_caps = array(
+			'administrator',
+			'edit_posts',
+			'manage_woocommerce',
+		);
+
+		if ( $design->get_user_id() === $user->ID ) {
+			return true;
+		} else {
+			foreach ( $authorized_caps as $cap ) {
+				if ( $user->has_cap( $cap ) ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get the design from the database.
 	 *
 	 * @global wpdb $wpdb
@@ -195,38 +224,39 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $design;
 	}
-    
-    /**
- 	 * Sets the Design access, used by the design manager and design profile pages
- 	 *
- 	 * @param int $design_id The design_id of the design that you want to set
- 	 * the access of.
- 	 * @param int $access    The new access visibility (1,2,3, etc). See the
- 	 * MyStyle_Design class for valid values and what they do.
- 	 * @return int Returns the number or designs that were updated or false
- 	 * if no rows were updated.
- 	 * @global wpdb $wpdb
- 	 */
- 	public static function set_access( $design_id, $access ) {
- 		global $wpdb;
 
- 		$where = array(
- 			MyStyle_Design::get_primary_key() => $design_id,
- 			'user_id'                         => get_current_user_id(),
- 		);
+	/**
+	 * Sets the Design access, used by the design manager and design profile pages
+	 *
+	 * @deprecated Depricated since 3.19.0. Use get and persist instead.
+	 * @param int $design_id The design_id of the design that you want to set
+	 * the access of.
+	 * @param int $access    The new access visibility (1,2,3, etc). See the
+	 * MyStyle_Design class for valid values and what they do.
+	 * @return int Returns the number or designs that were updated or false
+	 * if no rows were updated.
+	 * @global wpdb $wpdb
+	 */
+	public static function set_access( $design_id, $access ) {
+		global $wpdb;
 
- 		if ( current_user_can( 'administrator' ) ) {
- 			$where = array( MyStyle_Design::get_primary_key() => $design_id );
- 		}
+		$where = array(
+			MyStyle_Design::get_primary_key() => $design_id,
+			'user_id'                         => get_current_user_id(),
+		);
 
- 		$result = $wpdb->update(
- 			MyStyle_Design::get_table_name(),
- 			array( 'ms_access' => $access ),
- 			$where
- 		);
+		if ( current_user_can( 'administrator' ) ) {
+			$where = array( MyStyle_Design::get_primary_key() => $design_id );
+		}
 
- 		return $result;
- 	}
+		$result = $wpdb->update(
+			MyStyle_Design::get_table_name(),
+			array( 'ms_access' => $access ),
+			$where
+		);
+
+		return $result;
+	}
 
 	/**
 	 * Sets the user_id on designs where it is null (or 0) using the email and
@@ -281,6 +311,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	/**
 	 * Sets the Design title.
 	 *
+	 * @deprecated Depricated since 3.19.0. Use get and persist instead.
 	 * @param int    $design_id The design_id of the design that you want to set
 	 * the title of.
 	 * @param string $title     The new title.

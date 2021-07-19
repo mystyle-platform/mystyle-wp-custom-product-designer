@@ -43,12 +43,6 @@ class MyStyle_Design_Profile_Page {
 	 * @var MyStyle_Session
 	 */
 	private $session;
-    
-    /**
-	 * Stores the Boolean value as to whether the design can have the access permissions changed
-	 *
-	 */
-	private $enable_edit_access = false ;
 
 	/**
 	 * The design that comes immediately before this one in the collection.
@@ -109,10 +103,6 @@ class MyStyle_Design_Profile_Page {
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
 		add_action( 'wp_head', array( &$this, 'wp_head' ), 2 );
-
-		add_action( 'wp_ajax_design_tag_search', array( &$this, 'design_tag_search' ) );
-		add_action( 'wp_ajax_design_tag_add', array( &$this, 'design_tag_add' ) );
-		add_action( 'wp_ajax_design_tag_remove', array( &$this, 'design_tag_remove' ) );
 
 		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
 	}
@@ -217,18 +207,6 @@ class MyStyle_Design_Profile_Page {
 		if ( false === $design_id || preg_match( '/page/', $design_id ) ) {
 			$design_profile_page->init_index_request();
 		} else {
-
-			// Handle post requests to update the design title (from the design
-			// owner and the site admin).
-			//phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
-			if ( isset( $_POST['ms-title'] ) ) {
-				MyStyle_DesignManager::set_title(
-					$design_id,
-					sanitize_text_field( wp_unslash( $_POST['ms-title'] ) )
-				);
-			}
-			//phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
-
 			$design_profile_page->init_design_request( $design_id );
 		}
 	}
@@ -236,12 +214,20 @@ class MyStyle_Design_Profile_Page {
 	/**
 	 * Init the singleton for a design request.
 	 *
-	 * @param type $design_id The design_id to use when initializing.
+	 * @param int $design_id The design_id to use when initializing.
 	 * @throws MyStyle_Not_Found_Exception Throws a MyStyle_Not_Found_Exception
 	 * if the Design can't be found.
 	 */
 	private function init_design_request( $design_id ) {
 		try {
+			// Get the design. If the user doesn't have access, an exception is
+			// thrown (and caught at the bottom of this function).
+			$design = MyStyle_DesignManager::get(
+				$design_id,
+				$this->user,
+				$this->session
+			);
+
 			// Get the previous design.
 			$this->set_previous_design(
 				MyStyle_DesignManager::get_previous_design( $design_id )
@@ -253,25 +239,18 @@ class MyStyle_Design_Profile_Page {
 				MyStyle_DesignManager::get_next_design( $design_id )
 			);
 
-			// Get the design. If the user doesn't have access, an exception is
-			// thrown (and caught at the bottom of this function).
-			$design = MyStyle_DesignManager::get(
-				$design_id,
-				$this->user,
-				$this->session
-			);
-
 			// Throw exception if design isn't found (it's caught at the bottom
 			// of this function).
 			if ( null === $design ) {
 				throw new MyStyle_Not_Found_Exception( 'Design not found.' );
 			}
 
-			if (
-					( get_current_user_id() === $design->get_user_id() )
-					|| ( current_user_can( 'administrator' ) )
-			) {
-                
+			// Handle post requests (then return the regular response).
+			if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
+				$this->handle_design_post_request( $design );
+			}
+
+			if ( MyStyle_DesignManager::can_user_edit( $design, $this->user ) ) {
 				wp_register_style( 'jquery-ui-styles', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
 				wp_enqueue_style( 'jquery-ui-styles' );
 
@@ -284,29 +263,8 @@ class MyStyle_Design_Profile_Page {
 				wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', null, null, true );
 				wp_enqueue_script( 'jquery-ui' );
 
-				wp_enqueue_script(
-					'frontend_js', MYSTYLE_ASSETS_URL . 'js/frontend.js', array(), // deps.
-					MYSTYLE_VERSION, // version.
-					true
-				);
-
 				wp_register_style( 'tokenfield-custom-styles', MYSTYLE_ASSETS_URL . 'css/tokenfield.css' );
 				wp_enqueue_style( 'tokenfield-custom-styles' );
-                
-                //Check for correct version of design manager and enable ability for user to update the design access permissions.
-                include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-                if ( is_plugin_active( 'mystyle-wp-design-manager/mystyle-design-manager.php' ) ) {
-                    require_once MYSTYLE_DM_INCLUDES . 'admin/pages/class-mystyle-designs-page.php';
-                    $design_manager = MyStyle_Designs_Page::get_instance();
-                    
-                    if( method_exists( $design_manager, 'change_design_access' ) ) {
-                        $this->set_enable_edit_access(true) ;
-                        if ( !function_exists( 'woocommerce_wp_select' ) ) {
-                            require_once WP_PLUGIN_DIR . '/woocommerce/includes/admin/wc-meta-box-functions.php' ; 
-                        }
-                    }
-                }
-                
 			}
 
 			// Set the current design in the singleton instance.
@@ -380,6 +338,35 @@ class MyStyle_Design_Profile_Page {
 			$this->set_exception( $ex );
 			$this->set_http_response_code( $response_code );
 		}
+	}
+
+	/**
+	 * Handle a design post request.
+	 *
+	 * @param MyStyle_Design $design The design being accessed.
+	 * @throws MyStyle_Unauthorized_Exception Throws a MyStyle_Unauthorized_Exception
+	 * if the user isn't authorized  to edit the design.
+	 */
+	private function handle_design_post_request( $design ) {
+		// Throw exception if the user doesn't have access to edit the design.
+		if ( ! MyStyle_DesignManager::can_user_edit( $design, $this->user ) ) {
+			throw new MyStyle_Unauthorized_Exception( 'Access denied' );
+		}
+
+		// Verify the nonce.
+		wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'mystyle_design_edit_nonce' ); // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
+
+		// Set the new title (if passed).
+		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+		if ( isset( $_POST['ms_title'] ) ) {
+			$design->set_title(
+				sanitize_text_field( wp_unslash( $_POST['ms_title'] ) )
+			);
+		}
+		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+
+		// Persist the design.
+		MyStyle_DesignManager::persist( $design );
 	}
 
 	/**
@@ -492,93 +479,6 @@ class MyStyle_Design_Profile_Page {
 	}
 
 	/**
-	 * Search design tags. Registered for use via ajax.
-	 *
-	 * This is mostly copy/paste from the wp_ajax_ajax_tag_search function.
-	 */
-	public static function design_tag_search() {
-		$taxonomy = MYSTYLE_TAXONOMY_NAME;
-		// phpcs:ignore
-		$s        = wp_unslash( $_GET['q'] );
-
-		/**
-		 * Filters the minimum number of characters required to fire a tag search via Ajax.
-		 *
-		 * @since 4.0.0
-		 *
-		 * @param int         $characters The minimum number of characters required. Default 2.
-		 * @param WP_Taxonomy $tax        The taxonomy object.
-		 * @param string      $s          The search term.
-		 */
-		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
-
-		/*
-		 * Require $term_search_min_chars chars for matching (default: 2)
-		 * ensure it's a non-negative, non-zero integer.
-		 */
-		if ( ( 0 === $term_search_min_chars ) || ( strlen( $s ) < $term_search_min_chars ) ) {
-			wp_die();
-		}
-
-		$results = MyStyle_Design_Tag_Taxonomy::search( $s );
-
-		header( 'Content-Type: application/json' );
-		echo wp_json_encode( $results );
-		wp_die();
-	}
-
-	/**
-	 * Add a tag to the design. Registered for use via AJAX.
-	 */
-	public static function design_tag_add() {
-		// phpcs:disable
-		$tag       = sanitize_text_field( wp_unslash( $_POST['tag'] ) );
-		$design_id = intval( wp_unslash( $_POST['design_id'] ) );
-		// phpcs:enable
-
-		$user = wp_get_current_user();
-
-		// Adds the tag - throws exception is user isn't authorized.
-		MyStyle_DesignManager::add_tag_to_design(
-			$design_id,
-			$tag,
-			$user
-		);
-
-		if ( ! headers_sent() ) {
-			header( 'Content-Type: application/json' );
-		}
-		echo wp_json_encode( array( 'tag' => $tag ) );
-		wp_die();
-	}
-
-	/**
-	 * Remove a tag from the design. Registered for use via AJAX.
-	 */
-	public static function design_tag_remove() {
-		// phpcs:disable
-		$tag       = sanitize_text_field( wp_unslash( $_POST['tag'] ) );
-		$design_id = intval( $_POST['design_id'] );
-		// phpcs:enable
-
-		$user = wp_get_current_user();
-
-		// Removes the tag - throws exception is user isn't authorized.
-		MyStyle_DesignManager::remove_tag_from_design(
-			$design_id,
-			$tag,
-			$user
-		);
-
-		if ( ! headers_sent() ) {
-			header( 'Content-Type: application/json' );
-		}
-		echo wp_json_encode( array( 'tag' => $tag ) );
-		wp_die();
-	}
-
-
-	/**
 	 * Gets the design id from the URL. If it can't find the design id in the
 	 * URL, this function returns false.
 	 *
@@ -665,24 +565,7 @@ class MyStyle_Design_Profile_Page {
 	public function get_session() {
 		return $this->session;
 	}
-    
-    /**
-	 * Sets the enable edit access boolean.
-	 *
-	 * @param $enable_edit_access
-	 */
-	public function set_enable_edit_access( $enable_edit_access ) {
-		$this->enable_edit_access = $enable_edit_access ;
-	}
-    
-    /**
-	 * Gets the enable edit access boolean.
-	 *
-	 */
-	public function get_enable_edit_access() {
-		return $this->enable_edit_access ;
-	}
-    
+
 	/**
 	 * Sets the previous design.
 	 *
@@ -1010,7 +893,6 @@ class MyStyle_Design_Profile_Page {
 				) {
 					?>
 				<script>
-					var design_ajax_url = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
 					var designId = <?php echo esc_js( $design_id ); ?>;
 					var designTags = '<?php echo ( count( $tags ) > 0 ) ? implode( ',', $tags ) : ''; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>';
 				</script>

@@ -154,6 +154,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'model/class-mystyle-order.php';
 			require_once MYSTYLE_INCLUDES . 'api/interface-mystyle-api.php';
 			require_once MYSTYLE_INCLUDES . 'api/class-mystyle-api.php';
+			require_once MYSTYLE_INCLUDES . 'class-mystyle-ajax.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-profile-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-my-designs-page.php';
@@ -235,6 +236,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			MyStyle_Passthru_Codec::get_instance();
 			MyStyle_Wp_Rest_Api_Design_Controller::get_instance();
 			MyStyle_Design_Tag_Taxonomy::get_instance();
+			MyStyle_Ajax::get_instance();
 			MyStyle_Tm_Extra_Product_Options::get_instance();
 			MyStyle_Wpml::get_instance();
 

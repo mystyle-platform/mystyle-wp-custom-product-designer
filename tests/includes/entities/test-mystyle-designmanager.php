@@ -47,6 +47,78 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test that the can_user_edit function returns true when the design is the
+	 * user's.
+	 */
+	public function test_can_user_edit_when_own_design() {
+		$design_id = 1;
+		$user_id   = 1;
+
+		// Mock a WP_User.
+		$user     = new WP_User();
+		$user->ID = $user_id;
+
+		// Create a Design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $user_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Call the function.
+		$can_edit = MyStyle_DesignManager::can_user_edit( $design, $user );
+
+		$this->assertTrue( $can_edit );
+	}
+
+	/**
+	 * Test that the can_user_edit function returns false when the design
+	 * belongs to a different user.
+	 */
+	public function test_can_user_edit_when_not_own_design() {
+		$design_id      = 1;
+		$design_user_id = 1;
+		$user_id        = 2;
+
+		// Mock a WP_User.
+		$user     = new WP_User();
+		$user->ID = $user_id;
+
+		// Create a Design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $design_user_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Call the function.
+		$can_edit = MyStyle_DesignManager::can_user_edit( $design, $user );
+
+		$this->assertFalse( $can_edit );
+	}
+
+	/**
+	 * Test that the can_user_edit function returns true when the passed user
+	 * has the administrator role/capability.
+	 */
+	public function test_can_user_edit_when_admin() {
+		$design_id      = 1;
+		$design_user_id = 1;
+		$user_id        = 2;
+
+		// Mock a WP_User.
+		$user       = new WP_User();
+		$user->caps = array( 'administrator' );
+		$user->ID   = $user_id;
+
+		// Create a Design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+		$design->set_user_id( $design_user_id );
+		MyStyle_DesignManager::persist( $design );
+
+		// Call the function.
+		$can_edit = MyStyle_DesignManager::can_user_edit( $design, $user );
+
+		$this->assertFalse( $can_edit );
+	}
+
+	/**
 	 * Test the get function with a valid design id.
 	 */
 	public function test_get_with_a_valid_design_id() {

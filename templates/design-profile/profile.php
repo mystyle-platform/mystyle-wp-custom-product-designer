@@ -17,7 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<a id="ms-edit-title-form-show" href="#">Edit Title</a>
 	<div id="ms-edit-title-form">
 		<form method="post" id="ms-edit-title-form">
-			<input type="text" name="ms-title" value="<?php echo ( ( ! empty( $design->get_title() ) ) ? esc_attr( $design->get_title() ) : ( 'Design ' . esc_attr( $design->get_design_id() ) ) ); ?>" />
+			<input type="text" name="ms_title" value="<?php echo ( ( ! empty( $design->get_title() ) ) ? esc_attr( $design->get_title() ) : ( 'Design ' . esc_attr( $design->get_design_id() ) ) ); ?>" />
+			<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( 'mystyle_design_edit_nonce' ) ); ?>" />
 			<input type="submit" class="button" value="Save Title" />
 		</form>
 	</div>
@@ -80,55 +81,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<?php endif; ?>
 		<?php if ( ( ( 0 !== $design->get_user_id() ) && ( get_current_user_id() === $design->get_user_id() ) ) || ( current_user_can( 'administrator' ) ) ) : ?>
-        <div class="design-manager-menu">
-        <?php if($design_profile_page->get_enable_edit_access()) : ?>
-            <br />
-            <b>Change the design access level</b>
-            <form action="#" class="form-change-design-access" method="post">
-                <?php
-                woocommerce_wp_select(
-						array(
-							'id'          => '_mystyle_design_access_' . $design->get_design_id(),
-							'label'       => __( '', 'mystyle' ),
-							'placeholder' => $design->get_access(),
-							'desc_tip'    => 'true',
-							'description' => __( 'Change the design access policy', 'mystyle' ),
-							'value'       => $design->get_access(),
-							'options'     => array(
-								0     => 'PUBLIC',
-								1     => 'PRIVATE'
-							),
-						)
-					);
-                ?>
-                <input type="hidden" name="nonce" value="<?php print wp_create_nonce("change_design_access_nonce"); ?>" />
-                <input type="hidden" name="design_id" value="<?php print $design->get_design_id() ?>" />
-            </form>
-        <?php endif ; ?>
-        
-            <div class="edit-design-tags">
-                <b>Add or Edit Design Tags</b>
-                <form method="post">
-                    <input type="text" class="edit-design-tag-input" name="edit-design-tag" />
-                    <input type="submit" class="button" value="SAVE TAGS" />
-                </form>
-                <div class="design-tag-status"></div>
-            </div>
-        </div>
+			<div class="design-manager-menu">
+				<br/>
+				<strong>Change the design access level</strong>
+				<form action="#" class="form-change-design-access" method="post">
+					<select name="design_access" class="select short">
+						<option value="0" <?php echo ( 0 === $design->get_access() ) ? 'selected="selected"' : ''; ?>>PUBLIC</option>
+						<option value="1" <?php echo ( 1 === $design->get_access() ) ? 'selected="selected"' : ''; ?>>PRIVATE</option>
+					</select>
+					<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'mystyle_design_access_change_nonce' ) ); ?>" />
+					<input type="hidden" name="design_id" value="<?php echo esc_attr( $design->get_design_id() ); ?>" />
+				</form>
+
+				<div class="edit-design-tags">
+					<strong>Add or Edit Design Tags</strong>
+					<form method="post">
+						<input type="text" class="edit-design-tag-input" name="edit-design-tag" />
+						<input type="submit" class="button" value="SAVE TAGS" />
+					</form>
+					<div class="design-tag-status"></div>
+				</div>
+			</div>
 		<?php else : ?>
-		<div class="design-tags">
-			Design Tags:
-			<?php foreach ( $design_tags as $i => $tag ) : ?>
-				<?php
-				if ( $i > 0 ) {
-					echo ', ';}
-				?>
-				<a href="<?php echo esc_url( MyStyle_Design_Tag_Page::get_tag_url( $tag['slug'] ) ); ?>" title="<?php echo esc_attr( $tag['name'] ); ?> Design Tags"><?php echo esc_html( $tag['name'] ); ?></a>
-			<?php endforeach; ?>
-		</div>
+			<div class="design-tags">
+				Design Tags:
+				<?php foreach ( $design_tags as $i => $tag ) : ?>
+					<?php
+					if ( $i > 0 ) {
+						echo ', ';}
+					?>
+					<a href="<?php echo esc_url( MyStyle_Design_Tag_Page::get_tag_url( $tag['slug'] ) ); ?>" title="<?php echo esc_attr( $tag['name'] ); ?> Design Tags"><?php echo esc_html( $tag['name'] ); ?></a>
+				<?php endforeach; ?>
+			</div>
 		<?php endif; ?>
-        
-        <?php do_action( 'mystyle_design_profile_description_after', array( $design ) ) ; ?>
+
+		<?php do_action( 'mystyle_design_profile_description_after', array( $design ) ); ?>
 	</div>
 <?php if ( 'disabled' !== $product_menu_type ) { ?>
 	<div class="customize_products <?php echo esc_attr( $product_menu_type ); ?>">

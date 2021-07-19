@@ -87,8 +87,8 @@ class MyStyle_User_Interface {
 	/**
 	 * Gets the singleton instance.
 	 *
-	 * @return MyStyle Returns the singleton instance of
-	 * this class.
+	 * @return MyStyle_User_Interface Returns the singleton instance of this
+	 * class.
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {

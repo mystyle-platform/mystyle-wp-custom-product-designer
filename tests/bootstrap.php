@@ -54,4 +54,3 @@ require_once $_tests_dir . '/includes/bootstrap.php';
 
 require dirname( __FILE__ ) . '/functions.php';
 require dirname( __FILE__ ) . '/class-mystyle-test-util.php';
-

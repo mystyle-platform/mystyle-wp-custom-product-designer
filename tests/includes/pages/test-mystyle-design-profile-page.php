@@ -42,12 +42,18 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
 	 */
 	public function tearDown() {
 		global $wpdb;
+
 		// Perform the actual task according to parent class.
 		parent::tearDown();
 
 		// Drop the tables that we created.
 		$wpdb->query( 'DROP TABLE IF EXISTS ' . MyStyle_Design::get_table_name() );
 		$wpdb->query( 'DROP TABLE IF EXISTS ' . MyStyle_Session::get_table_name() );
+
+		// Reset the server globals.
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+
+		MyStyle_Design_Profile_Page::reset_instance();
 	}
 
 	/**
@@ -68,7 +74,7 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
 	/**
 	 * Test the init function with.
 	 *
-	 * @global stdClass $post
+	 * @global \stdClass $post
 	 */
 	public function test_init_with_valid_design_id() {
 		global $post;
@@ -142,7 +148,7 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
 
 		// NOTE: we would normally create a design here but for this test,
 		// the design doesn't exist.
-		// mock the request uri  and post as though we were loading the design
+		// mock the request uri and post as though we were loading the design
 		// index.
 		$_SERVER['REQUEST_URI'] = 'http://localhost/designs/';
 		$post                   = new stdClass();
@@ -206,6 +212,59 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
 			'MyStyle_Not_Found_Exception',
 			get_class( $mystyle_design_profile_page->get_exception() )
 		);
+	}
+
+	/**
+	 * Test the init function with.
+	 *
+	 * @global stdClass $post
+	 */
+	public function test_init_with_post_request() {
+		global $post;
+
+		// Default the response code to 200.
+		if ( function_exists( 'http_response_code' ) ) {
+			http_response_code( 200 );
+		}
+
+		$design_id        = 1;
+		$new_design_title = 'New Design Title';
+
+		// Create the Design Profile Page.
+		$design_profile_page = MyStyle_Design_Profile_Page::create();
+
+		// Create a design.
+		$design = MyStyle_MockDesign::get_mock_design( $design_id );
+
+		// Persist the design.
+		MyStyle_DesignManager::persist( $design );
+
+		// Mock the request uri and post as though we were loading the design
+		// profile page for design 1.
+		$_SERVER['REQUEST_URI']    = 'http://localhost/designs/' . $design_id;
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$_POST['ms_title']         = $new_design_title;
+		$_REQUEST['_wpnonce']      = wp_create_nonce( 'mystyle_design_edit_nonce' );
+		$post                      = new stdClass();
+		$post->ID                  = MyStyle_Design_Profile_Page::get_id();
+
+		// Get the Mystyle_Design_Profile page singleton.
+		$mystyle_design_profile_page = MyStyle_Design_Profile_Page::get_instance();
+
+		// Call the function.
+		$mystyle_design_profile_page->init();
+
+		// Get the current design from the singleton instance.
+		$current_design = $mystyle_design_profile_page->get_design();
+
+		// Assert that the http response code is set to 200.
+		$this->assertEquals( 200, $mystyle_design_profile_page->get_http_response_code() );
+
+		// Assert that the Design title was updated as expected.
+		$this->assertEquals( $new_design_title, $current_design->get_title() );
+
+		// Assert that the exception is null.
+		$this->assertEquals( null, $mystyle_design_profile_page->get_exception() );
 	}
 
 	/**
@@ -296,83 +355,6 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
 
 		// Assert that the page was deleted.
 		$this->assertEquals( $page->post_status, 'trash' );
-	}
-
-	/**
-	 * Test the design_tag_add function.
-	 */
-	public function test_design_tag_add() {
-
-		// Set up the test data.
-		$tag_name        = 'Test Tag';
-		$design_id       = 1;
-		$user_id         = get_current_user_id();
-		$expected_output = '{"tag":"Test Tag"}';
-
-		// Mock a WP_User.
-		$user     = new WP_User();
-		$user->ID = $user_id;
-
-		// Create a design.
-		$design = MyStyle_MockDesign::get_mock_design( $design_id );
-		$design->set_user_id( $user_id );
-		MyStyle_DesignManager::persist( $design );
-
-		// Mock the POST.
-		$_POST['tag']       = $tag_name;
-		$_POST['design_id'] = $design_id;
-		$_POST['user_id']   = $user_id;
-
-		// Assert that the expected output string is returned.
-		$this->expectOutputString( $expected_output );
-		try {
-			// Call the function (args passed in via the mocked POST from above).
-			MyStyle_Design_Profile_Page::get_instance()->design_tag_add();
-		} catch ( WPDieException $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-			// Do nothing.
-		}
-	}
-
-	/**
-	 * Test the design_tag_remove function.
-	 */
-	public function test_design_tag_remove() {
-
-		// Set up the test data.
-		$tag_name        = 'Test Tag';
-		$design_id       = 1;
-		$user_id         = get_current_user_id();
-		$expected_output = '{"tag":"Test Tag"}';
-
-		// Mock a WP_User.
-		$user     = new WP_User();
-		$user->ID = $user_id;
-
-		// Create a design.
-		$design = MyStyle_MockDesign::get_mock_design( $design_id );
-		$design->set_user_id( $user_id );
-		MyStyle_DesignManager::persist( $design );
-
-		// Add the tag to the design.
-		$tag_id = MyStyle_DesignManager::add_tag_to_design(
-			$design_id,
-			$tag_name,
-			$user
-		);
-
-		// Mock the POST.
-		$_POST['tag']       = $tag_name;
-		$_POST['design_id'] = $design_id;
-		$_POST['user_id']   = $user_id;
-
-		// Assert that the expected output string is returned.
-		$this->expectOutputString( $expected_output );
-		try {
-			// Call the function (args passed in via the mocked POST from above).
-			MyStyle_Design_Profile_Page::get_instance()->design_tag_remove();
-		} catch ( WPDieException $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-			// Do nothing.
-		}
 	}
 
 	/**

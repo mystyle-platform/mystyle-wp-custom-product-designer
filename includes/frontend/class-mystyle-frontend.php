@@ -71,6 +71,7 @@ class MyStyle_FrontEnd {
 		add_filter( 'wp_head', array( &$this, 'render_form_integration_config' ), 0 );
 
 		add_action( 'init', array( &$this, 'init' ), 10, 0 );
+		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_frontend_js' ), 10, 0 );
 		add_action( 'template_redirect', array( &$this, 'init_vars' ), 10, 0 );
 	}
 
@@ -88,6 +89,25 @@ class MyStyle_FrontEnd {
 		// Add the swfobject.js file to the WP head.
 		wp_register_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js' );
 		wp_enqueue_script( 'swfobject' );
+	}
+
+	/**
+	 * Enqueue our frontend.js script and the mystyle_wp global object.
+	 */
+	public function enqueue_frontend_js() {
+		wp_enqueue_script(
+			'frontend_js',
+			MYSTYLE_ASSETS_URL . 'js/frontend.js',
+			array(), // deps.
+			MYSTYLE_VERSION, // version.
+			true
+		);
+
+		wp_localize_script(
+			'frontend_js',
+			'mystyle_wp',
+			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) )
+		);
 	}
 
 	/**
