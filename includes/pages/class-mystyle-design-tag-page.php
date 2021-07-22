@@ -47,9 +47,9 @@ class MyStyle_Design_Tag_Page {
 		add_action( 'template_redirect', array( &$this, 'set_pager' ) );
 
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
-		//add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
+		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
-
+        
 	}
 
 	/**
@@ -199,7 +199,7 @@ class MyStyle_Design_Tag_Page {
 	 */
 	public function alter_query( $posts, $query ) {
 		global $wpdb;
-
+        
 		// Just return if this isn't the query that we are looking for.
 		if (
 			( ! $query->is_main_query() )
@@ -263,7 +263,8 @@ class MyStyle_Design_Tag_Page {
 					$design_post->post_type    = 'Design';
 					$design_post->post_title   = $title;
 					$design_post->post_content = $title . ' custom ' . $product->get_name();
-
+                    $design_post->guid = get_site_url() . '/designs/' . $design->get_design_id() ;
+                    
 					$designs[] = $design_post;
 				} catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 					// If unauthorized, skip and go onto the next one.
@@ -350,9 +351,7 @@ class MyStyle_Design_Tag_Page {
 	 */
 	public function post_link( $permalink, $post, $leavename ) {
 		global $wp_query;
-        
-		if ( isset( $wp_query->query['design_tag'] ) && isset($post->design_id) ) {
-            
+		if ( isset( $wp_query->query['design_tag'] ) && isset($post->design_id ) ) {
 			return get_site_url() . '/designs/' . $post->design_id;
 		}
 
