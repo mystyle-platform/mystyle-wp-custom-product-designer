@@ -21,9 +21,15 @@ abstract class MyStyle_Design_Tag_Shortcode {
 		$wp_user = wp_get_current_user();
 
 		$session = MyStyle()->get_session();
+        
+        $show_designs = true ;
+        
+        if(isset($atts['show_designs']) && $atts['show_designs'] == 'false') {
+            $show_designs = false ;    
+        }
 
 		$pager  = 0;
-		$limit  = 4;
+		$limit  = ( $show_designs ? 4 : 1000 ) ;
 		$offset = 0;
 
 		// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
@@ -43,22 +49,25 @@ abstract class MyStyle_Design_Tag_Shortcode {
 		);
 
 		$terms_count = count( $terms );
+        
+        if( $show_designs ){
+            for ( $i = 0; $i < $terms_count; $i++ ) {
+                $designs = MyStyle_DesignManager::get_designs_by_term_id(
+                    $terms[ $i ]->term_id,
+                    $wp_user,
+                    $session,
+                    6,
+                    1
+                );
 
-		for ( $i = 0; $i < $terms_count; $i++ ) {
-			$designs = MyStyle_DesignManager::get_designs_by_term_id(
-				$terms[ $i ]->term_id,
-				$wp_user,
-				$session,
-				6,
-				1
-			);
-
-			if ( 0 === count( $designs ) ) {
-				unset( $terms[ $i ] );
-			} else {
-				$terms[ $i ]->designs = $designs;
-			}
-		}
+                if ( 0 === count( $designs ) ) {
+                    unset( $terms[ $i ] );
+                } else {
+                    $terms[ $i ]->designs = $designs;
+                }
+            }
+        }
+		
 
 		$pager_array = self::pager( $pager, $limit, $terms_count );
 		$next        = $pager_array['next'];

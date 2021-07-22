@@ -13,8 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div id="mystyle-design-tag-index-wrapper" class="woocommerce design-tags">
+<div id="mystyle-design-tag-index-wrapper" class="woocommerce design-tags<?php print ( $show_designs ? ' show-designs' : '' ) ; ?>">
 	<?php foreach ( $terms as $term ) : ?>
+    <?php if($show_designs) : ?>
 	<h3 class="mystyle-design-id"><a href="<?php echo esc_url( get_term_link( $term ) ); ?>" title="<?php echo esc_attr( $term->name ); ?> Gallery"><?php echo esc_html( $term->name ); ?></a></h3>
 	<ul>
 		<?php foreach ( $term->designs as $design ) : ?>
@@ -31,6 +32,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</li>
 		<?php endforeach; ?>
 	</ul>
+    <?php else : ?>
+    <a href="<?php echo esc_url( get_term_link( $term ) ); ?>" title="<?php echo esc_attr( $term->name ); ?> Gallery"><?php echo esc_html( $term->name ); ?></a>
+    <?php endif ; ?>&nbsp;
 	<?php endforeach; ?>
 	<div class="pager">
 		<?php if ( ! is_null( $prev ) ) : ?>

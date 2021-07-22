@@ -227,6 +227,10 @@ class MyStyle_Design_Profile_Page {
 				$this->user,
 				$this->session
 			);
+            
+            if( ! MyStyle_DesignManager::security_check($design, $this->user, $this->session) ) {
+                throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+            }
 
 			// Get the previous design.
 			$this->set_previous_design(

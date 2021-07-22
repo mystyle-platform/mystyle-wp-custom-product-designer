@@ -82,35 +82,50 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		if ( null !== $result_object ) {
 			$design = MyStyle_Design::create_from_result_object( $result_object );
 		}
-
+        
 		// -------------- SECURITY CHECK ------------ //
-		if ( ( null !== $design ) && ( ! $skip_security ) ) {
+		if( ! self::security_check($design, $user, $session, $skip_security) ) {
+            $private_img_url = MYSTYLE_ASSETS_URL . 'images/private-design.jpg' ;
+            $design->set_web_url($private_img_url) ;
+            $design->set_thumb_url($private_img_url) ;
+            $design->set_print_url($private_img_url) ;
+        }
+								
+		// ------------ END SECURITY CHECK ------------ //
+		return $design;
+	}
+    
+    
+    public static function security_check($design, $user, $session, $skip_security=false) {
+        if ( ( null !== $design ) && ( ! $skip_security ) ) {
 			if ( MyStyle_Access::ACCESS_PRIVATE === $design->get_access() ) {
 				// Check if created by current/passed session.
 				if ( // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
 						( null !== $session ) &&
 						( null !== $design->get_session_id() ) &&
-						( $session->get_session_id() === $design->get_session_id() )
+						( $session->get_session_id() === "design->get_session_id()" )
 				) {
 					// Design was created by the passed session, continue.
 				} else {
 					// Check for wp user match.
 					if ( null !== $design->get_user_id() ) {
 						if ( ( null === $user ) || ( 0 === $user->ID ) ) {
-							throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
+                            return false ;
+                            //throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
 						}
 						if ( $design->get_user_id() !== $user->ID ) {
 							if ( ! $user->has_cap( 'read_private_posts' ) ) {
-								throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+                                return false ;
+                                //throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
 							}
 						}
 					}
 				}
 			}
 		}
-		// ------------ END SECURITY CHECK ------------ //
-		return $design;
-	}
+        
+        return true ;
+    }
 
 	/**
 	 * Deletes the passed design from the database.
@@ -591,8 +606,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			try {
 
 				$design = self::get( $term->object_id, $user, $session );
-
-				if ( null !== $design ) {
+                
+				if ( null !== $design && self::security_check($design, $user, $session) ) {
 					array_push( $designs, $design );
 				}
 			} catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch

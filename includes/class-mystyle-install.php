@@ -140,6 +140,14 @@ class MyStyle_Install {
 				MyStyle_Design_Tag_Page::fix();
 			}
 		}
+        
+        // Add the Design tag page if upgrading from less than 3.14.0 (versions
+		// that were before this page existed).
+		if ( version_compare( $old_version, '3.18.4', '<' ) ) {
+			if ( ! MyStyle_Design_Tag_Page::index_exists() ) {
+				MyStyle_Design_Tag_Page::create_index();
+			}
+		}
 
 		$upgrade_notice = MyStyle_Notice::create(
 			'notify_upgrade',
