@@ -94,7 +94,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'mystyle_design_access_change_nonce' ) ); ?>" />
 					<input type="hidden" name="design_id" value="<?php echo esc_attr( $design->get_design_id() ); ?>" />
 				</form>
-
+                
+                <div class="design-tag-collection-toggle-menu">
+                    <ul>
+                        <li class="selected"><a href="#">Design Tags</a></li>
+                        <li><a href="#">Design Collections</a></li>
+                    </ul>
+                </div>
 				<div class="edit-design-tags">
 					<strong>Add or Edit Design Tags</strong>
 					<form method="post">

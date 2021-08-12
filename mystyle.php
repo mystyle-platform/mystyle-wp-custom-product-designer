@@ -107,6 +107,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			define( 'MYSTYLE_DESIGN_TAG_PAGEID_NAME', 'mystyle_design_tag_page_id' );
 			define( 'MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME', 'mystyle_design_tag_index_page_id' );
 			define( 'MYSTYLE_TAXONOMY_NAME', 'design_tag' );
+			define( 'MYSTYLE_COLLECTION_NAME', 'design_collection' );
 		}
 
 		/**
@@ -179,6 +180,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 
 			// Taxonomy includes.
 			require_once MYSTYLE_INCLUDES . 'taxonomies/class-mystyle-design-tag-taxonomy.php';
+			require_once MYSTYLE_INCLUDES . 'taxonomies/class-mystyle-design-collection-taxonomy.php';
 
 			// Shortcode includes.
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php';
@@ -206,6 +208,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-dashboard-page.php';
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-addons-page.php';
 			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-design-tags-page.php';
+			require_once MYSTYLE_INCLUDES . 'admin/pages/class-mystyle-design-collections-page.php';
 			require_once MYSTYLE_INCLUDES . 'admin/help/class-mystyle-help.php';
 			require_once MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-product.php';
 			require_once MYSTYLE_INCLUDES . 'admin/class-mystyle-woocommerce-admin-order.php';
@@ -237,6 +240,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			MyStyle_Passthru_Codec::get_instance();
 			MyStyle_Wp_Rest_Api_Design_Controller::get_instance();
 			MyStyle_Design_Tag_Taxonomy::get_instance();
+			MyStyle_Design_Collection_Taxonomy::get_instance();
 			MyStyle_Ajax::get_instance();
 			MyStyle_Tm_Extra_Product_Options::get_instance();
 			MyStyle_Wpml::get_instance();
@@ -261,6 +265,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 
 				// Set up the Design Tags page.
 				MyStyle_Design_Tags_Page::get_instance();
+				MyStyle_Design_Collections_Page::get_instance();
 
 				// Set up the Help.
 				MyStyle_Help::get_instance();

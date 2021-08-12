@@ -255,6 +255,28 @@ body.mystyle-design-profile ul.mystyle-design-nav li {
 	margin: 5em;
 }
 
+.design-tag-collection-toggle-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.design-tag-collection-toggle-menu li {
+    display: inline;
+    border: solid;
+    border-width: 1px 1px 0 1px;
+    margin: 0 5px 0 0;
+}
+
+.design-tag-collection-toggle-menu li a {
+    padding: 0 10px;
+}
+
+.design-tag-collection-toggle-menu li.selected {
+    padding-bottom: 1px; 
+    background: white;
+}
+
 /* MyStyle Design Profile Index */
 body.mystyle-design-profile ul.mystyle-designs {
 	list-style: none;
