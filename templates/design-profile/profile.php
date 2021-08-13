@@ -95,13 +95,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<input type="hidden" name="design_id" value="<?php echo esc_attr( $design->get_design_id() ); ?>" />
 				</form>
                 
+                <?php if(current_user_can( 'administrator' )) : ?>
                 <div class="design-tag-collection-toggle-menu">
                     <ul>
-                        <li class="selected"><a href="#">Design Tags</a></li>
-                        <li><a href="#">Design Collections</a></li>
+                        <li class="selected"><a href="#design-tags">Design Tags</a></li>
+                        <li><a href="#design-collections">Design Collections</a></li>
                     </ul>
                 </div>
-				<div class="edit-design-tags">
+                <div class="edit-design-collections">
+					<strong>Add or Edit Design Collections</strong>
+					<form method="post">
+						<input type="text" class="edit-design-collection-input" name="edit-design-collection" />
+						<input type="submit" class="button" value="SAVE COLLECTIONS" />
+					</form>
+					<div class="design-collection-status"></div>
+				</div>
+                <?php endif ; ?>
+				<div class="edit-design-tags<?php print ( current_user_can( 'administrator' ) ? ' collections-present' : '' ) ?>">
 					<strong>Add or Edit Design Tags</strong>
 					<form method="post">
 						<input type="text" class="edit-design-tag-input" name="edit-design-tag" />
@@ -109,6 +119,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</form>
 					<div class="design-tag-status"></div>
 				</div>
+                <br />
 			</div>
 		<?php else : ?>
 			<div class="design-tags">

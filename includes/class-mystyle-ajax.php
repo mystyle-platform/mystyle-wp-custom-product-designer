@@ -35,6 +35,9 @@ class MyStyle_Ajax {
 			'design_tag_search',
 			'design_tag_add',
 			'design_tag_remove',
+            'design_collection_search',
+			'design_collection_add',
+			'design_collection_remove',
 		);
 
 		foreach ( $ajax_events as $ajax_event ) {
@@ -159,6 +162,82 @@ class MyStyle_Ajax {
 		);
 
 		wp_send_json_success( array( 'tag' => $tag ) );
+	}
+    
+    /**
+	 * Search design collection.
+	 *
+	 * This is mostly copy/paste from the wp_ajax_ajax_collection_search function.
+	 */
+	public function design_collection_search() {
+		$taxonomy = MYSTYLE_COLLECTION_NAME;
+		// phpcs:ignore
+		$s        = wp_unslash( $_GET['q'] );
+
+		/**
+		 * Filters the minimum number of characters required to fire a tag search via Ajax.
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param int         $characters The minimum number of characters required. Default 2.
+		 * @param WP_Taxonomy $tax        The taxonomy object.
+		 * @param string      $s          The search term.
+		 */
+		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
+
+		/*
+		 * Require $term_search_min_chars chars for matching (default: 2)
+		 * ensure it's a non-negative, non-zero integer.
+		 */
+		if ( ( 0 === $term_search_min_chars ) || ( strlen( $s ) < $term_search_min_chars ) ) {
+			wp_die();
+		}
+
+		$results = MyStyle_Design_Collection_Taxonomy::search( $s );
+
+		wp_send_json_success( $results );
+	}
+
+	/**
+	 * Add a collection to the design.
+	 */
+	public function design_collection_add() {
+		// phpcs:disable
+		$collection       = sanitize_text_field( wp_unslash( $_POST['collection'] ) );
+		$design_id = intval( wp_unslash( $_POST['design_id'] ) );
+		// phpcs:enable
+
+		$user = wp_get_current_user();
+
+		// Adds the collection - throws exception is user isn't authorized.
+		MyStyle_DesignManager::add_collection_to_design(
+			$design_id,
+			$collection,
+			$user
+		);
+
+		wp_send_json_success( array( 'collection' => $collection ) );
+	}
+
+	/**
+	 * Remove a collection from the design.
+	 */
+	public function design_collection_remove() {
+		// phpcs:disable
+		$collection       = sanitize_text_field( wp_unslash( $_POST['collection'] ) );
+		$design_id = intval( $_POST['design_id'] );
+		// phpcs:enable
+
+		$user = wp_get_current_user();
+
+		// Removes the tag - throws exception is user isn't authorized.
+		MyStyle_DesignManager::remove_collection_from_design(
+			$design_id,
+			$collection,
+			$user
+		);
+
+		wp_send_json_success( array( 'collection' => $collection ) );
 	}
 
 	/**

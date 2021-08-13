@@ -877,6 +877,7 @@ class MyStyle_Design_Profile_Page {
 				}
 
 				$tags = MyStyle_DesignManager::get_design_tags( $design_id );
+                $collections = MyStyle_DesignManager::get_design_collections( $design_id );
 
 				if ( $user ) {
 					?>
@@ -902,6 +903,14 @@ class MyStyle_Design_Profile_Page {
 				</script>
 					<?php
 				}
+                
+                if(current_user_can( 'administrator' )) {
+                    ?>
+				<script>
+					var designCollections = '<?php echo ( count( $collections ) > 0 ) ? implode( ',', $collections ) : ''; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>';
+				</script>
+					<?php
+                }
 			}
 		}
 	}

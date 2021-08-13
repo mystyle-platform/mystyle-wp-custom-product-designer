@@ -263,8 +263,8 @@ body.mystyle-design-profile ul.mystyle-design-nav li {
 
 .design-tag-collection-toggle-menu li {
     display: inline;
-    border: solid;
-    border-width: 1px 1px 0 1px;
+    border: solid #ccc;
+    border-width: 2px 2px 0 2px;
     margin: 0 5px 0 0;
 }
 
@@ -274,7 +274,18 @@ body.mystyle-design-profile ul.mystyle-design-nav li {
 
 .design-tag-collection-toggle-menu li.selected {
     padding-bottom: 1px; 
-    background: white;
+    background: #ededed;
+}
+
+.edit-design-collections {
+    display: none ;
+}
+
+.collections-present, .edit-design-collections {
+    border: solid #ccc;
+    border-width: 2px;
+    padding:10px ;
+    margin-top:-3px;
 }
 
 /* MyStyle Design Profile Index */

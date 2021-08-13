@@ -919,6 +919,169 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			$term_ids = wp_add_object_terms( $design_id, $tags, $taxonomy );
 		}
 	}
+    
+    
+    /**
+	 * Get the collections for the design with the passed design id. See below for more
+	 * info about the return value.
+	 *
+	 * @param int  $design_id The id of the design that you want to get. If
+	 *                        null, the function will attempt to get the
+	 *                        design id from the URL.
+	 * @param bool $with_slug Set to true (default is false) to include the
+	 *                        term slug in the returned tags. If true, the
+	 *                        returned array becomes two dimensional with each
+	 *                        entry having a 'name' and a 'slug' (and possibly
+	 *                        an id.
+	 * @param bool $with_id   Set to true (default is false) to include the
+	 *                        term id in the returned tags. If true, the
+	 *                        returned array becomes two dimensional with each
+	 *                        entry having a 'name' and an 'id' (and possibly a
+	 *                        'slug'.
+	 * @return array Returns an array of tags. If the slug param is false, it
+	 * will return a one dimensional array like ["Foo", "Bar"]. If the slug
+	 * param is true, it will return a two dimensional array like
+	 * [["name" => "Foo", "slug" => "foo"], ["name" => "Bar", "slug" => "bar"]].
+	 */
+	public static function get_design_collections(
+		$design_id,
+		$with_slug = false,
+		$with_id = false
+	) {
+		$tags  = array();
+		$terms = wp_get_object_terms( $design_id, MYSTYLE_COLLECTION_NAME );
+
+		foreach ( $terms as $term ) {
+			if ( $with_slug || $with_id ) {
+				$entry = array(
+					'name' => $term->name,
+				);
+				if ( $with_slug ) {
+					$entry['slug'] = $term->slug;
+				}
+				if ( $with_id ) {
+					$entry['id'] = $term->term_id;
+				}
+			} else {
+				$entry = $term->name;
+			}
+			$tags[] = $entry;
+		}
+
+		return $tags;
+	}
+    
+    
+    /**
+	 * Add a design collection. Called to add a collection to a design.
+	 *
+	 * @param int     $design_id The id of the design to add the tag to.
+	 * @param string  $tag       The tag to add.
+	 * @param WP_User $user      The current user.
+	 * @throws MyStyle_Unauthorized_Exception Throws a
+	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
+	 * and isn't an administrator.
+	 * @return int Returns the id of the tag.
+	 */
+	public static function add_collection_to_design(
+		$design_id,
+		$collection,
+		WP_User $user
+	) {
+		$taxonomy = MYSTYLE_COLLECTION_NAME;
+
+		// ---- Security Check ---- //
+		if ( ! $user->has_cap( 'administrator' ) ) {
+			throw new MyStyle_Unauthorized_Exception(
+				'Only the an administrator can add tags to a design.'
+			);
+		}
+
+		// Add the tag.
+		$term_ids = wp_add_object_terms( $design_id, $collection, $taxonomy );
+		$term_id  = $term_ids[0];
+
+		return $term_id;
+	}
+
+	/**
+	 * Removes a collection from a design.
+	 *
+	 * @param int     $design_id        The id of the design to remove the tag from.
+	 * @param string  $collection       The collection to remove.
+	 * @param WP_User $user             The current user.
+	 * @throws MyStyle_Unauthorized_Exception Throws a
+	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
+	 * and isn't an administrator.
+	 * @return int Returns true on success, false on failure.
+	 */
+	public static function remove_collection_from_design(
+		$design_id,
+		$collection,
+		WP_User $user
+	) {
+		$taxonomy = MYSTYLE_COLLECTION_NAME;
+
+		// ---- Security Check ---- //
+		if ( ! $user->has_cap( 'administrator' ) ) {
+			throw new MyStyle_Unauthorized_Exception(
+				'Only the administrator can add tags to a design.'
+			);
+		}
+
+		// Remove the tag.
+		$success = wp_remove_object_terms( $design_id, $collection, $taxonomy );
+
+		return $success;
+	}
+
+	/**
+	 * Updates a design's collections. Called to update all collections on a design to match
+	 * the passed array of collections.
+	 *
+	 * @param int     $design_id       The id of the design to update.
+	 * @param array   $collection      The array of tags. Should be an array of
+	 *                                   strings (ex: ["tag1", "tag2"]).
+	 * @param WP_User $user            The current user.
+	 * @throws MyStyle_Unauthorized_Exception Throws a
+	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
+	 * and isn't an administrator.
+	 * @throws MyStyle_Exception Throws a MyStyle_Exception if the function
+	 * fails.
+	 */
+	public static function update_design_collections(
+		$design_id,
+		$collections,
+		WP_User $user
+	) {
+		$taxonomy = MYSTYLE_COLLECTION_NAME;
+
+		// ---- Security Check ---- //
+		if ( ! $user->has_cap( 'administrator' ) ) {
+			throw new MyStyle_Unauthorized_Exception(
+				'Only the administrator can update a design\'s tags.'
+			);
+		}
+
+		// Remove all current tags from the design.
+		$old_terms = wp_get_object_terms( $design_id, $taxonomy );
+		if ( ! empty( $old_terms ) ) {
+			$old_term_ids = array();
+			foreach ( $old_terms as $old_term ) {
+				$old_term_ids[] = $old_term->term_id;
+			}
+
+			$removed = wp_remove_object_terms( $design_id, $old_term_ids, $taxonomy );
+			if ( ! $removed ) {
+				throw new MyStyle_Exception( 'Couldn`t remove existing tags.' );
+			}
+		}
+
+		// Add the passed tags to the design.
+		if ( ! empty( $collections ) ) {
+			$term_ids = wp_add_object_terms( $design_id, $collections, $taxonomy );
+		}
+	}
 
 	/**
 	 * Helper method that returns the security WHERE clause ( EX: ' WHERE

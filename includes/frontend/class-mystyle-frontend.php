@@ -80,7 +80,7 @@ class MyStyle_FrontEnd {
 	 */
 	public function init() {
 		// Add the MyStyle frontend stylesheet to the WP frontend head.
-		wp_register_style( 'myStyleFrontendStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css', array(), MYSTYLE_VERSION );
+		wp_register_style( 'myStyleFrontendStylesheet', MYSTYLE_ASSETS_URL . 'css/frontend.css?12346546', array(), MYSTYLE_VERSION );
 		wp_enqueue_style( 'myStyleFrontendStylesheet' );
 
 		// Add the WordPress Dashicons icon font to the frontend.
@@ -97,7 +97,7 @@ class MyStyle_FrontEnd {
 	public function enqueue_frontend_js() {
 		wp_enqueue_script(
 			'frontend_js',
-			MYSTYLE_ASSETS_URL . 'js/frontend.js',
+			MYSTYLE_ASSETS_URL . 'js/frontend.js?12364565465454654654656',
 			array(), // deps.
 			MYSTYLE_VERSION, // version.
 			true
