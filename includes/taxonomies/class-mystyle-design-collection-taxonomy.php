@@ -64,7 +64,7 @@ class MyStyle_Design_Collection_Taxonomy {
 				),
 				// Control the slugs used for this taxonomy.
 				'rewrite'      => array(
-					'slug' => 'design-Collections',
+					'slug' => 'design-collections',
 				),
 				'public'       => true,
 				'show_in_rest' => true,

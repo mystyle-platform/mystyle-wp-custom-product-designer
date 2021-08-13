@@ -266,15 +266,16 @@ body.mystyle-design-profile ul.mystyle-design-nav li {
     border: solid #ccc;
     border-width: 2px 2px 0 2px;
     margin: 0 5px 0 0;
+    padding: 10px;
+    background-color: #ededed ;
 }
 
 .design-tag-collection-toggle-menu li a {
     padding: 0 10px;
 }
 
-.design-tag-collection-toggle-menu li.selected {
-    padding-bottom: 1px; 
-    background: #ededed;
+.design-tag-collection-toggle-menu li.selected { 
+    background: #FFFFFF;
 }
 
 .edit-design-collections {
@@ -285,7 +286,8 @@ body.mystyle-design-profile ul.mystyle-design-nav li {
     border: solid #ccc;
     border-width: 2px;
     padding:10px ;
-    margin-top:-3px;
+    margin-top:5px;
+    background-color: #FFFFFF
 }
 
 /* MyStyle Design Profile Index */
@@ -509,6 +511,58 @@ body.archive.tax-design_tag article {
 }
 /* stylelint-enable no-descending-specificity */
 
+
+/* Design Collection Index */
+#mystyle-design-collection-index-wrapper a {
+    text-decoration: none ;
+}
+#mystyle-design-collection-index-wrapper .collections-menu {
+    float: left ;
+    width: 25% ;
+}
+
+#mystyle-design-collection-index-wrapper .collections-menu ul {
+    margin: 0 ;
+}
+
+#mystyle-design-collection-index-wrapper .collections-menu li {
+    list-style-type: none ;
+}
+
+#mystyle-design-collection-index-wrapper .collections-content {
+    float: left ;
+    width: 75% ;
+}
+
+#mystyle-design-collection-index-wrapper .collections-content h3 {
+    border: solid 1px #ccc ;
+    width: 50% ;
+    margin 10px 0 ;
+    padding: 0 10px;
+}
+
+#mystyle-design-collection-index-wrapper .design-tile {
+    float: left ;
+    padding-right: 15px;
+}
+
+#mystyle-design-collection-index-wrapper .view-more {
+    float: right;
+    margin-top: 10px;
+}
+
+#mystyle-design-collection-index-wrapper .collection-row {
+    margin-bottom: 20px; 
+    border-bottom: solid 2px #ccc ;
+    width: 100% ;
+    padding-bottom: 20px ;
+}
+
+#mystyle-design-collection-index-wrapper .collection-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
 /* Add-ons */
 /* stylelint-disable no-descending-specificity */

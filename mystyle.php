@@ -93,7 +93,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' );
 			}
 			if ( ! defined( 'MYSTYLE_VERSION' ) ) {
-				define( 'MYSTYLE_VERSION', '3.18.4' );
+				define( 'MYSTYLE_VERSION', '3.18.5' );
 			}
 			if ( ! defined( 'MYSTYLE_TEMPLATE_DEBUG_MODE' ) ) {
 				define( 'MYSTYLE_TEMPLATE_DEBUG_MODE', false );
@@ -106,6 +106,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' );
 			define( 'MYSTYLE_DESIGN_TAG_PAGEID_NAME', 'mystyle_design_tag_page_id' );
 			define( 'MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME', 'mystyle_design_tag_index_page_id' );
+			define( 'MYSTYLE_DESIGN_COLLECTION_INDEX_PAGEID_NAME', 'mystyle_design_collection_index_page_id' );
 			define( 'MYSTYLE_TAXONOMY_NAME', 'design_tag' );
 			define( 'MYSTYLE_COLLECTION_NAME', 'design_collection' );
 		}
@@ -162,6 +163,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-my-designs-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-author-designs-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-tag-page.php';
+			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-collection-page.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-install.php';
 			require_once MYSTYLE_INCLUDES . 'admin/notices/class-mystyle-notice.php';
@@ -186,6 +188,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-tag-shortcode.php';
+			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-collection-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php';
 
 			require_once MYSTYLE_PATH . 'functions.php';
@@ -301,6 +304,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				MyStyle_My_Designs_Page::get_instance();
 				MyStyle_Author_Designs_Page::get_instance();
 				MyStyle_Design_Tag_Page::get_instance();
+				MyStyle_Design_Collection_Page::get_instance();
 			}
 		}
 
@@ -335,6 +339,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			add_shortcode( 'mystyle_design_profile', array( 'MyStyle_Design_Profile_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design', array( 'MyStyle_Design_Shortcode', 'output' ) );
 			add_shortcode( 'mystyle_design_tags', array( 'MyStyle_Design_Tag_Shortcode', 'output' ) );
+			add_shortcode( 'mystyle_design_collections', array( 'MyStyle_Design_Collection_Shortcode', 'output' ) );
 		}
 
 		/**
