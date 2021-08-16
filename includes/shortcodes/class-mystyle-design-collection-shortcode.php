@@ -17,7 +17,14 @@ abstract class MyStyle_Design_Collection_Shortcode {
 	 * @param array $atts The attributes set on the shortcode.
 	 */
 	public static function output( $atts ) {
-
+        global $wp_query ;
+        
+        $term = false ;
+        
+        if( isset($wp_query->query['collection_term']) ) {
+            $term = $wp_query->query['collection_term'] ;
+        }
+        
 		$wp_user = wp_get_current_user();
 
 		$session = MyStyle()->get_session();
@@ -27,7 +34,7 @@ abstract class MyStyle_Design_Collection_Shortcode {
         if(isset($atts['show_designs']) && $atts['show_designs'] == 'false') {
             $show_designs = false ;    
         }
-
+        
 		$pager  = 0;
 		$limit  = ( $show_designs ? 4 : 1000 ) ;
 		$offset = 0;
@@ -46,25 +53,39 @@ abstract class MyStyle_Design_Collection_Shortcode {
 			)
 		);
         
-		$terms = get_terms(
-			array(
-				'taxonomy'   => MYSTYLE_COLLECTION_NAME,
-				'hide_empty' => false,
-				'number'     => $limit,
-				'offset'     => $offset,
-			)
-		);
+        if( $term ) {
+            $terms = array() ;
+            $terms[] = get_term_by( 'slug', $term, MYSTYLE_COLLECTION_NAME) ;
+        }
+        else {
+            $terms = get_terms(
+                array(
+                    'taxonomy'   => MYSTYLE_COLLECTION_NAME,
+                    'hide_empty' => false,
+                    'number'     => $limit,
+                    'offset'     => $offset,
+                )
+            );
+        }
         
-		$terms_count = count( $terms );
-        
+
+        $terms_count = count( $terms );
+
         if( $show_designs ){
+            
+            $design_count = 3 ;
+            
+            if($terms_count == 1) {
+                $design_count = 100 ;
+            }
+            
             for ( $i = 0; $i < $terms_count; $i++ ) {
                 $designs = MyStyle_DesignManager::get_designs_by_term_id(
                     $terms[ $i ]->term_id,
                     $wp_user,
                     $session,
-                    3,
-                    1
+                    $design_count,
+                    $offset+1
                 );
 
                 if ( 0 === count( $designs ) ) {
@@ -74,7 +95,9 @@ abstract class MyStyle_Design_Collection_Shortcode {
                 }
             }
         }
-		//echo '<pre>' ; var_dump($terms) ;
+        //echo '<pre>' ; var_dump($terms) ;
+        
+		
 
 		$pager_array = self::pager( $pager, $limit, $terms_count );
 		$next        = $pager_array['next'];

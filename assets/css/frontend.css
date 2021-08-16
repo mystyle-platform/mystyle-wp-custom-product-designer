@@ -542,13 +542,14 @@ body.archive.tax-design_tag article {
 }
 
 #mystyle-design-collection-index-wrapper .design-tile {
-    float: left ;
+    display: inline-block;
+    vertical-align: bottom;
     padding-right: 15px;
+    margin-top: 10px ;
 }
 
 #mystyle-design-collection-index-wrapper .view-more {
-    float: right;
-    margin-top: 10px;
+    
 }
 
 #mystyle-design-collection-index-wrapper .collection-row {

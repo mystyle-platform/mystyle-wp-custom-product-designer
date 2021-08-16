@@ -14,9 +14,11 @@
         <?php foreach($terms as $term) : ?>
             
         <div class="collection-row">
+            <?php if( count($terms) > 1 ) : ?>
             <h3>
                 <a href="/design-collections/<?php print $term->slug ; ?>" title="<?php print $term->name ; ?>"><?php print $term->name ; ?></a>
             </h3>
+            <?php endif ; ?>
             <?php $count = count($term->designs) ; ?>
             <?php foreach($term->designs as $design) : ?>
             <?php
@@ -37,7 +39,7 @@
                 
             </div>
             <?php endforeach ; ?>
-            <?php if( $count > 2 ) : ?>
+            <?php if( count($terms) > 1 && $count > 2 ) : ?>
             <div class="design-tile view-more">
                 <a href="/design-collections/<?php print $term->slug ; ?>" title="<?php print $term->name ; ?>">View More</a>
             </div>
