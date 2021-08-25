@@ -699,20 +699,38 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * Retrieve the total number of designs having the passed term.
 	 *
 	 * @param int $term_id The term id.
+	 * @param \WP_User|null         $user        The current user.
+	 * @param \MyStyle_Session|null $session     The current MyStyle session.
 	 * @return integer Returns the total number of terms.
 	 * @global $wpdb
 	 */
-	public static function get_total_term_design_count( $term_id ) {
+	public static function get_total_term_design_count( 
+        $term_id,
+		WP_User $user = null,
+		MyStyle_Session $session = null ) {
+        
 		global $wpdb;
-
-		$count = $wpdb->get_var(
+        
+        $access = MyStyle_Access::ACCESS_PUBLIC;
+        
+		$object_ids = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT COUNT(object_id) '
+				'SELECT object_id '
 				. "FROM {$wpdb->prefix}term_relationships "
-				. 'WHERE term_taxonomy_id = %d',
+				. "WHERE term_taxonomy_id = %d",
 				array( $term_id )
 			)
 		);
+        
+        $count = 0 ;
+        
+        foreach($object_ids as $object) {
+            $design = self::get( $object->object_id, $user, $session );
+            
+            if ( null !== $design && self::security_check($design, $user, $session) ) {
+                $count++ ;
+            }
+        }
 
 		return $count;
 	}

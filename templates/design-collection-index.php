@@ -14,11 +14,11 @@
         <?php foreach($terms as $term) : ?>
             
         <div class="collection-row">
-            <?php if( count($terms) > 1 ) : ?>
+            <?php //if( count($terms) > 1 ) : ?>
             <h3>
                 <a href="/design-collections/<?php print $term->slug ; ?>" title="<?php print $term->name ; ?>"><?php print $term->name ; ?></a>
             </h3>
-            <?php endif ; ?>
+            <?php //endif ; ?>
             <?php $count = count($term->designs) ; ?>
             <?php foreach($term->designs as $design) : ?>
             <?php
@@ -39,13 +39,22 @@
                 
             </div>
             <?php endforeach ; ?>
-            <?php if( count($terms) > 1 && $count > 2 ) : ?>
+            <?php if( count($terms) > 1 && $count > $limit ) : ?>
             <div class="design-tile view-more">
                 <a href="/design-collections/<?php print $term->slug ; ?>" title="<?php print $term->name ; ?>">View More</a>
             </div>
             <?php endif ; ?>
         </div>
         <?php endforeach ; ?>
+        <div class="pager">
+            <?php if ( ! is_null( $prev ) ) : ?>
+            <a href="<?php echo esc_url( '?pager=' . $prev ); ?>" title="Previous page">Previous</a>
+            <?php endif; ?>
+            <?php if ( ! is_null( $next ) ) : ?>
+            <a href="<?php echo esc_url( '?pager=' . $next ); ?>" title="Next page">Next</a>
+            <?php endif; ?>
+        </div>
     </div>
+    
     
 </div>

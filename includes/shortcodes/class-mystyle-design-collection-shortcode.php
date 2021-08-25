@@ -36,20 +36,17 @@ abstract class MyStyle_Design_Collection_Shortcode {
         }
         
 		$pager  = 0;
-		$limit  = ( $show_designs ? 4 : 1000 ) ;
+		$limit  = 4 ;
+		$term_limit  = 10 ;
 		$offset = 0;
 
-		// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-		if ( isset( $_GET['pager'] ) ) {
-			$pager  = intval( $_GET['pager'] );
-			$offset = ( $pager * $limit );
-		}
+		
 		// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
         
         $all_terms = get_terms(
 			array(
 				'taxonomy'   => MYSTYLE_COLLECTION_NAME,
-				'hide_empty' => false
+				'hide_empty' => true
 			)
 		);
         
@@ -58,36 +55,52 @@ abstract class MyStyle_Design_Collection_Shortcode {
             $terms[] = get_term_by( 'slug', $term, MYSTYLE_COLLECTION_NAME) ;
         }
         else {
+            if ( isset( $_GET['pager'] ) && $_GET['pager'] != 0 ) {
+                $pager  = intval( $_GET['pager'] );
+                $offset = ( $pager * $term_limit );
+            }
+            
             $terms = get_terms(
                 array(
                     'taxonomy'   => MYSTYLE_COLLECTION_NAME,
-                    'hide_empty' => false,
-                    'number'     => $limit,
+                    'hide_empty' => true,
+                    'number'     => $term_limit,
                     'offset'     => $offset,
                 )
             );
+            
         }
         
-
         $terms_count = count( $terms );
 
         if( $show_designs ){
             
-            $design_count = 3 ;
-            
+            $page_num   = 1;
+
             if($terms_count == 1) {
-                $design_count = 100 ;
+                $limit = 20 ;
+                if ( ( isset( $_GET['pager'] ) ) && ( null !== $_GET['pager'] ) ) {
+                    $pager  = intval( $_GET['pager'] );
+                    $page_num = $_GET['pager'] + 1 ;
+                }
+                $total_design_count = MyStyle_DesignManager::get_total_term_design_count( $terms[0]->term_id, $wp_user, $session ) ;
+                $pager_array = self::pager( $pager, $limit, $total_design_count ); 
             }
-            
+            elseif( count($all_terms) > $term_limit ) {
+                $pager_array = self::pager( $pager, $term_limit, count($all_terms) ); 
+                
+            }
+              
             for ( $i = 0; $i < $terms_count; $i++ ) {
                 $designs = MyStyle_DesignManager::get_designs_by_term_id(
                     $terms[ $i ]->term_id,
                     $wp_user,
                     $session,
-                    $design_count,
-                    $offset+1
+                    $limit,
+                    $page_num
                 );
 
+                
                 if ( 0 === count( $designs ) ) {
                     unset( $terms[ $i ] );
                 } else {
@@ -95,11 +108,7 @@ abstract class MyStyle_Design_Collection_Shortcode {
                 }
             }
         }
-        //echo '<pre>' ; var_dump($terms) ;
         
-		
-
-		$pager_array = self::pager( $pager, $limit, $terms_count );
 		$next        = $pager_array['next'];
 		$prev        = $pager_array['prev'];
 
@@ -130,6 +139,12 @@ abstract class MyStyle_Design_Collection_Shortcode {
 		if ( 0 === $pager ) {
 			$prev = null;
 		}
+        
+        $total_shown = ( $pager * $limit ) ;
+        
+        if( ($term_count - $total_shown) <= $limit ) {
+            $next = null ;
+        }
 
 		return array(
 			'prev' => $prev,

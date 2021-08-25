@@ -548,8 +548,9 @@ body.archive.tax-design_tag article {
     margin-top: 10px ;
 }
 
-#mystyle-design-collection-index-wrapper .view-more {
-    
+#mystyle-design-collection-index-wrapper .pager {
+    width: 100%;
+    text-align: center ;
 }
 
 #mystyle-design-collection-index-wrapper .collection-row {
