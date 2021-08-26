@@ -71,7 +71,20 @@ class MyStyle_Dashboard_Page {
 	public function render_page() {
 		$admin_user            = wp_get_current_user();
 		$design_count          = MyStyle_DesignManager::get_total_design_count( $admin_user );
+        $design_tag_count      = wp_count_terms(
+                                    array(
+                                        'taxonomy'   => MYSTYLE_TAXONOMY_NAME,
+                                        'hide_empty' => false
+                                    )
+                                );
+        $design_collection_count      = wp_count_terms(
+                                    array(
+                                        'taxonomy'   => MYSTYLE_COLLECTION_NAME,
+                                        'hide_empty' => false
+                                    )
+                                );
 		$design_product_count  = $this->get_total_customizable_products_count();
+        $addon_count           = $this->detect_addons_count() ;
 		$has_valid_credentials = $this->mystyle_api->has_valid_credentials();
 		?>
 		<div class="wrap">
@@ -104,15 +117,37 @@ class MyStyle_Dashboard_Page {
 						</div>
 					</li>
 				</ul>
+                <ul class="statistics">
+					<li>
+						<div class="design-count">
+							<h3>Total Design Tags</h3>
+							<p><?php echo esc_html( $design_tag_count ); ?></p>
+						</div>
+					</li>
+					<li>
+						<div class="design-products">
+							<h3>Total Design Collections</h3>
+							<p><?php echo esc_html( $design_collection_count ); ?></p>
+						</div>
+					</li>
+                    <li>
+						<div class="design-products">
+							<h3>Total <a href="https://www.mystyleplatform.com/product-category/mystyle-add-ons-and-upgrades/" title="MyStyle Add-ons">Add-ons</a></h3>
+							<p><?php echo esc_html( $addon_count ); ?></p>
+						</div>
+					</li>
+				</ul>
 
 
 			</div>
-			<p>&nbsp;</p>
+            <div class="mystyle-notice">
+				<p><i>Login to MyStyle to generate print renders, get add-ons, mange your account, and more. <a href="https://www.mystyleplatform.com/wp-login.php" style="font-weight: bold;">MyStyle Account Login</a>.</i></p>
+			</div>
 			<div class="mystyle-admin-box">
 				<h2>Plugin Add-ons</h2>
 				<ul class="products">
 					<li>
-						<a href="http://www.mystyleplatform.com/product/design-manager-mystyle-wordpress-plugin/?ref=wpadmin" target="_blank">
+						<a href="https://www.mystyleplatform.com/product/design-manager-mystyle-wordpress-plugin/?ref=wpadmin" target="_blank">
 							<h3>MyStyle Design Manager</h3>
 							<img src="<?php echo esc_url( MYSTYLE_ASSETS_URL . 'images/addons/design_manager.jpg' ); ?>" alt="Design Manager" />
 							<p>
@@ -125,7 +160,7 @@ class MyStyle_Dashboard_Page {
 					</li>
 
 					<li>
-						<a href="http://www.mystyleplatform.com/product/email-manager-mystyle-wordpress-plugin/?ref=wpadmin" target="_blank">
+						<a href="https://www.mystyleplatform.com/product/email-manager-mystyle-wordpress-plugin/?ref=wpadmin" target="_blank">
 							<h3>MyStyle Email Manager</h3>
 							<img src="<?php echo esc_url( MYSTYLE_ASSETS_URL . 'images/addons/email-manager-screenshot.jpg' ); ?>" alt="Email Manager" />
 							<p>
@@ -139,7 +174,7 @@ class MyStyle_Dashboard_Page {
 					</li>
 
 					<li>
-						<a href="http://www.mystyleplatform.com/product/edit-options-cart-woo-commerce-standalone-wordpress-plugin/?ref=wpadmin" target="_blank">
+						<a href="https://www.mystyleplatform.com/product/edit-options-cart-woo-commerce-standalone-wordpress-plugin/?ref=wpadmin" target="_blank">
 							<h3>Edit Options in Cart*</h3>
 							<img src="<?php echo esc_url( MYSTYLE_ASSETS_URL . 'images/addons/edit-options-in-cart.jpg' ); ?>" alt="Edit Product Options" />
 							<p>
@@ -156,12 +191,25 @@ class MyStyle_Dashboard_Page {
 			</div>
 
 			<div class="mystyle-notice">
-				<p><i>Need more add-ons, UIs, products, website upgrades, or services?  We have even more great things available in the <a href="http://www.mystyleplatform.com/marketplace" style="font-weight: bold;">MyStyle Marketplace</a>.</i></p>
+				<p><i>Need more add-ons, UIs, products, website upgrades, or services?  We have even more great things available in the <a href="https://www.mystyleplatform.com/marketplace" style="font-weight: bold;">MyStyle Marketplace</a>.</i></p>
 			</div>
 		</div>
 
 		<?php
 	}
+    
+    public function detect_addons_count() {
+        $all_plugins = get_plugins() ;
+        $addons = 0 ;
+        foreach( $all_plugins as $path => $plugin ) {
+            if($plugin['Author'] == 'mystyleplatform' 
+               && $plugin['TextDomain'] != 'mystyle-wp-custom-product-designer') {
+                $addons++ ;
+            }
+        }
+        
+        return $addons ;
+    }
 
 	/**
 	 * Get total customizable products
