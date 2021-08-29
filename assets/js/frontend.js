@@ -140,7 +140,7 @@
                     delimiter: ',',
                     tokens: designTags,
                     autocomplete: {
-                        autoFocus: true,
+                        autoFocus: false,
                         source: function( request, response ) {
                             $.get( mystyle_wp.ajaxurl, { // eslint-disable-line camelcase
                                 'action': 'mystyle_design_tag_search',
@@ -207,7 +207,7 @@
                     delimiter: ',',
                     tokens: designCollections,
                     autocomplete: {
-                        autoFocus: true,
+                        autoFocus: false,
                         source: function( request, response ) {
                             $.get( mystyle_wp.ajaxurl, { // eslint-disable-line camelcase
                                 'action': 'mystyle_design_collection_search',
@@ -259,6 +259,16 @@
             });
 
         });
+        
+        //sorting form select
+        $('.mystyle-sort-select').on('change', function() {
+            var parentForm = $(this).closest("form") ;
+            if (parentForm && parentForm.length > 0) {
+                console.log(parentForm.attr('action')) ;
+                parentForm.submit() ;
+            }   
+        });
+        
 
     });
 

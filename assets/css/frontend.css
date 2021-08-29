@@ -575,3 +575,7 @@ body.archive.tax-design_tag article {
 	display: block;
 }
 /* stylelint-enable no-descending-specificity */
+
+.mystyle-sort {
+    float: right ;
+}

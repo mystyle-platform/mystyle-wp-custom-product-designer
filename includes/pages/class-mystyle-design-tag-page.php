@@ -129,8 +129,8 @@ class MyStyle_Design_Tag_Page {
 		// Create the Design Profile page.
 		$design_tag_page = array(
 			'post_title'   => 'Design Tags Index',
-			'post_name'    => 'designtagsindex',
-			'post_content' => '[mystyle_design_tags show_designs="false"]',
+			'post_name'    => 'design-tags',
+			'post_content' => '[mystyle_design_tags per_tag="5" tags_per_page="12"]',
 			'post_status'  => 'publish',
 			'post_type'    => 'page',
 		);
@@ -149,6 +149,30 @@ class MyStyle_Design_Tag_Page {
         
 		return $post_id;
 	}
+    
+    /**
+     * Function fix the design tags index slug
+     *
+     * @return nothing
+     */ 
+    public function fix_index() {
+        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+
+		$post_id = $options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ];
+        
+        if( $post_id ) {
+            $post_data = array(
+                'ID' => $post_id,
+                'post_title'   => 'Design Tags',
+                'post_name' => 'design-tags',
+                'post_content' => '[mystyle_design_tags per_tag="5" tags_per_page="12"]'
+            ) ;
+            
+            wp_update_post( $post_data ) ;
+        }
+        
+        
+    }
 
 	/**
 	 * Function to fix the post_status.

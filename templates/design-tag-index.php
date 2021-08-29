@@ -14,6 +14,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div id="mystyle-design-tag-index-wrapper" class="woocommerce design-tags<?php print ( $show_designs ? ' show-designs' : '' ) ; ?>">
+    <div class="mystyle-sort">
+        <form name="mystyle-sort-form" method="get" class="mystyle-sort-form" action="<?php print get_permalink( get_the_ID() ); ?>">
+            <label for="mystyle-sort-select">Sort tags by:</label>
+            <select name="sort_by" class="mystyle-sort-select">
+                <option value="alpha"<?php print ($sort_by == 'alpha' ? ' selected' : '' ) ; ?>>Alphabetical</option>
+                <option value="qty"<?php print ($sort_by == 'qty' ? ' selected' : '' ) ; ?>>Quantity</option>
+            </select>
+        </form>
+    </div>
 	<?php foreach ( $terms as $term ) : ?>
     <?php if($show_designs) : ?>
 	<h3 class="mystyle-design-id"><a href="<?php echo esc_url( get_term_link( $term ) ); ?>" title="<?php echo esc_attr( $term->name ); ?> Gallery"><?php echo esc_html( $term->name ); ?></a></h3>
@@ -37,11 +46,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     <?php endif ; ?>&nbsp;
 	<?php endforeach; ?>
 	<div class="pager">
-		<?php if ( ! is_null( $prev ) ) : ?>
-		<a href="<?php echo esc_url( '?pager=' . $prev ); ?>" title="Previous page">Previous</a>
+        <?php $sort_by_query = ( isset($sort_by) ? '&sort_by=' . $sort_by : '' ) ; ?>
+		<?php if ( ! is_null( $prev ) ) : ?> 
+		<a href="<?php echo esc_url( '?pager=' . $prev . $sort_by_query ); ?>" title="Previous page">Previous</a>
 		<?php endif; ?>
 		<?php if ( ! is_null( $next ) ) : ?>
-		<a href="<?php echo esc_url( '?pager=' . $next ); ?>" title="Next page">Next</a>
+		<a href="<?php echo esc_url( '?pager=' . $next . $sort_by_query ); ?>" title="Next page">Next</a>
 		<?php endif; ?>
 	</div>
 </div>

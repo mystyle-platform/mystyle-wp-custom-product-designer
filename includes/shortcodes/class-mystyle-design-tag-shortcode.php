@@ -27,9 +27,21 @@ abstract class MyStyle_Design_Tag_Shortcode {
         if(isset($atts['show_designs']) && $atts['show_designs'] == 'false') {
             $show_designs = false ;    
         }
+        
+        if(isset($atts['per_tag'])) {
+            $per_tag = $atts['per_tag'] ;    
+        }
+        
+        if(isset($atts['tags_per_page'])) {
+            $tags_per_page = $atts['tags_per_page'] ;    
+        } 
+        
+        if( isset( $_GET['sort_by'] ) ) {
+            $sort_by = sanitize_text_field( $_GET['sort_by'] ) ;
+        }
 
 		$pager  = 0;
-		$limit  = ( $show_designs ? 4 : 1000 ) ;
+		$limit  = ( $show_designs ? $tags_per_page : 1000 ) ;
 		$offset = 0;
 
 		// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
@@ -38,11 +50,21 @@ abstract class MyStyle_Design_Tag_Shortcode {
 			$offset = ( $pager * $limit );
 		}
 		// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-
+        
+        $sort_by_slug = 'name' ; 
+        $sort_by_order = 'ASC' ;
+        
+        if( $sort_by === 'qty' ) {
+            $sort_by_slug = 'count' ;
+            $sort_by_order = 'DESC' ; 
+        }
+        
 		$terms = get_terms(
 			array(
 				'taxonomy'   => MYSTYLE_TAXONOMY_NAME,
 				'hide_empty' => false,
+                'orderby'    => $sort_by_slug,
+                'order'      => $sort_by_order,
 				'number'     => $limit,
 				'offset'     => $offset,
 			)
@@ -51,23 +73,29 @@ abstract class MyStyle_Design_Tag_Shortcode {
 		$terms_count = count( $terms );
         
         if( $show_designs ){
+            
+            
             for ( $i = 0; $i < $terms_count; $i++ ) {
                 $designs = MyStyle_DesignManager::get_designs_by_term_id(
                     $terms[ $i ]->term_id,
                     $wp_user,
                     $session,
-                    6,
+                    $per_tag,
                     1
                 );
-
-                if ( 0 === count( $designs ) ) {
+                
+                $design_count = count( $designs ) ;
+                
+                if ( 0 === $design_count ) {
                     unset( $terms[ $i ] );
                 } else {
-                    $terms[ $i ]->designs = $designs;
+                    $terms[ $i ]->designs = $designs ; 
                 }
             }
+            
         }
 		
+        
 
 		$pager_array = self::pager( $pager, $limit, $terms_count );
 		$next        = $pager_array['next'];

@@ -132,7 +132,7 @@ class MyStyle_Dashboard_Page {
 					</li>
                     <li>
 						<div class="design-products">
-							<h3>Total <a href="https://www.mystyleplatform.com/product-category/mystyle-add-ons-and-upgrades/" title="MyStyle Add-ons">Add-ons</a></h3>
+							<h3>Total <a href="https://www.mystyleplatform.com/product-category/mystyle-add-ons-and-upgrades/" title="MyStyle Add-ons" target="_blank">Add-ons</a></h3>
 							<p><?php echo esc_html( $addon_count ); ?></p>
 						</div>
 					</li>
