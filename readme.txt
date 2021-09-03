@@ -79,6 +79,31 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 4. Example of a Skateboard being customized in the customizer
 5. Example of a Smart Car with a background image applied
 
+== Shortcodes ==
+[mystyle_design]
+– the mystyle /designs/ page shortcode, displays the recent public designs (or all designs for admins).
+
+[mystyle_design total=12]
+– shows a gallery of 12 designs
+
+[mystyle_design total=12 tag="amazing"] 
+– shows a gallery of 12 designs that are tagged amazing
+
+[mystyle_customizer]
+– displays the Customizer or a list of customizable products.
+
+[mystyle_design_tags]
+– displays a list of design tags with a few design thumbs per tag
+
+[mystyle_design_tags per_tag="5" tags_per_page="12"]
+– displays a list of design tags with a specific number of design thumbs per tag, as well as a certain number of tags per page.
+
+[mystyle_design_tags show_designs="false" tags_per_page="12"]
+– displays a list of design tags without the designs
+
+[mystyle_design_collections]
+– displays a list of design collections with a few design thumbs per collection
+
 == Changelog ==
 = 3.18.6 =
 * Updated Design Tag Shortcode, minor bug fixes
