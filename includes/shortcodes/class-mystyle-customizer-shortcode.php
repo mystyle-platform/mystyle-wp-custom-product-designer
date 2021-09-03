@@ -44,13 +44,17 @@ abstract class MyStyle_Customizer_Shortcode {
             
             $per_page = 12 ;
             
-            if(isset($shortname) && function_exists('et_get_option')) {
+            if( isset( $shortname ) && function_exists('et_get_option')) {
                 $per_page = et_get_option( $shortname . '_woocommerce_archive_num_posts', '5' ) ;
             }
             else {
                 $columns = get_option( 'woocommerce_catalog_columns', 4 ) ;
-                $rows = get_option( 'woocommerce_catalog_rows', 4 ) ;
-                $per_page = $columns * $rows ;
+                
+                if( $columns ) {
+                    $rows = get_option( 'woocommerce_catalog_rows', 4 ) ;
+                    $per_page = $columns * $rows ;
+                }
+                
             }
             
 			$out = '';
