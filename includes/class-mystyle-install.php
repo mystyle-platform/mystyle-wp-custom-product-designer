@@ -140,24 +140,24 @@ class MyStyle_Install {
 				MyStyle_Design_Tag_Page::fix();
 			}
 		}
-        
-        // Add the Design tag page if upgrading from less than 3.14.0 (versions
+
+		// Add the Design tag page if upgrading from less than 3.14.0 (versions
 		// that were before this page existed).
 		if ( version_compare( $old_version, '3.18.6', '<' ) ) {
 			if ( ! MyStyle_Design_Tag_Page::index_exists() ) {
 				MyStyle_Design_Tag_Page::create_index();
 			}
 		}
-        
-        // Add the Design collection page if upgrading from less than 3.18.4 (versions
+
+		// Add the Design collection page if upgrading from less than 3.18.4 (versions
 		// that were before this page existed).
 		if ( version_compare( $old_version, '3.18.5', '<' ) ) {
 			if ( ! MyStyle_Design_Collection_Page::index_exists() ) {
 				MyStyle_Design_Collection_Page::create_index();
 			}
 		}
-        
-        // Fix the Design tag index page if upgrading from less than 3.18.6 (versions
+
+		// Fix the Design tag index page if upgrading from less than 3.18.6 (versions
 		// that were before this page existed).
 		if ( version_compare( $old_version, '3.18.6', '<' ) ) {
 			if ( MyStyle_Design_Tag_Page::index_exists() ) {

@@ -42,17 +42,17 @@ class MyStyle_Design_Collection_Page {
 	 */
 	public function __construct() {
 		$this->http_response_code = 200;
-        
-        add_action( 'init', array( &$this, 'rewrite_rules' ) );
-        add_action( 'query_vars', array( &$this, 'query_vars' ) );
-        add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
+
+		add_action( 'init', array( &$this, 'rewrite_rules' ) );
+		add_action( 'query_vars', array( &$this, 'query_vars' ) );
+		add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
 	}
-    
-    /**
+
+	/**
 	 * Added rewrite rule since WordPress 5.5.
 	 */
 	public function rewrite_rules() {
-        
+
 		// Flush rewrite rules for newly created rewrites.
 		flush_rewrite_rules();
 
@@ -62,8 +62,8 @@ class MyStyle_Design_Collection_Page {
 			'top'
 		);
 	}
-    
-    /**
+
+	/**
 	 * Add custom query vars.
 	 *
 	 * @param array $query_vars Array of query vars.
@@ -90,8 +90,8 @@ class MyStyle_Design_Collection_Page {
 
 		return $exists;
 	}
-    
-    /**
+
+	/**
 	 * Function to determine if the post exists.
 	 *
 	 * @return boolean Returns true if the page exists, otherwise false.
@@ -128,9 +128,9 @@ class MyStyle_Design_Collection_Page {
 		update_post_meta( $post_id, '_thumbnail_id', 1 );
 
 		// Store the design tag page's id in the database.
-		$options                                   = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		$options[ MYSTYLE_DESIGN_COLLECTION_PAGEID_NAME ] = $post_id;
-		$updated                                   = update_option( MYSTYLE_OPTIONS_NAME, $options );
+		$updated = update_option( MYSTYLE_OPTIONS_NAME, $options );
 
 		if ( ! $updated ) {
 			wp_delete_post( $post_id );
@@ -139,8 +139,8 @@ class MyStyle_Design_Collection_Page {
 
 		return $post_id;
 	}
-    
-    /**
+
+	/**
 	 * Function to create the index page.
 	 *
 	 * @return number Returns the page id of the Design Tag page.
@@ -155,25 +155,25 @@ class MyStyle_Design_Collection_Page {
 			'post_content' => '[mystyle_design_collections]',
 			'post_status'  => 'publish',
 			'post_type'    => 'page',
-            'guid'         => 'design-collections'
+			'guid'         => 'design-collections',
 		);
 		$post_id         = wp_insert_post( $design_tag_page );
 		update_post_meta( $post_id, '_thumbnail_id', 1 );
-        
-        // Store the design tag page's id in the database.
-		$options                                   = get_option( MYSTYLE_OPTIONS_NAME, array() );
+
+		// Store the design tag page's id in the database.
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		$options[ MYSTYLE_DESIGN_COLLECTION_INDEX_PAGEID_NAME ] = $post_id;
-		$updated                                   = update_option( MYSTYLE_OPTIONS_NAME, $options );
+		$updated = update_option( MYSTYLE_OPTIONS_NAME, $options );
 
 		if ( ! $updated ) {
 			wp_delete_post( $post_id );
 			throw new MyStyle_Exception( __( 'Could not store index page id.', 'mystyle' ), 500 );
 		}
-        
+
 		return $post_id;
 	}
 
-    /**
+	/**
 	 * Filter the post title.
 	 *
 	 * @param string $title The title of the post.
@@ -181,22 +181,19 @@ class MyStyle_Design_Collection_Page {
 	 * @return string Returns the filtered title.
 	 */
 	public function filter_title( $title, $id = null ) {
-		
-        global $wp_query ;
-        
-        if (
+
+		global $wp_query;
+
+		if (
 					( get_the_ID() === $id ) && // Make sure we're in the loop.
 					( in_the_loop() ) // Make sure we're in the loop.
-			)
-        {
-            if ( isset( $wp_query->query['collection_term'] ) ) {
-                $term = get_term_by( 'slug', $wp_query->query['collection_term'], MYSTYLE_COLLECTION_NAME) ;
+			) {
+			if ( isset( $wp_query->query['collection_term'] ) ) {
+				$term = get_term_by( 'slug', $wp_query->query['collection_term'], MYSTYLE_COLLECTION_NAME );
 
-                $title = $term->name . ' - Design Collection' ;
-            }
-        }
-        
-        
+				$title = $term->name . ' - Design Collection';
+			}
+		}
 
 		return $title;
 	}

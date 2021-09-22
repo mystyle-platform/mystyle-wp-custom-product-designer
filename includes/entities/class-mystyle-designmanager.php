@@ -82,50 +82,50 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		if ( null !== $result_object ) {
 			$design = MyStyle_Design::create_from_result_object( $result_object );
 		}
-        
+
 		// -------------- SECURITY CHECK ------------ //
-		if( ! self::security_check($design, $user, $session, $skip_security) ) {
-            $private_img_url = MYSTYLE_ASSETS_URL . 'images/private-design.jpg' ;
-            $design->set_web_url($private_img_url) ;
-            $design->set_thumb_url($private_img_url) ;
-            $design->set_print_url($private_img_url) ;
-        }
-								
+		if ( ! self::security_check( $design, $user, $session, $skip_security ) ) {
+			$private_img_url = MYSTYLE_ASSETS_URL . 'images/private-design.jpg';
+			$design->set_web_url( $private_img_url );
+			$design->set_thumb_url( $private_img_url );
+			$design->set_print_url( $private_img_url );
+		}
+
 		// ------------ END SECURITY CHECK ------------ //
 		return $design;
 	}
-    
-    
-    public static function security_check($design, $user, $session, $skip_security=false) {
-        if ( ( null !== $design ) && ( ! $skip_security ) ) {
+
+
+	public static function security_check( $design, $user, $session, $skip_security = false ) {
+		if ( ( null !== $design ) && ( ! $skip_security ) ) {
 			if ( MyStyle_Access::ACCESS_PRIVATE === $design->get_access() ) {
 				// Check if created by current/passed session.
 				if ( // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
 						( null !== $session ) &&
 						( null !== $design->get_session_id() ) &&
-						( $session->get_session_id() === "design->get_session_id()" )
+						( $session->get_session_id() === 'design->get_session_id()' )
 				) {
 					// Design was created by the passed session, continue.
 				} else {
 					// Check for wp user match.
 					if ( null !== $design->get_user_id() ) {
 						if ( ( null === $user ) || ( 0 === $user->ID ) ) {
-                            return false ;
-                            //throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
+							return false;
+							// throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
 						}
 						if ( $design->get_user_id() !== $user->ID ) {
 							if ( ! $user->has_cap( 'read_private_posts' ) ) {
-                                return false ;
-                                //throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+								return false;
+								// throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
 							}
 						}
 					}
 				}
 			}
 		}
-        
-        return true ;
-    }
+
+		return true;
+	}
 
 	/**
 	 * Deletes the passed design from the database.
@@ -606,8 +606,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			try {
 
 				$design = self::get( $term->object_id, $user, $session );
-                
-				if ( null !== $design && self::security_check($design, $user, $session) ) {
+
+				if ( null !== $design && self::security_check( $design, $user, $session ) ) {
 					array_push( $designs, $design );
 				}
 			} catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
@@ -698,39 +698,39 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	/**
 	 * Retrieve the total number of designs having the passed term.
 	 *
-	 * @param int $term_id The term id.
+	 * @param int                   $term_id The term id.
 	 * @param \WP_User|null         $user        The current user.
 	 * @param \MyStyle_Session|null $session     The current MyStyle session.
 	 * @return integer Returns the total number of terms.
 	 * @global $wpdb
 	 */
-	public static function get_total_term_design_count( 
-        $term_id,
+	public static function get_total_term_design_count(
+		$term_id,
 		WP_User $user = null,
 		MyStyle_Session $session = null ) {
-        
+
 		global $wpdb;
-        
-        $access = MyStyle_Access::ACCESS_PUBLIC;
-        
+
+		$access = MyStyle_Access::ACCESS_PUBLIC;
+
 		$object_ids = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT object_id '
 				. "FROM {$wpdb->prefix}term_relationships "
-				. "WHERE term_taxonomy_id = %d",
+				. 'WHERE term_taxonomy_id = %d',
 				array( $term_id )
 			)
 		);
-        
-        $count = 0 ;
-        
-        foreach($object_ids as $object) {
-            $design = self::get( $object->object_id, $user, $session );
-            
-            if ( null !== $design && self::security_check($design, $user, $session) ) {
-                $count++ ;
-            }
-        }
+
+		$count = 0;
+
+		foreach ( $object_ids as $object ) {
+			$design = self::get( $object->object_id, $user, $session );
+
+			if ( null !== $design && self::security_check( $design, $user, $session ) ) {
+				$count++;
+			}
+		}
 
 		return $count;
 	}
@@ -937,9 +937,9 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			$term_ids = wp_add_object_terms( $design_id, $tags, $taxonomy );
 		}
 	}
-    
-    
-    /**
+
+
+	/**
 	 * Get the collections for the design with the passed design id. See below for more
 	 * info about the return value.
 	 *
@@ -988,9 +988,9 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $tags;
 	}
-    
-    
-    /**
+
+
+	/**
 	 * Add a design collection. Called to add a collection to a design.
 	 *
 	 * @param int     $design_id The id of the design to add the tag to.

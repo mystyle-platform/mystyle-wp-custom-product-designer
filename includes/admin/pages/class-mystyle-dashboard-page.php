@@ -69,23 +69,23 @@ class MyStyle_Dashboard_Page {
 	 * Function to render the MyStyle Dashboard page.
 	 */
 	public function render_page() {
-		$admin_user            = wp_get_current_user();
-		$design_count          = MyStyle_DesignManager::get_total_design_count( $admin_user );
-        $design_tag_count      = wp_count_terms(
-                                    array(
-                                        'taxonomy'   => MYSTYLE_TAXONOMY_NAME,
-                                        'hide_empty' => false
-                                    )
-                                );
-        $design_collection_count      = wp_count_terms(
-                                    array(
-                                        'taxonomy'   => MYSTYLE_COLLECTION_NAME,
-                                        'hide_empty' => false
-                                    )
-                                );
-		$design_product_count  = $this->get_total_customizable_products_count();
-        $addon_count           = $this->detect_addons_count() ;
-		$has_valid_credentials = $this->mystyle_api->has_valid_credentials();
+		$admin_user              = wp_get_current_user();
+		$design_count            = MyStyle_DesignManager::get_total_design_count( $admin_user );
+		$design_tag_count        = wp_count_terms(
+			array(
+				'taxonomy'   => MYSTYLE_TAXONOMY_NAME,
+				'hide_empty' => false,
+			)
+		);
+		$design_collection_count = wp_count_terms(
+			array(
+				'taxonomy'   => MYSTYLE_COLLECTION_NAME,
+				'hide_empty' => false,
+			)
+		);
+		$design_product_count    = $this->get_total_customizable_products_count();
+		$addon_count             = $this->detect_addons_count();
+		$has_valid_credentials   = $this->mystyle_api->has_valid_credentials();
 		?>
 		<div class="wrap">
 			<h2 class="mystyle-admin-title">
@@ -117,7 +117,7 @@ class MyStyle_Dashboard_Page {
 						</div>
 					</li>
 				</ul>
-                <ul class="statistics">
+				<ul class="statistics">
 					<li>
 						<div class="design-count">
 							<h3>Total Design Tags</h3>
@@ -130,7 +130,7 @@ class MyStyle_Dashboard_Page {
 							<p><?php echo esc_html( $design_collection_count ); ?></p>
 						</div>
 					</li>
-                    <li>
+					<li>
 						<div class="design-products">
 							<h3>Total <a href="https://www.mystyleplatform.com/product-category/mystyle-add-ons-and-upgrades/" title="MyStyle Add-ons" target="_blank">Add-ons</a></h3>
 							<p><?php echo esc_html( $addon_count ); ?></p>
@@ -140,7 +140,7 @@ class MyStyle_Dashboard_Page {
 
 
 			</div>
-            <div class="mystyle-notice">
+			<div class="mystyle-notice">
 				<p><i>Login to MyStyle to generate print renders, get add-ons, mange your account, and more. <a href="https://www.mystyleplatform.com/wp-login.php" style="font-weight: bold;">MyStyle Account Login</a>.</i></p>
 			</div>
 			<div class="mystyle-admin-box">
@@ -197,19 +197,19 @@ class MyStyle_Dashboard_Page {
 
 		<?php
 	}
-    
-    public function detect_addons_count() {
-        $all_plugins = get_plugins() ;
-        $addons = 0 ;
-        foreach( $all_plugins as $path => $plugin ) {
-            if($plugin['Author'] == 'mystyleplatform' 
-               && $plugin['TextDomain'] != 'mystyle-wp-custom-product-designer') {
-                $addons++ ;
-            }
-        }
-        
-        return $addons ;
-    }
+
+	public function detect_addons_count() {
+		$all_plugins = get_plugins();
+		$addons      = 0;
+		foreach ( $all_plugins as $path => $plugin ) {
+			if ( $plugin['Author'] == 'mystyleplatform'
+			   && $plugin['TextDomain'] != 'mystyle-wp-custom-product-designer' ) {
+				$addons++;
+			}
+		}
+
+		return $addons;
+	}
 
 	/**
 	 * Get total customizable products

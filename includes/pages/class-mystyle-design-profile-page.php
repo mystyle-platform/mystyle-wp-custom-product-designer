@@ -227,10 +227,10 @@ class MyStyle_Design_Profile_Page {
 				$this->user,
 				$this->session
 			);
-            
-            if( ! MyStyle_DesignManager::security_check($design, $this->user, $this->session) ) {
-                throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
-            }
+
+			if ( ! MyStyle_DesignManager::security_check( $design, $this->user, $this->session ) ) {
+				throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+			}
 
 			// Get the previous design.
 			$this->set_previous_design(
@@ -876,8 +876,8 @@ class MyStyle_Design_Profile_Page {
 					$design_title = $design->get_title();
 				}
 
-				$tags = MyStyle_DesignManager::get_design_tags( $design_id );
-                $collections = MyStyle_DesignManager::get_design_collections( $design_id );
+				$tags        = MyStyle_DesignManager::get_design_tags( $design_id );
+				$collections = MyStyle_DesignManager::get_design_collections( $design_id );
 
 				if ( $user ) {
 					?>
@@ -903,14 +903,14 @@ class MyStyle_Design_Profile_Page {
 				</script>
 					<?php
 				}
-                
-                if(current_user_can( 'administrator' )) {
-                    ?>
+
+				if ( current_user_can( 'administrator' ) ) {
+					?>
 				<script>
 					var designCollections = '<?php echo ( count( $collections ) > 0 ) ? implode( ',', $collections ) : ''; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>';
 				</script>
 					<?php
-                }
+				}
 			}
 		}
 	}

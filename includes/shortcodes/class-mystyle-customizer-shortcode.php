@@ -40,25 +40,23 @@ abstract class MyStyle_Customizer_Shortcode {
 		$mystyle_app_id = MyStyle_Options::get_api_key();
 
 		if ( ! isset( $_GET['product_id'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
-            global $shortname;
-            
-            $per_page = 12 ;
-            
-            if( isset( $shortname ) && function_exists('et_get_option')) {
-                $per_page = et_get_option( $shortname . '_woocommerce_archive_num_posts', '5' ) ;
-            }
-            else {
-                $columns = get_option( 'woocommerce_catalog_columns', 4 ) ;
-                
-                if( $columns ) {
-                    $rows = get_option( 'woocommerce_catalog_rows', 4 ) ;
-                    $per_page = $columns * $rows ;
-                }
-                
-            }
-            
+			global $shortname;
+
+			$per_page = 12;
+
+			if ( isset( $shortname ) && function_exists( 'et_get_option' ) ) {
+				$per_page = et_get_option( $shortname . '_woocommerce_archive_num_posts', '5' );
+			} else {
+				$columns = get_option( 'woocommerce_catalog_columns', 4 );
+
+				if ( $columns ) {
+					$rows     = get_option( 'woocommerce_catalog_rows', 4 );
+					$per_page = $columns * $rows;
+				}
+			}
+
 			$out = '';
-            
+
 			add_filter( 'woocommerce_shortcode_products_query', array( 'MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query' ), 10, 1 );
 			$out = do_shortcode( '[products per_page="' . $per_page . '" limit="' . $per_page . '" paginate="true"]' );
 			remove_filter( 'woocommerce_shortcode_products_query', array( 'MyStyle_Customizer_Shortcode', 'modify_woocommerce_shortcode_products_query' ) );

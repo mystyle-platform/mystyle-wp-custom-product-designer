@@ -49,7 +49,7 @@ class MyStyle_Design_Tag_Page {
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
-        
+
 	}
 
 	/**
@@ -68,8 +68,8 @@ class MyStyle_Design_Tag_Page {
 
 		return $exists;
 	}
-    
-    /**
+
+	/**
 	 * Function to determine if the post exists.
 	 *
 	 * @return boolean Returns true if the page exists, otherwise false.
@@ -117,8 +117,8 @@ class MyStyle_Design_Tag_Page {
 
 		return $post_id;
 	}
-    
-    /**
+
+	/**
 	 * Function to create the index page.
 	 *
 	 * @return number Returns the page id of the Design Tag page.
@@ -136,43 +136,42 @@ class MyStyle_Design_Tag_Page {
 		);
 		$post_id         = wp_insert_post( $design_tag_page );
 		update_post_meta( $post_id, '_thumbnail_id', 1 );
-        
-        // Store the design tag page's id in the database.
-		$options                                   = get_option( MYSTYLE_OPTIONS_NAME, array() );
+
+		// Store the design tag page's id in the database.
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		$options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ] = $post_id;
-		$updated                                   = update_option( MYSTYLE_OPTIONS_NAME, $options );
+		$updated = update_option( MYSTYLE_OPTIONS_NAME, $options );
 
 		if ( ! $updated ) {
 			wp_delete_post( $post_id );
 			throw new MyStyle_Exception( __( 'Could not store index page id.', 'mystyle' ), 500 );
 		}
-        
+
 		return $post_id;
 	}
-    
-    /**
-     * Function fix the design tags index slug
-     *
-     * @return nothing
-     */ 
-    public function fix_index() {
-        $options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+
+	/**
+	 * Function fix the design tags index slug
+	 *
+	 * @return nothing
+	 */
+	public function fix_index() {
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 
 		$post_id = $options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ];
-        
-        if( $post_id ) {
-            $post_data = array(
-                'ID' => $post_id,
-                'post_title'   => 'Design Tags',
-                'post_name' => 'design-tags',
-                'post_content' => '[mystyle_design_tags per_tag="5" tags_per_page="12"]'
-            ) ;
-            
-            wp_update_post( $post_data ) ;
-        }
-        
-        
-    }
+
+		if ( $post_id ) {
+			$post_data = array(
+				'ID'           => $post_id,
+				'post_title'   => 'Design Tags',
+				'post_name'    => 'design-tags',
+				'post_content' => '[mystyle_design_tags per_tag="5" tags_per_page="12"]',
+			);
+
+			wp_update_post( $post_data );
+		}
+
+	}
 
 	/**
 	 * Function to fix the post_status.
@@ -223,7 +222,7 @@ class MyStyle_Design_Tag_Page {
 	 */
 	public function alter_query( $posts, $query ) {
 		global $wpdb;
-        
+
 		// Just return if this isn't the query that we are looking for.
 		if (
 			( ! $query->is_main_query() )
@@ -231,7 +230,7 @@ class MyStyle_Design_Tag_Page {
 		) {
 			return $posts;
 		}
-        
+
 		$wp_user = wp_get_current_user();
 
 		$session = MyStyle()->get_session();
@@ -287,8 +286,8 @@ class MyStyle_Design_Tag_Page {
 					$design_post->post_type    = 'Design';
 					$design_post->post_title   = $title;
 					$design_post->post_content = $title . ' custom ' . $product->get_name();
-                    $design_post->guid = get_site_url() . '/designs/' . $design->get_design_id() ;
-                    
+					$design_post->guid         = get_site_url() . '/designs/' . $design->get_design_id();
+
 					$designs[] = $design_post;
 				} catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 					// If unauthorized, skip and go onto the next one.
@@ -302,7 +301,7 @@ class MyStyle_Design_Tag_Page {
 		$term_count = MyStyle_DesignManager::get_total_term_design_count( $term_id, $wp_user, $session );
 
 		$this->pager->set_total_item_count( $term_count );
-        
+
 		return $designs;
 	}
 
@@ -343,17 +342,17 @@ class MyStyle_Design_Tag_Page {
 	 */
 	public function wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) {
 		global $wp_query;
-        
+
 		if ( isset( $wp_query->query['design_tag'] ) ) {
 			global $post;
-            
+
 			$wp_user = wp_get_current_user();
 
 			$session = MyStyle()->get_session();
 
 			$design = MyStyle_DesignManager::get( $post->design_id, $wp_user, $session );
-            
-            if ( null !== $design ) {
+
+			if ( null !== $design ) {
 				$image[0] = $design->get_web_url();
 				$image[1] = 200;
 				$image[2] = 200;
@@ -375,7 +374,7 @@ class MyStyle_Design_Tag_Page {
 	 */
 	public function post_link( $permalink, $post, $leavename ) {
 		global $wp_query;
-		if ( isset( $wp_query->query['design_tag'] ) && isset($post->design_id ) ) {
+		if ( isset( $wp_query->query['design_tag'] ) && isset( $post->design_id ) ) {
 			return get_site_url() . '/designs/' . $post->design_id;
 		}
 

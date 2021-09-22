@@ -35,7 +35,7 @@ class MyStyle_Ajax {
 			'design_tag_search',
 			'design_tag_add',
 			'design_tag_remove',
-            'design_collection_search',
+			'design_collection_search',
 			'design_collection_add',
 			'design_collection_remove',
 		);
@@ -163,8 +163,8 @@ class MyStyle_Ajax {
 
 		wp_send_json_success( array( 'tag' => $tag ) );
 	}
-    
-    /**
+
+	/**
 	 * Search design collection.
 	 *
 	 * This is mostly copy/paste from the wp_ajax_ajax_collection_search function.

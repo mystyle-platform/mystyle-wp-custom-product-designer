@@ -37,11 +37,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<?php
 							if ( ! empty( $design->get_title() ) ) {
 								echo esc_html( $design->get_title() );
-							}
-                            elseif( preg_match('/custom/i', $product_title) ) {
-                                echo esc_html( $product_title ) . ' <span>' . esc_html( $design->get_design_id() ) . '</span>';
-                            }
-                            else {
+							} elseif ( preg_match( '/custom/i', $product_title ) ) {
+								echo esc_html( $product_title ) . ' <span>' . esc_html( $design->get_design_id() ) . '</span>';
+							} else {
 								echo 'Custom ' . esc_html( $product_title ) . ' <span>' . esc_html( $design->get_design_id() ) . '</span>';
 							}
 							?>
