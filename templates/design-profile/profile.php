@@ -94,7 +94,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'mystyle_design_access_change_nonce' ) ); ?>" />
 					<input type="hidden" name="design_id" value="<?php echo esc_attr( $design->get_design_id() ); ?>" />
 				</form>
-				
+
 				<?php if ( current_user_can( 'administrator' ) ) : ?>
 				<div class="design-tag-collection-toggle-menu">
 					<ul>

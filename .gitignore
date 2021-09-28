@@ -1,6 +1,11 @@
-# Editors
+# NetBeans
 nbproject
+
+# JetBrains
 .idea
+
+# VS Code
+.history
 
 # OSX
 .DS_Store
