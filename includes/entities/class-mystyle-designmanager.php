@@ -784,7 +784,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 *                        term id in the returned tags. If true, the
 	 *                        returned array becomes two dimensional with each
 	 *                        entry having a 'name' and an 'id' (and possibly a
-	 *                        'slug'.
+	 *                        'slug').
 	 * @return array Returns an array of tags. If the slug param is false, it
 	 * will return a one dimensional array like ["Foo", "Bar"]. If the slug
 	 * param is true, it will return a two dimensional array like
@@ -955,7 +955,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 *                        term id in the returned tags. If true, the
 	 *                        returned array becomes two dimensional with each
 	 *                        entry having a 'name' and an 'id' (and possibly a
-	 *                        'slug'.
+	 *                        'slug').
 	 * @return array Returns an array of tags. If the slug param is false, it
 	 * will return a one dimensional array like ["Foo", "Bar"]. If the slug
 	 * param is true, it will return a two dimensional array like
@@ -1059,7 +1059,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 *
 	 * @param int     $design_id       The id of the design to update.
 	 * @param array   $collection      The array of tags. Should be an array of
-	 *                                   strings (ex: ["tag1", "tag2"]).
+	 *                                 strings (ex: ["tag1", "tag2"]).
 	 * @param WP_User $user            The current user.
 	 * @throws MyStyle_Unauthorized_Exception Throws a
 	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
