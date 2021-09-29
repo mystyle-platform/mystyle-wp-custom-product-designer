@@ -827,7 +827,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * @throws MyStyle_Unauthorized_Exception Throws a
 	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
 	 * and isn't an administrator.
-	 * @return int Returns the id of the tag.
+	 * @return int Returns the Term Taxonomy Id of the tag.
 	 */
 	public static function add_tag_to_design(
 		$design_id,
@@ -847,10 +847,10 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		// Add the tag.
-		$term_ids = wp_add_object_terms( $design_id, $tag, $taxonomy );
-		$term_id  = $term_ids[0];
+		$tt_ids = wp_add_object_terms( $design_id, $tag, $taxonomy );
+		$tt_id  = $tt_ids[0];
 
-		return $term_id;
+		return $tt_id;
 	}
 
 	/**
