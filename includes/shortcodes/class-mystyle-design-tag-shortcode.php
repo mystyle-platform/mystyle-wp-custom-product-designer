@@ -24,7 +24,10 @@ abstract class MyStyle_Design_Tag_Shortcode {
 
 		$show_designs = true;
 
-		if ( isset( $atts['show_designs'] ) && $atts['show_designs'] == 'false' ) {
+		if (
+			( isset( $atts['show_designs'] ) )
+			&& ( 'false' === $atts['show_designs'] )
+		) {
 			$show_designs = false;
 		}
 
@@ -36,9 +39,11 @@ abstract class MyStyle_Design_Tag_Shortcode {
 			$tags_per_page = $atts['tags_per_page'];
 		}
 
+		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 		if ( isset( $_GET['sort_by'] ) ) {
-			$sort_by = sanitize_text_field( $_GET['sort_by'] );
+			$sort_by = sanitize_text_field( wp_unslash( $_GET['sort_by'] ) );
 		}
+		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 
 		$pager  = 0;
 		$limit  = ( $show_designs ? $tags_per_page : 1000 );
@@ -54,7 +59,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
 		$sort_by_slug  = 'name';
 		$sort_by_order = 'ASC';
 
-		if ( $sort_by === 'qty' ) {
+		if ( 'qty' === $sort_by ) {
 			$sort_by_slug  = 'count';
 			$sort_by_order = 'DESC';
 		}

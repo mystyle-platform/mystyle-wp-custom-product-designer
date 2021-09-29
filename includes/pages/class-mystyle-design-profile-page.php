@@ -215,6 +215,8 @@ class MyStyle_Design_Profile_Page {
 	 * Init the singleton for a design request.
 	 *
 	 * @param int $design_id The design_id to use when initializing.
+	 * @throws MyStyle_Forbidden_Exception Throws a MyStyle_Forbidden_Exception
+	 * if the user isn't authorized to access the Design.
 	 * @throws MyStyle_Not_Found_Exception Throws a MyStyle_Not_Found_Exception
 	 * if the Design can't be found.
 	 */

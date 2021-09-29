@@ -198,12 +198,19 @@ class MyStyle_Dashboard_Page {
 		<?php
 	}
 
+	/**
+	 * Detects and returns the number of MyStyle addons that are installed.
+	 *
+	 * @return int Returns the number of MyStyle addons that are installed.
+	 */
 	public function detect_addons_count() {
 		$all_plugins = get_plugins();
 		$addons      = 0;
 		foreach ( $all_plugins as $path => $plugin ) {
-			if ( $plugin['Author'] == 'mystyleplatform'
-			   && $plugin['TextDomain'] != 'mystyle-wp-custom-product-designer' ) {
+			if (
+				( 'mystyleplatform' === $plugin['Author'] )
+				&& ( 'mystyle-wp-custom-product-designer' !== $plugin['TextDomain'] )
+			) {
 				$addons++;
 			}
 		}

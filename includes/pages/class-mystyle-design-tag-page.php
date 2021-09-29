@@ -151,9 +151,7 @@ class MyStyle_Design_Tag_Page {
 	}
 
 	/**
-	 * Function fix the design tags index slug
-	 *
-	 * @return nothing
+	 * Function that fixes the design tags index slug.
 	 */
 	public function fix_index() {
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
@@ -170,7 +168,6 @@ class MyStyle_Design_Tag_Page {
 
 			wp_update_post( $post_data );
 		}
-
 	}
 
 	/**

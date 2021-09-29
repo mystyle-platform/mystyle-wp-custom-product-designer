@@ -31,7 +31,10 @@ abstract class MyStyle_Design_Collection_Shortcode {
 
 		$show_designs = true;
 
-		if ( isset( $atts['show_designs'] ) && $atts['show_designs'] == 'false' ) {
+		if (
+			( isset( $atts['show_designs'] ) )
+			&& ( 'false' === $atts['show_designs'] )
+		) {
 			$show_designs = false;
 		}
 
@@ -39,8 +42,6 @@ abstract class MyStyle_Design_Collection_Shortcode {
 		$limit      = 4;
 		$term_limit = 10;
 		$offset     = 0;
-
-		// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 
 		$all_terms = get_terms(
 			array(
@@ -53,10 +54,12 @@ abstract class MyStyle_Design_Collection_Shortcode {
 			$terms   = array();
 			$terms[] = get_term_by( 'slug', $term, MYSTYLE_COLLECTION_NAME );
 		} else {
-			if ( isset( $_GET['pager'] ) && $_GET['pager'] != 0 ) {
+			// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+			if ( ( isset( $_GET['pager'] ) ) && ( 0 !== $_GET['pager'] ) ) {
 				$pager  = intval( $_GET['pager'] );
 				$offset = ( $pager * $term_limit );
 			}
+			// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 
 			$terms = get_terms(
 				array(
@@ -66,7 +69,6 @@ abstract class MyStyle_Design_Collection_Shortcode {
 					'offset'     => $offset,
 				)
 			);
-
 		}
 
 		$terms_count = count( $terms );
@@ -75,12 +77,16 @@ abstract class MyStyle_Design_Collection_Shortcode {
 
 			$page_num = 1;
 
-			if ( $terms_count == 1 ) {
+			if ( 1 === $terms_count ) {
 				$limit = 20;
+
+				// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 				if ( ( isset( $_GET['pager'] ) ) && ( null !== $_GET['pager'] ) ) {
 					$pager    = intval( $_GET['pager'] );
-					$page_num = $_GET['pager'] + 1;
+					$page_num = $pager + 1;
 				}
+				// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+
 				$total_design_count = MyStyle_DesignManager::get_total_term_design_count( $terms[0]->term_id, $wp_user, $session );
 				$pager_array        = self::pager( $pager, $limit, $total_design_count );
 			} elseif ( count( $all_terms ) > $term_limit ) {

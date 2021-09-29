@@ -95,8 +95,25 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		return $design;
 	}
 
-
-	public static function security_check( $design, $user, $session, $skip_security = false ) {
+	/**
+	 * Checks the security rules to determine if access to the passed Design
+	 * should be allowed.
+	 *
+	 * @param \MyStyle_Design  $design        The design being accessed.
+	 * @param \WP_User         $user          The user that is trying to access
+	 *                                        the design.
+	 * @param \MyStyle_Session $session       The current session.
+	 * @param boolean          $skip_security Whether or not to skip the
+	 *                                        security check.
+	 * @return boolean Returns true if access is allowed. Returns false if
+	 * access is denied.
+	 */
+	public static function security_check(
+		MyStyle_Design $design,
+		WP_User $user,
+		MyStyle_Session $session,
+		bool $skip_security = false
+	) {
 		if ( ( null !== $design ) && ( ! $skip_security ) ) {
 			if ( MyStyle_Access::ACCESS_PRIVATE === $design->get_access() ) {
 				// Check if created by current/passed session.
@@ -111,12 +128,10 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 					if ( null !== $design->get_user_id() ) {
 						if ( ( null === $user ) || ( 0 === $user->ID ) ) {
 							return false;
-							// throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
 						}
 						if ( $design->get_user_id() !== $user->ID ) {
 							if ( ! $user->has_cap( 'read_private_posts' ) ) {
 								return false;
-								// throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
 							}
 						}
 					}
@@ -989,13 +1004,12 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		return $tags;
 	}
 
-
 	/**
 	 * Add a design collection. Called to add a collection to a design.
 	 *
-	 * @param int     $design_id The id of the design to add the tag to.
-	 * @param string  $tag       The tag to add.
-	 * @param WP_User $user      The current user.
+	 * @param int     $design_id  The id of the design to add the tag to.
+	 * @param string  $collection The collection to add.
+	 * @param WP_User $user       The current user.
 	 * @throws MyStyle_Unauthorized_Exception Throws a
 	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
 	 * and isn't an administrator.
@@ -1016,10 +1030,10 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		// Add the tag.
-		$term_ids = wp_add_object_terms( $design_id, $collection, $taxonomy );
-		$term_id  = $term_ids[0];
+		$tt_ids = wp_add_object_terms( $design_id, $collection, $taxonomy );
+		$tt_id  = $tt_ids[0];
 
-		return $term_id;
+		return $tt_id;
 	}
 
 	/**
@@ -1054,11 +1068,11 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	}
 
 	/**
-	 * Updates a design's collections. Called to update all collections on a design to match
-	 * the passed array of collections.
+	 * Updates a design's collections. Called to update all collections on a
+	 * design to match the passed array of collections.
 	 *
 	 * @param int     $design_id       The id of the design to update.
-	 * @param array   $collection      The array of tags. Should be an array of
+	 * @param array   $collections      The array of tags. Should be an array of
 	 *                                 strings (ex: ["tag1", "tag2"]).
 	 * @param WP_User $user            The current user.
 	 * @throws MyStyle_Unauthorized_Exception Throws a
@@ -1141,6 +1155,5 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		return $sql;
 	}
-
 
 }
