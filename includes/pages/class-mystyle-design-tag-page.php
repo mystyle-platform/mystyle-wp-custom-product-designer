@@ -236,7 +236,7 @@ class MyStyle_Design_Tag_Page {
 
 		$session = MyStyle()->get_session();
 
-		$term_id = $query->queried_object->term_id;
+		$term_taxonomy_id = $query->queried_object->term_taxonomy_id;
 
 		// Create a new pager.
 		$this->pager = new MyStyle_Pager();
@@ -257,7 +257,7 @@ class MyStyle_Design_Tag_Page {
 		}
 
 		$design_objs = MyStyle_DesignManager::get_designs_by_term_id(
-			$term_id,
+			$term_taxonomy_id,
 			$wp_user,
 			$session,
 			$page_limit,
@@ -299,7 +299,7 @@ class MyStyle_Design_Tag_Page {
 		$this->pager->set_items( $designs );
 
 		// Total items.
-		$term_count = MyStyle_DesignManager::get_total_term_design_count( $term_id, $wp_user, $session );
+		$term_count = MyStyle_DesignManager::get_total_term_design_count( $term_taxonomy_id, $wp_user, $session );
 
 		$this->pager->set_total_item_count( $term_count );
         

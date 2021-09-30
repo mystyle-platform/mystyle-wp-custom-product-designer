@@ -75,10 +75,9 @@ abstract class MyStyle_Design_Tag_Shortcode {
         
         if( $show_designs ){
             
-            
             for ( $i = 0; $i < $terms_count; $i++ ) {
                 $designs = MyStyle_DesignManager::get_designs_by_term_id(
-                    $terms[ $i ]->term_id,
+                    $terms[ $i ]->term_taxonomy_id,
                     $wp_user,
                     $session,
                     $per_tag,
