@@ -18,14 +18,15 @@ if ( ! defined( 'ABSPATH' ) ) {
         <form name="mystyle-sort-form" method="get" class="mystyle-sort-form" action="<?php print get_permalink( get_the_ID() ); ?>">
             <label for="mystyle-sort-select">Sort tags by:</label>
             <select name="sort_by" class="mystyle-sort-select">
-                <option value="alpha"<?php print ($sort_by == 'alpha' ? ' selected' : '' ) ; ?>>Alphabetical</option>
                 <option value="qty"<?php print ($sort_by == 'qty' ? ' selected' : '' ) ; ?>>Quantity</option>
+                <option value="alpha"<?php print ($sort_by == 'alpha' ? ' selected' : '' ) ; ?>>Alphabetical</option>
             </select>
         </form>
     </div>
 	<?php foreach ( $terms as $term ) : ?>
     <?php if($show_designs) : ?>
-	<h3 class="mystyle-design-id"><a href="<?php echo esc_url( get_term_link( $term ) ); ?>" title="<?php echo esc_attr( $term->name ); ?> Gallery"><?php echo esc_html( $term->name ); ?></a></h3>
+    <?php $term_name = preg_replace('/\-/', ' ', $term->name ) ; ?>
+	<h3 class="mystyle-tag-id"><a href="<?php echo esc_url( get_term_link( $term ) ); ?>" title="<?php echo esc_attr( $term_name ); ?> Gallery"><?php echo esc_html( $term_name ); ?></a></h3>
 	<ul>
 		<?php foreach ( $term->designs as $design ) : ?>
 			<?php

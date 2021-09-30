@@ -35,7 +35,7 @@ class MyStyle_Notice_Controller {
 	 * the database.
 	 */
 	public function admin_notices() {
-
+        
 		$screen    = get_current_screen();
 		$screen_id = ( ! empty( $screen ) ? $screen->id : null );
 
@@ -53,7 +53,7 @@ class MyStyle_Notice_Controller {
 				}
 			}
 		}
-
+        
 		// Print the notices.
 		$out = '';
 		foreach ( $notices as $notice ) {
@@ -72,7 +72,7 @@ class MyStyle_Notice_Controller {
 				$out .= '</div>';
 			}
 		}
-
+        
 		echo $out; // WPCS: XSS ok.
 	}
 

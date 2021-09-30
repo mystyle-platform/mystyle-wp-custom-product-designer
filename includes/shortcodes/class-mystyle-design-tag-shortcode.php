@@ -51,12 +51,13 @@ abstract class MyStyle_Design_Tag_Shortcode {
 		}
 		// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
         
-        $sort_by_slug = 'name' ; 
-        $sort_by_order = 'ASC' ;
         
-        if( $sort_by === 'qty' ) {
-            $sort_by_slug = 'count' ;
-            $sort_by_order = 'DESC' ; 
+        $sort_by_slug = 'count' ;
+        $sort_by_order = 'DESC' ; 
+        
+        if( $sort_by === 'alpha' ) {
+            $sort_by_slug = 'name' ; 
+            $sort_by_order = 'ASC' ;
         }
         
 		$terms = get_terms(
