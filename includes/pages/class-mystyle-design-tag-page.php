@@ -252,7 +252,7 @@ class MyStyle_Design_Tag_Page {
 			$page_num = ( $this->pager->get_current_page_number() - 1 ) * $page_limit;
 		}
 
-		$design_objs = MyStyle_DesignManager::get_designs_by_term_id(
+		$design_objs = MyStyle_DesignManager::get_designs_by_term_taxonomy_id(
 			$term_taxonomy_id,
 			$wp_user,
 			$session,

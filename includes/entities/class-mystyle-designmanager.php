@@ -579,20 +579,20 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	/**
 	 * Retrieve designs by term id.
 	 *
-	 * @param int                   $term_id     The id of the term.
-	 * @param \WP_User|null         $user        The current user.
-	 * @param \MyStyle_Session|null $session     The current MyStyle session.
-	 * @param int                   $per_page    The number of designs to show
-	 *                                           per page (default: 250).
-	 * @param int                   $page_number The page number of the set of
-	 *                                           designs that you want to get
-	 *                                           (default: 1).
+	 * @param int                   $term_taxonomy_id The term taxonomy id.
+	 * @param \WP_User|null         $user             The current user.
+	 * @param \MyStyle_Session|null $session          The current MyStyle session.
+	 * @param int                   $per_page         The number of designs to show
+	 *                                                per page (default: 250).
+	 * @param int                   $page_number      The page number of the set of
+	 *                                                designs that you want to get
+	 *                                                (default: 1).
 	 * @global \wpdb $wpdb
 	 * @return mixed Returns an array of MyStyle_Design objects or null if none
 	 * are found.
 	 */
-	public static function get_designs_by_term_id(
-		$term_id,
+	public static function get_designs_by_term_taxonomy_id(
+		$term_taxonomy_id,
 		WP_User $user = null,
 		MyStyle_Session $session = null,
 		$per_page = 250,
@@ -608,7 +608,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 				LIMIT %d
 				OFFSET %d',
 				array(
-					$term_id,
+					$term_taxonomy_id,
 					$per_page,
 					( $page_number - 1 ) * $per_page,
 				)
@@ -713,14 +713,15 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	/**
 	 * Retrieve the total number of designs having the passed term.
 	 *
-	 * @param int                   $term_id The term id.
-	 * @param \WP_User|null         $user        The current user.
-	 * @param \MyStyle_Session|null $session     The current MyStyle session.
+	 * @param int                   $term_taxonomy_id The term taxonomy id.
+	 * @param \WP_User|null         $user             The current user.
+	 * @param \MyStyle_Session|null $session          The current MyStyle
+	 *                                                session.
 	 * @return integer Returns the total number of terms.
 	 * @global $wpdb
 	 */
 	public static function get_total_term_design_count(
-		$term_id,
+		$term_taxonomy_id,
 		WP_User $user = null,
 		MyStyle_Session $session = null ) {
 
@@ -733,7 +734,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 				'SELECT object_id '
 				. "FROM {$wpdb->prefix}term_relationships "
 				. 'WHERE term_taxonomy_id = %d',
-				array( $term_id )
+				array( $term_taxonomy_id )
 			)
 		);
 
@@ -949,7 +950,11 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		// Add the passed tags to the design.
 		if ( ! empty( $tags ) ) {
-			$term_ids = wp_add_object_terms( $design_id, $tags, $taxonomy );
+			$term_taxonomy_ids = wp_add_object_terms(
+				$design_id,
+				$tags,
+				$taxonomy
+			);
 		}
 	}
 
