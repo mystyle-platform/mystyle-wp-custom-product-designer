@@ -13,19 +13,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div id="mystyle-design-tag-index-wrapper" class="woocommerce design-tags<?php echo ( $show_designs ? ' show-designs' : '' ); ?>">
+<div id="mystyle-design-tag-index-wrapper" class="woocommerce design-tags<?php echo ( $show_designs ) ? ' show-designs' : ''; ?>">
 	<div class="mystyle-sort">
 		<form name="mystyle-sort-form" method="get" class="mystyle-sort-form" action="<?php echo esc_url( get_permalink( get_the_ID() ) ); ?>">
 			<label for="mystyle-sort-select">Sort tags by:</label>
 			<select name="sort_by" class="mystyle-sort-select">
-				<option value="alpha"<?php echo ( 'alpha' === $sort_by ) ? ' selected' : ''; ?>>Alphabetical</option>
 				<option value="qty"<?php echo ( 'qty' === $sort_by ) ? ' selected' : ''; ?>>Quantity</option>
+				<option value="alpha"<?php echo ( 'alpha' === $sort_by ) ? ' selected' : ''; ?>>Alphabetical</option>
 			</select>
 		</form>
 	</div>
 	<?php foreach ( $terms as $term ) : ?>
 		<?php if ( $show_designs ) : ?>
-	<h3 class="mystyle-design-id"><a href="<?php echo esc_url( get_term_link( $term ) ); ?>" title="<?php echo esc_attr( $term->name ); ?> Gallery"><?php echo esc_html( $term->name ); ?></a></h3>
+			<?php $term_name = preg_replace( '/\-/', ' ', $term->name ); ?>
+	<h3 class="mystyle-tag-id"><a href="<?php echo esc_url( get_term_link( $term ) ); ?>" title="<?php echo esc_attr( $term_name ); ?> Gallery"><?php echo esc_html( $term_name ); ?></a></h3>
 	<ul>
 			<?php foreach ( $term->designs as $design ) : ?>
 				<?php

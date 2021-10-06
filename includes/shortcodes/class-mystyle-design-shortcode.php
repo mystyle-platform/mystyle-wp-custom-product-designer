@@ -188,7 +188,7 @@ abstract class MyStyle_Design_Shortcode {
 
 		$term = get_term_by( 'name', $tag, 'design_tag' );
 
-		$term_id = $term->term_id;
+		$term_taxonomy_id = $term->term_taxonomy_id;
 
 		$user = wp_get_current_user();
 
@@ -203,7 +203,7 @@ abstract class MyStyle_Design_Shortcode {
 		$pager->set_current_page_number( 1 );
 
 		// Pager items.
-		$designs = MyStyle_DesignManager::get_designs_by_term_id( $term_id, $user, $session, $count, 1 );
+		$designs = MyStyle_DesignManager::get_designs_by_term_id( $term_taxonomy_id, $user, $session, $count, 1 );
 
 		$pager->set_items( $designs );
 

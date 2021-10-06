@@ -822,7 +822,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 					$entry['slug'] = $term->slug;
 				}
 				if ( $with_id ) {
-					$entry['id'] = $term->term_id;
+					$entry['id'] = $term->term_taxonomy_id;
 				}
 			} else {
 				$entry = $term->name;

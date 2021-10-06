@@ -4,9 +4,9 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: customization, designer, personalization, product-preview, woocommerce, custom product, product designer, Post, plugin, admin, posts, shortcode, images, page, image
 Requires at least: 3.3
-Tested up to: 5.8
+Tested up to: 5.8.1
 Requires PHP: 5.3
-Stable tag: 3.18.6
+Stable tag: 3.18.7
 
 The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
@@ -80,13 +80,14 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 5. Example of a Smart Car with a background image applied
 
 == Shortcodes ==
+
 [mystyle_design]
 – the mystyle /designs/ page shortcode, displays the recent public designs (or all designs for admins).
 
 [mystyle_design total=12]
 – shows a gallery of 12 designs
 
-[mystyle_design total=12 tag="amazing"] 
+[mystyle_design total=12 tag="amazing"]
 – shows a gallery of 12 designs that are tagged amazing
 
 [mystyle_customizer]
@@ -105,15 +106,18 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 – displays a list of design collections with a few design thumbs per collection
 
 == Changelog ==
+= 3.18.7 =
+* Design Tag and Design Collection Taxonomy Term ID bug fix.
+
 = 3.18.6 =
-* Updated Design Tag Shortcode, minor bug fixes
+* Updated Design Tag Shortcode, minor bug fixes.
 
 = 3.18.5 =
 * Added Design Collections Taxonomy, including admin and frontend pages.
 
 = 3.18.4 =
 * Fixed private designs cart issue and added private design default image.
-* Added Design tags index page
+* Added Design tags index page.
 
 = 3.18.3 =
 * Fixed a bug with the 'Add to Cart' button on the Design Profile page where the
@@ -135,7 +139,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Added the new mystyle_design_tags shortcode to the contextual help.
 * Updated the readme.txt to reflect that the plugin has been tested with up to
   WP 5.7.2.
-* Updated the main plugin file to reflect that the plugin has been tested with 
+* Updated the main plugin file to reflect that the plugin has been tested with
   up to WC 5.3.0.
 * Added a 'GitHub Plugin URI' header to the main plugin file.
 * Fixed a bunch of merge issues with the frontend.css file.
@@ -143,26 +147,26 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Linting.
 
 = 3.17.5 =
-* Added Design Tag index shortcode
+* Added Design Tag index shortcode.
 
 = 3.17.4 =
-* Fixed design profile and tags index page bug
+* Fixed design profile and tags index page bug.
 
 = 3.17.3 =
-* Altered design manager security for admin users
+* Altered design manager security for admin users.
 
 = 3.17.2 =
-* Altered design manager security
+* Altered design manager security.
 
 = 3.17.1 =
-* Modified design manager security
+* Modified design manager security.
 
 = 3.17.0 =
 * The design tag taxonomy (design_tag) is now available via the REST API.
 * The design title is now available via the REST API.
-* Updated the main plugin file to reflect that the plugin has been tested with 
+* Updated the main plugin file to reflect that the plugin has been tested with
   up to WC 5.1.0.
-* Updated the readme.txt to reflect that the plugin has been tested with up to 
+* Updated the readme.txt to reflect that the plugin has been tested with up to
   WP 5.7.0.
 * Fixed a bug with the author designs link. It was broken if WordPress wasn't
   installed at the root of the domain (ex: at /blog/).
@@ -182,13 +186,13 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Fixed span tag showing in design titles.
 
 = 3.16.3 =
-* Updated to use v0.1.4 of the MyStyle Customize script (which fixes a bug 
+* Updated to use v0.1.4 of the MyStyle Customize script (which fixes a bug
   with passing the redirect URL to the customizer).
 
 = 3.16.2 =
-* Updated to use v0.1.3 of the MyStyle Customize script (which fixes a bug 
+* Updated to use v0.1.3 of the MyStyle Customize script (which fixes a bug
   with passing the redirect URL to the customizer).
-* Fixed a bug where the designId wasn't being passed (if set) to the customize 
+* Fixed a bug where the designId wasn't being passed (if set) to the customize
   script.
 * Fixed a bug with setting the title on the Design Profile page.
 
@@ -197,9 +201,9 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
   loading extra customizer settings).
 
 = 3.16.0 =
-* Switched from loading the customizer by rendering an iframe to loading the 
+* Switched from loading the customizer by rendering an iframe to loading the
   customizer by calling the new external MyStyle Customize script.
-* Updated the main plugin file to reflect that the plugin has been tested with 
+* Updated the main plugin file to reflect that the plugin has been tested with
   up to WooCommerce 4.9.2.
 * Updated the readme.txt file to reflect that the plugin has been tested with
   up to WordPress 5.6.0
@@ -215,7 +219,8 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Fixed Order admin refund bug.
 
 = 3.15.1 =
-* Added Gallery and Tag attributes to mystyle_design shortcode, fixed design tag page bug.
+* Added Gallery and Tag attributes to mystyle_design shortcode, fixed design tag
+  page bug.
 
 = 3.15.0 =
 * Added custom template box shadow option
@@ -227,16 +232,19 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Fixed cart image access bug
 
 = 3.14.7 =
-* Updated Frontend CSS and DesignManager Class to add change design access function
+* Updated Frontend CSS and DesignManager Class to add change design access
+  function.
 
 = 3.14.6 =
-* Added plugin admin dashboard page, more custom design template features (beta), random design shortcode
+* Added plugin admin dashboard page, more custom design template features
+ (beta), random design shortcode.
 
 = 3.14.5 =
 * Fixed Unauthorized Exception error
 
 = 3.14.4 =
-* Added feature for custom design templates, including rectangle and oval shapes defined in inches.
+* Added feature for custom design templates, including rectangle and oval shapes
+  defined in inches.
 
 = 3.14.3 =
 * Fixed body class from design profile page
@@ -248,7 +256,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Fixed bug with table prefixes
 
 = 3.14.0 =
-* Added new Design Tags Feature.  
+* Added new Design Tags Feature.
 * Optimized design archive pages to support standard WordPress Theme Development.
 
 = 3.13.11 =
@@ -261,7 +269,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Fixed Bug associated with WordPress Version 5.5.
 
 = 3.13.8 =
-* Added My Designs page and Author Design pages.  Added the ability to add and edit design titles. 
+* Added My Designs page and Author Design pages.  Added the ability to add and edit design titles.
 
 = 3.13.7 =
 * Fixed the ability to load designs on another product
@@ -291,7 +299,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Updated the main plugin file to reflect that the plugin has been tested with up to WC 3.7.1.
 
 = 3.12.5 =
-* Fixed a bug with the customize page with sites running later versions of 
+* Fixed a bug with the customize page with sites running later versions of
   jQuery.
 
 = 3.12.4 =
@@ -698,7 +706,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Added the new mystyle_design_tags shortcode to the contextual help.
 * Updated the readme.txt to reflect that the plugin has been tested with up to
   WP 5.7.2.
-* Updated the main plugin file to reflect that the plugin has been tested with 
+* Updated the main plugin file to reflect that the plugin has been tested with
   up to WC 5.3.0.
 * Added a 'GitHub Plugin URI' header to the main plugin file.
 * Fixed a bunch of merge issues with the frontend.css file.
@@ -723,9 +731,9 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 = 3.17.0 =
 * The design tag taxonomy (design_tag) is now available via the REST API.
 * The design title is now available via the REST API.
-* Updated the main plugin file to reflect that the plugin has been tested with 
+* Updated the main plugin file to reflect that the plugin has been tested with
   up to WC 5.1.0.
-* Updated the readme.txt to reflect that the plugin has been tested with up to 
+* Updated the readme.txt to reflect that the plugin has been tested with up to
   WP 5.7.0.
 * Fixed a bug with the author designs link. It was broken if WordPress wasn't
   installed at the root of the domain (ex: at /blog/).
@@ -745,13 +753,13 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Fixed span tag showing in design titles.
 
 = 3.16.3 =
-* Updated to use v0.1.4 of the MyStyle Customize script (which fixes a bug 
+* Updated to use v0.1.4 of the MyStyle Customize script (which fixes a bug
   with passing the redirect URL to the customizer).
 
 = 3.16.2 =
-* Updated to use v0.1.3 of the MyStyle Customize script (which fixes a bug 
+* Updated to use v0.1.3 of the MyStyle Customize script (which fixes a bug
   with passing the redirect URL to the customizer).
-* Fixed a bug where the designId wasn't being passed (if set) to the customize 
+* Fixed a bug where the designId wasn't being passed (if set) to the customize
   script.
 * Fixed a bug with setting the title on the Design Profile page.
 
@@ -760,9 +768,9 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
   loading extra customizer settings).
 
 = 3.16.0 =
-* Switched from loading the customizer by rendering an iframe to loading the 
+* Switched from loading the customizer by rendering an iframe to loading the
   customizer by calling the new external MyStyle Customize script.
-* Updated the main plugin file to reflect that the plugin has been tested with 
+* Updated the main plugin file to reflect that the plugin has been tested with
   up to WooCommerce 4.9.2.
 * Updated the readme.txt file to reflect that the plugin has been tested with
   up to WordPress 5.6.0
@@ -811,7 +819,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Fixed bug with table prefixes
 
 = 3.14.0 =
-* Added new Design Tags Feature.  
+* Added new Design Tags Feature.
 * Optimized design archive pages to support standard WordPress Theme Development.
 
 = 3.13.11 =
@@ -824,7 +832,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Fixed Bug associated with WordPress Version 5.5.
 
 = 3.13.8 =
-* Added My Designs page and Author Design pages.  Added the ability to add and edit design titles. 
+* Added My Designs page and Author Design pages.  Added the ability to add and edit design titles.
 
 = 3.13.7 =
 * Fixed the ability to load designs on another product
@@ -854,7 +862,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 * Updated the main plugin file to reflect that the plugin has been tested with up to WC 3.7.1.
 
 = 3.12.5 =
-* Fixed a bug with the customize page with sites running later versions of 
+* Fixed a bug with the customize page with sites running later versions of
   jQuery.
 
 = 3.12.4 =

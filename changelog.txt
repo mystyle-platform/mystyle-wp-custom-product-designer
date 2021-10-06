@@ -1,7 +1,13 @@
+= 3.18.7 =
+
+* Design Tag and Design Collection Taxonomy Term ID bug fix.
+
 = 3.18.6 =
+
 * Updated Design Tag Shortcode, minor bug fixes
 
 = 3.18.5 =
+
 * Added Design Collections Taxonomy, including admin and frontend pages.
 
 = 3.18.4 =
@@ -13,7 +19,7 @@
 
 * Fixed a bug with the 'Add to Cart' button on the Design Profile page where the
   button wouldn't work if the design didn't have cart-data.
-* Updated the main plugin file to reflect that the plugin has been tested with 
+* Updated the main plugin file to reflect that the plugin has been tested with
   up to WC 5.5.1.
 * Linting, unit testing, clean up, refactoring of ajax functions.
 
@@ -34,7 +40,7 @@
 * Added the new mystyle_design_tags shortcode to the contextual help.
 * Updated the readme.txt to reflect that the plugin has been tested with up to
   WP 5.7.2.
-* Updated the main plugin file to reflect that the plugin has been tested with 
+* Updated the main plugin file to reflect that the plugin has been tested with
   up to WC 5.3.0.
 * Added a 'GitHub Plugin URI' header to the main plugin file.
 * Fixed a bunch of merge issues with the frontend.css file.
@@ -65,9 +71,9 @@
 
 * The design tag taxonomy (design_tag) is now available via the REST API.
 * The design title is now available via the REST API.
-* Updated the main plugin file to reflect that the plugin has been tested with 
+* Updated the main plugin file to reflect that the plugin has been tested with
   up to WC 5.1.0.
-* Updated the readme.txt to reflect that the plugin has been tested with up to 
+* Updated the readme.txt to reflect that the plugin has been tested with up to
   WP 5.7.0.
 * Fixed a bug with the author designs link. It was broken if WordPress wasn't
   installed at the root of the domain (ex: at /blog/).
@@ -92,14 +98,14 @@
 
 = 3.16.3 =
 
-* Updated to use v0.1.4 of the MyStyle Customize script (which fixes a bug 
+* Updated to use v0.1.4 of the MyStyle Customize script (which fixes a bug
   with passing the redirect URL to the customizer).
 
 = 3.16.2 =
 
-* Updated to use v0.1.3 of the MyStyle Customize script (which fixes a bug 
+* Updated to use v0.1.3 of the MyStyle Customize script (which fixes a bug
   with passing the redirect URL to the customizer).
-* Fixed a bug where the designId wasn't being passed (if set) to the customize 
+* Fixed a bug where the designId wasn't being passed (if set) to the customize
   script.
 * Fixed a bug with setting the title on the Design Profile page.
 
@@ -110,9 +116,9 @@
 
 = 3.16.0 =
 
-* Switched from loading the customizer by rendering an iframe to loading the 
+* Switched from loading the customizer by rendering an iframe to loading the
   customizer by calling the new external MyStyle Customize script.
-* Updated the main plugin file to reflect that the plugin has been tested with 
+* Updated the main plugin file to reflect that the plugin has been tested with
   up to WooCommerce 4.9.2.
 * Updated the readme.txt file to reflect that the plugin has been tested with
   up to WordPress 5.6.0
@@ -130,27 +136,30 @@
 
 = 3.15.1 =
 
-* Added Gallery and Tag attributes to mystyle_design shortcode, fixed design tag page bug.
+* Added Gallery and Tag attributes to mystyle_design shortcode, fixed design tag
+  page bug.
 
 = 3.15.0 =
 
-* Added custom template box shadow option
+* Added custom template box shadow option.
 
 = 3.14.9 =
 
-* Fixed cart name access bug
+* Fixed cart name access bug.
 
 = 3.14.8 =
 
-* Fixed cart image access bug
+* Fixed cart image access bug.
 
 = 3.14.7 =
 
-* Updated Frontend CSS and DesignManager Class to add change design access function
+* Updated Frontend CSS and DesignManager Class to add change design access
+  function.
 
 = 3.14.6 =
 
-* Added plugin admin dashboard page, more custom design template features (beta), random design shortcode
+* Added plugin admin dashboard page, more custom design template features
+  (beta), random design shortcode.
 
 = 3.14.5 =
 
@@ -158,7 +167,8 @@
 
 = 3.14.4 =
 
-* Added feature for custom design templates, including rectangle and oval shapes defined in inches.
+* Added feature for custom design templates, including rectangle and oval shapes
+  defined in inches.
 
 = 3.14.3 =
 
@@ -174,8 +184,9 @@
 
 = 3.14.0 =
 
-* Added new Design Tags Feature.  
-* Optimized design archive pages to support standard WordPress Theme Development.
+* Added new Design Tags Feature.
+* Optimized design archive pages to support standard WordPress theme
+  development.
 
 = 3.13.11 =
 
@@ -191,11 +202,12 @@
 
 = 3.13.8 =
 
-* Added My Designs page and Author Design pages.  Added the ability to add and edit design titles. 
+* Added My Designs page and Author Design pages.
+* Added the ability to add and edit design titles.
 
 = 3.13.7 =
 
-* Fixed the ability to load designs on another product
+* Fixed the ability to load designs on another product.
 
 = 3.13.6 =
 
@@ -215,7 +227,8 @@
 
 = 3.13.2 =
 
-* Fixed a bug where the customizer wasn't showing on translations of the MyStyle Customize page.
+* Fixed a bug where the customizer wasn't showing on translations of the MyStyle
+  Customize page.
 
 = 3.13.1 =
 
@@ -230,7 +243,7 @@
 
 = 3.12.5 =
 
-* Fixed a bug with the customize page with sites running later versions of 
+* Fixed a bug with the customize page with sites running later versions of
   jQuery.
 
 = 3.12.4 =
@@ -298,7 +311,7 @@
 
 = 3.8.2 =
 
-* Fixed a bug where the options from designs that were upgraded to products weren't coming through. 
+* Fixed a bug where the options from designs that were upgraded to products weren't coming through.
 
 = 3.8.1 =
 

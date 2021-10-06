@@ -69,6 +69,7 @@ abstract class MyStyle_Design_Collection_Shortcode {
 					'offset'     => $offset,
 				)
 			);
+
 		}
 
 		$terms_count = count( $terms );
@@ -87,7 +88,7 @@ abstract class MyStyle_Design_Collection_Shortcode {
 				}
 				// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 
-				$total_design_count = MyStyle_DesignManager::get_total_term_design_count( $terms[0]->term_id, $wp_user, $session );
+				$total_design_count = MyStyle_DesignManager::get_total_term_design_count( $terms[0]->term_taxonomy_id, $wp_user, $session );
 				$pager_array        = self::pager( $pager, $limit, $total_design_count );
 			} elseif ( count( $all_terms ) > $term_limit ) {
 				$pager_array = self::pager( $pager, $term_limit, count( $all_terms ) );
@@ -96,7 +97,7 @@ abstract class MyStyle_Design_Collection_Shortcode {
 
 			for ( $i = 0; $i < $terms_count; $i++ ) {
 				$designs = MyStyle_DesignManager::get_designs_by_term_id(
-					$terms[ $i ]->term_id,
+					$terms[ $i ]->term_taxonomy_id,
 					$wp_user,
 					$session,
 					$limit,

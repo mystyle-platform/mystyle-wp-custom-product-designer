@@ -56,12 +56,12 @@ abstract class MyStyle_Design_Tag_Shortcode {
 		}
 		// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 
-		$sort_by_slug  = 'name';
-		$sort_by_order = 'ASC';
+		$sort_by_slug  = 'count';
+		$sort_by_order = 'DESC';
 
-		if ( 'qty' === $sort_by ) {
-			$sort_by_slug  = 'count';
-			$sort_by_order = 'DESC';
+		if ( 'alpha' === $sort_by ) {
+			$sort_by_slug  = 'name';
+			$sort_by_order = 'ASC';
 		}
 
 		$terms = get_terms(
@@ -81,7 +81,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
 
 			for ( $i = 0; $i < $terms_count; $i++ ) {
 				$designs = MyStyle_DesignManager::get_designs_by_term_id(
-					$terms[ $i ]->term_id,
+					$terms[ $i ]->term_taxonomy_id,
 					$wp_user,
 					$session,
 					$per_tag,
