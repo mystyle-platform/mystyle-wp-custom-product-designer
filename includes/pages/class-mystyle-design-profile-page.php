@@ -260,10 +260,10 @@ class MyStyle_Design_Profile_Page {
 				wp_register_style( 'jquery-ui-styles', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
 				wp_enqueue_style( 'jquery-ui-styles' );
 
-				wp_register_style( 'tokenfield-styles', MYSTYLE_ASSETS_URL . 'css/bootstrap-tokenfield.min.css' );
+				wp_register_style( 'tokenfield-styles', MYSTYLE_ASSETS_URL . 'lib/bootstrap-tokenfield/bootstrap-tokenfield.min.css' );
 				wp_enqueue_style( 'tokenfield-styles' );
 
-				wp_register_script( 'tokenfield', MYSTYLE_ASSETS_URL . 'js/bootstrap-tokenfield.min.js', null, null, true );
+				wp_register_script( 'tokenfield', MYSTYLE_ASSETS_URL . 'lib/bootstrap-tokenfield/bootstrap-tokenfield.min.js', null, null, true );
 				wp_enqueue_script( 'tokenfield' );
 
 				wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', null, null, true );
