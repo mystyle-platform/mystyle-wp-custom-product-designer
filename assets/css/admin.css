@@ -99,14 +99,16 @@ span#mystyle-icon-general.icon100 {
 
 /* MyStyle Dashboard Page */
 .mystyle-admin-box h2 {
-    font-size: 2.2em;
+	font-size: 2.2em;
 }
 
-.toplevel_page_mystyle ul.statistics, .toplevel_page_mystyle ul.products {
+.toplevel_page_mystyle ul.statistics,
+.toplevel_page_mystyle ul.products {
 	overflow: hidden;
 }
 
-.toplevel_page_mystyle ul.statistics li, .toplevel_page_mystyle ul.products li {
+.toplevel_page_mystyle ul.statistics li,
+.toplevel_page_mystyle ul.products li {
 	width: 300px;
 	float: left;
 	margin-right: 1em;
@@ -128,7 +130,8 @@ span#mystyle-icon-general.icon100 {
 	color: #28c;
 }
 
-.toplevel_page_mystyle ul.statistics li, .toplevel_page_mystyle ul.products li {
+.toplevel_page_mystyle ul.statistics li,
+.toplevel_page_mystyle ul.products li {
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 	display: block;
 	text-align: center;
@@ -137,11 +140,13 @@ span#mystyle-icon-general.icon100 {
 	border: 1px solid #ddd;
 }
 
-.toplevel_page_mystyle ul.statistics li:hover, .toplevel_page_mystyle ul.products li:hover {
+.toplevel_page_mystyle ul.statistics li:hover,
+.toplevel_page_mystyle ul.products li:hover {
 	background: #fff none repeat scroll 0 0;
 }
 
-.toplevel_page_mystyle ul.statistics li img, .toplevel_page_mystyle ul.products li img {
+.toplevel_page_mystyle ul.statistics li img,
+.toplevel_page_mystyle ul.products li img {
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 	max-width: 100%;
 }
@@ -153,13 +158,15 @@ span#mystyle-icon-general.icon100 {
 	margin: 0.3em;
 }
 
-.toplevel_page_mystyle ul.statistics li a img, .toplevel_page_mystyle ul.products li a img {
+.toplevel_page_mystyle ul.statistics li a img,
+.toplevel_page_mystyle ul.products li a img {
 	margin: 0;
 	padding: 5%;
 	box-sizing: border-box;
 }
 
-.toplevel_page_mystyle ul.statistics li a p, .toplevel_page_mystyle ul.products li p a {
+.toplevel_page_mystyle ul.statistics li a p,
+.toplevel_page_mystyle ul.products li p a {
 	font-family: "Open Sans", sans-serif;
 	color: #444;
 	border-top: 1px solid #f1f1f1;
@@ -169,14 +176,14 @@ span#mystyle-icon-general.icon100 {
 }
 
 .toplevel_page_mystyle ul.statistics p {
-    font-size: 3.3em;
+	font-size: 3.3em;
 }
 
 
 .toplevel_page_mystyle ul.statistics span.dashicons {
-    margin-top: -20px;
-    font-size: 2.5em;
-    width: 130px;
+	margin-top: -20px;
+	font-size: 2.5em;
+	width: 130px;
 }
 
 .toplevel_page_mystyle ul.statistics span.dashicons-yes {
@@ -188,15 +195,15 @@ span#mystyle-icon-general.icon100 {
 }
 
 .toplevel_page_mystyle ul.statistics span a {
-    font-size: 2.5em;
-    width: 150px;
-    height: 103px;
-    font-size: 0.5em;
+	font-size: 2.5em;
+	width: 150px;
+	height: 103px;
+	font-size: 0.5em;
 }
 
 .toplevel_page_mystyle ul.products p {
-    padding: 1em;
-    text-align: left;
+	padding: 1em;
+	text-align: left;
 }
 
 .toplevel_page_mystyle ul.products li a p {
@@ -218,11 +225,11 @@ span#mystyle-icon-general.icon100 {
 }
 
 .toplevel_page_mystyle a.alert {
-    color: darkred;
+	color: darkred;
 }
 
 .toplevel_page_mystyle span.green {
-    color: darkgreen;
+	color: darkgreen;
 }
 
 /* MyStyle Add-Ons Page */
@@ -337,15 +344,15 @@ span#mystyle-icon-general.icon100 {
 woocommerce order mystyle data area
 */
 .woocommerce_order_items .mystyle-panel a.button {
-    display: block;
-    text-align: center;
-    max-width: 190px;
-    margin: 8px auto;
+	display: block;
+	text-align: center;
+	max-width: 190px;
+	margin: 8px auto;
 }
 
 .woocommerce_order_items .mystyle-panel img {
-    margin: auto;
-    display: block;
+	margin: auto;
+	display: block;
 }
 
 a.mystyle-toggle-link.button {

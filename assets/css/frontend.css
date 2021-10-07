@@ -247,6 +247,31 @@ body.mystyle-design-profile img#mystyle-design-profile-img {
 	transition-duration: 1s;
 }
 
+.design-tag-collection-toggle-menu ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.design-tag-collection-toggle-menu ul li {
+	display: inline;
+	border: solid #ccc;
+	border-width: 2px 2px 0 2px;
+	margin: 0 5px 0 0;
+	padding: 10px;
+	background-color: #ededed;
+}
+
+/* stylelint-disable no-descending-specificity */
+.design-tag-collection-toggle-menu ul li a {
+	padding: 0 10px;
+}
+/* stylelint-enable no-descending-specificity */
+
+.design-tag-collection-toggle-menu ul li.selected {
+	background: #fff;
+}
+
 body.mystyle-design-profile .product_description {
 	padding-top: 30px;
 }
@@ -255,39 +280,17 @@ body.mystyle-design-profile ul.mystyle-design-nav li {
 	margin: 5em;
 }
 
-.design-tag-collection-toggle-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.design-tag-collection-toggle-menu li {
-    display: inline;
-    border: solid #ccc;
-    border-width: 2px 2px 0 2px;
-    margin: 0 5px 0 0;
-    padding: 10px;
-    background-color: #ededed ;
-}
-
-.design-tag-collection-toggle-menu li a {
-    padding: 0 10px;
-}
-
-.design-tag-collection-toggle-menu li.selected { 
-    background: #FFFFFF;
-}
-
 .edit-design-collections {
-    display: none ;
+	display: none;
 }
 
-.collections-present, .edit-design-collections {
-    border: solid #ccc;
-    border-width: 2px;
-    padding:10px ;
-    margin-top:5px;
-    background-color: #FFFFFF
+.collections-present,
+.edit-design-collections {
+	border: solid #ccc;
+	border-width: 2px;
+	padding: 10px;
+	margin-top: 5px;
+	background-color: #fff;
 }
 
 /* MyStyle Design Profile Index */
@@ -513,57 +516,62 @@ body.archive.tax-design_tag article {
 
 
 /* Design Collection Index */
+/* stylelint-disable no-descending-specificity */
 #mystyle-design-collection-index-wrapper a {
-    text-decoration: none ;
+	text-decoration: none;
 }
+/* stylelint-enable no-descending-specificity */
+
 #mystyle-design-collection-index-wrapper .collections-menu {
-    float: left ;
-    width: 25% ;
+	float: left;
+	width: 25%;
 }
 
 #mystyle-design-collection-index-wrapper .collections-menu ul {
-    margin: 0 ;
+	margin: 0;
 }
 
+/* stylelint-disable no-descending-specificity */
 #mystyle-design-collection-index-wrapper .collections-menu li {
-    list-style-type: none ;
+	list-style-type: none;
 }
+/* stylelint-enable no-descending-specificity */
 
 #mystyle-design-collection-index-wrapper .collections-content {
-    float: left ;
-    width: 75% ;
+	float: left;
+	width: 75%;
 }
 
 #mystyle-design-collection-index-wrapper .collections-content h3 {
-    border: solid 1px #ccc ;
-    width: 50% ;
-    margin 10px 0 ;
-    padding: 0 10px;
+	border: solid 1px #ccc;
+	width: 50%;
+	margin: 10px 0;
+	padding: 0 10px;
 }
 
 #mystyle-design-collection-index-wrapper .design-tile {
-    display: inline-block;
-    vertical-align: bottom;
-    padding-right: 15px;
-    margin-top: 10px ;
+	display: inline-block;
+	vertical-align: bottom;
+	padding-right: 15px;
+	margin-top: 10px;
 }
 
 #mystyle-design-collection-index-wrapper .pager {
-    width: 100%;
-    text-align: center ;
+	width: 100%;
+	text-align: center;
 }
 
 #mystyle-design-collection-index-wrapper .collection-row {
-    margin-bottom: 20px; 
-    border-bottom: solid 2px #ccc ;
-    width: 100% ;
-    padding-bottom: 20px ;
+	margin-bottom: 20px;
+	border-bottom: solid 2px #ccc;
+	width: 100%;
+	padding-bottom: 20px;
 }
 
-#mystyle-design-collection-index-wrapper .collection-row:after {
-  content: "";
-  display: table;
-  clear: both;
+#mystyle-design-collection-index-wrapper .collection-row::after {
+	content: "";
+	display: table;
+	clear: both;
 }
 
 /* Add-ons */
@@ -577,5 +585,5 @@ body.archive.tax-design_tag article {
 /* stylelint-enable no-descending-specificity */
 
 .mystyle-sort {
-    float: right ;
+	float: right;
 }

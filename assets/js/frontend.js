@@ -28,7 +28,7 @@
             $( '.design-tag-status' ).fadeOut();
         }, 3000 );
     };
-    
+
     designCollectionStatus = function( status ) {
         var text, color;
 
@@ -62,34 +62,36 @@
 
         $( '.edit-design-tags input.button' ).hide();
         $( '.edit-design-collections input.button' ).hide();
-        
-        $( '.design-tag-collection-toggle-menu a' ).click(function(e){
-            e.preventDefault() ;
-            
-            $( '.design-tag-collection-toggle-menu li' ).each(function(i, el){
-                $(el).removeClass('selected') ;
-            }) ;
-            
-            $(this).parent().addClass('selected') ;
-            
-            var menuItem = $(this).attr('href') ;
-            
-            switch(menuItem) {
+
+        $( '.design-tag-collection-toggle-menu a' ).click( function( e ) {
+            var menuItem;
+
+            e.preventDefault();
+
+            $( '.design-tag-collection-toggle-menu li' ).each( function( i, el ) {
+                $( el ).removeClass( 'selected' );
+            });
+
+            $( this ).parent().addClass( 'selected' );
+
+            menuItem = $( this ).attr( 'href' );
+
+            switch ( menuItem ) {
                 case '#design-tags' :
-                    $( '.edit-design-collections' ).fadeOut(400, function(){
-                        $( '.edit-design-tags' ).fadeIn() ;
-                    }) ;
+                    $( '.edit-design-collections' ).fadeOut( 400, function() {
+                        $( '.edit-design-tags' ).fadeIn();
+                    });
                     break;
-                    
+
                 case '#design-collections' :
-                    $( '.edit-design-tags' ).fadeOut(400, function(){
-                        $( '.edit-design-collections' ).fadeIn() ;
-                    }) ;
+                    $( '.edit-design-tags' ).fadeOut( 400, function() {
+                        $( '.edit-design-collections' ).fadeIn();
+                    });
                     break;
             }
-        })
-        
-        //Design Tag tokenfield
+        });
+
+        // Design Tag tokenfield.
         $( '.edit-design-tag-input' )
             .on( 'tokenfield:createtoken', function( e ) {
                 var existingTokens = $( this ).tokenfield( 'getTokens' );
@@ -154,9 +156,9 @@
                     }
                 });
             });
-        
-        
-        //Design Collections TokenField
+
+
+        // Design Collections TokenField.
         $( '.edit-design-collection-input' )
             .on( 'tokenfield:createtoken', function( e ) {
                 var existingTokens = $( this ).tokenfield( 'getTokens' );
@@ -221,9 +223,9 @@
                     }
                 });
             });
-        
-        
-        //Change deign permissions
+
+
+        // Change deign permissions.
         $( '.form-change-design-access select' ).change( function( e ) {
             var form, accessId, designId, nonce;
 
@@ -259,16 +261,16 @@
             });
 
         });
-        
-        //sorting form select
-        $('.mystyle-sort-select').on('change', function() {
-            var parentForm = $(this).closest("form") ;
-            if (parentForm && parentForm.length > 0) {
-                console.log(parentForm.attr('action')) ;
-                parentForm.submit() ;
-            }   
+
+        // Sorting form select.
+        $( '.mystyle-sort-select' ).on( 'change', function() {
+            var parentForm = $( this ).closest( 'form' );
+            if ( parentForm && 0 < parentForm.length ) {
+                console.log( parentForm.attr( 'action' ) );
+                parentForm.submit();
+            }
         });
-        
+
 
     });
 
