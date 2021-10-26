@@ -37,7 +37,7 @@ abstract class MyStyle_Design_Collection_Shortcode {
         
 		$pager  = 0;
 		$limit  = 4 ;
-		$term_limit  = 10 ;
+		$term_limit  = 24 ;
 		$offset = 0;
 
 		

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div id="mystyle-design-tag-index-wrapper" class="woocommerce design-tags<?php print ( $show_designs ? ' show-designs' : '' ) ; ?>">
+<div id="mystyle-design-tag-index-wrapper" class="mystyle-design-tag-index woocommerce design-tags<?php print ( $show_designs ? ' show-designs' : '' ) ; ?>">
     <div class="mystyle-sort">
         <form name="mystyle-sort-form" method="get" class="mystyle-sort-form" action="<?php print get_permalink( get_the_ID() ); ?>">
             <label for="mystyle-sort-select">Sort tags by:</label>
@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<img alt="<?php echo esc_html( ( null !== $design->get_title() ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?> Image" src="<?php echo esc_url( $design->get_thumb_url() ); ?>" />
 				<?php echo esc_html( ( null !== $design->get_title() ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?>
 			</a>
-			<div>Designed by: <?php echo esc_html( $user->user_nicename ); ?></div>
+			<div class="mystyle-design-author">Designed by: <?php echo esc_html( $user->user_nicename ); ?></div>
 		</li>
 		<?php endforeach; ?>
 	</ul>

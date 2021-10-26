@@ -35,7 +35,7 @@ class MyStyle_Configur8 {
 		global $product;
 
 		$mystyle_product = new \MyStyle_Product( $product );
-
+        
 		// Drop the configur8 script (if enabled).
 		if (
 			MyStyle_Options::are_keys_installed() &&

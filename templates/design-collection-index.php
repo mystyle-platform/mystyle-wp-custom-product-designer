@@ -1,4 +1,4 @@
-<div id="mystyle-design-collection-index-wrapper" class="design-collection-index">
+<div id="mystyle-design-collection-index-wrapper" class="mystyle-design-collection-index">
     
     <div class="collections-menu">
         <ul>
@@ -33,7 +33,7 @@
                         <img alt="<?php echo esc_html( ( null !== $design->get_title() ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?> Image" src="<?php echo esc_url( $design->get_thumb_url() ); ?>" />
                         <?php echo esc_html( ( null !== $design->get_title() ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?>
                     </a>
-                    <div>Designed by: <?php echo esc_html( $user->user_nicename ); ?></div>
+                    <div class="mystyle-design-author">Designed by: <?php echo esc_html( $user->user_nicename ); ?></div>
                     
                 </div>
                 
