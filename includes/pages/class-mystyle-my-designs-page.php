@@ -177,12 +177,17 @@ class MyStyle_My_Designs_Page {
 
 		/* @var $pager \Mystyle_Pager phpcs:ignore */
 		$pager = $design_profile_page->get_pager();
-
-		// ---------- Call the view layer ------------------ //
-		ob_start();
-		require MYSTYLE_TEMPLATES . 'design-profile/index.php';
-		$out = ob_get_contents();
-		ob_end_clean();
+        
+        if( ! $pager->get_items() || count( $pager->get_items() ) == 0 ) {
+            $out = '<h3>No designs yet. <a href="/">Create one now!</a></h3>' ;
+        }
+        else {
+            // ---------- Call the view layer ------------------ //
+            ob_start();
+            require MYSTYLE_TEMPLATES . 'design-profile/index.php';
+            $out = ob_get_contents();
+            ob_end_clean();
+        }
 
 		echo $out; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 	}
@@ -219,7 +224,7 @@ class MyStyle_My_Designs_Page {
 		global $wp_query;
 
 		if ( isset( $wp_query->query_vars['my-designs'] ) ) {
-			$classes[] = 'mystyle-design-profile';
+			$classes[] = 'mystyle-my-designs';
 		}
 
 		return $classes;
