@@ -1,3 +1,6 @@
+= 3.18.8 =
+* Bug fix while loading designs on other products. Added CSS classes
+
 = 3.18.7 =
 * Design Tag and Design Collection Taxonomy Term ID bug fix
 
