@@ -1,3 +1,6 @@
+= 3.18.9 =
+* Bug fixes related to the saving of designs while logged in
+
 = 3.18.8 =
 * Bug fix while loading designs on other products. Added CSS classes
 
