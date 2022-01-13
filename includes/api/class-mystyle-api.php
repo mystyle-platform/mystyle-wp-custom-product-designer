@@ -122,7 +122,7 @@ class MyStyle_API implements MyStyle_API_Interface {
 				'cookies'     => array(),
 			)
 		);
-
+        
 		if ( is_wp_error( $response ) ) {
 			// We fail silently and write to the log.
 			$error_message = $response->get_error_message();

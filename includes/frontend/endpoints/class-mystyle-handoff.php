@@ -72,8 +72,8 @@ class MyStyle_Handoff {
 	 * Needs to be public because it is registered as a WP action.
 	 */
 	public function override() {
-
-		// phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput
+		
+        // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput
 		$url = $_SERVER['REQUEST_URI'];
 
 		if ( strpos( $url, self::SLUG ) !== false ) {
@@ -103,9 +103,9 @@ class MyStyle_Handoff {
 	 */
 	public function handle() {
 		global $woocommerce;
-
+        
 		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
-
+            
 			// --- Add the product to the cart along with the mystyle variables. ---
 			// Create a Design from the post.
 			$this->design = MyStyle_Design::create_from_post( $_POST ); // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
@@ -114,12 +114,13 @@ class MyStyle_Handoff {
 			$session_handler = MyStyle_SessionHandler::get_instance();
 			$session         = $session_handler->get();
 			$session_handler->persist( $session );
-
+            
 			// Add the session id to the design.
 			$this->design->set_session_id( $session->get_session_id() );
 
 			// Add data from api call.
 			$this->design = $this->mystyle_api->add_api_data_to_design( $this->design );
+
 
 			// Get the mystyle user from the API.
 			// Note: the user_id isn't returned by the API if the user is already
@@ -130,25 +131,36 @@ class MyStyle_Handoff {
 				$mystyle_user = $this->mystyle_api->get_user(
 					$this->design->get_designer_id()
 				);
-
-				// Add data from the user to the design.
-				$this->design->set_email( $mystyle_user->get_email() );
+                
+                $this->design->set_email( $mystyle_user->get_email() ) ;
+                
 			}
 
 			// If the user is logged in to WordPress, store their user id with their design.
-			$wp_user_id = get_current_user_id();
+			$wp_user = wp_get_current_user();
+            $wp_user_id = $wp_user->ID ;
+            
 			if ( 0 !== $wp_user_id ) {
 				$user = get_userdata( $wp_user_id );
 				$this->design->set_user_id( $wp_user_id );
 				$this->design->set_email( $user->user_email );
 			} elseif ( null !== $mystyle_user ) {
-				// If the user isn't logged in, see if their email matches an existing user and store that id with the design.
-				$user = get_user_by( 'email', $mystyle_user->get_email() );
+				// If the user isn't logged in, see if their email matches an existing user and store that id with the design.;
+				$user = get_user_by( 'ID', $mystyle_user->get_id() );
 				if ( false !== $user ) {
-					$this->design->set_user_id( $user->ID );
+					$this->design->set_user_id( $user->ID ) ;
+                    $this->design->set_email( $user->user_email ) ;
 				}
 			}
-
+            elseif ( isset( $passthru['user']['user_id'] ) ) {
+                $user = get_user_by( 'ID', $passthru['user']['user_id'] ) ;
+                if ( false !== $user ) {
+					$this->design->set_user_id( $user->ID ) ;
+                    $this->design->set_email( $user->user_email ) ;
+				}
+            }
+            
+            
 			// Persist the design to the database.
 			$this->design = MyStyle_DesignManager::persist( $this->design );
 

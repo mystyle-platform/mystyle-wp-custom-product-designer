@@ -228,14 +228,26 @@ class MyStyle_Design implements MyStyle_Entity {
 
 		$passthru      = json_decode( base64_decode( $post_data['h'] ), true );
 		$passthru_post = $passthru['post'];
-		$product_id    = $passthru_post['add-to-cart'];
+		$product_id    = $passthru_post['add-to-cart'] ;
+        $user_id       = false ;
+        
+        if( isset( $passthru['user']['user_id'] ) ) {
+            $user_id = $passthru['user']['user_id'] ;
+        }
 
 		$instance->product_id  = (int) htmlspecialchars( $product_id ); // Mapping local_product_id to product_id.
 		$instance->design_id   = (int) htmlspecialchars( $post_data['design_id'] );
 		$instance->template_id = (int) htmlspecialchars( $post_data['product_id'] ); // Mapping product_id to template_id.
-		if ( isset( $post_data['user_id'] ) ) {
+		
+        if ( isset( $post_data['user_id'] ) ) {
 			$instance->designer_id = (int) htmlspecialchars( $post_data['user_id'] );
+            $instance->user_id = (int) htmlspecialchars( $post_data['user_id'] ); 
 		}
+        else {
+            $instance->designer_id = (int) htmlspecialchars( $user_id ) ;
+            $instance->user_id = (int) htmlspecialchars( $user_id ) ;
+        }
+        
 		$instance->cart_data = wp_json_encode( $passthru_post );
 
 		// These aren't always passed (or may be deprecated).

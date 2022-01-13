@@ -62,6 +62,10 @@ class MyStyle_Passthru_Codec {
 		} else {
 			$passthru['post'] = $post;
 		}
+        
+        if( is_user_logged_in() ) {
+            $passthru['user']['user_id'] = get_current_user_id() ;
+        }
 
 		// Add all available product attributes (if there are any) to the pass
 		// through data.
