@@ -120,7 +120,9 @@ class MyStyle_Handoff {
 
 			// Add data from api call.
 			$this->design = $this->mystyle_api->add_api_data_to_design( $this->design );
-
+            
+            //get passthru data for user id
+            $passthru = json_decode( base64_decode( $_POST['h'] ), true );
 
 			// Get the mystyle user from the API.
 			// Note: the user_id isn't returned by the API if the user is already
@@ -139,14 +141,14 @@ class MyStyle_Handoff {
 			// If the user is logged in to WordPress, store their user id with their design.
 			$wp_user = wp_get_current_user();
             $wp_user_id = $wp_user->ID ;
-            
+             
 			if ( 0 !== $wp_user_id ) {
-				$user = get_userdata( $wp_user_id );
+				$user = get_user_by( 'ID', $wp_user_id ) ;
 				$this->design->set_user_id( $wp_user_id );
 				$this->design->set_email( $user->user_email );
-			} elseif ( null !== $mystyle_user ) {
-				// If the user isn't logged in, see if their email matches an existing user and store that id with the design.;
-				$user = get_user_by( 'ID', $mystyle_user->get_id() );
+			} elseif ( null !== $mystyle_user->get_email() ) {
+				// If the user isn't logged in, see if their email matches an existing user and store that id with the design.
+				$user = get_user_by( 'email', $mystyle_user->get_email() );
 				if ( false !== $user ) {
 					$this->design->set_user_id( $user->ID ) ;
                     $this->design->set_email( $user->user_email ) ;
@@ -159,7 +161,6 @@ class MyStyle_Handoff {
                     $this->design->set_email( $user->user_email ) ;
 				}
             }
-            
             
 			// Persist the design to the database.
 			$this->design = MyStyle_DesignManager::persist( $this->design );
