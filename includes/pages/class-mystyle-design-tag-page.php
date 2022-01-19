@@ -85,6 +85,23 @@ class MyStyle_Design_Tag_Page {
 
 		return $exists;
 	}
+    
+    /**
+	 * Function to determine if the post exists.
+	 *
+	 * @return boolean Returns true if the page exists, otherwise false.
+	 */
+	public static function seo_index_exists() {
+		$exists = false;
+
+		// Get the page id of the Design Profile page.
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		if ( isset( $options[ MYSTYLE_DESIGN_TAG_INDEX_SEO_PAGEID_NAME ] ) ) {
+			$exists = true;
+		}
+
+		return $exists;
+	}
 
 	/**
 	 * Function to create the page.
@@ -140,6 +157,38 @@ class MyStyle_Design_Tag_Page {
         // Store the design tag page's id in the database.
 		$options                                   = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		$options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ] = $post_id;
+		$updated                                   = update_option( MYSTYLE_OPTIONS_NAME, $options );
+
+		if ( ! $updated ) {
+			wp_delete_post( $post_id );
+			throw new MyStyle_Exception( __( 'Could not store index page id.', 'mystyle' ), 500 );
+		}
+        
+		return $post_id;
+	}
+    
+    /**
+	 * Function to create the SEO index page.
+	 *
+	 * @return number Returns the page id of the Design Tag page.
+	 * @throws \MyStyle_Exception Throws a MyStyle_Exception if unable to store
+	 * the id of the created page in the db.
+	 */
+	public static function create_seo_index() {
+		// Create the Design Profile page.
+		$design_tag_page = array(
+			'post_title'   => 'Design Tags SEO Index',
+			'post_name'    => 'design-tags-index',
+			'post_content' => '[mystyle_design_tags per_tag="5" tags_per_page="1000" show_designs="false"]',
+			'post_status'  => 'publish',
+			'post_type'    => 'page',
+		);
+		$post_id         = wp_insert_post( $design_tag_page );
+		update_post_meta( $post_id, '_thumbnail_id', 1 );
+        
+        // Store the design tag page's id in the database.
+		$options                                   = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		$options[ MYSTYLE_DESIGN_TAG_INDEX_SEO_PAGEID_NAME ] = $post_id;
 		$updated                                   = update_option( MYSTYLE_OPTIONS_NAME, $options );
 
 		if ( ! $updated ) {

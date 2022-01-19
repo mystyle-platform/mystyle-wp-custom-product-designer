@@ -23,6 +23,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
 		$session = MyStyle()->get_session();
         
         $show_designs = true ;
+        $sort_by = "qty" ;
         
         if(isset($atts['show_designs']) && $atts['show_designs'] == 'false') {
             $show_designs = false ;    

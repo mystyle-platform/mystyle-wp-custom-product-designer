@@ -93,7 +93,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' );
 			}
 			if ( ! defined( 'MYSTYLE_VERSION' ) ) {
-				define( 'MYSTYLE_VERSION', '3.19.0' );
+				define( 'MYSTYLE_VERSION', '3.19.1' );
 			}
 			if ( ! defined( 'MYSTYLE_TEMPLATE_DEBUG_MODE' ) ) {
 				define( 'MYSTYLE_TEMPLATE_DEBUG_MODE', false );
@@ -106,6 +106,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' );
 			define( 'MYSTYLE_DESIGN_TAG_PAGEID_NAME', 'mystyle_design_tag_page_id' );
 			define( 'MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME', 'mystyle_design_tag_index_page_id' );
+			define( 'MYSTYLE_DESIGN_TAG_INDEX_SEO_PAGEID_NAME', 'mystyle_design_tag_index_seo_page_id' );
 			define( 'MYSTYLE_DESIGN_COLLECTION_INDEX_PAGEID_NAME', 'mystyle_design_collection_index_page_id' );
 			define( 'MYSTYLE_TAXONOMY_NAME', 'design_tag' );
 			define( 'MYSTYLE_COLLECTION_NAME', 'design_collection' );

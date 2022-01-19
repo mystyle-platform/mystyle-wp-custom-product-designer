@@ -164,6 +164,13 @@ class MyStyle_Install {
 				MyStyle_Design_Tag_Page::fix_index();
 			}
 		}
+        
+        //Create Design Tag SEO Index page
+        if ( version_compare( $old_version, '3.19.1', '<' ) ) {
+			if ( ! MyStyle_Design_Tag_Page::seo_index_exists() ) {
+				MyStyle_Design_Tag_Page::create_seo_index();
+			}
+		}
 
 		$upgrade_notice = MyStyle_Notice::create(
 			'notify_upgrade',
