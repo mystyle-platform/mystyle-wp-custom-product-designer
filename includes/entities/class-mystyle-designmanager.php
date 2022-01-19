@@ -114,9 +114,12 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
                             //throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
 						}
 						if ( $design->get_user_id() !== $user->ID ) {
-							if ( ! $user->has_cap( 'read_private_posts' ) ) {
-                                return false ;
-                                //throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+							if ( ! $user->has_cap( 'read_private_posts' ) ) {//not admin
+                                if( ! $user->has_cap( 'print_url_write' ) ) {//not Mystyle CS
+                                    return false ;
+                                    //throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+                                }
+                                
 							}
 						}
 					}
@@ -455,7 +458,12 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		$sql = '';
 
 		if ( is_string( $user ) ) {
-			$sql .= ' WHERE (ms_email = "' . $user . '") AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC;
+            if( current_user_can('edit_posts') || current_user_can('print_url_write') ) {
+                $sql .= ' WHERE (ms_email = "' . $user . '")' ;
+            }
+			else {
+                $sql .= ' WHERE (ms_email = "' . $user . '") AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC;
+            }
 		} else {
 			$current_user_id = get_current_user_id();
 			if ( $current_user_id === $user->ID ) {
