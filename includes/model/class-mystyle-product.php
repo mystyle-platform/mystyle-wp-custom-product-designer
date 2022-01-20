@@ -38,7 +38,19 @@ class MyStyle_Product {
 	 *
 	 * @param \WC_Product $product The WC_Product that we are wrapping.
 	 */
-	public function __construct( \WC_Product $product ) {
+	public function __construct( $product ) {
+        $test_product = $product instanceof \WC_Product ; //product might have been deleted
+        
+        if( ! $test_product ) { //create dummy product if it does not exist
+            $wc_product = new WC_Product() ;
+            $wc_product->set_stock_quantity(0) ;
+            $wc_product->set_stock_status('outofstock') ;
+            $wc_product->set_name('Custom Product Design') ;
+            $wc_product->set_description('Reload and customize this design with any product in the list.') ;
+            
+            $product = $wc_product ;
+        }
+        
 		$this->product = $product;
 	}
 

@@ -21,9 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			/* @var $design \MyStyle_Design The current MyStyle_Design. */
 			foreach ( $pager->get_items() as $design ) {
 				$design_url = MyStyle_Design_Profile_page::get_design_url( $design );
-				$product_id = $design->get_product_id();
-				if ( 0 !== $product_id ) {
-					$product       = $design->get_product();
+				$product    = $design->get_product();
+				if ( $product ) {
 					$product_title = $product->get_title();
 				} else {
 					$product       = '';

@@ -787,7 +787,7 @@ class MyStyle_Design_Profile_Page {
 			) {
 				$design = $this->get_design();
 				if ( null !== $design ) {
-                    $product = wc_get_product( $design->get_product_id() ) ;
+                    $product = $design->get_product() ;
 					if ( '' !== $design->get_title() ) {
 						$title = $design->get_title() . ' <span> ' . $product->get_title() . '</span>' ;
 					} else {
@@ -851,8 +851,7 @@ class MyStyle_Design_Profile_Page {
                 
                 $design = self::get_design() ;
                 if( ! is_null($design) ) {
-                    $product = wc_get_product( $design->get_product_id() ) ;
-            
+                    $product = $design->get_product() ;
                     if ( !$product->is_in_stock() ) {
                         $classes[] = 'mystyle-design-product-sold-out' ;    
                     }

@@ -994,10 +994,10 @@ class MyStyle_Design implements MyStyle_Entity {
 	 */
 	public function get_product() {
 		$wc_product = wc_get_product( $this->product_id );
+		
+        $product = new \MyStyle_Product( $wc_product );
 
-		$product = new \MyStyle_Product( $wc_product );
-
-		return $product;
+		return $product->get_product() ;
 	}
 
 	/**
