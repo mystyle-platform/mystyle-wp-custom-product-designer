@@ -154,8 +154,9 @@ class MyStyle_Handoff {
                     $this->design->set_email( $user->user_email ) ;
 				}
 			}
-            elseif ( isset( $passthru['user']['user_id'] ) ) {
-                $user = get_user_by( 'ID', $passthru['user']['user_id'] ) ;
+            elseif ( isset( $passthru['user']['token'] ) ) {
+                $token_user_id = MyStyle_Util::encrypt_decrypt( 'decrypt', $passthru['user']['token'] ) ;
+                $user = get_user_by( 'ID', $token_user_id ) ;
                 if ( false !== $user ) {
 					$this->design->set_user_id( $user->ID ) ;
                     $this->design->set_email( $user->user_email ) ;

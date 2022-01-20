@@ -848,6 +848,16 @@ class MyStyle_Design_Profile_Page {
 					&& ( self::get_id() === $post->ID )
 			) {
 				$classes[] = 'mystyle-design-profile';
+                
+                $design = self::get_design() ;
+                if( ! is_null($design) ) {
+                    $product = wc_get_product( $design->get_product_id() ) ;
+            
+                    if ( !$product->is_in_stock() ) {
+                        $classes[] = 'mystyle-design-product-sold-out' ;    
+                    }
+                }
+                
 			}
 		} catch ( MyStyle_Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// This exception may be thrown if the Customize Page or Design

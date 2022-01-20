@@ -29,16 +29,27 @@ abstract class MyStyle_Design_Collection_Shortcode {
 
 		$session = MyStyle()->get_session();
         
-        $show_designs = true ;
+        $show_designs           = true ;
+        $collections_per_page   = 24 ;
+        $per_collection         = 4 ;
+        $sort_by                = "qty" ;
         
         if(isset($atts['show_designs']) && $atts['show_designs'] == 'false') {
             $show_designs = false ;    
         }
         
-		$pager  = 0;
-		$limit  = 4 ;
-		$term_limit  = 24 ;
-		$offset = 0;
+        if(isset($atts['per_collection'])) {
+            $per_collection = $atts['per_collection'] ;    
+        }
+        
+        if(isset($atts['collections_per_page'])) {
+            $collections_per_page = $atts['collections_per_page'] ;    
+        }
+        
+		$pager        = 0 ;
+		$limit        = $per_collection ;
+		$term_limit   = $collections_per_page ;
+		$offset       = 0;
 
 		
 		// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
@@ -109,8 +120,8 @@ abstract class MyStyle_Design_Collection_Shortcode {
             }
         }
         
-		$next        = $pager_array['next'];
-		$prev        = $pager_array['prev'];
+		$next        =  ( isset( $pager_array['next'] ) ? $pager_array['next'] : null ) ;
+		$prev        = ( isset( $pager_array['prev'] ) ? $pager_array['prev'] : null );
 
 		ob_start();
 		require MYSTYLE_TEMPLATES . 'design-collection-index.php';

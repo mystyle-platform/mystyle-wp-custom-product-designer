@@ -52,5 +52,36 @@ class MyStyle_Util {
 
 		return $ret;
 	}
+    
+    /**
+	 * Helper method that encrypts or decrypts the passed string. This is used
+	 * for hashing the user email for the URL.
+	 *
+	 * @param string $action The action to perform. Valid values are "encrypt"
+	 * and "decrypt".
+	 * @param string $string The string to encrypt or decrypt.
+	 */
+	public static function encrypt_decrypt( $action, $string ) {
+		$output = false;
+
+		$encrypt_method = 'AES-256-CBC';
+		$secret_key     = wp_salt( 'auth' );
+		$secret_iv      = wp_salt( 'secure_auth' );
+
+		// hash.
+		$key = hash( 'sha256', $secret_key );
+
+		// iv - encrypt method AES-256-CBC expects 16 bytes.
+		$iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
+
+		if ( 'encrypt' === $action ) {
+			$output = openssl_encrypt( $string, $encrypt_method, $key, 0, $iv );
+			$output = base64_encode( $output );
+		} elseif ( 'decrypt' === $action ) {
+			$output = openssl_decrypt( base64_decode( $string ), $encrypt_method, $key, 0, $iv );
+		}
+
+		return $output;
+	}
 
 }
