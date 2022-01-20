@@ -1,3 +1,6 @@
+= 3.19.1 =
+* Added Design Collections Shortcode Attributes. Security Updates. CSS classes added. Bug Fixes.
+
 = 3.19.0 =
 * Bug fixes
 
