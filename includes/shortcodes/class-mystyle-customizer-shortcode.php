@@ -98,7 +98,7 @@ abstract class MyStyle_Customizer_Shortcode {
 			$passthru_arr['post']                = array();
 			$passthru_arr['post']['quantity']    = 1;
 			$passthru_arr['post']['add-to-cart'] = (int) $product_id;
-            $passthru_arr['user']['token']     = MyStyle_Util::encrypt_decrypt( 'encrypt', get_current_user_id() ) ;
+            $passthru_arr['user']['token']       = MyStyle_Util::encrypt_decrypt( 'encrypt', get_current_user_id() ) ;
 			$passthru                            = base64_encode( wp_json_encode( $passthru_arr ) );
 		}
 
