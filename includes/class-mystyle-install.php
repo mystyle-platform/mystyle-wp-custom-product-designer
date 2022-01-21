@@ -171,6 +171,14 @@ class MyStyle_Install {
 				MyStyle_Design_Tag_Page::create_seo_index();
 			}
 		}
+        
+        // Fix the Design tag index page if upgrading from less than 3.18.6 (versions
+		// that were before this page existed).
+		if ( version_compare( $old_version, '3.19.2', '<' ) ) {
+			if ( MyStyle_Design_Tag_Page::seo_index_exists() ) {
+				MyStyle_Design_Tag_Page::fix_seo_index();
+			}
+		}
 
 		$upgrade_notice = MyStyle_Notice::create(
 			'notify_upgrade',
