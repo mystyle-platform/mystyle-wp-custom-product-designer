@@ -190,9 +190,26 @@ class MyStyle_Design_Collection_Page {
 			)
         {
             if ( isset( $wp_query->query['collection_term'] ) ) {
-                $term = get_term_by( 'slug', $wp_query->query['collection_term'], MYSTYLE_COLLECTION_NAME) ;
+                
+                $term_slug = $wp_query->query['collection_term'] ;
+                
+                if( preg_match( '/\//', $term_slug) ) {
+                    $url_array  = explode('/', $term_slug ) ;
+                    if($url_array[0] == 'page' ) {
+                        $term_slug = false ;
+                    }
+                    else {
+                        $term_slug = $url_array[0] ;
+                    }
 
-                $title = $term->name . ' - Design Collection' ;
+                }
+                
+                if( $term_slug ) {
+                    $term = get_term_by( 'slug', $term_slug, MYSTYLE_COLLECTION_NAME) ;
+
+                    $title = ucfirst( $term->name ) . ' - Design Collection' ;
+                }
+                
             }
         }
         

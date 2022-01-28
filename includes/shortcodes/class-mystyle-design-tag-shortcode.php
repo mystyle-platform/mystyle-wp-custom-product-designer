@@ -40,9 +40,9 @@ abstract class MyStyle_Design_Tag_Shortcode {
         if( isset( $_GET['sort_by'] ) ) {
             $sort_by = sanitize_text_field( $_GET['sort_by'] ) ;
         }
-
+        
 		$pager  = 0;
-		$limit  = ( $show_designs ? $tags_per_page : 1000 ) ;
+		$limit  = ( $show_designs ? $tags_per_page : 3 ) ;
 		$offset = 0;
 
 		// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
@@ -50,6 +50,10 @@ abstract class MyStyle_Design_Tag_Shortcode {
 			$pager  = intval( $_GET['pager'] );
 			$offset = ( $pager * $limit );
 		}
+        elseif(get_query_var('paged')) {
+            $pager = ( get_query_var('paged') - 1 ) ;
+			$offset = ( $pager * $limit );
+        }
 		// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
         
         
@@ -71,8 +75,19 @@ abstract class MyStyle_Design_Tag_Shortcode {
 				'offset'     => $offset,
 			)
 		);
+        
+        $total_terms = get_terms(
+			array(
+				'taxonomy'   => MYSTYLE_TAXONOMY_NAME,
+				'hide_empty' => false,
+                'orderby'    => $sort_by_slug,
+                'order'      => $sort_by_order,
+                'fields'     => 'tt_ids'
+			)
+		);
 
 		$terms_count = count( $terms );
+        $total_terms_count = count( $total_terms ) ;
         
         if( $show_designs ){
             
@@ -94,9 +109,38 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 }
             }
             
+            for ( $i = 0; $i < $total_terms_count; $i++ ) {
+                $designs = MyStyle_DesignManager::get_designs_by_term_id(
+                    $total_terms[ $i ],
+                    $wp_user,
+                    $session,
+                    $per_tag,
+                    1
+                );
+                
+                $design_count = count( $designs ) ;
+                
+                if ( 0 === $design_count ) {
+                    unset( $total_terms[ $i ] );
+                }
+            }
+            
+            $total_terms_count = count( $total_terms ) ;
+            
         }
 		
+        $mystyle_pager = new MyStyle_Pager();
         
+        $mystyle_pager->set_items_per_page( ( is_null( $tags_per_page ) ? 1000 : $tags_per_page ) ) ;
+        
+        $mystyle_pager->set_current_page_number( ( $pager + 1 ) );
+        
+        //$mystyle_pager->set_items( $terms );
+
+		// Total items.
+		$mystyle_pager->set_total_item_count(
+			$total_terms_count
+		);
 
 		$pager_array = self::pager( $pager, $limit, $terms_count );
 		$next        = $pager_array['next'];

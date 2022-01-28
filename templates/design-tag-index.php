@@ -46,13 +46,22 @@ if ( ! defined( 'ABSPATH' ) ) {
     <a href="<?php echo esc_url( get_term_link( $term ) ); ?>" title="<?php echo esc_attr( $term->name ); ?> Gallery"><?php echo esc_html( $term->name ); ?></a>
     <?php endif ; ?>&nbsp;
 	<?php endforeach; ?>
-	<div class="pager">
-        <?php $sort_by_query = ( isset($sort_by) ? '&sort_by=' . $sort_by : '' ) ; ?>
-		<?php if ( ! is_null( $prev ) ) : ?> 
-		<a href="<?php echo esc_url( '?pager=' . $prev . $sort_by_query ); ?>" title="Previous page">Previous</a>
-		<?php endif; ?>
-		<?php if ( ! is_null( $next ) ) : ?>
-		<a href="<?php echo esc_url( '?pager=' . $next . $sort_by_query ); ?>" title="Next page">Next</a>
-		<?php endif; ?>
-	</div>
+    <nav class="woocommerce-pagination">
+        <?php
+        echo paginate_links( // WPCS: XSS ok.
+            array(
+                'base'      => esc_url_raw( str_replace( 999999999, '%#%', get_pagenum_link( 999999999, false ) ) ),
+                'format'    => '',
+                'add_args'  => false,
+                'current'   => $mystyle_pager->get_current_page_number(),
+                'total'     => $mystyle_pager->get_page_count(),
+                'prev_text' => '&larr;',
+                'next_text' => '&rarr;',
+                'type'      => 'list',
+                'end_size'  => 3,
+                'mid_size'  => 3,
+            )
+        );
+        ?>
+    </nav>
 </div>

@@ -14,12 +14,11 @@
         <?php foreach($terms as $term) : ?>
             
         <div class="collection-row">
-            <?php //if( count($terms) > 1 ) : ?>
             <h3>
                 <a href="/design-collections/<?php print $term->slug ; ?>" title="<?php print $term->name ; ?>"><?php print $term->name ; ?></a>
             </h3>
-            <?php //endif ; ?>
             <?php $count = count($term->designs) ; ?>
+            <?php if( $count > 0 ) : ?>
             <?php foreach($term->designs as $design) : ?>
             <?php
 			$design_url = MyStyle_Design_Profile_page::get_design_url( $design );
@@ -39,6 +38,9 @@
                 
             </div>
             <?php endforeach ; ?>
+            <?php else : ?>
+            <div>All designs in this collection are private</div>
+            <?php endif ; ?>
             <?php if( count($terms) > 1 && $count > $limit ) : ?>
             <div class="design-tile view-more">
                 <a href="/design-collections/<?php print $term->slug ; ?>" title="<?php print $term->name ; ?>">View More</a>
@@ -46,14 +48,24 @@
             <?php endif ; ?>
         </div>
         <?php endforeach ; ?>
-        <div class="pager">
-            <?php if ( ! is_null( $prev ) ) : ?>
-            <a href="<?php echo esc_url( '?pager=' . $prev ); ?>" title="Previous page">Previous</a>
-            <?php endif; ?>
-            <?php if ( ! is_null( $next ) ) : ?>
-            <a href="<?php echo esc_url( '?pager=' . $next ); ?>" title="Next page">Next</a>
-            <?php endif; ?>
-        </div>
+        <nav class="woocommerce-pagination">
+            <?php
+            echo paginate_links( // WPCS: XSS ok.
+                array(
+                    'base'      => esc_url_raw( str_replace( 999999999, '%#%', get_pagenum_link( 999999999, false ) ) ),
+                    'format'    => '',
+                    'add_args'  => false,
+                    'current'   => $mystyle_pager->get_current_page_number(),
+                    'total'     => $mystyle_pager->get_page_count(),
+                    'prev_text' => '&larr;',
+                    'next_text' => '&rarr;',
+                    'type'      => 'list',
+                    'end_size'  => 3,
+                    'mid_size'  => 3,
+                )
+            );
+            ?>
+        </nav>
     </div>
     
     
