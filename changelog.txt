@@ -1,3 +1,6 @@
+= 3.19.3 =
+* Added standard WordPress pagination to Design Tags and Design Collections index pages
+
 = 3.19.2 =
 * Fixed issue with removing products from existing designs. Changed Design Tag Index page title.
 
