@@ -793,6 +793,13 @@ class MyStyle_Design_Profile_Page {
 					} else {
 						$title = 'Design ' . $design->get_design_id() . '<span> ' . $product->get_title() . '</span>' ;
 					}
+                    
+                    $designer = get_user_by( 'ID', $design->get_user_id() ) ;
+                    
+                    if( $designer ) {
+                        $title .= ' by ' . esc_html( $designer->user_nicename ) ;
+                    }
+                    
 				}
 			}
 		} catch ( MyStyle_Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
