@@ -120,6 +120,8 @@ abstract class MyStyle_Design_Collection_Shortcode {
                     $offset = ( $pager * $term_limit );
                 }
                 
+                $limit = 50 ; //increase number of collections on term pages
+                
                 $total_design_count = MyStyle_DesignManager::get_total_term_design_count( $terms[0]->term_taxonomy_id, $wp_user, $session ) ;
                 
                 $mystyle_pager->set_items_per_page( $limit ) ;
