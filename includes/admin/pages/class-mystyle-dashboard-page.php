@@ -99,7 +99,15 @@ class MyStyle_Dashboard_Page {
 					<li>
 						<div class="design-count">
 							<h3>Total Number of Designs</h3>
-							<p><?php echo esc_html( $design_count ); ?></p>
+							<p>
+                                <?php if( is_plugin_active( 'mystyle-wp-design-manager/mystyle-design-manager.php' ) ) : ?>
+                                <a href="<?php echo admin_url( 'admin.php?page=mystyle_designs' ); ?>" title="View Design Manager">
+                                <?php echo esc_html( $design_count ); ?>
+                                </a>
+                                <?php else : ?>
+                                <?php echo esc_html( $design_count ); ?>
+                                <?php endif ; ?>
+                            </p>
 						</div>
 					</li>
 					<li>
@@ -121,13 +129,21 @@ class MyStyle_Dashboard_Page {
 					<li>
 						<div class="design-count">
 							<h3>Total Design Tags</h3>
-							<p><?php echo esc_html( $design_tag_count ); ?></p>
+							<p>
+                                <a href="<?php echo admin_url( 'edit-tags.php?taxonomy=design_tag' ); ?>" title="View Design Manager">
+                                    <?php echo esc_html( $design_tag_count ); ?>
+                                </a>
+                            </p>
 						</div>
 					</li>
 					<li>
 						<div class="design-products">
 							<h3>Total Design Collections</h3>
-							<p><?php echo esc_html( $design_collection_count ); ?></p>
+							<p>
+                                <a href="<?php echo admin_url( 'edit-tags.php?taxonomy=design_collection' ); ?>" title="View Design Manager">
+                                    <?php echo esc_html( $design_collection_count ); ?>
+                                </a>
+                            </p>
 						</div>
 					</li>
                     <li>
