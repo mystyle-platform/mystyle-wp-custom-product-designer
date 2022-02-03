@@ -25,7 +25,9 @@ class MyStyle_Design_Tag_Taxonomy {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'init', array( &$this, 'register' ), 10, 0 );
+		add_action( 'init', array( &$this, 'register' ), 10, 0 ) ;
+        
+        add_filter( 'widget_tag_cloud_args', array( &$this, 'design_tag_cloud_widget' ) ) ;
 	}
 
 	/**
@@ -108,6 +110,29 @@ class MyStyle_Design_Tag_Taxonomy {
 
 		return $results;
 	}
+    
+    /**
+     * Register custom tag cloud widget
+     */
+    public static function design_tag_cloud_widget() {
+        $args = array(
+            'smallest' => 8, 
+            'largest' => 22, 
+            'unit' => 'pt', 
+            'number' => 100,
+            'format' => 'flat', 
+            'separator' => "\n", 
+            'orderby' => 'name', 
+            'order' => 'ASC',
+            'exclude' => '', 
+            'include' => '', 
+            'link' => 'view', 
+            'taxonomy' => MYSTYLE_TAXONOMY_NAME, 
+            'post_type' => '', 
+            'echo' => true
+        );
+        return $args;
+    }
 
 	/**
 	 * Resets the singleton instance. This is used during testing if we want to
