@@ -579,3 +579,20 @@ body.archive.tax-design_tag article {
 .mystyle-sort {
     float: right ;
 }
+
+/* pagination */
+ul.page-numbers li {
+    display: inline-block;
+}
+
+#mystyle-design-collection-index-wrapper a.page-numbers {
+    padding: 2px 10px;
+    line-height: 1em;
+    border-radius: 5px;
+    background: #eee;
+}
+
+#mystyle-design-collection-index-wrapper a.page-numbers:hover {
+	background-color: #2266AA;
+	color: white;
+}
