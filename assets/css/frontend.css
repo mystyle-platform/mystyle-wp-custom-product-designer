@@ -580,19 +580,52 @@ body.archive.tax-design_tag article {
     float: right ;
 }
 
-/* pagination */
-ul.page-numbers li {
-    display: inline-block;
+
+/* pagination - this was added to plugin, waiting for deployment */
+
+ul.page-numbers, 
+#mystyle-design-tag-index-wrapper ul.page-numbers,
+#mystyle-design-tag-index-wrapper ul.page-numbers li {
+	border-color: white;
 }
 
-#mystyle-design-collection-index-wrapper a.page-numbers {
+ul.page-numbers li,
+#mystyle-design-tag-index-wrapper ul.page-numbers li, 
+#mystyle-design-tag-index-wrapper ul.page-numbers li {
+    display: inline-block;
+	min-width: 32px;
+	font-size: 12px;
+	padding: 0px;
+}
+
+#mystyle-design-collection-index-wrapper a.page-numbers, 
+#mystyle-design-tag-index-wrapper ul.page-numbers li a,
+#mystyle-design-tag-index-wrapper ul.page-numbers li > span.current {
     padding: 2px 10px;
     line-height: 1em;
     border-radius: 5px;
     background: #eee;
+    max-width: 32px;
+    font-size: 12px;
+    padding: 10px 8px;
+    text-align: center;
+	min-height: 32px;
+	margin: 0;
 }
 
-#mystyle-design-collection-index-wrapper a.page-numbers:hover {
+#mystyle-design-tag-index-wrapper ul.page-numbers li > span.current {
+	background: #FAfAFA;
+	font-weight: bold;
+}
+
+#mystyle-design-collection-index-wrapper a.page-numbers:hover,
+#mystyle-design-tag-index-wrapper ul.page-numbers li a:hover {
 	background-color: #2266AA;
 	color: white;
+	transition-duration: .1s;
+}
+
+.page-numbers span.page-numbers.dots {
+    color: #aaa;
+    font-size: 12px;
 }
