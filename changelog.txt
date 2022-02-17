@@ -1,3 +1,6 @@
+= 3.19.4 =
+* Admin dashboard links. Changed default tags and collections per page values. Added CSS for pagination. Added product to design profile page titles.
+
 = 3.19.3 =
 * Added standard WordPress pagination to Design Tags and Design Collections index pages
 
