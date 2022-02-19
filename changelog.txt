@@ -1,3 +1,6 @@
+= 3.19.5 =
+* Fixed bug with legacy widget editor, affecting tag clouds.
+
 = 3.19.4 =
 * Admin dashboard links. Changed default tags and collections per page values. Added CSS for pagination. Added product to design profile page titles.
 
