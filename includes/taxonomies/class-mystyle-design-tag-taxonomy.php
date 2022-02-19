@@ -27,7 +27,7 @@ class MyStyle_Design_Tag_Taxonomy {
 	public function __construct() {
 		add_action( 'init', array( &$this, 'register' ), 10, 0 ) ;
         
-        add_filter( 'widget_tag_cloud_args', array( &$this, 'design_tag_cloud_widget' ) ) ;
+        add_filter( 'widget_tag_cloud_args', array( &$this, 'design_tag_cloud_widget' ), 10, 2 ) ;
 	}
 
 	/**
@@ -114,23 +114,27 @@ class MyStyle_Design_Tag_Taxonomy {
     /**
      * Register custom tag cloud widget
      */
-    public static function design_tag_cloud_widget() {
-        $args = array(
-            'smallest' => 8, 
-            'largest' => 22, 
-            'unit' => 'pt', 
-            'number' => 100,
-            'format' => 'flat', 
-            'separator' => "\n", 
-            'orderby' => 'name', 
-            'order' => 'ASC',
-            'exclude' => '', 
-            'include' => '', 
-            'link' => 'view', 
-            'taxonomy' => MYSTYLE_TAXONOMY_NAME, 
-            'post_type' => '', 
-            'echo' => true
-        );
+    public static function design_tag_cloud_widget( $args, $instance) {
+        
+        if( $instance['taxonomy'] == MYSTYLE_TAXONOMY_NAME ) {
+            $args = array(
+                'smallest' => 8, 
+                'largest' => 22, 
+                'unit' => 'pt', 
+                'number' => 100,
+                'format' => 'flat', 
+                'separator' => "\n", 
+                'orderby' => 'name', 
+                'order' => 'ASC',
+                'exclude' => '', 
+                'include' => '', 
+                'link' => 'view', 
+                'taxonomy' => MYSTYLE_TAXONOMY_NAME, 
+                'post_type' => '', 
+                'echo' => true
+            );
+        }
+        
         return $args;
     }
 
