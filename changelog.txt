@@ -1,3 +1,6 @@
+= 3.19.6 =
+* Fixed Design Tag Index shortcode
+
 = 3.19.5 =
 * Fixed bug with legacy widget editor, affecting tag clouds.
 
