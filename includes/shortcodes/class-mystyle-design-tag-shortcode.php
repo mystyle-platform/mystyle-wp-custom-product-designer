@@ -24,6 +24,8 @@ abstract class MyStyle_Design_Tag_Shortcode {
         
         $show_designs = true ;
         $sort_by = "qty" ;
+        $tags_per_page = 25 ;
+        $per_tag = 3 ;
         
         if(isset($atts['show_designs']) && $atts['show_designs'] == 'false') {
             $show_designs = false ;    
@@ -42,7 +44,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
         }
         
 		$pager  = 0;
-		$limit  = ( $show_designs ? $tags_per_page : 3 ) ;
+		$limit  = $tags_per_page ;
 		$offset = 0;
 
 		// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
