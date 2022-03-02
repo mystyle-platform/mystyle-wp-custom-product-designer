@@ -74,6 +74,8 @@ class MyStyle_WooCommerce_Admin_Product {
 		$customizer_redirect                        = get_post_meta( $post->ID, '_mystyle_customizer_redirect', true );
 		$mystyle_design_id                          = get_post_meta( $post->ID, '_mystyle_design_id', true );
 		$mystyle_print_type                         = get_post_meta( $post->ID, '_mystyle_print_type', true );
+		$mystyle_3d_view_enabled                    = get_post_meta( $post->ID, '_mystyle_3d_view_enabled', true );
+		$mystyle_3d_depth                           = get_post_meta( $post->ID, '_mystyle_3d_depth', true );
 		$mystyle_configur8_enabled                  = get_post_meta( $post->ID, '_mystyle_configur8_enabled', true );
 
 		?>
@@ -276,6 +278,27 @@ class MyStyle_WooCommerce_Admin_Product {
 						)
 					);
 
+                    woocommerce_wp_checkbox(
+						array(
+							'id'          => '_mystyle_3d_view_enabled',
+							'label'       => __( 'Enable 3D View?', 'mystyle' ),
+							'desc_tip'    => 'true',
+							'description' => __( 'Enable this option to turn the 3D Viewer feature on for this product.', 'mystyle' ),
+							'value'       => $mystyle_3d_view_enabled,
+						)
+					);
+        
+                    woocommerce_wp_text_input(
+						array(
+							'id'          => '_mystyle_3d_depth',
+							'label'       => __( '3D View Depth (inches)', 'mystyle' ),
+							'placeholder' => 'Example "1"',
+							'desc_tip'    => 'true',
+							'description' => __( 'Enter the 3D Viewer depth (Z axis) in inches', 'mystyle' ),
+							'value'       => ( $mystyle_3d_depth ? $mystyle_3d_depth : 0.1 ),
+						)
+					);
+        
 					woocommerce_wp_checkbox(
 						array(
 							'id'          => '_mystyle_configur8_enabled',
@@ -285,6 +308,7 @@ class MyStyle_WooCommerce_Admin_Product {
 							'value'       => $mystyle_configur8_enabled,
 						)
 					);
+        
 					?>
 
 				</div> <!-- end advanced mystyle section -->
@@ -318,6 +342,11 @@ class MyStyle_WooCommerce_Admin_Product {
 		$customizer_ux                              = ( isset( $_POST['_mystyle_customizer_ux'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_customizer_ux'] ) ) : null;
 		$customizer_redirect                        = ( isset( $_POST['_mystyle_customizer_redirect'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_customizer_redirect'] ) ) : null;
 		$mystyle_print_type                         = ( isset( $_POST['_mystyle_print_type'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_print_type'] ) ) : null;
+        
+		$mystyle_3d_view_enabled                    = ( isset( $_POST['_mystyle_3d_view_enabled'] ) && boolval( $_POST['_mystyle_3d_view_enabled'] ) ) ? 'yes' : 'no';
+        
+        $mystyle_3d_depth                           = ( isset( $_POST['_mystyle_3d_depth'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_3d_depth'] ) ) : null;
+        
 		$mystyle_configur8_enabled                  = ( isset( $_POST['_mystyle_configur8_enabled'] ) && boolval( $_POST['_mystyle_configur8_enabled'] ) ) ? 'yes' : 'no';
 		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 
@@ -399,7 +428,9 @@ class MyStyle_WooCommerce_Admin_Product {
 			update_post_meta( $post_id, '_mystyle_customizer_redirect', $customizer_redirect );
 			update_post_meta( $post_id, '_mystyle_print_type', $mystyle_print_type );
 		}
-		// Store the Enable Configur8 setting regardless of other settings.
+		// Store the Enable 3D View and Configur8 settings regardless of other settings.
+		update_post_meta( $post_id, '_mystyle_3d_view_enabled', $mystyle_3d_view_enabled );
+		update_post_meta( $post_id, '_mystyle_3d_depth', $mystyle_3d_depth );
 		update_post_meta( $post_id, '_mystyle_configur8_enabled', $mystyle_configur8_enabled );
 	}
 

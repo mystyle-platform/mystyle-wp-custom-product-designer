@@ -845,9 +845,13 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		$taxonomy = MYSTYLE_TAXONOMY_NAME;
 
 		// ---- Security Check ---- //
+		// ---- Security Check ---- //
 		if (
-				( ! self::is_user_design_owner( $user->ID, $design_id ) )
-				&& ( ! $user->has_cap( 'administrator' ) )
+			( ! self::is_user_design_owner( $user->ID, $design_id ) ) //design owner
+			&& ( ! $user->has_cap( 'edit_posts' ) ) //site editor
+			&& ( ! $user->has_cap( 'manage_woocommerce' ) ) //store manager
+			&& ( ! $user->has_cap( 'print_url_write' ) ) //mystyle cs user
+			&& ( ! $user->has_cap( 'administrator' ) ) //administrator
 		) {
 			throw new MyStyle_Unauthorized_Exception(
 				'Only the design owner or an administrator can add tags to a design.'
@@ -881,11 +885,14 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		// ---- Security Check ---- //
 		if (
-				( ! self::is_user_design_owner( $user->ID, $design_id ) )
-				&& ( ! $user->has_cap( 'administrator' ) )
+			( ! self::is_user_design_owner( $user->ID, $design_id ) ) //design owner
+			&& ( ! $user->has_cap( 'edit_posts' ) ) //site editor
+			&& ( ! $user->has_cap( 'manage_woocommerce' ) ) //store manager
+			&& ( ! $user->has_cap( 'print_url_write' ) ) //mystyle cs user
+			&& ( ! $user->has_cap( 'administrator' ) ) //administrator
 		) {
 			throw new MyStyle_Unauthorized_Exception(
-				'Only the design owner or an administrator can add tags to a design.'
+				'Only the design owner or an administrator can remove tags to a design.'
 			);
 		}
 
@@ -917,12 +924,16 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		$taxonomy = MYSTYLE_TAXONOMY_NAME;
 
 		// ---- Security Check ---- //
+		// ---- Security Check ---- //
 		if (
-				( ! self::is_user_design_owner( $user->ID, $design_id ) )
-				&& ( ! $user->has_cap( 'administrator' ) )
+			( ! self::is_user_design_owner( $user->ID, $design_id ) ) //design owner
+			&& ( ! $user->has_cap( 'edit_posts' ) ) //site editor
+			&& ( ! $user->has_cap( 'manage_woocommerce' ) ) //store manager
+			&& ( ! $user->has_cap( 'print_url_write' ) ) //mystyle cs user
+			&& ( ! $user->has_cap( 'administrator' ) ) //administrator
 		) {
 			throw new MyStyle_Unauthorized_Exception(
-				'Only the design owner or an administrator can update a design\'s tags.'
+				'Only the design owner or an administrator can update tags of a design.'
 			);
 		}
 
@@ -1017,12 +1028,18 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		$taxonomy = MYSTYLE_COLLECTION_NAME;
 
 		// ---- Security Check ---- //
-		if ( ! $user->has_cap( 'administrator' ) ) {
+		if (
+			( ! self::is_user_design_owner( $user->ID, $design_id ) ) //design owner
+			&& ( ! $user->has_cap( 'edit_posts' ) ) //site editor
+			&& ( ! $user->has_cap( 'manage_woocommerce' ) ) //store manager
+			&& ( ! $user->has_cap( 'print_url_write' ) ) //mystyle cs user
+			&& ( ! $user->has_cap( 'administrator' ) ) //administrator
+		) {
 			throw new MyStyle_Unauthorized_Exception(
-				'Only the an administrator can add tags to a design.'
+				'Only the design owner or an administrator can add collections to a design.'
 			);
 		}
-
+		
 		// Add the tag.
 		$term_ids = wp_add_object_terms( $design_id, $collection, $taxonomy );
 		$term_id  = $term_ids[0];
@@ -1049,9 +1066,16 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		$taxonomy = MYSTYLE_COLLECTION_NAME;
 
 		// ---- Security Check ---- //
-		if ( ! $user->has_cap( 'administrator' ) ) {
+		// ---- Security Check ---- //
+		if (
+			( ! self::is_user_design_owner( $user->ID, $design_id ) ) //design owner
+			&& ( ! $user->has_cap( 'edit_posts' ) ) //site editor
+			&& ( ! $user->has_cap( 'manage_woocommerce' ) ) //store manager
+			&& ( ! $user->has_cap( 'print_url_write' ) ) //mystyle cs user
+			&& ( ! $user->has_cap( 'administrator' ) ) //administrator
+		) {
 			throw new MyStyle_Unauthorized_Exception(
-				'Only the administrator can add tags to a design.'
+				'Only the design owner or an administrator can remove collections from a design.'
 			);
 		}
 
@@ -1083,9 +1107,15 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		$taxonomy = MYSTYLE_COLLECTION_NAME;
 
 		// ---- Security Check ---- //
-		if ( ! $user->has_cap( 'administrator' ) ) {
+		if (
+			( ! self::is_user_design_owner( $user->ID, $design_id ) ) //design owner
+			&& ( ! $user->has_cap( 'edit_posts' ) ) //site editor
+			&& ( ! $user->has_cap( 'manage_woocommerce' ) ) //store manager
+			&& ( ! $user->has_cap( 'print_url_write' ) ) //mystyle cs user
+			&& ( ! $user->has_cap( 'administrator' ) ) //administrator
+		) {
 			throw new MyStyle_Unauthorized_Exception(
-				'Only the administrator can update a design\'s tags.'
+				'Only the design owner or an administrator can update collections of a design.'
 			);
 		}
 

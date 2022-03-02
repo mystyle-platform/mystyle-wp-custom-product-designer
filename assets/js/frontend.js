@@ -211,7 +211,7 @@
                         source: function( request, response ) {
                             $.get( mystyle_wp.ajaxurl, { // eslint-disable-line camelcase
                                 'action': 'mystyle_design_collection_search',
-                                'tax': 'design_tag',
+                                'tax': 'design_collection',
                                 'q': request.term
                             }, function( data ) {
                                 response( data.data );

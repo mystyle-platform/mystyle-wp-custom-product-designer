@@ -82,7 +82,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 				><?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_html( $author->user_nicename ) ); ?></a>
 		</div>
 		<?php endif; ?>
-		<?php if ( ( ( 0 !== $design->get_user_id() ) && ( get_current_user_id() === $design->get_user_id() ) ) || ( current_user_can( 'administrator' ) ) ) : ?>
+		<?php 
+		if ( 
+			( MyStyle_DesignManager::is_user_design_owner( $user_id, $design->get_design_id() ) ) //design owner
+			|| ( current_user_can( 'edit_posts' ) ) //site editor
+			|| ( current_user_can( 'manage_woocommerce' ) ) //store manager
+			|| ( current_user_can( 'print_url_write' ) ) //mystyle cs user
+			|| ( current_user_can( 'administrator' ) ) //administrator
+
+		) : ?>
 			<div class="design-manager-menu">
 				<br/>
 				<strong>Change the design access level</strong>
@@ -95,7 +103,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<input type="hidden" name="design_id" value="<?php echo esc_attr( $design->get_design_id() ); ?>" />
 				</form>
                 
-                <?php if(current_user_can( 'administrator' )) : ?>
                 <div class="design-tag-collection-toggle-menu">
                     <ul>
                         <li class="selected"><a href="#design-tags">Design Tags</a></li>
@@ -110,8 +117,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</form>
 					<div class="design-collection-status"></div>
 				</div>
-                <?php endif ; ?>
-				<div class="edit-design-tags<?php print ( current_user_can( 'administrator' ) ? ' collections-present' : '' ) ?>">
+				<div class="edit-design-tags collections-present">
 					<strong>Add or Edit Design Tags</strong>
 					<form method="post">
 						<input type="text" class="edit-design-tag-input" name="edit-design-tag" />

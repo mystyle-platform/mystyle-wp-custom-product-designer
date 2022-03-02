@@ -65,7 +65,7 @@ abstract class MyStyle_Design_Profile_Shortcode {
 
 		// ------------- Set the template variables -------------------//
 		$design = $design_profile_page->get_design();
-
+		$user_id = get_current_user_id() ;
 		$author = false;
 
 		if ( null !== $design->get_user_id() ) {

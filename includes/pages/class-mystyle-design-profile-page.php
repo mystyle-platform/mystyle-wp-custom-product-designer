@@ -911,8 +911,11 @@ class MyStyle_Design_Profile_Page {
 				// If current user is the Design owner or the site adminstrator,
 				// drop the JS for editing the design meta data.
 				if (
-						( get_current_user_id() === $design->get_user_id() )
-						|| ( current_user_can( 'administrator' ) )
+					( MyStyle_DesignManager::is_user_design_owner( $user_id, $design_id ) ) //design owner
+					|| ( $user->has_cap( 'edit_posts' ) ) //site editor
+					|| ( $user->has_cap( 'manage_woocommerce' ) ) //store manager
+					|| ( $user->has_cap( 'print_url_write' ) ) //mystyle cs user
+					|| ( $user->has_cap( 'administrator' ) ) //administrator
 				) {
 					?>
 				<script>
@@ -922,7 +925,13 @@ class MyStyle_Design_Profile_Page {
 					<?php
 				}
                 
-                if(current_user_can( 'administrator' )) {
+                if (
+					( MyStyle_DesignManager::is_user_design_owner( $user_id, $design_id ) ) //design owner
+					|| ( $user->has_cap( 'edit_posts' ) ) //site editor
+					|| ( $user->has_cap( 'manage_woocommerce' ) ) //store manager
+					|| ( $user->has_cap( 'print_url_write' ) ) //mystyle cs user
+					|| ( $user->has_cap( 'administrator' ) ) //administrator
+				) {
                     ?>
 				<script>
 					var designCollections = '<?php echo ( count( $collections ) > 0 ) ? implode( ',', $collections ) : ''; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>';

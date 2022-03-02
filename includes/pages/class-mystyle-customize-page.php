@@ -179,6 +179,14 @@ class MyStyle_Customize_Page {
 				if ( get_post_meta( $custom_product_id, '_mystyle_custom_template_boxshadow', true ) === 'yes' ) {
 					$passthru['boxshadow'] = 1;
 				}
+                
+                if ( get_post_meta( $custom_product_id, '_mystyle_3d_view_enabled', true ) === 'yes' ) {
+                    $passthru['view_3d'] = 1;
+                }
+                
+                if ( get_post_meta( $custom_product_id, '_mystyle_3d_depth', true ) ) {
+                    $passthru['view_3d'] = get_post_meta( $custom_product_id, '_mystyle_3d_depth', true ) ;
+                }
 			}
 		}
 
@@ -268,6 +276,14 @@ class MyStyle_Customize_Page {
 				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_boxshadow', true ) === 'yes' ) {
 					$passthru['boxshadow'] = 1;
 				}
+                
+                if ( get_post_meta( $design->get_product_id(), '_mystyle_3d_view_enabled', true ) === 'yes' ) {
+                    $passthru['view_3d'] = 1;
+                }
+                
+                if ( get_post_meta( $design->get_product_id(), '_mystyle_3d_depth', true ) ) {
+                    $passthru['view_3d'] = get_post_meta( $design->get_product_id(), '_mystyle_3d_depth', true ) ;
+                }
 			}
 		}
 

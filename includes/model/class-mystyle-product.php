@@ -160,6 +160,23 @@ class MyStyle_Product {
 
 		return $configur8_enabled;
 	}
+    
+    /**
+	 * Function that looks to see if the product has configur8 enabled.
+	 *
+	 * @return boolean Returns true if the product has configur8 enabled,
+	 * otherwise, returns false.
+	 */
+	public function view_3d_enabled() {
+		$view_3d_enabled      = false;
+		$view_3d_option_value = get_post_meta( $this->get_id(), '_mystyle_3d_view_enabled', true );
+
+		if ( 'yes' === $view_3d_option_value ) {
+			$view_3d_enabled = true;
+		}
+
+		return $view_3d_enabled;
+	}
 
 	/**
 	 * Method that gets the parent design that the product was spawned

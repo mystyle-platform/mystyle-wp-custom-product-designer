@@ -97,7 +97,7 @@ class MyStyle_Ajax {
 		$taxonomy = MYSTYLE_TAXONOMY_NAME;
 		// phpcs:ignore
 		$s        = wp_unslash( $_GET['q'] );
-
+		$tax	  = wp_unslash( $_GET['tax'] ) ;
 		/**
 		 * Filters the minimum number of characters required to fire a tag search via Ajax.
 		 *
@@ -172,7 +172,8 @@ class MyStyle_Ajax {
 	public function design_collection_search() {
 		$taxonomy = MYSTYLE_COLLECTION_NAME;
 		// phpcs:ignore
-		$s        = wp_unslash( $_GET['q'] );
+		$s        = wp_unslash( $_GET['q'] ) ;
+		$tax	  = wp_unslash( $_GET['tax'] ) ;
 
 		/**
 		 * Filters the minimum number of characters required to fire a tag search via Ajax.
@@ -210,11 +211,17 @@ class MyStyle_Ajax {
 		$user = wp_get_current_user();
 
 		// Adds the collection - throws exception is user isn't authorized.
-		MyStyle_DesignManager::add_collection_to_design(
-			$design_id,
-			$collection,
-			$user
-		);
+		try {
+			MyStyle_DesignManager::add_collection_to_design(
+				$design_id,
+				$collection,
+				$user
+			);
+		}
+		catch( MyStyle_Unauthorized_Exception $error ) {
+			var_dump($error) ; die() ;
+		}
+		
 
 		wp_send_json_success( array( 'collection' => $collection ) );
 	}
