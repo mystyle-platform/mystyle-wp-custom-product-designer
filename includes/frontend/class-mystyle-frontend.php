@@ -98,7 +98,7 @@ class MyStyle_FrontEnd {
 	public function enqueue_frontend_js() {
 		wp_enqueue_script(
 			'frontend_js',
-			MYSTYLE_ASSETS_URL . 'js/frontend.js?0980980',
+			MYSTYLE_ASSETS_URL . 'js/frontend.js',
 			array(), // deps.
 			MYSTYLE_VERSION, // version.
 			true
