@@ -349,17 +349,19 @@ class MyStyle_Design_Tag_Page {
 					$product_id = $design->get_product_id();
 
 					$product = wc_get_product( $product_id );
+					
+					$product_name = ( ! $product ? 'product' : $product->get_name() ) ;
 
 					$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 
-					$design_post               = new stdClass();
-					$design_post->ID           = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
-					$design_post->design_id    = $design->get_design_id();
-					$design_post->post_author  = $design->get_user_id();
-					$design_post->post_name    = $title;
-					$design_post->post_type    = 'Design';
-					$design_post->post_title   = $title;
-					$design_post->post_content = $title . ' custom ' . $product->get_name();
+					$design_post               = new stdClass() ;
+					$design_post->ID           = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ;
+					$design_post->design_id    = $design->get_design_id() ;
+					$design_post->post_author  = $design->get_user_id() ;
+					$design_post->post_name    = $title ;
+					$design_post->post_type    = 'Design' ;
+					$design_post->post_title   = $title ;
+					$design_post->post_content = $title . ' custom ' . $product_name ;
                     $design_post->guid = get_site_url() . '/designs/' . $design->get_design_id() ;
                     
 					$designs[] = $design_post;
