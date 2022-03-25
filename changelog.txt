@@ -1,3 +1,6 @@
+= 3.19.7 =
+* Added 3D Viewer support. Plus bug fixes
+
 = 3.19.6 =
 * Fixed Design Tag Index shortcode
 
