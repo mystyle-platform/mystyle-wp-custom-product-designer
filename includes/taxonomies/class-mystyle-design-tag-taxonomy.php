@@ -131,7 +131,7 @@ class MyStyle_Design_Tag_Taxonomy {
                 'link' => 'view', 
                 'taxonomy' => MYSTYLE_TAXONOMY_NAME, 
                 'post_type' => '', 
-                'echo' => true
+                'echo' => false
             );
         }
         
