@@ -30,6 +30,8 @@ class MyStyle_Cart {
 		add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
 		add_action( 'woocommerce_add_to_cart_handler_mystyle_customizer', array( &$this, 'mystyle_add_to_cart_handler_customize' ), 10, 1 );
 		add_action( 'woocommerce_add_to_cart_handler_mystyle_add_to_cart', array( &$this, 'mystyle_add_to_cart_handler' ), 10, 1 );
+
+		add_filter( 'woocommerce_order_again_cart_item_data', array( &$this, 'add_order_again_cart_item_data' ), 10, 3 ) ;
 	}
 
 	/**
@@ -375,6 +377,29 @@ class MyStyle_Cart {
 		}
 
 		return $new_name;
+	}
+
+	/**
+	 * Add MyStyle data cart during order again function
+	 * 
+	 * @param array $item_data
+	 * @param object $item
+	 * @param object $order
+	 * 
+	 * @return array $item_data
+	 */
+	public function add_order_again_cart_item_data( $item_data, $item, $order ) {
+		
+		$meta = $item->get_meta( 'mystyle_data' ) ;
+
+		if( ! $meta ) {
+			return $item_data ;
+		}
+		
+		// Add the mystyle meta data to the cart item.
+		$item_data['mystyle_data'] = $meta ;
+
+		return $item_data ;
 	}
 
 	/**
