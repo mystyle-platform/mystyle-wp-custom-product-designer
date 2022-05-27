@@ -1,6 +1,7 @@
 /**
  * Mini gallery of designs.
  */
+ 
 .mystyle-designs li h3 {
 	font-size: 16px !important;
 	padding: 15px 4px;
@@ -537,7 +538,7 @@ body.archive.tax-design_tag article {
 #mystyle-design-collection-index-wrapper .collections-content h3 {
     border: solid 1px #ccc ;
     width: 50% ;
-    margin 10px 0 ;
+    margin: 10px 0 ;
     padding: 0 10px;
 }
 
@@ -629,3 +630,8 @@ ul.page-numbers li,
     color: #aaa;
     font-size: 12px;
 }
+
+.purchase_as_is {
+	height: 45px;
+}
+

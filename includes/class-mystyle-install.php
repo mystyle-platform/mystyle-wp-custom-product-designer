@@ -73,6 +73,12 @@ class MyStyle_Install {
 		if ( ! MyStyle_Design_Tag_Page::exists() ) {
 			MyStyle_Design_Tag_Page::create();
 		}
+		if ( ! MyStyle_Design_Collection_Page::index_exists() ) {
+			MyStyle_Design_Collection_Page::create_index();
+		}
+		if ( ! MyStyle_Design_Tag_Page::seo_index_exists() ) {
+			MyStyle_Design_Tag_Page::create_seo_index();
+		}
 
 		MyStyle_My_Designs_Page::get_instance()->flush_rewrite_rules();
 
@@ -166,7 +172,7 @@ class MyStyle_Install {
 		}
         
         //Create Design Tag SEO Index page
-        if ( version_compare( $old_version, '3.19.1', '<' ) ) {
+        if ( version_compare( $old_version, '3.19.9', '<' ) ) {
 			if ( ! MyStyle_Design_Tag_Page::seo_index_exists() ) {
 				MyStyle_Design_Tag_Page::create_seo_index();
 			}

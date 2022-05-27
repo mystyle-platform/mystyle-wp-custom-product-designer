@@ -77,6 +77,7 @@ class MyStyle_WooCommerce_Admin_Product {
 		$mystyle_3d_view_enabled                    = get_post_meta( $post->ID, '_mystyle_3d_view_enabled', true );
 		$mystyle_3d_depth                           = get_post_meta( $post->ID, '_mystyle_3d_depth', true );
 		$mystyle_configur8_enabled                  = get_post_meta( $post->ID, '_mystyle_configur8_enabled', true );
+		$mystyle_add_to_cart_enabled                = get_post_meta( $post->ID, '_mystyle_add_to_cart_enabled', true );
 
 		?>
 		<div id="mystyle_product_data" class="panel woocommerce_options_panel">
@@ -93,6 +94,16 @@ class MyStyle_WooCommerce_Admin_Product {
 						'desc_tip'    => 'true',
 						'description' => __( 'Enable this option to make the product customizable.', 'mystyle' ),
 						'value'       => $mystyle_enabled,
+					)
+				);
+
+				woocommerce_wp_checkbox(
+					array(
+						'id'          => '_mystyle_add_to_cart_enabled',
+						'label'       => __( 'Enable Purchase as-is button', 'mystyle' ),
+						'desc_tip'    => 'true',
+						'description' => __( 'Enable this option to allow the purchase without customization.', 'mystyle' ),
+						'value'       => $mystyle_add_to_cart_enabled,
 					)
 				);
 
@@ -348,6 +359,7 @@ class MyStyle_WooCommerce_Admin_Product {
         $mystyle_3d_depth                           = ( isset( $_POST['_mystyle_3d_depth'] ) ) ? sanitize_text_field( wp_unslash( $_POST['_mystyle_3d_depth'] ) ) : null;
         
 		$mystyle_configur8_enabled                  = ( isset( $_POST['_mystyle_configur8_enabled'] ) && boolval( $_POST['_mystyle_configur8_enabled'] ) ) ? 'yes' : 'no';
+		$mystyle_add_to_cart_enabled                = ( isset( $_POST['_mystyle_add_to_cart_enabled'] ) && boolval( $_POST['_mystyle_add_to_cart_enabled'] ) ) ? 'yes' : 'no';
 		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 
 		if ( 'yes' === $mystyle_enabled ) {
@@ -432,6 +444,7 @@ class MyStyle_WooCommerce_Admin_Product {
 		update_post_meta( $post_id, '_mystyle_3d_view_enabled', $mystyle_3d_view_enabled );
 		update_post_meta( $post_id, '_mystyle_3d_depth', $mystyle_3d_depth );
 		update_post_meta( $post_id, '_mystyle_configur8_enabled', $mystyle_configur8_enabled );
+		update_post_meta( $post_id, '_mystyle_add_to_cart_enabled', $mystyle_add_to_cart_enabled );
 	}
 
 	/**

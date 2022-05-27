@@ -50,7 +50,7 @@ class MyStyle_Admin {
 	 * @return array The new array of links.
 	 */
 	public function add_settings_link( $links ) {
-		$settings_link = '<a href="options-general.php?page=mystyle_settings">Settings</a>';
+		$settings_link = '<a href="/wp-admin/admin.php?page=mystyle_settings">Settings</a>';
 		array_unshift( $links, $settings_link );
 
 		return $links;

@@ -77,6 +77,11 @@ class MyStyle_Dashboard_Page {
                                         'hide_empty' => false
                                     )
                                 );
+		
+		if( is_wp_error( $design_tag_count ) ) {
+			$design_tag_count = 0 ;
+		}
+
         $design_collection_count      = wp_count_terms(
                                     array(
                                         'taxonomy'   => MYSTYLE_COLLECTION_NAME,

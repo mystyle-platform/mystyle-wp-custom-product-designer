@@ -145,6 +145,23 @@ class MyStyle_Product {
 	}
 
 	/**
+	 * Function that looks to see if the product is mystyle enabled.
+	 *
+	 * @return boolean Returns true if the product is customizable, otherwise,
+	 * returns false.
+	 */
+	public function is_add_to_cart() {
+		$is_add_to_cart = false;
+		$mystyle_add_to_cart_enabled = get_post_meta( $this->get_id(), '_mystyle_add_to_cart_enabled', true );
+
+		if ( 'yes' === $mystyle_add_to_cart_enabled ) {
+			$is_add_to_cart = true;
+		}
+
+		return $is_add_to_cart;
+	}
+
+	/**
 	 * Function that looks to see if the product has configur8 enabled.
 	 *
 	 * @return boolean Returns true if the product has configur8 enabled,

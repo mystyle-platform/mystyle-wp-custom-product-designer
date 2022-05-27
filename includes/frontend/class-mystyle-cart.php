@@ -23,6 +23,7 @@ class MyStyle_Cart {
 	 */
 	public function __construct() {
 		add_filter( 'woocommerce_product_single_add_to_cart_text', array( &$this, 'filter_cart_button_text' ), 10, 1 );
+		add_filter( 'woocommerce_after_add_to_cart_quantity', array( &$this, 'after_add_to_cart_quantity'), 10 ) ;
 		add_filter( 'woocommerce_add_to_cart_handler', array( &$this, 'filter_add_to_cart_handler' ), 10, 2 );
 		add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'get_cart_item_from_session' ), 10, 3 );
 
@@ -38,6 +39,10 @@ class MyStyle_Cart {
 	 * Init hooks.
 	 */
 	public function init() {
+		if(isset($_REQUEST['customize'])) {
+			$_REQUEST['add-to-cart'] = $_REQUEST['customize'] ;
+			$this->mystyle_add_to_cart_handler_customize(null) ;
+		}
 		add_filter( 'woocommerce_cart_item_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
 		add_filter( 'woocommerce_in_cart_product_thumbnail', array( &$this, 'modify_cart_item_thumbnail' ), 10, 3 );
 		add_filter( 'woocommerce_cart_item_name', array( &$this, 'modify_cart_item_name' ), 10, 3 );
@@ -54,12 +59,33 @@ class MyStyle_Cart {
 		if ( null !== $product ) {
 			$mystyle_product = new \MyStyle_Product( $product );
 
-			if ( $mystyle_product->is_customizable() ) {
+			if ( $mystyle_product->is_customizable() && !$mystyle_product->is_add_to_cart() ) {
 				$text = 'Customize';
+			}
+			elseif( $mystyle_product->is_customizable() && $mystyle_product->is_add_to_cart() ) {
+				$text = 'Purchase as-is' ;
 			}
 		}
 
 		return $text;
+	}
+
+	/**
+	 * Add to cart button on products that allow purchase of "As is" product
+	 * 
+	 * Prints a second Add to cart button
+	 */
+	public function after_add_to_cart_quantity() {
+		global $product;
+
+		if ( null !== $product ) {
+			$mystyle_product = new \MyStyle_Product( $product );
+
+			if ( $mystyle_product->is_customizable() && $mystyle_product->is_add_to_cart() ) {
+				
+				?><div class="purchase_as_is"><button type="submit" name="customize" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt">Customize</button></div><br /><?php
+			}
+		}
 	}
 
 	/**
@@ -71,7 +97,6 @@ class MyStyle_Cart {
 	 * action.
 	 */
 	public function filter_add_to_cart_handler( $handler, $product ) {
-
 		// If this is a request from the WooCommerce TM Extra Product Options
 		// edit cart function, just return the handler unaltered.
 		if ( MyStyle_Tm_Extra_Product_Options::is_tm_extra_product_options_edit_request( $_REQUEST ) ) { // phpcs:ignore
@@ -94,13 +119,15 @@ class MyStyle_Cart {
 			}
 		} else {
 
-			if ( $mystyle_product->is_customizable() ) {
+			if ( $mystyle_product->is_customizable() && ! $mystyle_product->is_add_to_cart() ) {
+				
 				$handler = 'mystyle_customizer';
-
+				
 				if ( MyStyle()->get_WC()->version_compare( '2.3', '<' ) ) {
 					// Old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
 					self::mystyle_add_to_cart_handler_customize( false );
 				}
+				
 			}
 		}
 
@@ -163,8 +190,13 @@ class MyStyle_Cart {
 	 * @param string $url The current url.
 	 */
 	public function mystyle_add_to_cart_handler_customize( $url ) {
-		$product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) ); //phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
-
+		if( isset($_REQUEST['customize']) ) {
+			$product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['customize'] ) ); //phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
+		}
+		else {
+			$product_id = apply_filters( 'woocommerce_add_to_cart_product_id', absint( $_REQUEST['add-to-cart'] ) ); //phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
+		}
+		
 		/* @var $mystyle_product \MyStyle_Product The product. */
 		$mystyle_product = MyStyle_Product::get_by_id( $product_id );
 
@@ -277,7 +309,7 @@ class MyStyle_Cart {
 
 		$out       = $product_img_tag;
 		$design_id = null;
-
+		
 		// Try to get the design id, first from the cart_item and then from the session.
 		if ( isset( $cart_item['mystyle_data'] ) ) {
 			$design_id = $cart_item['mystyle_data']['design_id'];
