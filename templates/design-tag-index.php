@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div id="mystyle-design-tag-index-wrapper" class="mystyle-design-tag-index woocommerce design-tags<?php print ( $show_designs ? ' show-designs' : '' ) ; ?>">
+    <?php if( ! $term ) : ?>    
     <div class="mystyle-sort">
         <form name="mystyle-sort-form" method="get" class="mystyle-sort-form" action="<?php print get_permalink( get_the_ID() ); ?>">
             <label for="mystyle-sort-select">Sort tags by:</label>
@@ -23,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             </select>
         </form>
     </div>
+    <?php endif ; ?>
 	<?php foreach ( $terms as $term ) : ?>
     <?php if($show_designs) : ?>
     <?php $term_name = preg_replace('/\-/', ' ', $term->name ) ; ?>

@@ -43,13 +43,15 @@ class MyStyle_Design_Tag_Page {
 	public function __construct() {
 		$this->http_response_code = 200;
 
+        add_action( 'init', array( &$this, 'rewrite_rules' ) );
+        add_action( 'query_vars', array( &$this, 'query_vars' ) );
 		add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 25, 2 );
 		add_action( 'template_redirect', array( &$this, 'set_pager' ) );
 
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
-        
+        add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 ) ;
 	}
 
 	/**
@@ -147,7 +149,7 @@ class MyStyle_Design_Tag_Page {
 		$design_tag_page = array(
 			'post_title'   => 'Design Tags',
 			'post_name'    => 'design-tags',
-			'post_content' => '[mystyle_design_tags per_tag="5" tags_per_page="12"]',
+			'post_content' => '[mystyle_design_tags per_tag="4" tags_per_page="12"]',
 			'post_status'  => 'publish',
 			'post_type'    => 'page',
 		);
@@ -469,6 +471,78 @@ class MyStyle_Design_Tag_Page {
 
 		return $url;
 	}
+
+    /**
+	 * Add custom query vars.
+	 *
+	 * @param array $query_vars Array of query vars.
+	 */
+	public function query_vars( $query_vars ) {
+		$query_vars[] = 'design_tag_term';
+
+		return $query_vars;
+	}
+
+	/**
+	 * Added rewrite rule since WordPress 5.5.
+	 */
+	public function rewrite_rules() {
+        
+		// Flush rewrite rules for newly created rewrites.
+		flush_rewrite_rules();
+
+		add_rewrite_rule(
+			'design-tags/([a-zA-Z0-9_-].+)?$',
+			'index.php?pagename=design-tags&design_tag_term=$matches[1]',
+			'top'
+		);
+	}
+
+    /**
+	 * Filter the post title.
+	 *
+	 * @param string $title The title of the post.
+	 * @param type   $id The id of the post.
+	 * @return string Returns the filtered title.
+	 */
+	public function filter_title( $title, $id = null ) {
+		
+        global $wp_query ;
+        
+        if (
+					( get_the_ID() === $id ) && // Make sure we're in the loop.
+					( in_the_loop() ) // Make sure we're in the loop.
+			)
+        {
+            if ( isset( $wp_query->query['design_tag_term'] ) ) {
+                
+                $term_slug = $wp_query->query['design_tag_term'] ;
+                
+                if( preg_match( '/\//', $term_slug) ) {
+                    $url_array  = explode('/', $term_slug ) ;
+                    if($url_array[0] == 'page' ) {
+                        $term_slug = false ;
+                    }
+                    else {
+                        $term_slug = $url_array[0] ;
+                    }
+
+                }
+                
+                if( $term_slug ) {
+                    $term = get_term_by( 'slug', $term_slug, MYSTYLE_TAXONOMY_NAME) ;
+
+                    $title = ucfirst( $term->name ) . ' - Design Tag' ;
+                }
+                
+            }
+        }
+        
+        
+
+		return $title;
+	}
+
 
 	/**
 	 * Sets the current HTTP response code.

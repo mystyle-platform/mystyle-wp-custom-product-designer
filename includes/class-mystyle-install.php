@@ -127,9 +127,9 @@ class MyStyle_Install {
 		// Flush rewrite rules for newly created rewrites.
 		flush_rewrite_rules();
 
-		// Add the Design tag page if upgrading from less than 3.14.0 (versions
+		// Add the Design tag page if upgrading from less than 3.14.2 (versions
 		// that were before this page existed).
-		if ( version_compare( $old_version, '3.14.0', '<' ) ) {
+		if ( version_compare( $old_version, '3.14.2', '<' ) ) {
 			if ( ! MyStyle_Design_Tag_Page::exists() ) {
 				MyStyle_Design_Tag_Page::create();
 			}
@@ -147,9 +147,9 @@ class MyStyle_Install {
 			}
 		}
         
-        // Add the Design tag page if upgrading from less than 3.14.0 (versions
+        // Add the Design tag page if upgrading from less than 3.19.10 (versions
 		// that were before this page existed).
-		if ( version_compare( $old_version, '3.18.6', '<' ) ) {
+		if ( version_compare( $old_version, '3.19.10', '<' ) ) {
 			if ( ! MyStyle_Design_Tag_Page::index_exists() ) {
 				MyStyle_Design_Tag_Page::create_index();
 			}
@@ -172,7 +172,7 @@ class MyStyle_Install {
 		}
         
         //Create Design Tag SEO Index page
-        if ( version_compare( $old_version, '3.19.9', '<' ) ) {
+        if ( version_compare( $old_version, '3.19.10', '<' ) ) {
 			if ( ! MyStyle_Design_Tag_Page::seo_index_exists() ) {
 				MyStyle_Design_Tag_Page::create_seo_index();
 			}
@@ -180,7 +180,7 @@ class MyStyle_Install {
         
         // Fix the Design tag index page if upgrading from less than 3.18.6 (versions
 		// that were before this page existed).
-		if ( version_compare( $old_version, '3.19.2', '<' ) ) {
+		if ( version_compare( $old_version, '3.19.10', '<' ) ) {
 			if ( MyStyle_Design_Tag_Page::seo_index_exists() ) {
 				MyStyle_Design_Tag_Page::fix_seo_index();
 			}

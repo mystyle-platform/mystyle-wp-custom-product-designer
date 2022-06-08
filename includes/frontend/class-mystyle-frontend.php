@@ -189,7 +189,7 @@ class MyStyle_FrontEnd {
             $product = wc_get_product() ;
             
             if ( !$product->is_in_stock() ) {
-                $classes[] = 'mystyle-design-product-sold-out' ;    
+                $classes[] = 'mystyle-product-not-in-stock' ;    
             }
         }
 
