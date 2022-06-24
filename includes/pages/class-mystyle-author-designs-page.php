@@ -56,7 +56,9 @@ class MyStyle_Author_Designs_Page {
 		add_action( 'query_vars', array( &$this, 'query_vars' ) );
 		add_action( 'template_redirect', array( &$this, 'set_pager' ) );
 		add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 30, 2 );
-
+		
+		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
+		add_filter( 'et_before_main_content', array( &$this, 'divi_title' ) );
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
@@ -188,13 +190,49 @@ class MyStyle_Author_Designs_Page {
 			$design_post->post_name    = $title;
 			$design_post->post_type    = 'Design';
 			$design_post->post_title   = $title;
-			$design_post->post_content = $title . ' custom ' . $product->get_title();
+			$design_post->post_content = $title . ' custom ' . ( $product ? $product->get_title() : '' ) ;
 
 			$design_posts[] = $design_post;
 		}
 
 		return $design_posts;
 	}
+
+	public function divi_title() {
+
+		if (
+			get_query_var( 'username' )
+		) {
+			$username  = get_query_var( 'username' );
+			echo '<div class="container"><h1 class="page-title">Designs by ' . $username . '</h1></div>' ;
+		}
+		
+	}
+
+	/**
+	 * Filter the body class output. Adds a "mystyle-customize" class if the
+	 * page is the Customize page.
+	 *
+	 * @param array $classes An array of classes that are going to be outputed
+	 * to the body tag.
+	 * @return array Returns the filtered classes array.
+	 */
+	public function filter_body_class( $classes ) {
+		
+		try {
+			if (
+				get_query_var( 'username' )
+			) {
+				$classes[] = 'mystyle-author-designs';
+			}
+		} catch ( MyStyle_Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// This exception may be thrown if the Customize Page is missing.
+			// For this function, that is okay, just continue.
+		}
+
+		return $classes;
+	}
+
 
 	/**
 	 * Force showing post thumbnail on design archive pages.
