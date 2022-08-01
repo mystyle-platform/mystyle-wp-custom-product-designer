@@ -60,6 +60,7 @@ class MyStyle_Handoff {
 		if ( null !== $lang ) {
 			$url = site_url( $lang . '/?' . self::SLUG );
 		} else {
+			//$url = site_url( self::SLUG );
 			$url = site_url( '?' . self::SLUG );
 		}
 

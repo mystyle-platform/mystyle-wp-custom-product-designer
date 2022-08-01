@@ -465,8 +465,8 @@ class MyStyle_Design_Profile_Page {
 	 */
 	public static function get_design_url( \MyStyle_Design $design ) {
 		global $wp_rewrite;
-
-		if ( isset( $wp_rewrite->page_structure ) && ( '' !== $wp_rewrite->page_structure ) ) {
+		
+		if ( $wp_rewrite->get_page_permastruct() && ( '' !== $wp_rewrite->get_page_permastruct() ) ) {
 			$url = get_permalink( self::get_id() );
 			if ( '/' !== substr( $url, -1 ) ) {
 				$url .= '/';

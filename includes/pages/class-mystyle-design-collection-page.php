@@ -46,6 +46,7 @@ class MyStyle_Design_Collection_Page {
         add_action( 'init', array( &$this, 'rewrite_rules' ) );
         add_action( 'query_vars', array( &$this, 'query_vars' ) );
         add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
+		add_filter( 'body_class', array( &$this, 'body_class' ), 10, 2 ) ;
 	}
     
     /**
@@ -216,6 +217,23 @@ class MyStyle_Design_Collection_Page {
         
 
 		return $title;
+	}
+
+	/**
+	 * Filter the body class to add when viewing single collection page
+	 * 
+	 * @param array $classes The class array to filter
+	 * @param array $class
+	 * @return array $classes
+	 */
+	public function body_class( $classes, $class ) {
+		global $wp_query ;
+
+		if( isset($wp_query->query['collection_term']) ) {
+			$classes[] = 'mystyle-design-collection-single-term' ;
+		}
+
+		return $classes ;
 	}
 
 	/**
