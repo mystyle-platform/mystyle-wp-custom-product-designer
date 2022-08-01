@@ -1,3 +1,6 @@
+= 3.19.11 =
+* Fixed bugs, changed user_nicename to display_name, added clean url to design confirmation email.
+
 = 3.19.10 =
 * Upgraded design tag shortcode page, added out of stock body class
 

@@ -4,9 +4,9 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: customization, designer, personalization, product-preview, woocommerce, custom product, product designer, Post, plugin, admin, posts, shortcode, images, page, image
 Requires at least: 3.3
-Tested up to: 5.9.3
+Tested up to: 6.0.1
 Requires PHP: 5.3
-Stable tag: 3.19.10
+Stable tag: 3.19.11
 
 The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
@@ -105,6 +105,9 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 – displays a list of design collections with a few design thumbs per collection
 
 == Changelog ==
+= 3.19.11 =
+* Fixed bugs, changed user_nicename to display_name, added clean url to design confirmation email.
+
 = 3.19.10 =
 * Upgraded design tag shortcode page, added out of stock body class
 
