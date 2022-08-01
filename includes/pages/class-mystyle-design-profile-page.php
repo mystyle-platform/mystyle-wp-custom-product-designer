@@ -797,7 +797,7 @@ class MyStyle_Design_Profile_Page {
                     $designer = get_user_by( 'ID', $design->get_user_id() ) ;
                     
                     if( $designer ) {
-                        $title .= ' by ' . esc_html( $designer->user_nicename ) ;
+                        $title .= ' by ' . esc_html( $designer->display_name ) ;
                     }
                     
 				}
