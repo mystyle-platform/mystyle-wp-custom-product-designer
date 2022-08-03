@@ -1,3 +1,6 @@
+= 3.19.12 =
+* Added custom design tag/collection title setting, matched H1 and Head Title text, changed design collection add permissions
+
 = 3.19.11 =
 * Fixed bugs, changed user_nicename to display_name, added clean url to design confirmation email.
 
