@@ -46,6 +46,7 @@ class MyStyle_Design_Collection_Page {
         add_action( 'init', array( &$this, 'rewrite_rules' ) );
         add_action( 'query_vars', array( &$this, 'query_vars' ) );
         add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
+		add_filter( 'document_title_parts', array( &$this, 'document_title_parts' ) ) ;
 		add_filter( 'body_class', array( &$this, 'body_class' ), 10, 2 ) ;
 	}
     
@@ -208,7 +209,9 @@ class MyStyle_Design_Collection_Page {
                 if( $term_slug ) {
                     $term = get_term_by( 'slug', $term_slug, MYSTYLE_COLLECTION_NAME) ;
 
-                    $title = ucfirst( $term->name ) . ' - Design Collection' ;
+					$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
+
+					$title = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Collection' : ' ' . $site_wide_title ) ;
                 }
                 
             }
@@ -216,6 +219,45 @@ class MyStyle_Design_Collection_Page {
         
         
 
+		return $title;
+	}
+
+	/**
+	 * Filter Document title parts
+	 * 
+	 * @param array $title head title parts array
+	 * 
+	 * @return array $title 
+	 */
+	public function document_title_parts( $title ) {
+		global $wp_query ;
+        
+        
+		if ( isset( $wp_query->query['collection_term'] ) ) {
+			
+			$term_slug = $wp_query->query['collection_term'] ;
+			
+			if( preg_match( '/\//', $term_slug) ) {
+				$url_array  = explode('/', $term_slug ) ;
+				if($url_array[0] == 'page' ) {
+					$term_slug = false ;
+				}
+				else {
+					$term_slug = $url_array[0] ;
+				}
+
+			}
+			
+			if( $term_slug ) {
+				$term = get_term_by( 'slug', $term_slug, MYSTYLE_TAXONOMY_NAME) ;
+				
+				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
+
+				$title['title'] = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Collection' : ' ' . $site_wide_title ) ;
+			}
+			
+		}
+        
 		return $title;
 	}
 

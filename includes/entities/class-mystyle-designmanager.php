@@ -1028,15 +1028,9 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		$taxonomy = MYSTYLE_COLLECTION_NAME;
 
 		// ---- Security Check ---- //
-		if (
-			( ! self::is_user_design_owner( $user->ID, $design_id ) ) //design owner
-			&& ( ! $user->has_cap( 'edit_posts' ) ) //site editor
-			&& ( ! $user->has_cap( 'manage_woocommerce' ) ) //store manager
-			&& ( ! $user->has_cap( 'print_url_write' ) ) //mystyle cs user
-			&& ( ! $user->has_cap( 'administrator' ) ) //administrator
-		) {
+		if ( ! $user->has_cap( 'administrator' ) ) {
 			throw new MyStyle_Unauthorized_Exception(
-				'Only the design owner or an administrator can add collections to a design.'
+				'Only an administrator can add collections to a design.'
 			);
 		}
 		

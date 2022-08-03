@@ -52,6 +52,7 @@ class MyStyle_Design_Tag_Page {
 		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
         add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 ) ;
+		add_filter( 'document_title_parts', array( &$this, 'document_title_parts' ) ) ;
 	}
 
 	/**
@@ -531,15 +532,54 @@ class MyStyle_Design_Tag_Page {
                 
                 if( $term_slug ) {
                     $term = get_term_by( 'slug', $term_slug, MYSTYLE_TAXONOMY_NAME) ;
+					
+					$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
 
-                    $title = ucfirst( $term->name ) . ' - Design Tag' ;
+					$title = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title ) ;
                 }
                 
             }
         }
         
-        
+		return $title;
+	}
 
+	/**
+	 * Filter Document title parts
+	 * 
+	 * @param array $title head title parts array
+	 * 
+	 * @return array $title 
+	 */
+	public function document_title_parts( $title ) {
+		global $wp_query ;
+        
+        
+		if ( isset( $wp_query->query['design_tag_term'] ) ) {
+			
+			$term_slug = $wp_query->query['design_tag_term'] ;
+			
+			if( preg_match( '/\//', $term_slug) ) {
+				$url_array  = explode('/', $term_slug ) ;
+				if($url_array[0] == 'page' ) {
+					$term_slug = false ;
+				}
+				else {
+					$term_slug = $url_array[0] ;
+				}
+
+			}
+			
+			if( $term_slug ) {
+				$term = get_term_by( 'slug', $term_slug, MYSTYLE_TAXONOMY_NAME) ;
+				
+				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
+
+				$title['title'] = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title ) ;
+			}
+			
+		}
+        
 		return $title;
 	}
 

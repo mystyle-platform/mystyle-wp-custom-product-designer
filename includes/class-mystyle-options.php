@@ -136,6 +136,21 @@ abstract class MyStyle_Options {
 	}
 
 	/**
+	 * Function that gets the alternate design tag/collection title
+	 * 
+	 * @return string|null Returns the alternate design tag/collection title
+	 */
+	public static function get_alternate_design_tag_collection_title() {
+		$val     = null;
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		if ( ! empty( $options['alternate_design_tag_collection_title'] ) ) {
+			$val = $options['alternate_design_tag_collection_title'];
+		}
+
+		return $val;
+	}
+
+	/**
 	 * Function that gets the Redirect URL Whitelist.
 	 *
 	 * @return array|null Returns the Redirect URL Whitelist as an array (if one

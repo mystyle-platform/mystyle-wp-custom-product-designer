@@ -85,6 +85,15 @@ class MyStyle_Options_Page {
 			'mystyle_options_advanced_section'
 		);
 
+		/* ALTERNATE PAGE TITLE FOR DESIGN TAG AND COLLECTIONS PAGES */
+		add_settings_field(
+			'alternate_design_tag_collection_title',
+			'Design Tag/Collection Archives SEO Label (plural)',
+			array( &$this, 'render_design_tag_collection_title' ),
+			'mystyle_options',
+			'mystyle_options_advanced_section'
+		);
+
 		/* SHOW ADD TO CART BUTTON ON DESIGN PROFILE PAGES */
 		add_settings_field(
 			'design_profile_page_show_add_to_cart',
@@ -334,6 +343,18 @@ class MyStyle_Options_Page {
 			<input type="checkbox" id="mystyle_enable_flash" name="mystyle_options[enable_flash]" value="1" <?php echo checked( 1, $enable_flash, false ); ?> />
 			&nbsp; Use the Flash version of the MyStyle customizer (when Flash is available).
 		</label>
+		<?php
+	}
+
+	/**
+	 * Function to render custom design tag page title
+	 */
+	public function render_design_tag_collection_title() {
+		$options     = get_option( MYSTYLE_OPTIONS_NAME, array() ); // Get WP Options table Key of this option.
+		$current_val = ( array_key_exists( 'alternate_design_tag_collection_title', $options ) ) ? $options['alternate_design_tag_collection_title'] : '';
+		?>
+		<input id="mystyle_alternate_design_tag_collection_title" name="mystyle_options[alternate_design_tag_collection_title]" size="60" type="text" value="<?php echo esc_attr( $current_val ); ?>" />
+		<p class="description">Specify Design Tag/Collection Archives SEO Label (plural).</p>
 		<?php
 	}
 
@@ -594,6 +615,9 @@ class MyStyle_Options_Page {
 
 		// Design Profile Page product menu type.
 		$new_options['design_profile_product_menu_type'] = trim( $input['design_profile_product_menu_type'] );
+
+		// Alternate Design Tag/Collection title.
+		$new_options['alternate_design_tag_collection_title'] = trim( $input['alternate_design_tag_collection_title'] );
 
 		// Alternate Design Complete Redirect URL.
 		$new_options['alternate_design_complete_redirect_url'] = trim( $input['alternate_design_complete_redirect_url'] );
