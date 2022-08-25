@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div id="mystyle-design-collection-index-wrapper" class="design-collection-index">
+<div id="mystyle-design-collection-index-wrapper" class="mystyle-design-collection-index">
 
 	<?php // Output the collections menu (left nav). ?>
 	<div class="collections-menu">
@@ -56,7 +56,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<img alt="<?php echo esc_html( ( ! empty( $design->get_title() ) ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?> Image" src="<?php echo esc_url( $design->get_thumb_url() ); ?>" />
 						<?php echo esc_html( ( ! empty( $design->get_title() ) ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?>
 					</a>
-					<div>Designed by: <?php echo esc_html( $user->user_nicename ); ?></div>
+					<div class="mystyle-design-author">Designed by: <?php echo esc_html( $user->user_nicename ); ?></div>
 
 				</div>
 

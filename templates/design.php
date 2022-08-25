@@ -28,9 +28,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<li>
 			<a
 				onclick="
-							jQuery( '#mystyle-renderer-wrapper-<?php echo esc_attr( $design->get_design_id() ); ?>:not(:has(>iframe))')
-								.append( '<iframe src=\'<?php echo esc_attr( $renderer_url ); ?>\' width=\'100%\' height=\'300\'></iframe>' );
-							return true;
+					jQuery( '#mystyle-renderer-wrapper-<?php echo esc_attr( $design->get_design_id() ); ?>:not(:has(>iframe))')
+						.append( '<iframe src=\'<?php echo esc_attr( $renderer_url ); ?>\' width=\'100%\' height=\'300\'></iframe>' );
+					return true;
 				"
 				class="button"
 				>

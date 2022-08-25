@@ -218,11 +218,15 @@ class MyStyle_My_Designs_Endpoint {
 		// Set up variables for the view layer.
 		$pager = $this->pager;
 
-		// ---------- Call the view layer ------------------ //
-		ob_start();
-		require MYSTYLE_TEMPLATES . 'my-designs.php';
-		$out = ob_get_contents();
-		ob_end_clean();
+		if ( ( ! $pager->get_items() ) || ( 0 === count( $pager->get_items() ) ) ) {
+			$out = '<h3>No designs yet. <a href="/">Create one now!</a></h3>';
+		} else {
+			// ---------- Call the view layer ------------------ //
+			ob_start();
+			require MYSTYLE_TEMPLATES . 'my-designs.php';
+			$out = ob_get_contents();
+			ob_end_clean();
+		}
 
 		echo $out; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 	}
@@ -235,7 +239,7 @@ class MyStyle_My_Designs_Endpoint {
 	public function body_classes( $classes ) {
 
 		if ( $this->is_current_page() ) {
-			$classes[] = 'mystyle-design-profile';
+			$classes[] = 'mystyle-my-designs';
 		}
 
 		return $classes;

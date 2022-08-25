@@ -131,14 +131,14 @@ class MyStyle_Customize_Page {
 		) {
 
 		if ( null === $passthru ) {
-
 			if ( null !== $design->get_cart_data() ) {
-				$post_data = json_decode( $design->get_cart_data(), true );
+				$post_data                = json_decode( $design->get_cart_data(), true );
+				$post_data['add-to-cart'] = ( ( null !== $product_id ) ? $product_id : $design->get_product_id() );
 			} else {
 				// Set some default post/cart data.
 				$post_data = array(
 					'quantity'    => 1,
-					'add-to-cart' => $design->get_product_id(),
+					'add-to-cart' => ( ( null === $product_id ) ? $design->get_product_id() : $product_id ),
 				);
 			}
 
@@ -150,31 +150,33 @@ class MyStyle_Customize_Page {
 			$mystyle_custom_template_enabled = get_post_meta( $design->get_product_id(), '_mystyle_custom_template', true );
 
 			if ( 'yes' === $mystyle_custom_template_enabled ) {
-				$passthru['width']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_width', true );
-				$passthru['height'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_height', true );
-				$passthru['shape']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_shape', true );
+				$custom_product_id = ( ( null !== $product_id ) ? $product_id : $design->get_product_id() );
 
-				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true ) ) {
-					$passthru['color'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true );
+				$passthru['width']  = get_post_meta( $custom_product_id, '_mystyle_custom_template_width', true );
+				$passthru['height'] = get_post_meta( $custom_product_id, '_mystyle_custom_template_height', true );
+				$passthru['shape']  = get_post_meta( $custom_product_id, '_mystyle_custom_template_shape', true );
+
+				if ( get_post_meta( $custom_product_id, '_mystyle_custom_template_color', true ) ) {
+					$passthru['color'] = get_post_meta( $custom_product_id, '_mystyle_custom_template_color', true );
 				}
 
-				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_default_text_color', true ) ) {
-					$passthru['textColorDefault'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_default_text_color', true );
+				if ( get_post_meta( $custom_product_id, '_mystyle_custom_template_default_text_color', true ) ) {
+					$passthru['textColorDefault'] = get_post_meta( $custom_product_id, '_mystyle_custom_template_default_text_color', true );
 				}
 
-				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bgimg', true ) ) {
-					$passthru['tbgimg'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bgimg', true );
+				if ( get_post_meta( $custom_product_id, '_mystyle_custom_template_bgimg', true ) ) {
+					$passthru['tbgimg'] = get_post_meta( $custom_product_id, '_mystyle_custom_template_bgimg', true );
 				}
 
-				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_fgimg', true ) ) {
-					$passthru['tfgimg'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_fgimg', true );
+				if ( get_post_meta( $custom_product_id, '_mystyle_custom_template_fgimg', true ) ) {
+					$passthru['tfgimg'] = get_post_meta( $custom_product_id, '_mystyle_custom_template_fgimg', true );
 				}
 
-				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bleed', true ) ) {
-					$passthru['bleed'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_bleed', true );
+				if ( get_post_meta( $custom_product_id, '_mystyle_custom_template_bleed', true ) ) {
+					$passthru['bleed'] = get_post_meta( $custom_product_id, '_mystyle_custom_template_bleed', true );
 				}
 
-				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_boxshadow', true ) === 'yes' ) {
+				if ( get_post_meta( $custom_product_id, '_mystyle_custom_template_boxshadow', true ) === 'yes' ) {
 					$passthru['boxshadow'] = 1;
 				}
 			}
@@ -190,8 +192,7 @@ class MyStyle_Customize_Page {
 			'design_id'  => $design->get_design_id(),
 			'h'          => $passthru_encoded,
 		);
-
-		$customizer_url = add_query_arg( $customize_args, get_permalink( self::get_id() ) );
+		$customizer_url   = add_query_arg( $customize_args, get_permalink( self::get_id() ) );
 
 		return $customizer_url;
 	}

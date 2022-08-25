@@ -784,10 +784,11 @@ class MyStyle_Design_Profile_Page {
 			) {
 				$design = $this->get_design();
 				if ( null !== $design ) {
+					$product = wc_get_product( $design->get_product_id() );
 					if ( '' !== $design->get_title() ) {
-						$title = $design->get_title();
+						$title = $design->get_title() . ' <span>' . $product->get_title() . '</span>';
 					} else {
-						$title = 'Design ' . $design->get_design_id();
+						$title = 'Design ' . $design->get_design_id() . '<span> ' . $product->get_title() . '</span>';
 					}
 				}
 			}
@@ -819,7 +820,8 @@ class MyStyle_Design_Profile_Page {
 
 		if ( $this->design ) {
 			if ( '' !== $this->design->get_title() ) {
-				$title['title'] = $this->design->get_title();
+				$product        = wc_get_product( $this->design->get_product_id() );
+				$title['title'] = $this->design->get_title() . ' - ' . $product->get_title();
 			}
 		}
 

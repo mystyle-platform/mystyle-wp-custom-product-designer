@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div id="mystyle-design-tag-index-wrapper" class="woocommerce design-tags">
+<div id="mystyle-design-tag-index-wrapper" class="mystyle-design-tag-index woocommerce design-tags">
 	<div class="mystyle-sort">
 		<form name="mystyle-sort-form" method="get" class="mystyle-sort-form" action="<?php echo esc_url( get_permalink( get_the_ID() ) ); ?>">
 			<label for="mystyle-sort-select">Sort tags by:</label>

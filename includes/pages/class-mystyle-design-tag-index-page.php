@@ -1,7 +1,7 @@
 <?php
 /**
- * The ;MyStyle_Design_Tag_Index_Page Singleton class has hooks for working with the
- * MyStyle Design Tag Index page.
+ * The MyStyle_Design_Tag_Index_Page Singleton class has hooks for working with
+ * the MyStyle Design Tag Index page.
  *
  * @package MyStyle
  * @since 3.19.0

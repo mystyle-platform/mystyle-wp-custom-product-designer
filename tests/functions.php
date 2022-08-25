@@ -22,8 +22,8 @@ function get_function_names( $reg ) {
 	foreach ( $callbacks as $callback ) {
 		foreach ( $callback as $function ) {
 			$func = $function['function'];
-			if (is_array($func)) {
-				$method = $func[1];
+			if ( is_array( $func ) ) {
+				$method        = $func[1];
 				$function_name = $method;
 			} else {
 				$function_name = $func;

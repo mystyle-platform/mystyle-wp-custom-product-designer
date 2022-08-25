@@ -599,9 +599,14 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
 		// Create the MyStyle Design Profile page.
 		MyStyle_Design_Profile_Page::create();
 
+		// Create a product and set it on the design.
+		$product_id = create_wc_test_product();
+		$product    = new \WC_Product_Simple( $product_id );
+
 		// Create a design.
 		$result_object = new MyStyle_MockDesignQueryResult( 1 );
 		$design        = MyStyle_Design::create_from_result_object( $result_object );
+		$design->set_product_id( $product_id );
 
 		// Instantiate the MyStyle Design Profile page.
 		$mystyle_design_profile_page = MyStyle_Design_Profile_Page::get_instance();
@@ -613,10 +618,13 @@ class MyStyleDesignProfilePageTest extends WP_UnitTestCase {
 		$wp_query->in_the_loop = true;
 
 		// Call the function.
-		$new_title = $mystyle_design_profile_page->filter_title( 'foo', MyStyle_Design_Profile_Page::get_id() );
+		$new_title = $mystyle_design_profile_page->filter_title(
+			'foo',
+			MyStyle_Design_Profile_Page::get_id()
+		);
 
 		// Expected.
-		$expected = 'Design ' . $design->get_design_id();
+		$expected = 'Design ' . $design->get_design_id() . ' <span>Test Product</span>';
 
 		// Assert that the title has been set as expected.
 		$this->assertEquals( $expected, $new_title );

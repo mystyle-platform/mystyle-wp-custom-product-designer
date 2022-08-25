@@ -42,7 +42,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<img alt="<?php echo esc_html( ( ! empty( $design->get_title() ) ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?> Image" src="<?php echo esc_url( $design->get_thumb_url() ); ?>" />
 							<?php echo esc_html( ( ! empty( $design->get_title() ) ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?>
 						</a>
-						<div>Designed by: <?php echo esc_html( $user->user_nicename ); ?></div>
+						<div class="mystyle-design-author">
+							Designed by: <?php echo esc_html( $user->user_nicename ); ?>
+						</div>
 					</li>
 				<?php endforeach; ?>
 			</ul>

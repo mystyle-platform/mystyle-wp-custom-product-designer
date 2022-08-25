@@ -31,7 +31,7 @@ abstract class MyStyle_Design_Collection_Shortcode extends MyStyle_Design_Term_S
 
 		$page       = 1;
 		$limit      = 4;
-		$term_limit = 10;
+		$term_limit = 24;
 		$offset     = 0;
 
 		$all_terms = get_terms(
