@@ -149,22 +149,6 @@ class MyStyle_FrontEnd {
 
 				$this->exception          = $ex;
 				$this->http_response_code = $response_code;
-			} catch ( MyStyle_Unauthorized_Exception $ex ) { // unauthenticated.
-				// Note: we would ideally return a 401 but WordPress seems to work best
-				// with 200.
-				$response_code = 200;
-				status_header( $response_code );
-
-				$this->exception          = $ex;
-				$this->http_response_code = $response_code;
-			} catch ( MyStyle_Forbidden_Exception $ex ) {
-				// Note: we would ideally return a 403 but WordPress seems to work best
-				// with 200.
-				$response_code = 200;
-				status_header( $response_code );
-
-				$this->exception          = $ex;
-				$this->http_response_code = $response_code;
 			}
 		}
 	}

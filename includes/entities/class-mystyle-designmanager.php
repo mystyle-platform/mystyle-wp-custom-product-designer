@@ -52,13 +52,6 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 *                                       check (default false).
 	 * @return \MyStyle_Design|null Returns the MyStyle_Design entity or null
 	 * if the design can't be found.
-	 * @throws MyStyle_Forbidden_Exception Throws a MyStyle_Forbidden_Exception
-	 * if the requested design is marked as private and the user isn't logged
-	 * in.
-	 * @throws MyStyle_Unauthorized_Exception Throws a
-	 * MyStyle_Unauthorized_Exception if the design is marked as private and the
-	 * the passed user is not the owner of the design and the user doesn't have
-	 * 'read_private_posts' capability.
 	 */
 	public static function get(
 		$design_id,
