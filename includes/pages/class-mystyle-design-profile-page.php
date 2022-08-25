@@ -215,12 +215,11 @@ class MyStyle_Design_Profile_Page {
 	 * Init the singleton for a design request.
 	 *
 	 * @param int $design_id The design_id to use when initializing.
-	 * @throws MyStyle_Forbidden_Exception Throws a MyStyle_Forbidden_Exception
-	 * if the user isn't authorized to access the Design.
 	 * @throws MyStyle_Not_Found_Exception Throws a MyStyle_Not_Found_Exception
 	 * if the Design can't be found.
 	 */
 	private function init_design_request( $design_id ) {
+
 		try {
 			// Get the design. If the user doesn't have access, an exception is
 			// thrown (and caught at the bottom of this function).
@@ -229,10 +228,6 @@ class MyStyle_Design_Profile_Page {
 				$this->user,
 				$this->session
 			);
-
-			if ( ! MyStyle_DesignManager::security_check( $design, $this->user, $this->session ) ) {
-				throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
-			}
 
 			// Get the previous design.
 			$this->set_previous_design(
@@ -302,6 +297,7 @@ class MyStyle_Design_Profile_Page {
 			$this->set_exception( $ex );
 			$this->set_http_response_code( $response_code );
 		}
+
 	}
 
 	/**
@@ -324,8 +320,7 @@ class MyStyle_Design_Profile_Page {
 		// Pager items.
 		$designs = MyStyle_DesignManager::get_designs(
 			$this->pager->get_items_per_page(),
-			$this->pager->get_current_page_number(),
-			$this->user
+			$this->pager->get_current_page_number()
 		);
 		$this->pager->set_items( $designs );
 
@@ -878,8 +873,8 @@ class MyStyle_Design_Profile_Page {
 					$design_title = $design->get_title();
 				}
 
-				$tags        = MyStyle_DesignManager::get_design_tags( $design_id );
-				$collections = MyStyle_DesignManager::get_design_collections( $design_id );
+				$tags        = MyStyle_Design_Tag_Manager::get_design_tags( $design_id );
+				$collections = MyStyle_Design_Collection_Manager::get_design_collections( $design_id );
 
 				if ( $user ) {
 					?>

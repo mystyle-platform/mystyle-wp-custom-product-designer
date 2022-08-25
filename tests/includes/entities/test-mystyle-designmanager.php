@@ -153,12 +153,10 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that the get function throws a MyStyle_Unauthorized_Exception when
+	 * Test that the get function returns an obfuscated design image when
 	 * accessing a private design and unidentified ( no user passed ).
 	 */
 	public function test_get_private_design_when_unauthorized() {
-		$this->setExpectedException( 'MyStyle_Unauthorized_Exception' );
-
 		$design_id = 1;
 		$user_id   = 1;
 
@@ -172,15 +170,17 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 
 		// Call the function.
 		$design_from_db = MyStyle_DesignManager::get( $design_id );
+
+		// Assert that the obfuscation image is returned.
+		$private_img_url = MYSTYLE_ASSETS_URL . 'images/private-design.jpg';
+		$this->assertEquals( $private_img_url, $design_from_db->get_web_url() );
 	}
 
 	/**
-	 * Test that the get function throws a MyStyle_Forbidden_Exception when
+	 * Test that the get function returns an obfuscated design image when
 	 * accessing a private design that isn't the user's.
 	 */
 	public function test_get_private_design_when_forbidden() {
-		$this->setExpectedException( 'MyStyle_Forbidden_Exception' );
-
 		$design_id = 1;
 		$user_id   = 1;
 
@@ -199,6 +199,10 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 
 		// Call the function.
 		$design_from_db = MyStyle_DesignManager::get( $design_id, $user );
+
+		// Assert that the obfuscation image is returned.
+		$private_img_url = MYSTYLE_ASSETS_URL . 'images/private-design.jpg';
+		$this->assertEquals( $private_img_url, $design_from_db->get_web_url() );
 	}
 
 	/**
@@ -699,7 +703,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 
 		// Create a design.
 		$design_1 = MyStyle_MockDesign::get_mock_design( 1 );
-		MyStyle_DesignManager::persist( $design_1 );
+		MyStyle_Design_Tag_Manager::persist( $design_1 );
 
 		// Give the design the term.
 		$tag_name      = 'test_tag';
@@ -716,7 +720,9 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		MyStyle_DesignManager::persist( $design_2 );
 
 		// Call the function.
-		$designs = MyStyle_DesignManager::get_designs_by_term_id( $term_id );
+		$designs = MyStyle_Design_Tag_Manager::get_designs_by_tag_term_taxonomy_id(
+			$term_id
+		);
 
 		// Assert that only the design with the term was returned.
 		$this->assertEquals( 1, count( $designs ) );
@@ -768,7 +774,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		MyStyle_DesignManager::persist( $design_2 );
 
 		// Call the function.
-		$count = MyStyle_DesignManager::get_total_user_design_count( $user_1 );
+		$count = MyStyle_DesignManager::get_total_user_design_count( $user_1, $user_2 );
 
 		// Assert that the expected count is returned.
 		$this->assertEquals( 1, $count );
@@ -798,7 +804,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		MyStyle_DesignManager::persist( $design_2 );
 
 		// Call the function.
-		$count = MyStyle_DesignManager::get_total_term_design_count( $term_id );
+		$count = MyStyle_Design_Tag_Manager::get_total_tag_design_count( $term_id );
 
 		// Assert that the expected count is returned.
 		$this->assertEquals( 1, $count );
@@ -880,7 +886,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		$term_id       = $term_ids[0];
 
 		// Call the function.
-		$tags = MyStyle_DesignManager::get_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::get_design_tags(
 			$design->get_design_id()
 		);
 
@@ -909,7 +915,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		$term_id       = $term_ids[0];
 
 		// Call the function.
-		$tags = MyStyle_DesignManager::get_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::get_design_tags(
 			$design->get_design_id(),
 			true // with_slugs.
 		);
@@ -938,7 +944,7 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		MyStyle_DesignManager::persist( $design );
 
 		// Call the function.
-		$tag_id = MyStyle_DesignManager::add_tag_to_design(
+		$tag_id = MyStyle_Design_Tag_Manager::add_tag_to_design(
 			$design_id,
 			$tag_name,
 			$user
@@ -966,14 +972,14 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		MyStyle_DesignManager::persist( $design );
 
 		// Add the Tag to the design.
-		$tag_id = MyStyle_DesignManager::add_tag_to_design(
+		$tag_id = MyStyle_Design_Tag_Manager::add_tag_to_design(
 			$design_id,
 			$tag_name,
 			$user
 		);
 
 		// Get the tags for the design.
-		$tags = MyStyle_DesignManager::get_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::get_design_tags(
 			$design->get_design_id()
 		);
 
@@ -981,14 +987,14 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		$this->assertEquals( 1, count( $tags ) );
 
 		// Call the method.
-		$tags = MyStyle_DesignManager::remove_tag_from_design(
+		$tags = MyStyle_Design_Tag_Manager::remove_tag_from_design(
 			$design->get_design_id(),
 			$tag_name,
 			$user
 		);
 
 		// Get the tags for the design (again).
-		$tags = MyStyle_DesignManager::get_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::get_design_tags(
 			$design->get_design_id()
 		);
 
@@ -1015,14 +1021,14 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		MyStyle_DesignManager::persist( $design );
 
 		// Add the Tag to the design.
-		$tag_id = MyStyle_DesignManager::add_tag_to_design(
+		$tag_id = MyStyle_Design_Tag_Manager::add_tag_to_design(
 			$design_id,
 			$orig_tag_name,
 			$user
 		);
 
 		// Get the tags for the design.
-		$tags = MyStyle_DesignManager::get_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::get_design_tags(
 			$design->get_design_id()
 		);
 
@@ -1030,14 +1036,14 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		$this->assertEquals( 1, count( $tags ) );
 
 		// Call the method.
-		$tags = MyStyle_DesignManager::update_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::update_design_tags(
 			$design->get_design_id(),
 			$new_tags,
 			$user
 		);
 
 		// Get the tags for the design (again).
-		$tags = MyStyle_DesignManager::get_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::get_design_tags(
 			$design->get_design_id()
 		);
 
@@ -1065,14 +1071,14 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		MyStyle_DesignManager::persist( $design );
 
 		// Add the Tag to the design.
-		$tag_id = MyStyle_DesignManager::add_tag_to_design(
+		$tag_id = MyStyle_Design_Tag_Manager::add_tag_to_design(
 			$design_id,
 			$orig_tag_name,
 			$user
 		);
 
 		// Get the tags for the design.
-		$tags = MyStyle_DesignManager::get_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::get_design_tags(
 			$design->get_design_id()
 		);
 
@@ -1080,14 +1086,14 @@ class MyStyleDesignManagerTest extends WP_UnitTestCase {
 		$this->assertEquals( 1, count( $tags ) );
 
 		// Call the method.
-		$tags = MyStyle_DesignManager::update_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::update_design_tags(
 			$design->get_design_id(),
 			$new_tags,
 			$user
 		);
 
 		// Get the tags for the design (again).
-		$tags = MyStyle_DesignManager::get_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::get_design_tags(
 			$design->get_design_id()
 		);
 

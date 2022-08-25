@@ -9,7 +9,7 @@
 /**
  * MyStyle_Design_Tag_Shortcode class.
  */
-abstract class MyStyle_Design_Tag_Shortcode {
+abstract class MyStyle_Design_Tag_Shortcode extends MyStyle_Design_Term_Shortcode {
 
 	/**
 	 * Output the design tag shortcode.
@@ -18,12 +18,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
 	 */
 	public static function output( $atts ) {
 
-		$wp_user = wp_get_current_user();
-
-		$session = MyStyle()->get_session();
-
 		$show_designs = true;
-
 		if (
 			( isset( $atts['show_designs'] ) )
 			&& ( 'false' === $atts['show_designs'] )
@@ -31,76 +26,31 @@ abstract class MyStyle_Design_Tag_Shortcode {
 			$show_designs = false;
 		}
 
-		if ( isset( $atts['per_tag'] ) ) {
-			$per_tag = $atts['per_tag'];
-		}
-
-		if ( isset( $atts['tags_per_page'] ) ) {
-			$tags_per_page = $atts['tags_per_page'];
-		}
-
-		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
-		if ( isset( $_GET['sort_by'] ) ) {
-			$sort_by = sanitize_text_field( wp_unslash( $_GET['sort_by'] ) );
-		}
-		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
-
-		$pager  = 0;
-		$limit  = ( $show_designs ? $tags_per_page : 1000 );
-		$offset = 0;
-
-		// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-		if ( isset( $_GET['pager'] ) ) {
-			$pager  = intval( $_GET['pager'] );
-			$offset = ( $pager * $limit );
-		}
-		// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-
-		$sort_by_slug  = 'count';
-		$sort_by_order = 'DESC';
-
-		if ( 'alpha' === $sort_by ) {
-			$sort_by_slug  = 'name';
-			$sort_by_order = 'ASC';
-		}
-
-		$terms = get_terms(
-			array(
-				'taxonomy'   => MYSTYLE_TAXONOMY_NAME,
-				'hide_empty' => false,
-				'orderby'    => $sort_by_slug,
-				'order'      => $sort_by_order,
-				'number'     => $limit,
-				'offset'     => $offset,
-			)
-		);
-
-		$terms_count = count( $terms );
-
 		if ( $show_designs ) {
-
-			for ( $i = 0; $i < $terms_count; $i++ ) {
-				$designs = MyStyle_DesignManager::get_designs_by_term_taxonomy_id(
-					$terms[ $i ]->term_taxonomy_id,
-					$wp_user,
-					$session,
-					$per_tag,
-					1
-				);
-
-				$design_count = count( $designs );
-
-				if ( 0 === $design_count ) {
-					unset( $terms[ $i ] );
-				} else {
-					$terms[ $i ]->designs = $designs;
-				}
-			}
+			$out = self::get_design_tag_output( $atts );
+		} else {
+			$out = self::get_design_tag_index_output( $atts );
 		}
 
-		$pager_array = self::pager( $pager, $limit, $terms_count );
-		$next        = $pager_array['next'];
-		$prev        = $pager_array['prev'];
+		return $out;
+	}
+
+	/**
+	 * Gets the design tag index (the output with just links).
+	 *
+	 * @param array $atts The attributes set on the shortcode.
+	 * @return string Returns the output.
+	 */
+	private static function get_design_tag_index_output( $atts ) {
+
+		$sort_by = self::get_sort_by( $atts );
+
+		$terms = MyStyle_Design_Tag_Manager::get_tags(
+			250, // Terms per page.
+			1, // Page num.
+			$sort_by['slug'],
+			$sort_by['direction']
+		);
 
 		ob_start();
 		require MYSTYLE_TEMPLATES . 'design-tag-index.php';
@@ -111,29 +61,59 @@ abstract class MyStyle_Design_Tag_Shortcode {
 	}
 
 	/**
-	 * Helper method that returns the pager array.
+	 * Gets the design tag output.
 	 *
-	 * @param int $pager The current page.
-	 * @param int $limit The limit.
-	 * @param int $term_count The total number of terms.
-	 * @return array Returns the pager array.
+	 * @param array $atts The attributes set on the shortcode.
+	 * @return string Returns the output.
+	 * @throws MyStyle_Not_Found_Exception Throws a MyStyle_Not_Found_Exception
+	 * if the requested page number doesn't exist.
 	 */
-	private static function pager( $pager, $limit, $term_count ) {
-		$next = $pager + 1;
-		$prev = $pager - 1;
+	private static function get_design_tag_output( $atts ) {
 
-		if ( $term_count < $limit ) {
-			$next = null;
+		$sort_by = self::get_sort_by( $atts );
+
+		$designs_per_tag = 5;
+		if ( isset( $atts['per_tag'] ) ) {
+			$designs_per_tag = $atts['per_tag'];
 		}
 
-		if ( 0 === $pager ) {
-			$prev = null;
+		$tags_per_page = 250;
+		if ( isset( $atts['tags_per_page'] ) ) {
+			$tags_per_page = $atts['tags_per_page'];
 		}
 
-		return array(
-			'prev' => $prev,
-			'next' => $next,
+		$page = 1;
+		// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+		if ( isset( $_GET['pager'] ) ) {
+			$page = intval( $_GET['pager'] );
+			if ( $page < 1 ) {
+				throw new MyStyle_Not_Found_Exception( 'Page not found.' );
+			}
+		}
+		// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+
+		$term_designs = MyStyle_Design_Tag_Manager::get_designs_by_tag(
+			$tags_per_page,
+			$page,
+			$designs_per_tag,
+			$sort_by['slug'],
+			$sort_by['direction']
 		);
+
+		// More variables for the view layer.
+		$total_terms = MyStyle_Design_Tag_Manager::get_tags_count();
+		$pager_array = self::get_pager( $page, $tags_per_page, $total_terms );
+		$next        = $pager_array['next'];
+		$prev        = $pager_array['prev'];
+		$wp_user     = wp_get_current_user();
+		$session     = MyStyle()->get_session();
+
+		ob_start();
+		require MYSTYLE_TEMPLATES . 'design-tag.php';
+		$out = ob_get_contents();
+		ob_end_clean();
+
+		return $out;
 	}
 
 }

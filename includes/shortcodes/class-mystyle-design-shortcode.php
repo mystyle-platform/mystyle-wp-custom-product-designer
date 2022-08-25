@@ -203,7 +203,7 @@ abstract class MyStyle_Design_Shortcode {
 		$pager->set_current_page_number( 1 );
 
 		// Pager items.
-		$designs = MyStyle_DesignManager::get_designs_by_term_taxonomy_id( $term_taxonomy_id, $user, $session, $count, 1 );
+		$designs = MyStyle_Design_Tag_Manager::get_designs_by_tag_term_taxonomy_id( $term_taxonomy_id, $user, $session, $count, 1 );
 
 		$pager->set_items( $designs );
 

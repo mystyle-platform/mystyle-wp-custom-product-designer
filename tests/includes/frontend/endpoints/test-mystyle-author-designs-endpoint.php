@@ -1,16 +1,16 @@
 <?php
 /**
- * The MyStyleAuthorDesignsPageTest class includes tests for testing the
- * MyStyle_Author_Designs_Page class.
+ * The MyStyleAuthorDesignsEndpointPageTest class includes tests for testing the
+ * MyStyle_Author_Designs_Endpoint class.
  *
  * @package MyStyle
  * @since 3.17.0
  */
 
 /**
- * MyStyleAuthorDesignsPageTest class.
+ * MyStyleAuthorDesignsEndpointTest class.
  */
-class MyStyleAuthorDesignsPageTest extends WP_UnitTestCase {
+class MyStyleAuthorDesignsEndpointTest extends WP_UnitTestCase {
 
 	/**
 	 * Test the constructor.
@@ -20,7 +20,7 @@ class MyStyleAuthorDesignsPageTest extends WP_UnitTestCase {
 	public function test_constructor() {
 		global $wp_filter;
 
-		$page = new MyStyle_Author_Designs_Page();
+		$page = new MyStyle_Author_Designs_Endpoint();
 
 		// Assert that the init function is registered.
 		$function_names = get_function_names( $wp_filter['init'] );
@@ -36,7 +36,7 @@ class MyStyleAuthorDesignsPageTest extends WP_UnitTestCase {
 		$expected_url = 'http://example.org/author/testauthor/designs/';
 
 		// Call the function.
-		$url = MyStyle_Author_Designs_Page::get_author_url( $author );
+		$url = MyStyle_Author_Designs_Endpoint::get_author_url( $author );
 
 		// Assert that the exepected $url was returned.
 		$this->assertEquals( $expected_url, $url );

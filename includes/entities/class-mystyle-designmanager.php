@@ -84,11 +84,13 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		// -------------- SECURITY CHECK ------------ //
-		if ( ! self::security_check( $design, $user, $session, $skip_security ) ) {
-			$private_img_url = MYSTYLE_ASSETS_URL . 'images/private-design.jpg';
-			$design->set_web_url( $private_img_url );
-			$design->set_thumb_url( $private_img_url );
-			$design->set_print_url( $private_img_url );
+		if ( null !== $design ) {
+			if ( ! self::security_check( $design, $user, $session, $skip_security ) ) {
+				$private_img_url = MYSTYLE_ASSETS_URL . 'images/private-design.jpg';
+				$design->set_web_url( $private_img_url );
+				$design->set_thumb_url( $private_img_url );
+				$design->set_print_url( $private_img_url );
+			}
 		}
 
 		// ------------ END SECURITY CHECK ------------ //
@@ -99,19 +101,19 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 * Checks the security rules to determine if access to the passed Design
 	 * should be allowed.
 	 *
-	 * @param \MyStyle_Design  $design        The design being accessed.
-	 * @param \WP_User         $user          The user that is trying to access
-	 *                                        the design.
-	 * @param \MyStyle_Session $session       The current session.
-	 * @param boolean          $skip_security Whether or not to skip the
-	 *                                        security check.
+	 * @param \MyStyle_Design       $design        The design being accessed.
+	 * @param \WP_User              $user          The user that is trying to access
+	 *                                             the design.
+	 * @param \MyStyle_Session|null $session       The current session.
+	 * @param boolean               $skip_security Whether or not to skip the
+	 *                                             security check.
 	 * @return boolean Returns true if access is allowed. Returns false if
 	 * access is denied.
 	 */
 	public static function security_check(
 		MyStyle_Design $design,
-		WP_User $user,
-		MyStyle_Session $session,
+		WP_User $user = null,
+		MyStyle_Session $session = null,
 		bool $skip_security = false
 	) {
 		if ( ( null !== $design ) && ( ! $skip_security ) ) {
@@ -258,7 +260,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	/**
 	 * Sets the Design access, used by the design manager and design profile pages
 	 *
-	 * @deprecated Depricated since 3.18.3. Use get and persist instead.
+	 * @deprecated Deprecated since 3.18.3. Use get and persist instead.
 	 * @param int $design_id The design_id of the design that you want to set
 	 * the access of.
 	 * @param int $access    The new access visibility (1,2,3, etc). See the
@@ -341,7 +343,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	/**
 	 * Sets the Design title.
 	 *
-	 * @deprecated Depricated since 3.18.3. Use get and persist instead.
+	 * @deprecated Deprecated since 3.18.3. Use get and persist instead.
 	 * @param int    $design_id The design_id of the design that you want to set
 	 * the title of.
 	 * @param string $title     The new title.
@@ -441,63 +443,54 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	}
 
 	/**
-	 * Retrieve user designs from the database.
+	 * Retrieves designs that were created by the passed user/author from the
+	 * database.
 	 *
 	 * The designs are filtered for the passed user based on these rules:
 	 *
-	 *  * If no user is specified, only public designs are returned.
-	 *  * If the passed user is an admin (or has the 'read_private_posts'
-	 *    capability, all designs are returned).
-	 *  * If the passed user is a regular user, all public designs are returned
-	 *    along with any private designs that the user owns.
+	 *  * If the current_user is the author whose designs are being retrieved,
+	 *    all designs are returned (regardless of whether they are
+	 *    public/private/etc).
+	 *  * If the passed user is different from the author whose designs are
+	 *    being retrieved, only the author's public designs are returned.
 	 *
-	 * @param int     $per_page The number of designs to show per page (default:
-	 * 250).
-	 * @param int     $page_number The page number of the set of designs that you
-	 * want to get (default: 1).
-	 * @param WP_User $user (optional) The current user.
-	 * @global $wpdb;
-	 * @return mixed Returns an array of MyStyle_Design objects or null if none
-	 * are found.
+	 * @param int     $per_page     The number of designs to show per
+	 *                              page (default: 250).
+	 * @param int     $page_number  The page number of the set of designs
+	 *                              that you want to get (default: 1).
+	 * @param WP_User $author       The design author/designer.
+	 * @param WP_User $current_user The current user.
+	 * @return array|null Returns an array of MyStyle_Design objects or null if
+	 * none are found.
+	 * @global \wpdb $wpdb;
 	 */
 	public static function get_user_designs(
 		$per_page = 250,
 		$page_number = 1,
-		$user
+		WP_User $author,
+		WP_User $current_user
 	) {
 		global $wpdb;
 
-		$sql = '';
-
-		if ( is_string( $user ) ) {
-			$sql .= ' WHERE (ms_email = "' . $user . '") AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC;
-		} else {
-			$current_user_id = get_current_user_id();
-			if ( $current_user_id === $user->ID ) {
-				$sql .= ' WHERE (user_id = ' . $user->ID . ') ';
-			} else {
-				$sql .= ' WHERE (user_id = ' . $user->ID . ') AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC;
-			}
+		$access_clause = '';
+		if ( $current_user->ID !== $author->ID ) {
+			// Retrieving designs for a different user (return public designs
+			// only).
+			$access_clause = ' AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC;
 		}
-
-		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
-		if ( ! empty( $_GET['orderby'] ) ) {
-			$sql .= ' ORDER BY ' . sanitize_text_field( wp_unslash( $_GET['orderby'] ) );
-			$sql .= ! empty( $_GET['order'] ) ? ' ' . sanitize_text_field( wp_unslash( $_GET['order'] ) ) : ' ASC';
-		} else {
-			$sql .= ' ORDER BY ms_design_id DESC';
-		}
-		// phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 
 		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT * '
-				. "FROM {$wpdb->prefix}mystyle_designs "
-				. $sql
-				. ' LIMIT %d
+				. "FROM {$wpdb->prefix}mystyle_designs
+				WHERE user_id = %s"
+				. $access_clause
+				. ' ORDER BY ms_design_id DESC
+				LIMIT %d
 				OFFSET %d',
 				array(
+					$author->ID,
 					$per_page,
 					( $page_number - 1 ) * $per_page,
 				)
@@ -577,6 +570,101 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	}
 
 	/**
+	 * Retrieve Designs grouped by term. Only includes public Designs and terms
+	 * that are used by at least one public Design.
+	 *
+	 * @param string      $taxonomy         The term taxonomy to use.
+	 * @param int|null    $terms_per_page   The number of terms to show per page
+	 *                                      (default: 250).
+	 * @param int|null    $page_number      The page number of the set of designs
+	 *                                 that you want to get (default: 1).
+	 * @param int|null    $designs_per_term The number of designs to show per term.
+	 * @param string|null $order_by         What to order the results by (can be
+	 *                                      either "name" or "count"). Default is
+	 *                                      "name".
+	 * @param string|null $order_direction  The direction to order the results in.
+	 *                                      Can be either "ASC" (Ascending) or "DESC"
+	 *                                      (Descending). Default is "ASC".
+	 * @return array Returns a two dimensional array structured as:
+	 * `["term_slug" => ["term" => WP_Term, "designs" => MyStyle_Design[]]]`.
+	 * and an array of Designs.
+	 * @throws \InvalidArgumentException Throws an InvalidArgumentException if
+	 * the passed order_direction isn't one of "ASC", "DESC".
+	 * @global \wpdb $wpdb
+	 */
+	public static function get_designs_by_term(
+		string $taxonomy,
+		$terms_per_page = 250,
+		$page_number = 1,
+		$designs_per_term = 5,
+		$order_by = 'name',
+		$order_direction = 'ASC'
+	) {
+		global $wpdb;
+
+		// Validate the order_direction argument.
+		if ( ! in_array( $order_direction, array( 'ASC', 'DESC' ), true ) ) {
+			throw new \InvalidArgumentException(
+				'Invalid order_direction param "' . $order_direction . '".'
+			);
+		}
+
+		// Get the terms.
+		$terms = MyStyle_Design_Term_Manager::get_terms(
+			$taxonomy,
+			$terms_per_page,
+			$page_number,
+			$order_by,
+			$order_direction
+		);
+
+		$offset = ( $page_number - 1 ) * $terms_per_page;
+
+		// Build the 'IN' statement.
+		$in_arr = array();
+		foreach ( $terms as $term ) {
+			$in_arr[] = $term->term_taxonomy_id;
+		}
+		if ( 0 === count( $in_arr ) ) {
+			return array();
+		}
+		$in_str = implode( ',', $in_arr );
+
+		// Query the db for the designs.
+		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
+		$results = $wpdb->get_results(
+			'SELECT d.*, tt.term_taxonomy_id, tt.taxonomy, t.term_id, t.name, t.slug '
+			. "FROM {$wpdb->prefix}term_relationships r "
+			. "LEFT JOIN {$wpdb->prefix}mystyle_designs d ON (r.object_id = d.ms_design_id) "
+			. "LEFT JOIN {$wpdb->prefix}term_taxonomy tt ON (r.term_taxonomy_id = tt.term_taxonomy_id) "
+			. "LEFT JOIN {$wpdb->prefix}terms t ON (t.term_id = tt.term_id) "
+			. "WHERE tt.term_taxonomy_id IN ({$in_str}) "
+		);
+		// phpcs:enable WordPress.WP.PreparedSQL.NotPrepared
+
+		// Add the Terms to the return array.
+		$term_designs = array();
+		foreach ( $terms as $term ) {
+			$slug                  = $term->slug;
+			$term_designs[ $slug ] = array(
+				'term'    => $term,
+				'designs' => array(),
+			);
+		}
+
+		// Add the Designs to the return array.
+		foreach ( $results as $result ) {
+			$slug = $result->slug;
+			if ( count( $term_designs[ $slug ]['designs'] ) < $designs_per_term ) {
+				$term_designs[ $slug ]['designs'][]
+					= MyStyle_Design::create_from_result_object( $result );
+			}
+		}
+
+		return $term_designs;
+	}
+
+	/**
 	 * Retrieve designs by term id.
 	 *
 	 * @param int                   $term_taxonomy_id The term taxonomy id.
@@ -600,7 +688,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	) {
 		global $wpdb;
 
-		$terms = $wpdb->get_results(
+		$term_relationships = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT object_id '
 				. "FROM {$wpdb->prefix}term_relationships "
@@ -617,12 +705,14 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		$designs = array();
 
-		foreach ( $terms as $term ) {
+		foreach ( $term_relationships as $term_relationship ) {
 			try {
+				$design = self::get( $term_relationship->object_id, $user, $session );
 
-				$design = self::get( $term->object_id, $user, $session );
-
-				if ( null !== $design && self::security_check( $design, $user, $session ) ) {
+				if (
+					( null !== $design )
+					&& ( self::security_check( $design, $user, $session ) )
+				) {
 					array_push( $designs, $design );
 				}
 			} catch ( MyStyle_Unauthorized_Exception $ex ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
@@ -655,9 +745,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		$where = '';
 
 		// Add security WHERE clause.
-		if ( null !== $user ) {
-			$where .= self::get_security_where_clause( 'WHERE', $user );
-		}
+		$where .= self::get_security_where_clause( 'WHERE', $user );
 
 		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
 		$count = intval(
@@ -673,80 +761,43 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	}
 
 	/**
-	 * Retrieve the total number of user designs (filtered by WP_user->ID or email string) from
-	 * the db.
+	 * Retrieve the total number of designs for the passed author/designer. If
+	 * the passed current user isn't the author, only the public designs are
+	 * included in the count.
 	 *
-	 * @param mixed    $user   The current user. Either WP_User OR user email
-	 *                         string.
-	 * @param int|null $access (optional) Design Access.
-	 * @return integer
+	 * @param WP_User $author       The design author/designer.
+	 * @param WP_User $current_user The current user.
+	 * @return integer Returns the number of designs.
 	 * @global wpdb $wpdb WordPress database abstraction object.
 	 */
-	public static function get_total_user_design_count( $user, $access = null ) {
+	public static function get_total_user_design_count(
+		WP_User $author,
+		WP_User $current_user
+	) {
 		global $wpdb;
 
-		if ( null === $access ) {
-			$access = MyStyle_Access::ACCESS_PUBLIC;
-		}
-
-		$where = ' WHERE ms_access = ' . esc_sql( $access );
-
-		if ( is_string( $user ) ) {
-			$where .= ' AND ms_email = ' . esc_sql( $user );
-		} else {
-			$where .= ' AND user_id = ' . esc_sql( $user->ID );
+		$access_clause = '';
+		if ( $current_user->ID !== $author->ID ) {
+			// Retrieving designs for a different user (return public designs
+			// only).
+			$access_clause = ' AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC;
 		}
 
 		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
 		$count = intval(
 			$wpdb->get_var(
-				'SELECT COUNT(ms_design_id) '
-				. "FROM {$wpdb->prefix}mystyle_designs "
-				. $where
+				$wpdb->prepare(
+					'SELECT COUNT(ms_design_id) '
+					. "FROM {$wpdb->prefix}mystyle_designs
+					WHERE user_id = %s"
+					. $access_clause,
+					array(
+						$author->ID,
+					)
+				)
 			)
 		);
 		// phpcs:enable WordPress.WP.PreparedSQL.NotPrepared
-
-		return $count;
-	}
-
-	/**
-	 * Retrieve the total number of designs having the passed term.
-	 *
-	 * @param int                   $term_taxonomy_id The term taxonomy id.
-	 * @param \WP_User|null         $user             The current user.
-	 * @param \MyStyle_Session|null $session          The current MyStyle
-	 *                                                session.
-	 * @return integer Returns the total number of terms.
-	 * @global $wpdb
-	 */
-	public static function get_total_term_design_count(
-		$term_taxonomy_id,
-		WP_User $user = null,
-		MyStyle_Session $session = null ) {
-
-		global $wpdb;
-
-		$access = MyStyle_Access::ACCESS_PUBLIC;
-
-		$object_ids = $wpdb->get_results(
-			$wpdb->prepare(
-				'SELECT object_id '
-				. "FROM {$wpdb->prefix}term_relationships "
-				. 'WHERE term_taxonomy_id = %d',
-				array( $term_taxonomy_id )
-			)
-		);
-
-		$count = 0;
-
-		foreach ( $object_ids as $object ) {
-			$design = self::get( $object->object_id, $user, $session );
-
-			if ( null !== $design && self::security_check( $design, $user, $session ) ) {
-				$count++;
-			}
-		}
 
 		return $count;
 	}
@@ -782,342 +833,6 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		return $ret;
-	}
-
-	/**
-	 * Get the tags for the design with the passed design id. See below for more
-	 * info about the return value.
-	 *
-	 * @param int  $design_id The id of the design that you want to get. If
-	 *                        null, the function will attempt to get the
-	 *                        design id from the URL.
-	 * @param bool $with_slug Set to true (default is false) to include the
-	 *                        term slug in the returned tags. If true, the
-	 *                        returned array becomes two dimensional with each
-	 *                        entry having a 'name' and a 'slug' (and possibly
-	 *                        an id.
-	 * @param bool $with_id   Set to true (default is false) to include the
-	 *                        term id in the returned tags. If true, the
-	 *                        returned array becomes two dimensional with each
-	 *                        entry having a 'name' and an 'id' (and possibly a
-	 *                        'slug').
-	 * @return array Returns an array of tags. If the slug param is false, it
-	 * will return a one dimensional array like ["Foo", "Bar"]. If the slug
-	 * param is true, it will return a two dimensional array like
-	 * [["name" => "Foo", "slug" => "foo"], ["name" => "Bar", "slug" => "bar"]].
-	 */
-	public static function get_design_tags(
-		$design_id,
-		$with_slug = false,
-		$with_id = false
-	) {
-		$tags  = array();
-		$terms = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME );
-
-		foreach ( $terms as $term ) {
-			if ( $with_slug || $with_id ) {
-				$entry = array(
-					'name' => $term->name,
-				);
-				if ( $with_slug ) {
-					$entry['slug'] = $term->slug;
-				}
-				if ( $with_id ) {
-					$entry['id'] = $term->term_taxonomy_id;
-				}
-			} else {
-				$entry = $term->name;
-			}
-			$tags[] = $entry;
-		}
-
-		return $tags;
-	}
-
-	/**
-	 * Add a design tag. Called to add a tag to a design.
-	 *
-	 * @param int     $design_id The id of the design to add the tag to.
-	 * @param string  $tag       The tag to add.
-	 * @param WP_User $user      The current user.
-	 * @throws MyStyle_Unauthorized_Exception Throws a
-	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
-	 * and isn't an administrator.
-	 * @return int Returns the Term Taxonomy Id of the tag.
-	 */
-	public static function add_tag_to_design(
-		$design_id,
-		$tag,
-		WP_User $user
-	) {
-		$taxonomy = MYSTYLE_TAXONOMY_NAME;
-
-		// ---- Security Check ---- //
-		if (
-				( ! self::is_user_design_owner( $user->ID, $design_id ) )
-				&& ( ! $user->has_cap( 'administrator' ) )
-		) {
-			throw new MyStyle_Unauthorized_Exception(
-				'Only the design owner or an administrator can add tags to a design.'
-			);
-		}
-
-		// Add the tag.
-		$tt_ids = wp_add_object_terms( $design_id, $tag, $taxonomy );
-		$tt_id  = $tt_ids[0];
-
-		return $tt_id;
-	}
-
-	/**
-	 * Removes a tag from a design.
-	 *
-	 * @param int     $design_id The id of the design to remove the tag from.
-	 * @param string  $tag       The tag to remove.
-	 * @param WP_User $user      The current user.
-	 * @throws MyStyle_Unauthorized_Exception Throws a
-	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
-	 * and isn't an administrator.
-	 * @return int Returns true on success, false on failure.
-	 */
-	public static function remove_tag_from_design(
-		$design_id,
-		$tag,
-		WP_User $user
-	) {
-		$taxonomy = MYSTYLE_TAXONOMY_NAME;
-
-		// ---- Security Check ---- //
-		if (
-				( ! self::is_user_design_owner( $user->ID, $design_id ) )
-				&& ( ! $user->has_cap( 'administrator' ) )
-		) {
-			throw new MyStyle_Unauthorized_Exception(
-				'Only the design owner or an administrator can add tags to a design.'
-			);
-		}
-
-		// Remove the tag.
-		$success = wp_remove_object_terms( $design_id, $tag, $taxonomy );
-
-		return $success;
-	}
-
-	/**
-	 * Updates a design's tags. Called to update all tags on a design to match
-	 * the passed array of tags.
-	 *
-	 * @param int     $design_id The id of the design to update.
-	 * @param array   $tags      The array of tags. Should be an array of
-	 *                           strings (ex: ["tag1", "tag2"]).
-	 * @param WP_User $user      The current user.
-	 * @throws MyStyle_Unauthorized_Exception Throws a
-	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
-	 * and isn't an administrator.
-	 * @throws MyStyle_Exception Throws a MyStyle_Exception if the function
-	 * fails.
-	 */
-	public static function update_design_tags(
-		$design_id,
-		$tags,
-		WP_User $user
-	) {
-		$taxonomy = MYSTYLE_TAXONOMY_NAME;
-
-		// ---- Security Check ---- //
-		if (
-				( ! self::is_user_design_owner( $user->ID, $design_id ) )
-				&& ( ! $user->has_cap( 'administrator' ) )
-		) {
-			throw new MyStyle_Unauthorized_Exception(
-				'Only the design owner or an administrator can update a design\'s tags.'
-			);
-		}
-
-		// Remove all current tags from the design.
-		$old_terms = wp_get_object_terms( $design_id, MYSTYLE_TAXONOMY_NAME );
-		if ( ! empty( $old_terms ) ) {
-			$old_term_ids = array();
-			foreach ( $old_terms as $old_term ) {
-				$old_term_ids[] = $old_term->term_id;
-			}
-
-			$removed = wp_remove_object_terms( $design_id, $old_term_ids, $taxonomy );
-			if ( ! $removed ) {
-				throw new MyStyle_Exception( 'Couldn`t remove existing tags.' );
-			}
-		}
-
-		// Add the passed tags to the design.
-		if ( ! empty( $tags ) ) {
-			$term_taxonomy_ids = wp_add_object_terms(
-				$design_id,
-				$tags,
-				$taxonomy
-			);
-		}
-	}
-
-
-	/**
-	 * Get the collections for the design with the passed design id. See below for more
-	 * info about the return value.
-	 *
-	 * @param int  $design_id The id of the design that you want to get. If
-	 *                        null, the function will attempt to get the
-	 *                        design id from the URL.
-	 * @param bool $with_slug Set to true (default is false) to include the
-	 *                        term slug in the returned tags. If true, the
-	 *                        returned array becomes two dimensional with each
-	 *                        entry having a 'name' and a 'slug' (and possibly
-	 *                        an id.
-	 * @param bool $with_id   Set to true (default is false) to include the
-	 *                        term id in the returned tags. If true, the
-	 *                        returned array becomes two dimensional with each
-	 *                        entry having a 'name' and an 'id' (and possibly a
-	 *                        'slug').
-	 * @return array Returns an array of tags. If the slug param is false, it
-	 * will return a one dimensional array like ["Foo", "Bar"]. If the slug
-	 * param is true, it will return a two dimensional array like
-	 * [["name" => "Foo", "slug" => "foo"], ["name" => "Bar", "slug" => "bar"]].
-	 */
-	public static function get_design_collections(
-		$design_id,
-		$with_slug = false,
-		$with_id = false
-	) {
-		$tags  = array();
-		$terms = wp_get_object_terms( $design_id, MYSTYLE_COLLECTION_NAME );
-
-		foreach ( $terms as $term ) {
-			if ( $with_slug || $with_id ) {
-				$entry = array(
-					'name' => $term->name,
-				);
-				if ( $with_slug ) {
-					$entry['slug'] = $term->slug;
-				}
-				if ( $with_id ) {
-					$entry['id'] = $term->term_id;
-				}
-			} else {
-				$entry = $term->name;
-			}
-			$tags[] = $entry;
-		}
-
-		return $tags;
-	}
-
-	/**
-	 * Add a design collection. Called to add a collection to a design.
-	 *
-	 * @param int     $design_id  The id of the design to add the tag to.
-	 * @param string  $collection The collection to add.
-	 * @param WP_User $user       The current user.
-	 * @throws MyStyle_Unauthorized_Exception Throws a
-	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
-	 * and isn't an administrator.
-	 * @return int Returns the id of the tag.
-	 */
-	public static function add_collection_to_design(
-		$design_id,
-		$collection,
-		WP_User $user
-	) {
-		$taxonomy = MYSTYLE_COLLECTION_NAME;
-
-		// ---- Security Check ---- //
-		if ( ! $user->has_cap( 'administrator' ) ) {
-			throw new MyStyle_Unauthorized_Exception(
-				'Only the an administrator can add tags to a design.'
-			);
-		}
-
-		// Add the tag.
-		$tt_ids = wp_add_object_terms( $design_id, $collection, $taxonomy );
-		$tt_id  = $tt_ids[0];
-
-		return $tt_id;
-	}
-
-	/**
-	 * Removes a collection from a design.
-	 *
-	 * @param int     $design_id        The id of the design to remove the tag from.
-	 * @param string  $collection       The collection to remove.
-	 * @param WP_User $user             The current user.
-	 * @throws MyStyle_Unauthorized_Exception Throws a
-	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
-	 * and isn't an administrator.
-	 * @return int Returns true on success, false on failure.
-	 */
-	public static function remove_collection_from_design(
-		$design_id,
-		$collection,
-		WP_User $user
-	) {
-		$taxonomy = MYSTYLE_COLLECTION_NAME;
-
-		// ---- Security Check ---- //
-		if ( ! $user->has_cap( 'administrator' ) ) {
-			throw new MyStyle_Unauthorized_Exception(
-				'Only the administrator can add tags to a design.'
-			);
-		}
-
-		// Remove the tag.
-		$success = wp_remove_object_terms( $design_id, $collection, $taxonomy );
-
-		return $success;
-	}
-
-	/**
-	 * Updates a design's collections. Called to update all collections on a
-	 * design to match the passed array of collections.
-	 *
-	 * @param int     $design_id       The id of the design to update.
-	 * @param array   $collections      The array of tags. Should be an array of
-	 *                                 strings (ex: ["tag1", "tag2"]).
-	 * @param WP_User $user            The current user.
-	 * @throws MyStyle_Unauthorized_Exception Throws a
-	 * MyStyle_Unauthorized_Exception if the current user doesn't own the design
-	 * and isn't an administrator.
-	 * @throws MyStyle_Exception Throws a MyStyle_Exception if the function
-	 * fails.
-	 */
-	public static function update_design_collections(
-		$design_id,
-		$collections,
-		WP_User $user
-	) {
-		$taxonomy = MYSTYLE_COLLECTION_NAME;
-
-		// ---- Security Check ---- //
-		if ( ! $user->has_cap( 'administrator' ) ) {
-			throw new MyStyle_Unauthorized_Exception(
-				'Only the administrator can update a design\'s tags.'
-			);
-		}
-
-		// Remove all current tags from the design.
-		$old_terms = wp_get_object_terms( $design_id, $taxonomy );
-		if ( ! empty( $old_terms ) ) {
-			$old_term_ids = array();
-			foreach ( $old_terms as $old_term ) {
-				$old_term_ids[] = $old_term->term_id;
-			}
-
-			$removed = wp_remove_object_terms( $design_id, $old_term_ids, $taxonomy );
-			if ( ! $removed ) {
-				throw new MyStyle_Exception( 'Couldn`t remove existing tags.' );
-			}
-		}
-
-		// Add the passed tags to the design.
-		if ( ! empty( $collections ) ) {
-			$term_ids = wp_add_object_terms( $design_id, $collections, $taxonomy );
-		}
 	}
 
 	/**

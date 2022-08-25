@@ -54,7 +54,6 @@
 
     $( window ).ready( function() {
         $( '#ms-edit-title-form' ).hide();
-
         $( '#ms-edit-title-form-show' ).click( function( e ) {
             e.preventDefault();
             $( '#ms-edit-title-form' ).slideToggle();
@@ -266,7 +265,6 @@
         $( '.mystyle-sort-select' ).on( 'change', function() {
             var parentForm = $( this ).closest( 'form' );
             if ( parentForm && 0 < parentForm.length ) {
-                console.log( parentForm.attr( 'action' ) );
                 parentForm.submit();
             }
         });

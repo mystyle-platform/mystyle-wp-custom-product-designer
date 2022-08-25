@@ -294,11 +294,11 @@ body.mystyle-design-profile ul.mystyle-design-nav li {
 }
 
 /* MyStyle Design Profile Index */
-body.mystyle-design-profile ul.mystyle-designs {
+#mystyle-design-profile-index-wrapper ul.mystyle-designs {
 	list-style: none;
 }
 
-body.mystyle-design-profile ul.mystyle-designs li {
+#mystyle-design-profile-index-wrapper ul.mystyle-designs li {
 	display: inline-block;
 	margin: 1em;
 	max-width: 300px;
@@ -307,12 +307,12 @@ body.mystyle-design-profile ul.mystyle-designs li {
 	transition-duration: 1s;
 }
 
-body.mystyle-design-profile ul.mystyle-designs li h3.mystyle-design-id {
+#mystyle-design-profile-index-wrapper ul.mystyle-designs li h3.mystyle-design-id {
 	font-size: 18px;
 	text-align: center;
 }
 
-body.mystyle-design-profile ul.mystyle-designs li a {
+#mystyle-design-profile-index-wrapper ul.mystyle-designs li a {
 	display: block;
 	padding: 1em;
 	text-decoration: none;
@@ -320,7 +320,7 @@ body.mystyle-design-profile ul.mystyle-designs li a {
 }
 
 /* stylelint-disable no-descending-specificity */
-body.mystyle-design-profile ul.mystyle-designs li a img {
+#mystyle-design-profile-index-wrapper ul.mystyle-designs li a img {
 	display: block;
 	margin: auto;
 }
@@ -328,29 +328,30 @@ body.mystyle-design-profile ul.mystyle-designs li a img {
 
 /* Design profile page buttons. */
 
-body.mystyle-design-profile ul.mystyle-button-group li {
+#mystyle-design-profile-wrapper ul.mystyle-button-group li {
 	margin: 15px;
 }
 
-body.mystyle-design-profile ul.mystyle-design-nav li a {
+#mystyle-design-profile-wrapper ul.mystyle-design-nav li a {
 	padding: 12px;
 	display: inline-block;
 	background: rgba(0, 0, 0, 0.2);
 	color: #fff;
 	font-size: 24px;
 	font-weight: 700;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	min-width: 47px;
 	border-radius: 5px;
 	text-decoration: none;
 }
 
-body.mystyle-design-profile ul.mystyle-designs li a:hover {
+#mystyle-design-profile-wrapper ul.mystyle-designs li a:hover {
 	-webkit-box-shadow: 2px 2px 8px -3px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 2px 2px 8px -3px rgba(0, 0, 0, 0.5);
 	box-shadow: 2px 2px 8px -3px rgba(0, 0, 0, 0.5);
 }
 
-body.mystyle-design-profile ul.mystyle-designs li span.mystyle-design-id {
+#mystyle-design-profile-wrapper ul.mystyle-designs li span.mystyle-design-id {
 	display: block;
 }
 
@@ -393,15 +394,7 @@ body.mystyle-design-profile h1.entry-title.main_title {
 }
 /* stylelint-enable no-descending-specificity */
 
-ul.mystyle-button-group.mystyle-design-nav {
-	margin-top: -35px !important;
-	position: relative;
-	display: inline-block;
-	float: right;
-}
-
 a#ms-edit-title-form-show {
-	float: left;
 	background: #eee;
 	padding: 0 4px;
 	margin: 5px;
@@ -432,9 +425,8 @@ div#mystyle-design-profile-wrapper {
 
 div#ms-edit-title-form {
 	display: inline-block;
-	clear: both;
+	position: absolute;
 	z-index: 3;
-	position: relative;
 	box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px !important;
 	background: #fff;
 	padding: 20px;
@@ -485,35 +477,38 @@ body.archive.tax-design_tag article {
 }
 
 /* Design Tag Index */
+.mystyle-design-tag {
+	clear: both;
+}
 /* stylelint-disable no-descending-specificity */
-#mystyle-design-tag-index-wrapper li,
-#mystyle-design-tag-index-wrapper ul {
+
+.mystyle-design-tag.show-designs li,
+.mystyle-design-tag.show-designs ul {
 	display: inline-block;
 	list-style-type: none;
 }
 
-#mystyle-design-tag-index-wrapper li {
+.mystyle-design-tag.show-designs li {
 	text-align: center;
-	font-size: 0.5em;
+	font-size: 0.75em;
 }
 
-#mystyle-design-tag-index-wrapper li img {
+.mystyle-design-tag.show-designs li img {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 	width: 200px;
 }
 
-#mystyle-design-tag-index-wrapper .pager {
+#mystyle-design-tag-wrapper .pager {
 	text-align: center;
 	margin-top: 20px;
 }
 
-#mystyle-design-tag-index-wrapper .pager a {
+#mystyle-design-tag-wrapper .pager a {
 	padding: 0 20px;
 }
 /* stylelint-enable no-descending-specificity */
-
 
 /* Design Collection Index */
 /* stylelint-disable no-descending-specificity */
@@ -572,6 +567,10 @@ body.archive.tax-design_tag article {
 	content: "";
 	display: table;
 	clear: both;
+}
+
+#mystyle-design-collection-index-wrapper .design-img img {
+	display: block;
 }
 
 /* Add-ons */

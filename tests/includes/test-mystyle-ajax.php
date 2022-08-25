@@ -183,7 +183,7 @@ class MyStyleAjaxTest extends WP_Ajax_UnitTestCase {
 		MyStyle_DesignManager::persist( $design );
 
 		// Add the tag to the design.
-		$tag_id = MyStyle_DesignManager::add_tag_to_design(
+		$tag_id = MyStyle_Design_Tag_Manager::add_tag_to_design(
 			$design_id,
 			$tag_name,
 			$user

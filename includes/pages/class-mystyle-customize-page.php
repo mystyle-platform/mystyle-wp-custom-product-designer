@@ -436,7 +436,7 @@ class MyStyle_Customize_Page {
 	 * or repairing it.
 	 *
 	 * @return Returns a message describing the outcome of fix operation.
-	 * @todo: Add unit testing
+	 * @todo Add unit testing
 	 */
 	public static function fix() {
 		$message = '<br/>';

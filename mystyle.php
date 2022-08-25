@@ -151,6 +151,9 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionmanager.php';
 			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php';
 			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php';
+			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-design-term-manager.php';
+			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-design-tag-manager.php';
+			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-design-collection-manager.php';
 
 			require_once MYSTYLE_INCLUDES . 'model/class-mystyle-user.php';
 			require_once MYSTYLE_INCLUDES . 'model/class-mystyle-product.php';
@@ -158,11 +161,12 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'api/interface-mystyle-api.php';
 			require_once MYSTYLE_INCLUDES . 'api/class-mystyle-api.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-ajax.php';
+			require_once MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-my-designs-endpoint.php';
+			require_once MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-author-designs-endpoint.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-customize-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-profile-page.php';
-			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-my-designs-page.php';
-			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-author-designs-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-tag-page.php';
+			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-tag-index-page.php';
 			require_once MYSTYLE_INCLUDES . 'pages/class-mystyle-design-collection-page.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-sessionhandler.php';
 			require_once MYSTYLE_INCLUDES . 'class-mystyle-install.php';
@@ -187,6 +191,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			// Shortcode includes.
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-profile-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-shortcode.php';
+			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-term-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-tag-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-design-collection-shortcode.php';
 			require_once MYSTYLE_INCLUDES . 'shortcodes/class-mystyle-customizer-shortcode.php';
@@ -301,9 +306,10 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				MyStyle_Customize_Page::get_instance();
 				MyStyle_Design_Profile_Page::get_instance();
 				MyStyle_Configur8::get_instance();
-				MyStyle_My_Designs_Page::get_instance();
-				MyStyle_Author_Designs_Page::get_instance();
+				MyStyle_My_Designs_Endpoint::get_instance();
+				MyStyle_Author_Designs_Endpoint::get_instance();
 				MyStyle_Design_Tag_Page::get_instance();
+				MyStyle_Design_Tag_Index_Page::get_instance();
 				MyStyle_Design_Collection_Page::get_instance();
 			}
 		}

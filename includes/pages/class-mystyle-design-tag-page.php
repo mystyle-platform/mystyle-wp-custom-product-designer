@@ -27,7 +27,7 @@ class MyStyle_Design_Tag_Page {
 	private $pager;
 
 	/**
-	 * Stores the current ( when the class is instantiated as a singleton )
+	 * Stores the current (when the class is instantiated as a singleton)
 	 * status code. We store it here since PHP's http_response_code() function
 	 * wasn't added until PHP 5.4.
 	 *
@@ -49,7 +49,6 @@ class MyStyle_Design_Tag_Page {
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
-
 	}
 
 	/**
@@ -63,23 +62,6 @@ class MyStyle_Design_Tag_Page {
 		// Get the page id of the Design Profile page.
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		if ( isset( $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ) ) {
-			$exists = true;
-		}
-
-		return $exists;
-	}
-
-	/**
-	 * Function to determine if the post exists.
-	 *
-	 * @return boolean Returns true if the page exists, otherwise false.
-	 */
-	public static function index_exists() {
-		$exists = false;
-
-		// Get the page id of the Design Profile page.
-		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-		if ( isset( $options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ] ) ) {
 			$exists = true;
 		}
 
@@ -116,58 +98,6 @@ class MyStyle_Design_Tag_Page {
 		}
 
 		return $post_id;
-	}
-
-	/**
-	 * Function to create the index page.
-	 *
-	 * @return number Returns the page id of the Design Tag page.
-	 * @throws \MyStyle_Exception Throws a MyStyle_Exception if unable to store
-	 * the id of the created page in the db.
-	 */
-	public static function create_index() {
-		// Create the Design Profile page.
-		$design_tag_page = array(
-			'post_title'   => 'Design Tags Index',
-			'post_name'    => 'design-tags',
-			'post_content' => '[mystyle_design_tags per_tag="5" tags_per_page="12"]',
-			'post_status'  => 'publish',
-			'post_type'    => 'page',
-		);
-		$post_id         = wp_insert_post( $design_tag_page );
-		update_post_meta( $post_id, '_thumbnail_id', 1 );
-
-		// Store the design tag page's id in the database.
-		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-		$options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ] = $post_id;
-		$updated = update_option( MYSTYLE_OPTIONS_NAME, $options );
-
-		if ( ! $updated ) {
-			wp_delete_post( $post_id );
-			throw new MyStyle_Exception( __( 'Could not store index page id.', 'mystyle' ), 500 );
-		}
-
-		return $post_id;
-	}
-
-	/**
-	 * Function that fixes the design tags index slug.
-	 */
-	public function fix_index() {
-		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-
-		$post_id = $options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ];
-
-		if ( $post_id ) {
-			$post_data = array(
-				'ID'           => $post_id,
-				'post_title'   => 'Design Tags',
-				'post_name'    => 'design-tags',
-				'post_content' => '[mystyle_design_tags per_tag="5" tags_per_page="12"]',
-			);
-
-			wp_update_post( $post_data );
-		}
 	}
 
 	/**
@@ -252,7 +182,7 @@ class MyStyle_Design_Tag_Page {
 			$page_num = ( $this->pager->get_current_page_number() - 1 ) * $page_limit;
 		}
 
-		$design_objs = MyStyle_DesignManager::get_designs_by_term_taxonomy_id(
+		$design_objs = MyStyle_Design_Tag_Manager::get_designs_by_tag_term_taxonomy_id(
 			$term_taxonomy_id,
 			$wp_user,
 			$session,
@@ -295,7 +225,11 @@ class MyStyle_Design_Tag_Page {
 		$this->pager->set_items( $designs );
 
 		// Total items.
-		$term_count = MyStyle_DesignManager::get_total_term_design_count( $term_taxonomy_id, $wp_user, $session );
+		$term_count = MyStyle_Design_Tag_Manager::get_total_tag_design_count(
+			$term_taxonomy_id,
+			$wp_user,
+			$session
+		);
 
 		$this->pager->set_total_item_count( $term_count );
 

@@ -113,7 +113,7 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		$user->ID = $design->get_user_id();
 
 		// Give the Design some tags.
-		MyStyle_DesignManager::add_tag_to_design(
+		MyStyle_Design_Tag_Manager::add_tag_to_design(
 			$design->get_design_id(),
 			$tag_name,
 			$user
@@ -260,14 +260,14 @@ class MyStyleWpRestApiDesignControllerTest extends WP_UnitTestCase {
 		MyStyle_DesignManager::persist( $design );
 
 		// Add the tags to the design.
-		MyStyle_DesignManager::update_design_tags(
+		MyStyle_Design_Tag_Manager::update_design_tags(
 			$design_id,
 			$start_tags,
 			$user
 		);
 
 		// Assert that the design starts off with the expected tags.
-		$tags = MyStyle_DesignManager::get_design_tags( $design_id );
+		$tags = MyStyle_Design_Tag_Manager::get_design_tags( $design_id );
 		$this->assertEquals( 2, count( $tags ) );
 		$this->assertEquals( 'tag1', $tags[0] );
 

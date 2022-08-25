@@ -73,8 +73,12 @@ class MyStyle_Install {
 		if ( ! MyStyle_Design_Tag_Page::exists() ) {
 			MyStyle_Design_Tag_Page::create();
 		}
+		if ( ! MyStyle_Design_Tag_Index_Page::exists() ) {
+			MyStyle_Design_Tag_Index_Page::create();
+		}
 
-		MyStyle_My_Designs_Page::get_instance()->flush_rewrite_rules();
+		MyStyle_My_Designs_Endpoint::get_instance()->flush_rewrite_rules();
+		MyStyle_Author_Designs_Endpoint::get_instance()->flush_rewrite_rules();
 
 		self::create_tables();
 	}
@@ -141,11 +145,11 @@ class MyStyle_Install {
 			}
 		}
 
-		// Add the Design tag page if upgrading from less than 3.14.0 (versions
-		// that were before this page existed).
+		// Add the Design tag index page if upgrading from less than 3.18.6
+		// (versions that were before this page existed).
 		if ( version_compare( $old_version, '3.18.6', '<' ) ) {
-			if ( ! MyStyle_Design_Tag_Page::index_exists() ) {
-				MyStyle_Design_Tag_Page::create_index();
+			if ( ! MyStyle_Design_Tag_Index_Page::exists() ) {
+				MyStyle_Design_Tag_Index_Page::create();
 			}
 		}
 
@@ -154,14 +158,6 @@ class MyStyle_Install {
 		if ( version_compare( $old_version, '3.18.5', '<' ) ) {
 			if ( ! MyStyle_Design_Collection_Page::index_exists() ) {
 				MyStyle_Design_Collection_Page::create_index();
-			}
-		}
-
-		// Fix the Design tag index page if upgrading from less than 3.18.6 (versions
-		// that were before this page existed).
-		if ( version_compare( $old_version, '3.18.6', '<' ) ) {
-			if ( MyStyle_Design_Tag_Page::index_exists() ) {
-				MyStyle_Design_Tag_Page::fix_index();
 			}
 		}
 

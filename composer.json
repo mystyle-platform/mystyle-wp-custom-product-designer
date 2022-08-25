@@ -15,7 +15,8 @@
     "phpunit/phpunit": "6.*",
     "wimg/php-compatibility": "^8.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
-    "phpunit/php-code-coverage": "^5.3"
+    "phpunit/php-code-coverage": "^5.3",
+    "yoast/phpunit-polyfills": "^1.0"
   },
   "scripts": {
     "test": [

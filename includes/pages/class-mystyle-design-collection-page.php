@@ -27,7 +27,7 @@ class MyStyle_Design_Collection_Page {
 	private $pager;
 
 	/**
-	 * Stores the current ( when the class is instantiated as a singleton )
+	 * Stores the current (when the class is instantiated as a singleton)
 	 * status code. We store it here since PHP's http_response_code() function
 	 * wasn't added until PHP 5.4.
 	 *

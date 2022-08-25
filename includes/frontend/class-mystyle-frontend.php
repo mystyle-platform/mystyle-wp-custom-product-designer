@@ -96,15 +96,15 @@ class MyStyle_FrontEnd {
 	 */
 	public function enqueue_frontend_js() {
 		wp_enqueue_script(
-			'frontend_js',
+			'mystyle_frontend_js',
 			MYSTYLE_ASSETS_URL . 'js/frontend.js',
 			array(), // deps.
 			MYSTYLE_VERSION, // version.
-			true
+			true // in_footer.
 		);
 
 		wp_localize_script(
-			'frontend_js',
+			'mystyle_frontend_js',
 			'mystyle_wp',
 			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) )
 		);

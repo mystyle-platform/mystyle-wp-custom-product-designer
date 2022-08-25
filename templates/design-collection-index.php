@@ -15,22 +15,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div id="mystyle-design-collection-index-wrapper" class="design-collection-index">
 
+	<?php // Output the collections menu (left nav). ?>
 	<div class="collections-menu">
 		<ul>
-			<?php foreach ( $all_terms as $term_menu_item ) : ?>
+			<?php foreach ( $all_terms as $term ) : ?>
 			<li>
-				<a href="<?php echo esc_url( '/design-collections/' . $term_menu_item->slug ); ?>" title="<?php echo esc_attr( $term_menu_item->name ); ?>"><?php echo esc_html( $term_menu_item->name ); ?></a>
+				<a
+					href="<?php echo esc_url( get_term_link( $term ) ); ?>"
+					title="<?php echo esc_attr( $term->name ); ?>">
+					<?php echo esc_html( $term->name ); ?>
+				</a>
 			</li>
 			<?php endforeach; ?>
 		</ul>
 	</div>
 
+	<?php // Output the collections content. ?>
 	<div class="collections-content">
 		<?php foreach ( $terms as $term ) : ?>
 
 		<div class="collection-row">
 			<h3>
-				<a href="<?php echo esc_url( '/design-collections/' . $term->slug ); ?>" title="<?php echo esc_attr( $term->name ); ?>"><?php echo esc_html( $term->name ); ?></a>
+				<a
+					href="<?php echo esc_url( get_term_link( $term ) ); ?>"
+					title="<?php echo esc_attr( $term->name ); ?>">
+					<?php echo esc_html( $term->name ); ?>
+				</a>
 			</h3>
 			<?php $count = count( $term->designs ); ?>
 			<?php foreach ( $term->designs as $design ) : ?>
@@ -42,9 +52,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 				<div class="design-img">
 
-					<a href="<?php echo esc_url( $design_url ); ?>" title="<?php echo esc_attr( ( null !== $design->get_title() ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?>">
-						<img alt="<?php echo esc_html( ( null !== $design->get_title() ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?> Image" src="<?php echo esc_url( $design->get_thumb_url() ); ?>" />
-						<?php echo esc_html( ( null !== $design->get_title() ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?>
+					<a href="<?php echo esc_url( $design_url ); ?>" title="<?php echo esc_attr( ( ! empty( $design->get_title() ) ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?>">
+						<img alt="<?php echo esc_html( ( ! empty( $design->get_title() ) ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?> Image" src="<?php echo esc_url( $design->get_thumb_url() ); ?>" />
+						<?php echo esc_html( ( ! empty( $design->get_title() ) ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?>
 					</a>
 					<div>Designed by: <?php echo esc_html( $user->user_nicename ); ?></div>
 
@@ -54,7 +64,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php endforeach; ?>
 			<?php if ( count( $terms ) > 1 && $count > $limit ) : ?>
 			<div class="design-tile view-more">
-				<a href="<?php echo esc_url( '/design-collections/' . $term->slug ); ?>" title="<?php echo esc_attr( $term->name ); ?>">View More</a>
+				<a href="<?php echo esc_url( get_term_link( $term->slug ) ); ?>" title="<?php echo esc_attr( $term->name ); ?>">View More</a>
 			</div>
 			<?php endif; ?>
 		</div>

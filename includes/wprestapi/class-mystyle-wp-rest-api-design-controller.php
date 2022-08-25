@@ -184,7 +184,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 					$tag = ( is_array( $tag_elem ) )
 						? $tag_elem['slug']
 						: $tag_elem;
-					MyStyle_DesignManager::add_tag_to_design(
+					MyStyle_Design_Tag_Manager::add_tag_to_design(
 						$design->get_design_id(),
 						$tag,
 						$current_user
@@ -240,7 +240,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 					$tags[] = $tag;
 				}
 			}
-			MyStyle_DesignManager::update_design_tags(
+			MyStyle_Design_Tag_Manager::update_design_tags(
 				$design->get_design_id(),
 				$tags,
 				$current_user
@@ -362,7 +362,7 @@ class MyStyle_Wp_Rest_Api_Design_Controller extends WP_REST_Controller {
 		$itemdata = $design->json_encode();
 
 		// Add any design tags.
-		$tags = MyStyle_DesignManager::get_design_tags(
+		$tags = MyStyle_Design_Tag_Manager::get_design_tags(
 			$design->get_design_id(),
 			true, // with_slug.
 			true // with_id.

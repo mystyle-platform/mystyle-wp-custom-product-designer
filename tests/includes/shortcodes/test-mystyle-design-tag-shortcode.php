@@ -68,7 +68,7 @@ class MyStyleDesignTagShortcodeTest extends WP_UnitTestCase {
 
 		// Assert that the output contains the expected HTML code.
 		$this->assertContains(
-			'class="woocommerce design-tags"',
+			'class="woocommerce design-tags',
 			$output
 		);
 	}

@@ -107,7 +107,7 @@ class MyStyle_Ajax {
 		 * @param WP_Taxonomy $tax        The taxonomy object.
 		 * @param string      $s          The search term.
 		 */
-		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
+		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $taxonomy, $s );
 
 		/*
 		 * Require $term_search_min_chars chars for matching (default: 2)
@@ -134,7 +134,7 @@ class MyStyle_Ajax {
 		$user = wp_get_current_user();
 
 		// Adds the tag - throws exception is user isn't authorized.
-		MyStyle_DesignManager::add_tag_to_design(
+		MyStyle_Design_Tag_Manager::add_tag_to_design(
 			$design_id,
 			$tag,
 			$user
@@ -155,7 +155,7 @@ class MyStyle_Ajax {
 		$user = wp_get_current_user();
 
 		// Removes the tag - throws exception is user isn't authorized.
-		MyStyle_DesignManager::remove_tag_from_design(
+		MyStyle_Design_Tag_Manager::remove_tag_from_design(
 			$design_id,
 			$tag,
 			$user
@@ -183,7 +183,7 @@ class MyStyle_Ajax {
 		 * @param WP_Taxonomy $tax        The taxonomy object.
 		 * @param string      $s          The search term.
 		 */
-		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
+		$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $taxonomy, $s );
 
 		/*
 		 * Require $term_search_min_chars chars for matching (default: 2)
@@ -210,7 +210,7 @@ class MyStyle_Ajax {
 		$user = wp_get_current_user();
 
 		// Adds the collection - throws exception is user isn't authorized.
-		MyStyle_DesignManager::add_collection_to_design(
+		MyStyle_Design_Collection_Manager::add_collection_to_design(
 			$design_id,
 			$collection,
 			$user
@@ -231,7 +231,7 @@ class MyStyle_Ajax {
 		$user = wp_get_current_user();
 
 		// Removes the tag - throws exception is user isn't authorized.
-		MyStyle_DesignManager::remove_collection_from_design(
+		MyStyle_Design_Collection_Manager::remove_collection_from_design(
 			$design_id,
 			$collection,
 			$user
