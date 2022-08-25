@@ -1,5 +1,20 @@
 = 3.18.8 =
-* Bug fix while loading designs on other products. Added CSS classes
+
+* Design collections now show 24 terms instead of 10.
+* Added a new "mystyle-design-tag-index" CSS class to the main div on the 
+  design tag index page.
+* Added a new "mystyle-design-author" CSS class to the "Designed By:" div on the
+  design tag index page and the design collection index page.
+* Namespaced the "design-collection-index" CSS class to 
+  "mystyle-design-collection-index" (on the design collection index page).
+* My Designs page now returns a "No designs yet. Create one now!" message if 
+  there aren't any designs.
+* Now using the "mystyle-my-designs" class instead of the 
+  "mystyle-design-profile" on the My Designs page.
+* The product title is now appended to the design title on the Design Profile
+  page. 
+* If a product id is passed into the customize page, it is now always used 
+  instead of the one from the design that is being reloaded.
 
 = 3.18.7 =
 
