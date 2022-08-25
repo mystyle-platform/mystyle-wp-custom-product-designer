@@ -569,9 +569,11 @@ body.archive.tax-design_tag article {
 	clear: both;
 }
 
+/* stylelint-disable no-descending-specificity */
 #mystyle-design-collection-index-wrapper .design-img img {
 	display: block;
 }
+/* stylelint-enable no-descending-specificity */
 
 /* Add-ons */
 /* stylelint-disable no-descending-specificity */
