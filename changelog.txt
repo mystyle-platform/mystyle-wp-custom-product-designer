@@ -1,3 +1,6 @@
+= 3.19.13 =
+* Added support for UsersWP, Added permissions for MyStyle CS user role, bug fixes.
+
 = 3.19.12 =
 * Added custom design tag/collection title setting, matched H1 and Head Title text, changed design collection add permissions
 
