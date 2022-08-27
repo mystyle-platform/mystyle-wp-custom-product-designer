@@ -81,6 +81,10 @@ class MyStyle_My_Designs_Page {
 
 		global $wp_query;
 
+		//UsersWP support
+		add_filter( 'uwp_get_profile_tabs', array( &$this, 'uwp_add_profile_tabs' ), 10, 1 ) ;
+		add_action( 'uwp_profile_mystyle_designs_tab_content', array( &$this, 'uwp_add_profile_mystyle_designs_tab_content'), 10, 2 ) ;
+
 		if ( isset( $wp_query->query_vars['my-designs'] ) ) {
 			$design_profile_page = self::get_instance();
 
@@ -127,6 +131,57 @@ class MyStyle_My_Designs_Page {
 		$new_items['my-designs'] = __( 'My Designs', 'mystyle' );
 
 		return $this->insert_after_helper( $items, $new_items, 'dashboard' );
+	}
+
+	/**
+	 * UsersWP support
+	 * 
+	 * @param array $tabs
+	 */
+	public function uwp_add_profile_tabs($tabs) {
+		$new_tab = (object) array(
+            "id" => "4",
+            "form_type" => "profile-tabs",
+            "sort_order" => "4",
+            "tab_layout" => "profile",
+            "tab_type" => "standard",
+            "tab_level" => "0",
+            "tab_parent" => "0",
+            "tab_privacy" => "0",
+            "user_decided"=> "1",
+            "tab_name" => "My Designs",
+            "tab_icon" => "fas fa-brush",
+            "tab_key" => "mystyle_designs"
+        ) ;
+        
+        $userswp_profile = new UsersWP_Profile() ;
+        
+        $content = $userswp_profile->tab_content($new_tab) ;
+        
+        $new_tab->tab_content = $content ;
+        $new_tab->tab_content_rendered = $content ;
+        
+        $tabs[] = (array) $new_tab ;
+		
+		return $tabs;
+	}
+
+	public function uwp_add_profile_mystyle_designs_tab_content($user, $tab) {
+		$design_profile_page = self::get_instance();
+
+		// Set the user.
+		/* @var $user \WP_User phpcs:ignore */
+		$user = wp_get_current_user();
+		$design_profile_page->set_user( $user );
+
+		// Set the session.
+		/* @var $session \MyStyle_Session phpcs:ignore */
+		$session = MyStyle()->get_session();
+		$design_profile_page->set_session( $session );
+
+		$design_profile_page->init_user_index_request();
+		
+		$this->designs_list() ;
 	}
 
 	/**

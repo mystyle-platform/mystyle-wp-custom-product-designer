@@ -75,10 +75,21 @@ class MyStyle_Ajax {
 			wp_die( '-1' );
 		}
 
+		
 		// If the design is public but not their's, throw an exception.
-		if ( ! MyStyle_DesignManager::can_user_edit( $design, $current_user ) ) {
-			// Unauthorized.
-			wp_die( '-1' );
+		$auth = false ;
+		if ( MyStyle_DesignManager::can_user_edit( $design, $current_user ) ) {
+			// Authorized.
+			$auth = true ;
+		}
+		
+		if( $current_user->has_cap( 'print_url_write' ) ) {
+			// Aauthorized.
+			$auth = true ;
+		}
+
+		if( ! $auth ) {
+			wp_die( '-1' ) ;
 		}
 
 		// Update and persist the design.

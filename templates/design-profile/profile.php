@@ -60,8 +60,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<?php } ?>
 			</form>
 		</li>
-		<li><a href="<?php echo esc_attr( $design->get_reload_url() ); ?>" class="button">Customize</a></li>
-		<li><a href="<?php echo esc_attr( $design->get_scratch_url() ); ?>" class="button">Design from scratch</a></li>
+		<li><a rel="nofollow" href="<?php echo esc_attr( $design->get_reload_url() ); ?>" class="button">Customize</a></li>
+		<li><a rel="nofollow" href="<?php echo esc_attr( $design->get_scratch_url() ); ?>" class="button">Design from scratch</a></li>
 
 	</ul>
 

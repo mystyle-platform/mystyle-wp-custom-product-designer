@@ -103,7 +103,7 @@ class MyStyle_Design_Profile_Page {
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
 		add_action( 'wp_head', array( &$this, 'wp_head' ), 2 );
-
+		
 		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
 	}
 
@@ -953,16 +953,27 @@ class MyStyle_Design_Profile_Page {
 		add_filter( 'woocommerce_loop_product_link', array( &$this, 'modify_woocommerce_loop_product_link' ), 10, 1 );
 		add_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ), 10, 2 );
 		add_filter( 'woocommerce_shortcode_products_query', array( &$this, 'modify_woocommerce_shortcode_products_query' ), 10, 1 );
+		remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 ) ;
+		add_action( 'woocommerce_before_shop_loop_item', array( &$this, 'woocommerce_template_loop_product_link_open' ) ) ;
 
 		// Get the shortcode output.
 		$out = do_shortcode( '[products paginate="false"]' );
 
 		// Undo our hooks.
+		add_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 ) ;
 		remove_filter( 'woocommerce_loop_product_link', array( &$this, 'modify_woocommerce_loop_product_link' ) );
 		remove_action( 'woocommerce_loop_add_to_cart_link', array( &$this, 'loop_add_to_cart_link' ) );
 		remove_filter( 'woocommerce_shortcode_products_query', array( &$this, 'modify_woocommerce_shortcode_products_query' ) );
 
 		return $out;
+	}
+
+	public function woocommerce_template_loop_product_link_open() {
+		global $product;
+
+		$link = apply_filters( 'woocommerce_loop_product_link', get_the_permalink(), $product );
+
+		echo '<a rel="nofollow" href="' . esc_url( $link ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
 	}
 
 	/**
@@ -982,7 +993,7 @@ class MyStyle_Design_Profile_Page {
 		$mystyle_design = $this->get_design();
 		$customizer_url = MyStyle_Customize_Page::get_design_url( $mystyle_design, null, null, $product_id );
 
-		return $customizer_url;
+		return $customizer_url ;
 	}
 
 	/**
