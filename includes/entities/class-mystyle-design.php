@@ -120,7 +120,8 @@ class MyStyle_Design implements MyStyle_Entity {
 	private $user_id;
 
 	/**
-	 * The mystyle user id.
+	 * The MyStyle user id. This is the user id from the MyStyle API and is
+	 * different from the local WordPress user id.
 	 *
 	 * @var integer
 	 */
@@ -218,7 +219,8 @@ class MyStyle_Design implements MyStyle_Entity {
 
 	/**
 	 * Static function to create a new Design from POST data. Call using
-	 * `MyStyle_Design::create_from_post($post_data);`.
+	 * `MyStyle_Design::create_from_post($post_data);`. This is used to create
+	 * a Design from the data posted by the MyStyle API.
 	 *
 	 * @param array $post_data POST data to be used to construct the Design.
 	 * @return \self Works like a constructor.
@@ -236,6 +238,8 @@ class MyStyle_Design implements MyStyle_Entity {
 		$instance->design_id   = (int) htmlspecialchars( $post_data['design_id'] );
 		$instance->template_id = (int) htmlspecialchars( $post_data['product_id'] ); // Mapping product_id to template_id.
 		if ( isset( $post_data['user_id'] ) ) {
+			// Note: The post comes from the MyStyle API, so the user_id is the
+			// MyStyle API's user_id (not the Wordpress user_id).
 			$instance->designer_id = (int) htmlspecialchars( $post_data['user_id'] );
 		}
 		$instance->cart_data = wp_json_encode( $passthru_post );
