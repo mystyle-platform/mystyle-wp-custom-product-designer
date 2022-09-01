@@ -1,6 +1,7 @@
 = 3.19.0 =
 
-* Bug fixes.
+* Fixed a bug with the handoff page where user_ids from different systems were 
+  being mixed.
 
 = 3.18.9 =
 

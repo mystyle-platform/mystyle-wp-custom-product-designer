@@ -108,7 +108,8 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 == Changelog ==
 
 = 3.19.0 =
-* Bug fixes.
+* Fixed a bug with the handoff page where user_ids from different systems were 
+  being mixed.
 
 = 3.18.9 =
 * Now allowing the user to be passed through the customizer (to fix a bug where
