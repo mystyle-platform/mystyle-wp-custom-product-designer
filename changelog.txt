@@ -1,6 +1,9 @@
 = 3.18.9 =
 
-* Bug fixes related to the saving of designs while logged in
+* Now allowing the user to be passed through the customizer (to fix a bug where
+  the user was occasionally dropped).
+* Now adding a "mystyle-design-product-sold-out" class to the body tag on the
+  product page if the product is sold out.
 
 = 3.18.8 =
 
