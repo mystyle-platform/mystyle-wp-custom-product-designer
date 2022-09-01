@@ -239,7 +239,7 @@ class MyStyle_Design implements MyStyle_Entity {
 		$instance->template_id = (int) htmlspecialchars( $post_data['product_id'] ); // Mapping product_id to template_id.
 		if ( isset( $post_data['user_id'] ) ) {
 			// Note: The post comes from the MyStyle API, so the user_id is the
-			// MyStyle API's user_id (not the Wordpress user_id).
+			// MyStyle API's user_id (not the WordPress user_id).
 			$instance->designer_id = (int) htmlspecialchars( $post_data['user_id'] );
 		}
 		$instance->cart_data = wp_json_encode( $passthru_post );
