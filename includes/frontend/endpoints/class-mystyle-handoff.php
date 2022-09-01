@@ -73,7 +73,7 @@ class MyStyle_Handoff {
 	 */
 	public function override() {
 
-		// phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput
+        // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput
 		$url = $_SERVER['REQUEST_URI'];
 
 		if ( strpos( $url, self::SLUG ) !== false ) {
@@ -135,17 +135,28 @@ class MyStyle_Handoff {
 				$this->design->set_email( $mystyle_user->get_email() );
 			}
 
-			// If the user is logged in to WordPress, store their user id with their design.
-			$wp_user_id = get_current_user_id();
+			// If the user is logged in to WordPress, store their user id with
+			// their design.
+			$wp_user    = wp_get_current_user();
+			$wp_user_id = $wp_user->ID;
+
 			if ( 0 !== $wp_user_id ) {
 				$user = get_userdata( $wp_user_id );
 				$this->design->set_user_id( $wp_user_id );
 				$this->design->set_email( $user->user_email );
 			} elseif ( null !== $mystyle_user ) {
-				// If the user isn't logged in, see if their email matches an existing user and store that id with the design.
+				// If the user isn't logged in, see if their email matches an
+				// existing user and store that id with the design.
 				$user = get_user_by( 'email', $mystyle_user->get_email() );
 				if ( false !== $user ) {
 					$this->design->set_user_id( $user->ID );
+					$this->design->set_email( $user->user_email );
+				}
+			} elseif ( isset( $passthru['user']['user_id'] ) ) {
+				$user = get_user_by( 'ID', $passthru['user']['user_id'] );
+				if ( false !== $user ) {
+					$this->design->set_user_id( $user->ID );
+					$this->design->set_email( $user->user_email );
 				}
 			}
 

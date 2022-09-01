@@ -222,6 +222,8 @@ class MyStyle_Design implements MyStyle_Entity {
 	 *
 	 * @param array $post_data POST data to be used to construct the Design.
 	 * @return \self Works like a constructor.
+	 * @throws MyStyle_Exception Throws a MyStyleException if the entity
+	 * couldn't be persisted to the database.
 	 */
 	public static function create_from_post( $post_data ) {
 		$instance = new self();

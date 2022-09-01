@@ -40,8 +40,9 @@ class MyStyle_Passthru_Codec {
 	 * @todo Add unit testing.
 	 */
 	public function build_passthru(
-						array $post,
-						\MyStyle_Product $mystyle_product ) {
+		array $post,
+		\MyStyle_Product $mystyle_product
+	) {
 		// Set up an array of data to pass to/through the customizer.
 		$passthru = array();
 
@@ -61,6 +62,10 @@ class MyStyle_Passthru_Codec {
 			$passthru['post'] = array_merge( $passthru['post'], $post );
 		} else {
 			$passthru['post'] = $post;
+		}
+
+		if ( is_user_logged_in() ) {
+			$passthru['user']['user_id'] = get_current_user_id();
 		}
 
 		// Add all available product attributes (if there are any) to the pass

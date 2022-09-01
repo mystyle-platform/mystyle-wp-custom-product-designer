@@ -69,6 +69,7 @@ class MyStyle_FrontEnd {
 
 		add_filter( 'query_vars', array( &$this, 'add_query_vars_filter' ), 10, 1 );
 		add_filter( 'wp_head', array( &$this, 'render_form_integration_config' ), 0 );
+		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 
 		add_action( 'init', array( &$this, 'init' ), 10, 0 );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_frontend_js' ), 10, 0 );
@@ -161,6 +162,26 @@ class MyStyle_FrontEnd {
 
 		// phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 		echo $form_integration_config;
+	}
+
+	/**
+	 * Add 'mystyle-design-product-sold-out' CSS class to the body for sold out
+	 * products.
+	 *
+	 * @param array $classes The array of classes currently set on the body tag.
+	 * @return array Returns the possibly modified array of body classes.
+	 */
+	public function filter_body_class( $classes ) {
+
+		if ( is_product() ) {
+			$product = wc_get_product();
+
+			if ( ! $product->is_in_stock() ) {
+				$classes[] = 'mystyle-design-product-sold-out';
+			}
+		}
+
+		return $classes;
 	}
 
 	/**

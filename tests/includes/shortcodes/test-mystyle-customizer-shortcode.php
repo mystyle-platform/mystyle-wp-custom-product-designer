@@ -99,6 +99,9 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 						'quantity'    => 1,
 						'add-to-cart' => 1,
 					),
+					'user' => array(
+						'user_id' => 0,
+					),
 				)
 			)
 		);
