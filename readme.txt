@@ -6,7 +6,7 @@ Tags: customization, designer, personalization, product-preview, woocommerce, cu
 Requires at least: 3.3
 Tested up to: 5.8.1
 Requires PHP: 5.3
-Stable tag: 3.19.0
+Stable tag: 3.19.1
 
 The MyStyle Custom Product Designer allows your website visitors to design, customize & personalize, and purchase your WooCommerce products.
 
@@ -106,6 +106,12 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 – displays a list of design collections with a few design thumbs per collection
 
 == Changelog ==
+
+= 3.19.1 =
+* Added Design Collections Shortcode Attributes. 
+* Security Updates. 
+* CSS classes added. 
+* Bug Fixes.
 
 = 3.19.0 =
 * Fixed a bug with the handoff page where user_ids from different systems were 

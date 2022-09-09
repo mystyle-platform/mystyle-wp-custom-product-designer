@@ -3,6 +3,10 @@
  * The MyStyle_Design_Tag_Page Singleton class has hooks for working with the
  * MyStyle Design Tag page.
  *
+ * The Design_Tag_Page shows design tags with their designs. This is in
+ * contrast to the Design_Tag_Index_Page which shows just the design tags as
+ * simple links.
+ *
  * @package MyStyle
  * @since 3.14.0
  */

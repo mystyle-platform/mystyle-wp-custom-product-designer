@@ -125,7 +125,10 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 							return false;
 						}
 						if ( $design->get_user_id() !== $user->ID ) {
-							if ( ! $user->has_cap( 'read_private_posts' ) ) {
+							if (
+								( ! $user->has_cap( 'read_private_posts' ) )
+								&& ( ! $user->has_cap( 'print_url_write' ) )
+							) {
 								return false;
 							}
 						}
@@ -446,6 +449,9 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	 *    public/private/etc).
 	 *  * If the passed user is different from the author whose designs are
 	 *    being retrieved, only the author's public designs are returned.
+	 *    Unless, the current user has the 'read_private_posts' or
+	 *    'print_url_write' capabilities (in which case they can see the user's
+	 *    private designs as well).
 	 *
 	 * @param int     $per_page     The number of designs to show per
 	 *                              page (default: 250).
@@ -466,9 +472,13 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		global $wpdb;
 
 		$access_clause = '';
-		if ( $current_user->ID !== $author->ID ) {
-			// Retrieving designs for a different user (return public designs
-			// only).
+		if (
+			( $current_user->ID !== $author->ID )
+			&& ( ! $current_user->has_cap( 'edit_posts' ) )
+			&& ( ! $current_user->has_cap( 'print_url_write' ) )
+		) {
+			// Retrieving designs for a different end user (return public
+			// designs only).
 			$access_clause = ' AND ms_access = ' . MyStyle_Access::ACCESS_PUBLIC;
 		}
 

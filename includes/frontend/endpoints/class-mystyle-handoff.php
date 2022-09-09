@@ -156,8 +156,9 @@ class MyStyle_Handoff {
 					$this->design->set_user_id( $wp_user->ID );
 					$this->design->set_email( $wp_user->user_email );
 				}
-			} elseif ( isset( $passthru['user']['user_id'] ) ) {
-				$wp_user = get_user_by( 'ID', $passthru['user']['user_id'] );
+			} elseif ( isset( $passthru['user']['token'] ) ) {
+				$token_user_id = MyStyle_Util::encrypt_decrypt( 'decrypt', $passthru['user']['token'] );
+				$wp_user       = get_user_by( 'ID', $token_user_id );
 				if ( false !== $wp_user ) {
 					$this->design->set_user_id( $wp_user->ID );
 					$this->design->set_email( $wp_user->user_email );

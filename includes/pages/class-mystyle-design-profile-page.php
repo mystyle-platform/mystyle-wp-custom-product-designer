@@ -845,6 +845,19 @@ class MyStyle_Design_Profile_Page {
 					&& ( self::get_id() === $post->ID )
 			) {
 				$classes[] = 'mystyle-design-profile';
+
+				// Add 'mystyle-design-product-sold-out' if the design's product
+				// is sold out.
+				$design = self::get_design();
+				if ( null !== $design ) {
+					if ( null !== $design->get_product_id() ) {
+						$product = wc_get_product( $design->get_product_id() );
+
+						if ( ( ! empty( $product ) ) && ( ! $product->is_in_stock() ) ) {
+							$classes[] = 'mystyle-design-product-sold-out';
+						}
+					}
+				}
 			}
 		} catch ( MyStyle_Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// This exception may be thrown if the Customize Page or Design

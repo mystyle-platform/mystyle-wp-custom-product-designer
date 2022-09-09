@@ -1,3 +1,10 @@
+= 3.19.1 =
+
+* Added Design Collections Shortcode Attributes. 
+* Security Updates. 
+* CSS classes added. 
+* Bug Fixes.
+
 = 3.19.0 =
 
 * Fixed a bug with the handoff page where user_ids from different systems were 

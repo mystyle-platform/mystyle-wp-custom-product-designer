@@ -100,7 +100,7 @@ class MyStyleCustomizerShortcodeTest extends WP_UnitTestCase {
 						'add-to-cart' => 1,
 					),
 					'user' => array(
-						'user_id' => 0,
+						'token' => MyStyle_Util::encrypt_decrypt( 'encrypt', '0' ),
 					),
 				)
 			)

@@ -34,6 +34,16 @@ abstract class MyStyle_Design_Collection_Shortcode extends MyStyle_Design_Term_S
 		$term_limit = 24;
 		$offset     = 0;
 
+		// Support for per_collection attribute.
+		if ( isset( $atts['per_collection'] ) ) {
+			$limit = $atts['per_collection'];
+		}
+
+		// Support for collections_per_page attribute.
+		if ( isset( $atts['collections_per_page'] ) ) {
+			$term_limit = $atts['collections_per_page'];
+		}
+
 		$all_terms = get_terms(
 			array(
 				'taxonomy'   => MYSTYLE_COLLECTION_NAME,
@@ -107,8 +117,8 @@ abstract class MyStyle_Design_Collection_Shortcode extends MyStyle_Design_Term_S
 			}
 		}
 
-		$next = $pager_array['next'];
-		$prev = $pager_array['prev'];
+		$next = ( isset( $pager_array['next'] ) ? $pager_array['next'] : null );
+		$prev = ( isset( $pager_array['prev'] ) ? $pager_array['prev'] : null );
 
 		ob_start();
 		require MYSTYLE_TEMPLATES . 'design-collection-index.php';
