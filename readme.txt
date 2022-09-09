@@ -108,10 +108,11 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 == Changelog ==
 
 = 3.19.1 =
-* Added Design Collections Shortcode Attributes. 
-* Security Updates. 
-* CSS classes added. 
-* Bug Fixes.
+* Now encrypting the user id in the passthru data.
+* Now setting the 'mystyle-design-product-sold-out' CSS class on the design
+  profile page (if the design product is sold out).
+* Now users with either the 'read_private_posts' or the 'print_url_write'
+  capabilities can access end user private designs.
 
 = 3.19.0 =
 * Fixed a bug with the handoff page where user_ids from different systems were 
