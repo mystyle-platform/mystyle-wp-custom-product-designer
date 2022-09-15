@@ -17,6 +17,28 @@
 class MyStyle_Design_Tag_Page {
 
 	/**
+	 * The default title for the page.
+	 *
+	 * @var string
+	 */
+	private static $default_post_title = 'Design Tags';
+
+
+	/**
+	 * The default name for the page.
+	 *
+	 * @var string
+	 */
+	private static $default_post_name = 'design-tags';
+
+	/**
+	 * The default content for the page.
+	 *
+	 * @var string
+	 */
+	private static $default_post_content = '[mystyle_design_tags per_tag="5" tags_per_page="12"]';
+
+	/**
 	 * Singleton class instance.
 	 *
 	 * @var \MyStyle_Design_Tag_Page
@@ -73,6 +95,28 @@ class MyStyle_Design_Tag_Page {
 	}
 
 	/**
+	 * Function to get the id of the page.
+	 *
+	 * @return int Returns the page id of the page.
+	 * @throws MyStyle_Exception Throws a MyStyle_Exception if the page is
+	 * missing.
+	 * @todo Add unit testing
+	 */
+	public static function get_id() {
+		// Get the page id of the Customize page.
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		if ( ! isset( $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ) ) {
+			throw new MyStyle_Exception(
+				__( 'Design Tag Page is Missing!', 'mystyle' ),
+				404
+			);
+		}
+		$page_id = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
+
+		return $page_id;
+	}
+
+	/**
 	 * Function to create the page.
 	 *
 	 * @return number Returns the page id of the Design Tag page.
@@ -82,9 +126,9 @@ class MyStyle_Design_Tag_Page {
 	public static function create() {
 		// Create the Design Profile page.
 		$design_tag_page = array(
-			'post_title'   => 'Design Tags Default Page',
-			'post_name'    => 'designtags',
-			'post_content' => 'Design Tags Default Page. DO NOT DELETE!',
+			'post_title'   => self::$default_post_title,
+			'post_name'    => self::$default_post_name,
+			'post_content' => self::$default_post_content,
 			'post_status'  => 'draft',
 			'post_type'    => 'post',
 		);
@@ -102,6 +146,45 @@ class MyStyle_Design_Tag_Page {
 		}
 
 		return $post_id;
+	}
+
+	/**
+	 * Function that upgrades the page.
+	 *
+	 * @param string $old_version The version that you are upgrading from.
+	 * @param string $new_version The version that you are upgrading to.
+	 * @todo Add unit testing
+	 */
+	public static function upgrade( $old_version, $new_version ) {
+		if ( ! self::exists() ) {
+			return;
+		}
+
+		// If upgrading from a version less than 3.14.6, update the post status
+		// from 'private' to 'draft' (if necessary).
+		if ( version_compare( $old_version, '3.14.6', '<' ) ) {
+			$post = get_post( self::get_id() );
+			if ( 'private' === $post->post_status ) {
+				$post_data = array(
+					'ID'          => self::get_id(),
+					'post_status' => 'draft',
+				);
+				wp_update_post( $post_data );
+			}
+		}
+
+		// If upgrading from a version less than 3.19.2, update the post title,
+		// name and content.
+		if ( version_compare( $old_version, '3.19.2', '<' ) ) {
+			$post_data = array(
+				'ID'           => self::get_id(),
+				'post_title'   => self::$default_post_title,
+				'post_name'    => self::$default_post_name,
+				'post_content' => self::$default_post_content,
+			);
+			wp_update_post( $post_data );
+		}
+
 	}
 
 	/**

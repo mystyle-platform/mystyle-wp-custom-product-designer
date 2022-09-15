@@ -1,3 +1,8 @@
+= 3.19.2 =
+
+* Fixed issue with removing products from existing designs.
+* Changed Design Tag Index page title.
+
 = 3.19.1 =
 
 * Now encrypting the user id in the passthru data.

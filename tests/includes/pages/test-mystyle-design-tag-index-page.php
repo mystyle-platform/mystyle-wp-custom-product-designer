@@ -1,16 +1,16 @@
 <?php
 /**
- * The MyStyleDesignTagPageTest class includes tests for testing the
- * MyStyle_Design_Tag_Page class.
+ * The MyStyleDesignTagIndexPageTest class includes tests for testing the
+ * MyStyle_Design_Tag_Index_Page class.
  *
  * @package MyStyle
- * @since 3.17.0
+ * @since 4.0.0
  */
 
 /**
- * MyStyleDesignTagPageTest class.
+ * MyStyleDesignTagIndexPageTest class.
  */
-class MyStyleDesignTagPageTest extends WP_UnitTestCase {
+class MyStyleDesignTagIndexPageTest extends WP_UnitTestCase {
 
 	/**
 	 * Overwrite the setUp function so that our custom tables will be persisted
@@ -36,10 +36,13 @@ class MyStyleDesignTagPageTest extends WP_UnitTestCase {
 	public function test_constructor() {
 		global $wp_filter;
 
-		$page = new MyStyle_Design_Tag_Page();
+		$page = new MyStyle_Design_Tag_Index_Page();
 
 		// Assert that the object is instantiated as expected.
-		$this->assertEquals( 'MyStyle_Design_Tag_Page', get_class( $page ) );
+		$this->assertEquals(
+			'MyStyle_Design_Tag_Index_Page',
+			get_class( $page )
+		);
 
 		// Assert that the init function is registered.
 		$function_names = get_function_names( $wp_filter['init'] );
@@ -51,14 +54,16 @@ class MyStyleDesignTagPageTest extends WP_UnitTestCase {
 	 */
 	public function test_exists() {
 
-		// Assert that the exists function returns false before the page is created.
-		$this->assertFalse( MyStyle_Design_Tag_Page::exists() );
+		// Assert that the exists function returns false before the page is
+		// created.
+		$this->assertFalse( MyStyle_Design_Tag_Index_Page::exists() );
 
 		// Create the MyStyle Design Tag page.
-		MyStyle_Design_Tag_Page::create();
+		MyStyle_Design_Tag_Index_Page::create();
 
-		// Assert that the exists function returns true after the page is created.
-		$this->assertTrue( MyStyle_Design_Tag_Page::exists() );
+		// Assert that the exists function returns true after the page is
+		// created.
+		$this->assertTrue( MyStyle_Design_Tag_Index_Page::exists() );
 	}
 
 	/**
@@ -66,9 +71,9 @@ class MyStyleDesignTagPageTest extends WP_UnitTestCase {
 	 */
 	public function test_get_id() {
 		// Create the MyStyle Design Tag page.
-		$page_id1 = MyStyle_Design_Tag_Page::create();
+		$page_id1 = MyStyle_Design_Tag_Index_Page::create();
 
-		$page_id2 = MyStyle_Design_Tag_Page::get_id();
+		$page_id2 = MyStyle_Design_Tag_Index_Page::get_id();
 
 		// Assert that the page id was successfully retrieved.
 		$this->assertEquals( $page_id2, $page_id1 );
@@ -78,13 +83,13 @@ class MyStyleDesignTagPageTest extends WP_UnitTestCase {
 	 * Test the create function.
 	 */
 	public function test_create() {
-		// Create the MyStyle_Design_Tag_Page page.
-		$page_id = MyStyle_Design_Tag_Page::create();
+		// Create the MyStyle_Design_Tag_Index_Page page.
+		$page_id = MyStyle_Design_Tag_Index_Page::create();
 
 		$page = get_post( $page_id );
 
 		// Assert that the page was created and has the expected title.
-		$this->assertEquals( 'Design Tags', $page->post_title );
+		$this->assertEquals( 'Design Tags Index', $page->post_title );
 	}
 
 	/**
@@ -95,10 +100,10 @@ class MyStyleDesignTagPageTest extends WP_UnitTestCase {
 		$old_version    = '3.19.1';
 		$new_version    = '3.19.2';
 		$current_title  = 'Old Title';
-		$upgraded_title = 'Design Tags';
+		$upgraded_title = 'Design Tags Index';
 
-		// Create the MyStyle_Design_Tag_Page page.
-		$page_id = MyStyle_Design_Tag_Page::create();
+		// Create the MyStyle_Design_Tag_Index_Page page.
+		$page_id = MyStyle_Design_Tag_Index_Page::create();
 
 		$page = get_post( $page_id );
 
@@ -108,7 +113,7 @@ class MyStyleDesignTagPageTest extends WP_UnitTestCase {
 		$this->assertNotEquals( $upgraded_title, $page->post_title );
 
 		// Call the upgrade function.
-		MyStyle_Design_Tag_Page::upgrade( $old_version, $new_version );
+		MyStyle_Design_Tag_Index_Page::upgrade( $old_version, $new_version );
 
 		// Get the page again.
 		$upgraded_page = get_post( $page_id );
@@ -116,21 +121,5 @@ class MyStyleDesignTagPageTest extends WP_UnitTestCase {
 		// Assert that the page now has the correct title.
 		$this->assertEquals( $upgraded_title, $upgraded_page->post_title );
 	}
-
-	/**
-	 * Test the get_tag_url function.
-	 */
-	public function test_get_tag_url() {
-		// Set up the test data.
-		$tag          = 'testtag';
-		$expected_url = 'http://example.org/design-tags/testtag';
-
-		// Call the function.
-		$url = MyStyle_Design_Tag_Page::get_tag_url( $tag );
-
-		// Assert that the exepected $url was returned.
-		$this->assertEquals( $expected_url, $url );
-	}
-
 
 }

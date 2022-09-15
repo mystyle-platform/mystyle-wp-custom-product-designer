@@ -784,11 +784,11 @@ class MyStyle_Design_Profile_Page {
 			) {
 				$design = $this->get_design();
 				if ( null !== $design ) {
-					$product = wc_get_product( $design->get_product_id() );
+					$wc_product = $design->get_product()->get_product();
 					if ( '' !== $design->get_title() ) {
-						$title = $design->get_title() . ' <span>' . $product->get_title() . '</span>';
+						$title = $design->get_title() . ' <span>' . $wc_product->get_title() . '</span>';
 					} else {
-						$title = 'Design ' . $design->get_design_id() . '<span> ' . $product->get_title() . '</span>';
+						$title = 'Design ' . $design->get_design_id() . '<span> ' . $wc_product->get_title() . '</span>';
 					}
 				}
 			}
@@ -851,9 +851,9 @@ class MyStyle_Design_Profile_Page {
 				$design = self::get_design();
 				if ( null !== $design ) {
 					if ( null !== $design->get_product_id() ) {
-						$product = wc_get_product( $design->get_product_id() );
+						$wc_product = $design->get_product()->get_product();
 
-						if ( ( ! empty( $product ) ) && ( ! $product->is_in_stock() ) ) {
+						if ( ( ! empty( $wc_product ) ) && ( ! $wc_product->is_in_stock() ) ) {
 							$classes[] = 'mystyle-design-product-sold-out';
 						}
 					}

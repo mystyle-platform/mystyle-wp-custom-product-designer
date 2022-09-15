@@ -11,7 +11,6 @@
  *
  * @package MyStyle
  * @since 1.7.0
- * @todo Add unit testing
  */
 
 /**
@@ -36,9 +35,20 @@ class MyStyle_Product {
 	/**
 	 * Constructor.
 	 *
-	 * @param \WC_Product $product The WC_Product that we are wrapping.
+	 * @param mixed $product The WC_Product that we are wrapping. Might be
+	 * something else (false, null, etc.) if the product was deleted.
 	 */
-	public function __construct( \WC_Product $product ) {
+	public function __construct( $product ) {
+
+		// Create dummy product if it does not exist.
+		if ( ! $product instanceof \WC_Product ) {
+			$product = new \WC_Product();
+			$product->set_stock_quantity( 0 );
+			$product->set_stock_status( 'outofstock' );
+			$product->set_name( 'Custom Product Design' );
+			$product->set_description( 'Reload and customize this design with any product in the list.' );
+		}
+
 		$this->product = $product;
 	}
 
@@ -202,5 +212,4 @@ class MyStyle_Product {
 	public function get_permalink() {
 		return $this->product->get_permalink();
 	}
-
 }

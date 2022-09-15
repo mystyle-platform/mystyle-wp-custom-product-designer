@@ -125,12 +125,18 @@ class MyStyle_Install {
 		// Flush rewrite rules for newly created rewrites.
 		flush_rewrite_rules();
 
-		// Add the Design tag page if upgrading from less than 3.14.0 (versions
+		// Add the Design Tag Page if upgrading from less than 3.14.0 (versions
 		// that were before this page existed).
 		if ( version_compare( $old_version, '3.14.0', '<' ) ) {
 			if ( ! MyStyle_Design_Tag_Page::exists() ) {
 				MyStyle_Design_Tag_Page::create();
 			}
+		}
+
+		// Apply any applicable upgrades to the Design Tag Page. See the called
+		// upgrade function for details.
+		if ( ! MyStyle_Design_Tag_Page::exists() ) {
+			MyStyle_Design_Tag_Page::upgrade();
 		}
 
 		// Fix Design tag post status to 'draft'.
@@ -145,12 +151,18 @@ class MyStyle_Install {
 			}
 		}
 
-		// Add the Design tag index page if upgrading from less than 3.18.6
+		// Add the Design Tag Index Page if upgrading from less than 3.18.6
 		// (versions that were before this page existed).
 		if ( version_compare( $old_version, '3.18.6', '<' ) ) {
 			if ( ! MyStyle_Design_Tag_Index_Page::exists() ) {
 				MyStyle_Design_Tag_Index_Page::create();
 			}
+		}
+
+		// Apply any applicable upgrades to the Design Tag Index Page. See the
+		// called upgrade function for details.
+		if ( ! MyStyle_Design_Tag_Index_Page::exists() ) {
+			MyStyle_Design_Tag_Index_Page::upgrade();
 		}
 
 		// Add the Design collection page if upgrading from less than 3.18.4 (versions

@@ -52,8 +52,31 @@ class MyStyleProductTest extends WP_UnitTestCase {
 		// Instantitate the MyStyle_Product.
 		$mystyle_product = new MyStyle_Product( $wc_product );
 
-		// Assert that a product id is returned.
+		// Assert that a MyStyle_Product is returned.
 		$this->assertEquals( 'MyStyle_Product', get_class( $mystyle_product ) );
+	}
+
+	/**
+	 * Test the constructor with null WC_Product.
+	 *
+	 * Normally the MyStyle_Product constructor is passed a WC_Product object.
+	 * However, if the WC_Product was deleted, we create a dummy WC_Product and
+	 * wrap it instead. This keeps errors from being thrown when designs are
+	 * loaded for old products that have since been deleted.
+	 */
+	public function test_constructor_with_null_wc_product() {
+		// Simulate a null WC_Product.
+		$wc_product = null;
+
+		// Instantitate the MyStyle_Product.
+		$mystyle_product = new MyStyle_Product( $wc_product );
+
+		// Assert that a MyStyle_Product is returned.
+		$this->assertEquals( 'MyStyle_Product', get_class( $mystyle_product ) );
+		$this->assertEquals(
+			'Custom Product Design',
+			$mystyle_product->get_product()->get_name()
+		);
 	}
 
 	/**
