@@ -149,7 +149,7 @@ class MyStyle_My_Designs_Page {
             "tab_parent" => "0",
             "tab_privacy" => "0",
             "user_decided"=> "1",
-            "tab_name" => "My Designs",
+            "tab_name" => "Designs",
             "tab_icon" => "fas fa-brush",
             "tab_key" => "mystyle_designs"
         ) ;
@@ -171,14 +171,8 @@ class MyStyle_My_Designs_Page {
 
 		// Set the user.
 		/* @var $user \WP_User phpcs:ignore */
-		$user = wp_get_current_user();
-		$design_profile_page->set_user( $user );
-
-		// Set the session.
-		/* @var $session \MyStyle_Session phpcs:ignore */
-		$session = MyStyle()->get_session();
-		$design_profile_page->set_session( $session );
-
+		$design_profile_page->set_user( $user ) ;
+		
 		$design_profile_page->init_user_index_request();
 		
 		$this->designs_list() ;
@@ -294,7 +288,7 @@ class MyStyle_My_Designs_Page {
 		$this->pager = new MyStyle_Pager();
 
 		// Designs per page.
-		$this->pager->set_items_per_page( 100 ); // @TODO add pager for more then 100 designs
+		$this->pager->set_items_per_page( MYSTYLE_DESIGNS_PER_PAGE ); // @TODO add pager for more then 100 designs
 
 		// Current page number.
 		$this->pager->set_current_page_number(
