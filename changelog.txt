@@ -1,3 +1,6 @@
+= 3.19.14 =
+* Bug fixes related to UsersWP profile pages
+
 = 3.19.13 =
 * Added support for UsersWP, Added permissions for MyStyle CS user role, bug fixes.
 
