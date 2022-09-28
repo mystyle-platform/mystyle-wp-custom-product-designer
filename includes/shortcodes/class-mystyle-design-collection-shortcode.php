@@ -173,6 +173,8 @@ abstract class MyStyle_Design_Collection_Shortcode {
                     $terms[ $i ]->designs = $designs;
                 }
             }
+
+            $mystyle_pager->set_current_page_number( $page_num ) ;
             
         }
         

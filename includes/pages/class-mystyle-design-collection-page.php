@@ -211,7 +211,7 @@ class MyStyle_Design_Collection_Page {
 
 					$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
 
-					$title = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Collection' : ' ' . $site_wide_title ) ;
+					$title = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Collection' : ' ' . $site_wide_title . ' Collection' ) ;
                 }
                 
             }
@@ -253,7 +253,7 @@ class MyStyle_Design_Collection_Page {
 				
 				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
 
-				$title['title'] = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Collection' : ' ' . $site_wide_title ) ;
+				$title['title'] = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Collection' : ' ' . $site_wide_title . ' Collection' ) ;
 			}
 			
 		}

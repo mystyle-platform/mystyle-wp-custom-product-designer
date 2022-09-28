@@ -535,7 +535,7 @@ class MyStyle_Design_Tag_Page {
 					
 					$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
 
-					$title = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title ) ;
+					$title = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs' ) ;
                 }
                 
             }
@@ -575,7 +575,7 @@ class MyStyle_Design_Tag_Page {
 				
 				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
 
-				$title['title'] = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title ) ;
+				$title['title'] = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs' ) ;
 			}
 			
 		}

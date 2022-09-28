@@ -176,7 +176,6 @@ abstract class MyStyle_Design_Tag_Shortcode {
                     $limit,
                     ( !$term ? 1 : $page_num )
                 );
-
                 
                 if ( 0 === count( $designs ) ) {
                     $terms[ $i ]->designs = array() ;
@@ -185,7 +184,10 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 }
             }
             
+            $mystyle_pager->set_current_page_number( $page_num ) ;
         }
+
+            
         
 		ob_start();
 		require MYSTYLE_TEMPLATES . 'design-tag-index.php';
