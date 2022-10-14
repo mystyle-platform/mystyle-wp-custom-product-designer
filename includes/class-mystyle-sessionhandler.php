@@ -39,7 +39,6 @@ class MyStyle_SessionHandler {
 	public function __construct() {
 		$this->use_cookies = true; // Use cookie by default.
 
-		add_action( 'init', array( &$this, 'start_session' ), 1, 0 );
 		add_action( 'wp_logout', array( &$this, 'end_session' ), 10, 0 );
 		add_action( 'wp_login', array( &$this, 'start_session' ), 10, 0 );
 	}
