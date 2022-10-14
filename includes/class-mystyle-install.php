@@ -139,18 +139,6 @@ class MyStyle_Install {
 			MyStyle_Design_Tag_Page::upgrade();
 		}
 
-		// Fix Design tag post status to 'draft'.
-		if ( version_compare( $old_version, '3.14.6', '<' ) ) {
-			$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-			$post_id = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
-
-			$update_post = get_post( $post_id );
-
-			if ( 'private' === $update_post->post_status ) {
-				MyStyle_Design_Tag_Page::fix();
-			}
-		}
-
 		// Add the Design Tag Index Page if upgrading from less than 3.18.6
 		// (versions that were before this page existed).
 		if ( version_compare( $old_version, '3.18.6', '<' ) ) {
@@ -165,12 +153,18 @@ class MyStyle_Install {
 			MyStyle_Design_Tag_Index_Page::upgrade();
 		}
 
-		// Add the Design collection page if upgrading from less than 3.18.4 (versions
-		// that were before this page existed).
+		// Add the Design collection page if upgrading from less than 3.18.4
+		// (versions that were before this page existed).
 		if ( version_compare( $old_version, '3.18.5', '<' ) ) {
-			if ( ! MyStyle_Design_Collection_Page::index_exists() ) {
-				MyStyle_Design_Collection_Page::create_index();
+			if ( ! MyStyle_Design_Collection_Page::exists() ) {
+				MyStyle_Design_Collection_Page::create();
 			}
+		}
+
+		// Apply any applicable upgrades to the Design Collection Page. See the
+		// called upgrade function for details.
+		if ( ! MyStyle_Design_Collection_Page::exists() ) {
+			MyStyle_Design_Collection_Page::upgrade();
 		}
 
 		$upgrade_notice = MyStyle_Notice::create(

@@ -1,6 +1,7 @@
 <?php
 /**
- * The template for displaying the MyStyle design collection index.
+ * The template for displaying MyStyle design collections and the MyStyle design
+ * collection index.
  *
  * NOTE: THIS FILE IS NOT YET THEMEABLE.
  *
@@ -56,27 +57,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<img alt="<?php echo esc_html( ( ! empty( $design->get_title() ) ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?> Image" src="<?php echo esc_url( $design->get_thumb_url() ); ?>" />
 						<?php echo esc_html( ( ! empty( $design->get_title() ) ) ? $design->get_title() : 'Custom Design ' . $design->get_design_id() ); ?>
 					</a>
-					<div class="mystyle-design-author">Designed by: <?php echo esc_html( $user->user_nicename ); ?></div>
+					<div>Designed by: <?php echo esc_html( $user->user_nicename ); ?></div>
 
 				</div>
 
 			</div>
 			<?php endforeach; ?>
-			<?php if ( count( $terms ) > 1 && $count > $limit ) : ?>
+			<?php // Conditionally show a view more link to view additional designs. ?>
+			<?php if ( ( 1 < count( $terms ) ) && ( $design_limit < $term->total_design_count ) ) : ?>
 			<div class="design-tile view-more">
-				<a href="<?php echo esc_url( get_term_link( $term->slug ) ); ?>" title="<?php echo esc_attr( $term->name ); ?>">View More</a>
+				<a href="<?php echo esc_url( get_term_link( $term->slug, MYSTYLE_COLLECTION_NAME ) ); ?>" title="<?php echo esc_attr( $term->name ); ?>">View More</a>
 			</div>
 			<?php endif; ?>
 		</div>
 		<?php endforeach; ?>
-		<div class="pager">
-			<?php if ( ! is_null( $prev ) ) : ?>
-			<a href="<?php echo esc_url( '?pager=' . $prev ); ?>" title="Previous page">Previous</a>
-			<?php endif; ?>
-			<?php if ( ! is_null( $next ) ) : ?>
-			<a href="<?php echo esc_url( '?pager=' . $next ); ?>" title="Next page">Next</a>
-			<?php endif; ?>
-		</div>
+		<nav class="woocommerce-pagination">
+			<?php
+			echo paginate_links( // WPCS: XSS ok.
+				array(
+					'base'      => esc_url_raw( str_replace( 999999999, '%#%', get_pagenum_link( 999999999, false ) ) ),
+					'format'    => '',
+					'add_args'  => false,
+					'current'   => $pager->get_current_page_number(),
+					'total'     => $pager->get_page_count(),
+					'prev_text' => '&larr;',
+					'next_text' => '&rarr;',
+					'type'      => 'list',
+					'end_size'  => 3,
+					'mid_size'  => 3,
+				)
+			);
+			?>
+		</nav>
 	</div>
 
 

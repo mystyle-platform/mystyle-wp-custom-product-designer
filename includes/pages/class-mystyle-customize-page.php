@@ -519,7 +519,9 @@ class MyStyle_Customize_Page {
 	 * page OR the id of a translation of the Customize page.
 	 *
 	 * @param int $id The post id.
-	 * @return boolean Returns the filtered title.
+	 * @return bool Returns true if the passed id is the id of the Design Tag
+	 * page OR the id of a translation of the Design Tag page. Otherwise,
+	 * returns false.
 	 * @todo Add unit testing.
 	 */
 	public function is_customize_page( $id ) {

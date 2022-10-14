@@ -1,7 +1,7 @@
 <?php
 /**
- * The MyStyle_API_Interface class is an abstract class that can be used by the
- * MyStyle_DBManager to perisit objects to the database.
+ * The MyStyle_API_Interface interface is implemented by classes that interact
+ * with the MyStyle API.
  *
  * @package MyStyle
  * @since 1.6.0

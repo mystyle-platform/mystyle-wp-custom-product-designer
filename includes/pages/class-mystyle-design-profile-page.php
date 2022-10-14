@@ -99,12 +99,12 @@ class MyStyle_Design_Profile_Page {
 
 		add_action( 'init', array( &$this, 'rewrite_rules' ) );
 		add_action( 'query_vars', array( &$this, 'query_vars' ) );
-		add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
-		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
 		add_action( 'wp_head', array( &$this, 'wp_head' ), 2 );
 
 		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
+		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
+		add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
 	}
 
 	/**

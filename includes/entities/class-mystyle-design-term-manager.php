@@ -10,7 +10,9 @@
 /**
  * MyStyle_Design_Term_Manager class.
  */
-abstract class MyStyle_Design_Term_Manager extends \MyStyle_EntityManager {
+abstract class MyStyle_Design_Term_Manager
+	extends \MyStyle_EntityManager
+	implements \MyStyle_Design_Term_Manager_Interface {
 
 	/**
 	 * Retrieve a list of Design Terms. Only includes terms that are used by at
@@ -18,7 +20,8 @@ abstract class MyStyle_Design_Term_Manager extends \MyStyle_EntityManager {
 	 *
 	 * @param string      $taxonomy        The term taxonomy to use.
 	 * @param int|null    $per_page        The number of terms to show per
-	 *                                     page (default: 250).
+	 *                                     page (default: 250). Pass 0 for
+	 *                                     unlimited.
 	 * @param int|null    $page_number     The page number of the set of terms
 	 *                                     that you want to get (default: 1).
 	 * @param string|null $order_by        What to order the results by (can be
@@ -34,7 +37,7 @@ abstract class MyStyle_Design_Term_Manager extends \MyStyle_EntityManager {
 	 * passed invalid order params.
 	 * @todo Add unit testing.
 	 */
-	protected static function get_terms(
+	public static function get_terms(
 		$taxonomy,
 		$per_page = 250,
 		$page_number = 1,
@@ -50,7 +53,15 @@ abstract class MyStyle_Design_Term_Manager extends \MyStyle_EntityManager {
 			);
 		}
 
-		$offset          = ( $page_number - 1 ) * $per_page;
+		if ( 0 === $per_page ) {
+			$offset        = 0;
+			$limit_clause  = '';
+			$offset_clause = '';
+		} else {
+			$offset        = ( $page_number - 1 ) * $per_page;
+			$limit_clause  = 'LIMIT ' . $per_page;
+			$offset_clause = 'OFFSET ' . $offset;
+		}
 		$order_by_clause = 'ORDER BY ';
 		if ( 'name' === $order_by ) {
 			$order_by_clause .= 't.name';
@@ -76,12 +87,10 @@ abstract class MyStyle_Design_Term_Manager extends \MyStyle_EntityManager {
 				AND d.ms_access = 0
 				GROUP BY tt.term_taxonomy_id '
 				. "{$order_by_clause} "
-				. 'LIMIT %d
-				OFFSET %d',
+				. "{$limit_clause} "
+				. "{$offset_clause} ",
 				array(
 					$taxonomy,
-					$per_page,
-					$offset,
 				)
 			),
 			'OBJECT'
@@ -96,6 +105,102 @@ abstract class MyStyle_Design_Term_Manager extends \MyStyle_EntityManager {
 		}
 
 		return $terms;
+	}
+
+	/**
+	 * Retrieve designs by term_taxonomy_id.
+	 *
+	 * This method is made public so that it child classes can be interchanged
+	 * in their calling code.
+	 *
+	 * @param int                   $term_taxonomy_id The term taxonomy id.
+	 * @param \WP_User|null         $user             The current user.
+	 * @param \MyStyle_Session|null $session          The current MyStyle session.
+	 * @param int                   $per_page         The number of designs to show
+	 *                                                per page (default: 250).
+	 * @param int                   $page_number      The page number of the set of
+	 *                                                designs that you want to get
+	 *                                                (default: 1).
+	 * @global \wpdb $wpdb
+	 * @return mixed Returns an array of MyStyle_Design objects or null if none
+	 * are found.
+	 */
+	public static function get_designs_by_term_taxonomy_id(
+		$term_taxonomy_id,
+		WP_User $user = null,
+		MyStyle_Session $session = null,
+		$per_page = 250,
+		$page_number = 1
+	) {
+		global $wpdb;
+
+		// Query the db for the designs.
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT d.* '
+				. "FROM {$wpdb->prefix}term_relationships r "
+				. "LEFT JOIN {$wpdb->prefix}mystyle_designs d ON (r.object_id = d.ms_design_id) "
+				. 'WHERE r.term_taxonomy_id = %d
+				   AND d.ms_access = %d
+				   LIMIT %d
+				   OFFSET %d',
+				array(
+					$term_taxonomy_id,
+					MyStyle_Access::ACCESS_PUBLIC,
+					$per_page,
+					( $page_number - 1 ) * $per_page,
+				)
+			)
+		);
+
+		// Add the Designs to the return array.
+		$designs = array();
+		foreach ( $results as $result ) {
+			$designs[] = MyStyle_Design::create_from_result_object( $result );
+		}
+
+		return $designs;
+	}
+
+	/**
+	 * Retrieve the total number of public designs having the passed term.
+	 *
+	 * This method is made public so that it child classes can be interchanged
+	 * in their calling code.
+	 *
+	 * @param int                   $term_taxonomy_id The term taxonomy id.
+	 * @param \WP_User|null         $user             The current user.
+	 * @param \MyStyle_Session|null $session          The current MyStyle
+	 *                                                session.
+	 * @return int Returns the total number of designs having the passed term.
+	 * @global $wpdb
+	 */
+	public static function get_total_term_design_count(
+		$term_taxonomy_id,
+		WP_User $user = null,
+		MyStyle_Session $session = null
+	) {
+		global $wpdb;
+
+		$count = intval(
+			$wpdb->get_var(
+				$wpdb->prepare(
+					'SELECT COUNT(*)
+				FROM (SELECT 1 as design '
+					. "FROM {$wpdb->prefix}mystyle_designs d "
+					. "LEFT JOIN {$wpdb->prefix}term_relationships r ON (r.object_id = d.ms_design_id) "
+					. 'WHERE r.term_taxonomy_id = %d
+				AND d.ms_access = %d
+				) t',
+					array(
+						$term_taxonomy_id,
+						MyStyle_Access::ACCESS_PUBLIC,
+					)
+				)
+			)
+		);
+
+		return $count;
 	}
 
 	/**
@@ -225,96 +330,6 @@ abstract class MyStyle_Design_Term_Manager extends \MyStyle_EntityManager {
 		}
 
 		return $term_designs;
-	}
-
-	/**
-	 * Retrieve designs by term_taxonomy_id.
-	 *
-	 * @param int                   $term_taxonomy_id The term taxonomy id.
-	 * @param \WP_User|null         $user             The current user.
-	 * @param \MyStyle_Session|null $session          The current MyStyle session.
-	 * @param int                   $per_page         The number of designs to show
-	 *                                                per page (default: 250).
-	 * @param int                   $page_number      The page number of the set of
-	 *                                                designs that you want to get
-	 *                                                (default: 1).
-	 * @global \wpdb $wpdb
-	 * @return mixed Returns an array of MyStyle_Design objects or null if none
-	 * are found.
-	 */
-	protected static function get_designs_by_term_taxonomy_id(
-		$term_taxonomy_id,
-		WP_User $user = null,
-		MyStyle_Session $session = null,
-		$per_page = 250,
-		$page_number = 1
-	) {
-		global $wpdb;
-
-		// Query the db for the designs.
-		$results = $wpdb->get_results(
-			$wpdb->prepare(
-				'SELECT d.* '
-				. "FROM {$wpdb->prefix}term_relationships r "
-				. "LEFT JOIN {$wpdb->prefix}mystyle_designs d ON (r.object_id = d.ms_design_id) "
-				. 'WHERE r.term_taxonomy_id = %d
-				   AND d.ms_access = %d
-				   LIMIT %d
-				   OFFSET %d',
-				array(
-					$term_taxonomy_id,
-					MyStyle_Access::ACCESS_PUBLIC,
-					$per_page,
-					( $page_number - 1 ) * $per_page,
-				)
-			)
-		);
-
-		// Add the Designs to the return array.
-		$designs = array();
-		foreach ( $results as $result ) {
-			$designs[] = MyStyle_Design::create_from_result_object( $result );
-		}
-
-		return $designs;
-	}
-
-	/**
-	 * Retrieve the total number of public designs having the passed term.
-	 *
-	 * @param int                   $term_taxonomy_id The term taxonomy id.
-	 * @param \WP_User|null         $user             The current user.
-	 * @param \MyStyle_Session|null $session          The current MyStyle
-	 *                                                session.
-	 * @return int Returns the total number of designs having the passed term.
-	 * @global $wpdb
-	 */
-	protected static function get_total_term_design_count(
-		$term_taxonomy_id,
-		WP_User $user = null,
-		MyStyle_Session $session = null
-	) {
-		global $wpdb;
-
-		$count = intval(
-			$wpdb->get_var(
-				$wpdb->prepare(
-					'SELECT COUNT(*)
-				FROM (SELECT 1 as design '
-					. "FROM {$wpdb->prefix}mystyle_designs d "
-					. "LEFT JOIN {$wpdb->prefix}term_relationships r ON (r.object_id = d.ms_design_id) "
-					. 'WHERE r.term_taxonomy_id = %d
-				AND d.ms_access = %d
-				) t',
-					array(
-						$term_taxonomy_id,
-						MyStyle_Access::ACCESS_PUBLIC,
-					)
-				)
-			)
-		);
-
-		return $count;
 	}
 
 	/**

@@ -10,13 +10,15 @@
 /**
  * MyStyle_Design_Collection_Manager class.
  */
-abstract class MyStyle_Design_Collection_Manager extends \MyStyle_Design_Term_Manager {
+class MyStyle_Design_Collection_Manager
+	extends \MyStyle_Design_Term_Manager
+	implements \MyStyle_Design_Term_Manager_Interface {
 
 	/**
 	 * Retrieve a list of Design Collections. Only includes collections that are
 	 * used by at least one public Design.
 	 *
-	 * @param int|null    $per_page        The number of collectionss to show
+	 * @param int|null    $per_page        The number of collections to show
 	 *                                     per page (default: 250).
 	 * @param int|null    $page_number     The page number of the set of
 	 *                                     collections that you want to get

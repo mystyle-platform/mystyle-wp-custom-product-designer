@@ -3,7 +3,7 @@
  * Plugin Name: MyStyle
  * Plugin URI: http://www.mystyleplatform.com
  * Description: The MyStyle Custom Product Designer is a simple plugin that allows your customers to customize products in WooCommerce.
- * Version: 3.19.2
+ * Version: 3.19.3
  * GitHub Plugin URI: https://github.com/mystyle-platform/mystyle-wp-custom-product-designer
  * WC requires at least: 2.2.0
  * WC tested up to: 5.6.0
@@ -93,7 +93,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				define( 'MYSTYLE_SERVER', 'http://api.ogmystyle.com/' );
 			}
 			if ( ! defined( 'MYSTYLE_VERSION' ) ) {
-				define( 'MYSTYLE_VERSION', '3.19.2' );
+				define( 'MYSTYLE_VERSION', '3.19.3' );
 			}
 			if ( ! defined( 'MYSTYLE_TEMPLATE_DEBUG_MODE' ) ) {
 				define( 'MYSTYLE_TEMPLATE_DEBUG_MODE', false );
@@ -106,8 +106,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			define( 'MYSTYLE_DESIGN_PROFILE_PAGEID_NAME', 'mystyle_design_profile_page_id' );
 			define( 'MYSTYLE_DESIGN_TAG_PAGEID_NAME', 'mystyle_design_tag_page_id' );
 			define( 'MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME', 'mystyle_design_tag_index_page_id' );
-			define( 'MYSTYLE_DESIGN_TAG_INDEX_SEO_PAGEID_NAME', 'mystyle_design_tag_index_seo_page_id' );
-			define( 'MYSTYLE_DESIGN_COLLECTION_INDEX_PAGEID_NAME', 'mystyle_design_collection_index_page_id' );
+			define( 'MYSTYLE_DESIGN_COLLECTION_PAGEID_NAME', 'mystyle_design_collection_page_id' );
 			define( 'MYSTYLE_TAXONOMY_NAME', 'design_tag' );
 			define( 'MYSTYLE_COLLECTION_NAME', 'design_collection' );
 		}
@@ -152,6 +151,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-sessionmanager.php';
 			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-design.php';
 			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-designmanager.php';
+			require_once MYSTYLE_INCLUDES . 'entities/interface-mystyle-design-term-manager.php';
 			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-design-term-manager.php';
 			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-design-tag-manager.php';
 			require_once MYSTYLE_INCLUDES . 'entities/class-mystyle-design-collection-manager.php';

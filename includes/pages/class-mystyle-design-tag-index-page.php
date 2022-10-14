@@ -71,7 +71,7 @@ class MyStyle_Design_Tag_Index_Page {
 	public static function exists() {
 		$exists = false;
 
-		// Get the page id of the Design Profile page.
+		// Get the page id of the Design Tag Index page.
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		if ( isset( $options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ] ) ) {
 			$exists = true;
@@ -89,7 +89,7 @@ class MyStyle_Design_Tag_Index_Page {
 	 * @todo Add unit testing
 	 */
 	public static function get_id() {
-		// Get the page id of the Customize page.
+		// Get the page id of the Design Tag Index page.
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		if ( ! isset( $options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ] ) ) {
 			throw new MyStyle_Exception(
@@ -110,7 +110,7 @@ class MyStyle_Design_Tag_Index_Page {
 	 * the id of the created page in the db.
 	 */
 	public static function create() {
-		// Create the Design Profile page.
+		// Create the Design Tag Index page.
 		$design_tag_page = array(
 			'post_title'   => self::$default_post_title,
 			'post_name'    => self::$default_post_name,
@@ -172,7 +172,7 @@ class MyStyle_Design_Tag_Index_Page {
 	public static function fix() {
 		$message = '<br/>';
 		$status  = 'Design Tag Index page looks good, no action necessary.';
-		// Get the page id of the Customize page.
+		// Get the page id of the Design Tag Index page.
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		if ( isset( $options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ] ) ) {
 			$post_id  = $options[ MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME ];
@@ -206,7 +206,7 @@ class MyStyle_Design_Tag_Index_Page {
 
 				// Check for the shortcode.
 				if ( false === strpos( $post->post_content, '[mystyle_design_tags' ) ) {
-					$message            .= 'The mystyle_customizer shortcode not found in the page content, adding...<br/>';
+					$message            .= 'The mystyle_design_tags shortcode not found in the page content, adding...<br/>';
 					$post->post_content .= self::$default_post_content;
 
 					/* @var $error \WP_Error phpcs:ignore */
@@ -222,7 +222,7 @@ class MyStyle_Design_Tag_Index_Page {
 						$status   = 'Design Tag Index page fixed!<br/>';
 					}
 				} else {
-					$message .= 'Design Tag Index page has mystyle_customizer shortcode...<br/>';
+					$message .= 'Design Tag Index page has mystyle_design_tags shortcode...<br/>';
 				}
 			} else { // Post not found, recreate.
 				$message .= 'Design Tag Index page appears to have been deleted, recreating...<br/>';

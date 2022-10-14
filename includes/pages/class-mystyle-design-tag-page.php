@@ -23,7 +23,6 @@ class MyStyle_Design_Tag_Page {
 	 */
 	private static $default_post_title = 'Design Tags';
 
-
 	/**
 	 * The default name for the page.
 	 *
@@ -46,7 +45,7 @@ class MyStyle_Design_Tag_Page {
 	private static $instance;
 
 	/**
-	 * Pager for the design profile index.
+	 * Pager for the page.
 	 *
 	 * @var \MyStyle_Pager
 	 */
@@ -69,12 +68,43 @@ class MyStyle_Design_Tag_Page {
 	public function __construct() {
 		$this->http_response_code = 200;
 
+		add_action( 'init', array( &$this, 'rewrite_rules' ) );
+		add_action( 'query_vars', array( &$this, 'query_vars' ) );
 		add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 25, 2 );
 		add_action( 'template_redirect', array( &$this, 'set_pager' ) );
 
+		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
+		add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
+		add_filter( 'woocommerce_get_breadcrumb', array( &$this, 'filter_breadcrumbs' ), 20, 2 );
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
+	}
+
+	/**
+	 * Add rewrite rule.
+	 */
+	public function rewrite_rules() {
+
+		// Flush rewrite rules for newly created rewrites.
+		flush_rewrite_rules();
+
+		add_rewrite_rule(
+			'design-tags/([a-zA-Z0-9_-].+)?$',
+			'index.php?pagename=design-tags&tag_term=$matches[1]',
+			'top'
+		);
+	}
+
+	/**
+	 * Add custom query vars.
+	 *
+	 * @param array $query_vars Array of query vars.
+	 */
+	public function query_vars( $query_vars ) {
+		$query_vars[] = 'tag_term';
+
+		return $query_vars;
 	}
 
 	/**
@@ -85,7 +115,7 @@ class MyStyle_Design_Tag_Page {
 	public static function exists() {
 		$exists = false;
 
-		// Get the page id of the Design Profile page.
+		// Get the page id of the Design Tag page.
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		if ( isset( $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ) ) {
 			$exists = true;
@@ -103,7 +133,7 @@ class MyStyle_Design_Tag_Page {
 	 * @todo Add unit testing
 	 */
 	public static function get_id() {
-		// Get the page id of the Customize page.
+		// Get the page id of the Design Tag page.
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		if ( ! isset( $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ) ) {
 			throw new MyStyle_Exception(
@@ -117,6 +147,29 @@ class MyStyle_Design_Tag_Page {
 	}
 
 	/**
+	 * Function that tests to see if the passed id is the id of the Design Tag
+	 * page OR the id of a translation of the Design Tag page.
+	 *
+	 * @param int $id The post id.
+	 * @return bool Returns true if the passed id is the id of the Design Tag
+	 * page OR the id of a translation of the Design Tag page. Otherwise,
+	 * returns false.
+	 * @todo Add unit testing.
+	 */
+	public static function is_design_tag_page( $id ) {
+		$is_design_tag_page = false;
+
+		if (
+			( self::get_id() === $id ) ||
+			( MyStyle_Wpml::get_instance()->is_translation_of_page( self::get_id(), $id ) )
+		) {
+			$is_design_tag_page = true;
+		}
+
+		return $is_design_tag_page;
+	}
+
+	/**
 	 * Function to create the page.
 	 *
 	 * @return number Returns the page id of the Design Tag page.
@@ -124,13 +177,13 @@ class MyStyle_Design_Tag_Page {
 	 * the id of the created page in the db.
 	 */
 	public static function create() {
-		// Create the Design Profile page.
+		// Create the Design Tag page.
 		$design_tag_page = array(
 			'post_title'   => self::$default_post_title,
 			'post_name'    => self::$default_post_name,
 			'post_content' => self::$default_post_content,
 			'post_status'  => 'draft',
-			'post_type'    => 'post',
+			'post_type'    => 'page',
 		);
 		$post_id         = wp_insert_post( $design_tag_page );
 		update_post_meta( $post_id, '_thumbnail_id', 1 );
@@ -184,28 +237,6 @@ class MyStyle_Design_Tag_Page {
 			);
 			wp_update_post( $post_data );
 		}
-
-	}
-
-	/**
-	 * Function to fix the post_status.
-	 *
-	 * @return number Returns the page id of the Design Profile page.
-	 */
-	public static function fix() {
-
-		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
-
-		$post_id = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
-
-		$draft_post = array(
-			'ID'          => $post_id,
-			'post_status' => 'draft',
-		);
-
-		$update_post_id = wp_update_post( $draft_post );
-
-		return $update_post_id;
 	}
 
 	/**
@@ -400,6 +431,91 @@ class MyStyle_Design_Tag_Page {
 	}
 
 	/**
+	 * Filter the post title.
+	 *
+	 * @param string $title The title of the post.
+	 * @param int    $id The id of the post.
+	 * @return string Returns the filtered title.
+	 */
+	public function filter_title( $title, $id = null ) {
+		if (
+				( get_the_ID() === $id ) && // Make sure we're in the loop.
+				( in_the_loop() ) // Make sure we're in the loop.
+		) {
+			$term = self::get_current_term( $id );
+
+			if ( null !== $term ) {
+				$title = 'Design Tag: ' . $term->name;
+			}
+		}
+
+		return $title;
+	}
+
+	/**
+	 * Filters the parts of the document title.
+	 *
+	 * This sets the title tag in the HEAD of the HTML document to the title of
+	 * the design (if a design title is set).
+	 *
+	 * @param array $title {
+	 *     The document title parts.
+	 *
+	 *     @type string $title   Title of the viewed page.
+	 *     @type string $page    Optional. Page number if paginated.
+	 *     @type string $tagline Optional. Site description when on home page.
+	 *     @type string $site    Optional. Site title when not on home page.
+	 * }
+	 * @todo Unit test this method.
+	 */
+	public function filter_document_title_parts( $title ) {
+
+		$post = get_post();
+		$id   = $post->ID;
+
+		if ( self::get_id() !== $id ) {
+			return $title;
+		}
+
+		$term = self::get_current_term( $id );
+
+		if ( null !== $term ) {
+			$title['title'] = __( 'Design Tag: ', 'mystyle' ) . $term->name;
+		}
+
+		return $title;
+	}
+
+	/**
+	 * Filter the breadcrumbs.
+	 *
+	 * @param array $crumbs     The array of breadcrumbs.
+	 * @param array $breadcrumb The current (top most) breadcrumb.
+	 * @return array Returns the filtered breadcrumbs.
+	 */
+	public function filter_breadcrumbs( $crumbs, $breadcrumb ) {
+		if ( empty( $crumbs ) ) {
+			return $crumbs;
+		}
+
+		$post = get_post();
+		$id   = $post->ID;
+
+		if ( self::get_id() !== $id ) {
+			return $crumbs;
+		}
+
+		$term = self::get_current_term( $id );
+
+		if ( null !== $term ) {
+			$new_crumb = array( $term->name, '#' );
+			$crumbs[]  = $new_crumb;
+		}
+
+		return $crumbs;
+	}
+
+	/**
 	 * Static function that builds a URL to the page for the tag.
 	 *
 	 * @param string $slug The tag slug.
@@ -410,6 +526,88 @@ class MyStyle_Design_Tag_Page {
 		$url = site_url( 'design-tags' ) . '/' . $slug;
 
 		return $url;
+	}
+
+	/**
+	 * Attempt to fix the Design Tag page. This may involve creating,
+	 * re-creating or repairing it.
+	 *
+	 * @return Returns a message describing the outcome of fix operation.
+	 * @todo Add unit testing
+	 */
+	public static function fix() {
+		$message = '<br/>';
+		$status  = 'Design Tag page looks good, no action necessary.';
+		// Get the page id of the Design Tag page.
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		if ( isset( $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ) ) {
+			$post_id  = $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ];
+			$message .= 'Found the stored ID of the Design Tag page...<br/>';
+
+			/* @var $post \WP_Post phpcs:ignore */
+			$post = get_post( $post_id );
+			if ( null !== $post ) {
+				$message .= 'Design Tag page exists...<br/>';
+
+				// Check the status.
+				if ( 'publish' !== $post->post_status ) {
+					$message          .= 'Status was "' . $post->post_status . '", changing to "publish"...<br/>';
+					$post->post_status = 'publish';
+
+					/* @var $error \WP_Error phpcs:ignore */
+					$errors = wp_update_post( $post, true );
+
+					if ( is_wp_error( $errors ) ) {
+						foreach ( $errors as $error ) {
+							$messages .= $error . '<br/>';
+							$status   .= 'Fix errored out :(<br/>';
+						}
+					} else {
+						$message .= 'Status updated.<br/>';
+						$status   = 'Design Tag page fixed!<br/>';
+					}
+				} else {
+					$message .= 'Design Tag page is published...<br/>';
+				}
+
+				// Check for the shortcode.
+				if ( false === strpos( $post->post_content, '[mystyle_design_tags' ) ) {
+					$message            .= 'The mystyle_design_tags shortcode not found in the page content, adding...<br/>';
+					$post->post_content .= self::$default_post_content;
+
+					/* @var $error \WP_Error phpcs:ignore */
+					$errors = wp_update_post( $post, true );
+
+					if ( is_wp_error( $errors ) ) {
+						foreach ( $errors as $error ) {
+							$messages .= $error . '<br/>';
+							$status   .= 'Fix errored out :(<br/>';
+						}
+					} else {
+						$message .= 'Shortcode added.<br/>';
+						$status   = 'Design Tag page fixed!<br/>';
+					}
+				} else {
+					$message .= 'Design Tag page has mystyle_design_tags shortcode...<br/>';
+				}
+			} else { // Post not found, recreate.
+				$message .= 'Design Tag page appears to have been deleted, recreating...<br/>';
+				try {
+					$post_id = self::create();
+					$status  = 'Design Tag page fixed!<br/>';
+				} catch ( \Exception $e ) {
+					$status = 'Error: ' . $e->getMessage();
+				}
+			}
+		} else { // ID not available, create.
+			$message .= 'Design Tag page missing, creating...<br/>';
+			self::create();
+			$status = 'Design Tag page fixed!<br/>';
+		}
+
+		$message .= $status;
+
+		return $message;
 	}
 
 	/**
@@ -439,6 +637,37 @@ class MyStyle_Design_Tag_Page {
 		} else {
 			return $this->http_response_code;
 		}
+	}
+
+	/**
+	 * Gets the current WP_Term.
+	 *
+	 * @param int $id The id of the current post/page.
+	 * @return \WP_Term|null Returns the current WP_Term (or null if there isn't
+	 * one).
+	 * @gloab \WP_Query $wp_query
+	 */
+	private static function get_current_term( $id ) {
+		global $wp_query;
+
+		$current_term = null;
+		if ( isset( $wp_query->query['tag_term'] ) ) {
+			$term_slug = $wp_query->query['tag_term'];
+			if ( preg_match( '/\//', $term_slug ) ) {
+				$url_array = explode( '/', $term_slug );
+				if ( 'page' === $url_array[0] ) {
+					$term_slug = null;
+				} else {
+					$term_slug = $url_array[0];
+				}
+			}
+
+			if ( null !== $term_slug ) {
+				$current_term = get_term_by( 'slug', $term_slug, MYSTYLE_TAXONOMY_NAME );
+			}
+		}
+
+		return $current_term;
 	}
 
 	/**

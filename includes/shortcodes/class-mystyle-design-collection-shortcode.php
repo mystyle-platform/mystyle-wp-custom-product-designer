@@ -9,123 +9,77 @@
 /**
  * MyStyle_Design_Collection_Shortcode class.
  */
-abstract class MyStyle_Design_Collection_Shortcode extends MyStyle_Design_Term_Shortcode {
+class MyStyle_Design_Collection_Shortcode extends MyStyle_Design_Term_Shortcode {
+
+	/**
+	 * The default number of designs to show at a time when viewing a single
+	 * term.
+	 *
+	 * @var int
+	 */
+	const DEFAULT_TERM_DESIGN_LIMIT = 20;
+
+	/**
+	 * The default number of designs to show at a time when viewing the term
+	 * index.
+	 *
+	 * @var int
+	 */
+	const DEFAULT_INDEX_DESIGN_LIMIT = 4;
+
+	/**
+	 * The default number of terms to show at a time when viewing the term
+	 * index.
+	 *
+	 * @var int
+	 */
+	const DEFAULT_INDEX_TERM_LIMIT = 10;
+
+	/**
+	 * Singleton instance.
+	 *
+	 * @var MyStyle_Design_Collection_Shortcode
+	 */
+	private static $instance;
 
 	/**
 	 * Output the design collection shortcode.
 	 *
 	 * @param array $atts The attributes set on the shortcode.
-	 * @global \WP_Query $wp_query
+	 * @returns string Returns the output for the shortcode as a string of HTML.
 	 */
 	public static function output( $atts ) {
-		global $wp_query;
-
-		// Get the term from the URL (if any).
-		$term = false;
-		if ( isset( $wp_query->query['collection_term'] ) ) {
-			$term = $wp_query->query['collection_term'];
-		}
-
-		$wp_user = wp_get_current_user();
-		$session = MyStyle()->get_session();
-
-		$page       = 1;
-		$limit      = 4;
-		$term_limit = 24;
-		$offset     = 0;
-
-		// Support for per_collection attribute.
-		if ( isset( $atts['per_collection'] ) ) {
-			$limit = $atts['per_collection'];
-		}
-
-		// Support for collections_per_page attribute.
-		if ( isset( $atts['collections_per_page'] ) ) {
-			$term_limit = $atts['collections_per_page'];
-		}
-
-		$all_terms = get_terms(
-			array(
-				'taxonomy'   => MYSTYLE_COLLECTION_NAME,
-				'hide_empty' => true,
-			)
-		);
-
-		if ( $term ) {
-			$terms   = array();
-			$terms[] = get_term_by( 'slug', $term, MYSTYLE_COLLECTION_NAME );
-		} else {
-			// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-			if ( ( isset( $_GET['pager'] ) ) && ( 0 !== $_GET['pager'] ) ) {
-				$page   = intval( $_GET['pager'] );
-				$offset = ( $page * $term_limit );
-			}
-			// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-
-			$terms = get_terms(
-				array(
-					'taxonomy'   => MYSTYLE_COLLECTION_NAME,
-					'hide_empty' => true,
-					'number'     => $term_limit,
-					'offset'     => $offset,
-				)
-			);
-		}
-
-		$terms_count = count( $terms );
-
-		$page_num = 1;
-
-		$pager_array = array(
-			'next' => null,
-			'prev' => null,
-		);
-
-		if ( 1 === $terms_count ) {
-			$limit = 20;
-
-			// phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-			if ( ( isset( $_GET['pager'] ) ) && ( null !== $_GET['pager'] ) ) {
-				$page     = intval( $_GET['pager'] );
-				$page_num = $page + 1;
-			}
-			// phpcs:enable WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected
-
-			$total_design_count = MyStyle_Design_Collection_Manager::get_total_collection_design_count(
-				$terms[0]->term_taxonomy_id,
-				$wp_user,
-				$session
-			);
-			$pager_array        = self::get_pager( $page, $limit, $total_design_count );
-		} elseif ( count( $all_terms ) > $term_limit ) {
-			$pager_array = self::get_pager( $page, $term_limit, count( $all_terms ) );
-		}
-
-		for ( $i = 0; $i < $terms_count; $i++ ) {
-			$designs = MyStyle_Design_Collection_Manager::get_designs_by_collection_term_taxonomy_id(
-				$terms[ $i ]->term_taxonomy_id,
-				$wp_user,
-				$session,
-				$limit,
-				$page_num
-			);
-
-			if ( 0 === count( $designs ) ) {
-				unset( $terms[ $i ] );
-			} else {
-				$terms[ $i ]->designs = $designs;
-			}
-		}
-
-		$next = ( isset( $pager_array['next'] ) ? $pager_array['next'] : null );
-		$prev = ( isset( $pager_array['prev'] ) ? $pager_array['prev'] : null );
-
-		ob_start();
-		require MYSTYLE_TEMPLATES . 'design-collection-index.php';
-		$out = ob_get_contents();
-		ob_end_clean();
+		$instance = self::get_instance();
+		$instance->init();
+		$out = $instance->build_output( $atts );
 
 		return $out;
+	}
+
+	/**
+	 * Private method that initializes the object.
+	 */
+	private function init() {
+		$this->term_manager       = new MyStyle_Design_Collection_Manager();
+		$this->taxonomy           = MYSTYLE_COLLECTION_NAME;
+		$this->template           = MYSTYLE_TEMPLATES . 'design-collection.php';
+		$this->term_query_param   = 'collection_term';
+		$this->term_design_limit  = self::DEFAULT_TERM_DESIGN_LIMIT;
+		$this->index_design_limit = self::DEFAULT_INDEX_DESIGN_LIMIT;
+		$this->index_term_limit   = self::DEFAULT_INDEX_TERM_LIMIT;
+	}
+
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @return MyStyle_Design_Collection_Shortcode
+	 */
+	public static function get_instance() {
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 }

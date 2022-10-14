@@ -10,7 +10,9 @@
 /**
  * MyStyle_Design_Tag_Manager class.
  */
-abstract class MyStyle_Design_Tag_Manager extends \MyStyle_Design_Term_Manager {
+class MyStyle_Design_Tag_Manager
+	extends \MyStyle_Design_Term_Manager
+	implements \MyStyle_Design_Term_Manager_Interface {
 
 	/**
 	 * Retrieve a list of Design Tags. Only includes tags that are used by at

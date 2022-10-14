@@ -211,14 +211,34 @@ class MyStyle_Options_Page {
 					$handled = true;
 
 					break;
-				case 'fix_design_tag_index_page':
-						// Attempt the fix.
-						$message = MyStyle_Design_Tag_Index_Page::fix();
+				case 'fix_design_tag_page':
+					// Attempt the fix.
+					$message = MyStyle_Design_Tag_Page::fix();
 
-						// Post Fix Notice.
-						$fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
-						mystyle_notice_add_to_queue( $fix_notice );
-						$handled = true;
+					// Post Fix Notice.
+					$fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
+					mystyle_notice_add_to_queue( $fix_notice );
+					$handled = true;
+
+					break;
+				case 'fix_design_collection_page':
+					// Attempt the fix.
+					$message = MyStyle_Design_Collection_Page::fix();
+
+					// Post Fix Notice.
+					$fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
+					mystyle_notice_add_to_queue( $fix_notice );
+					$handled = true;
+
+					break;
+				case 'fix_design_tag_index_page':
+					// Attempt the fix.
+					$message = MyStyle_Design_Tag_Index_Page::fix();
+
+					// Post Fix Notice.
+					$fix_notice = MyStyle_Notice::create( 'notify_fix', $message );
+					mystyle_notice_add_to_queue( $fix_notice );
+					$handled = true;
 
 					break;
 			}
@@ -262,6 +282,18 @@ class MyStyle_Options_Page {
 					<p class="submit">
 						<input type="submit" name="Submit" id="submit_fix_design_profile_page" class="button button-primary" value="<?php esc_attr_e( 'Fix Design Profile Page', 'mystyle' ); ?>" /><br/>
 						<small>This tool will attempt to fix the Design page. This may involve creating, recreating, or restoring the page.</small>
+					</p>
+				</form>
+				<form action="<?php echo esc_url( 'admin.php?page=mystyle&action=fix_design_tag_page&_wpnonce=' . wp_create_nonce( 'mystyle-admin-action' ) ); ?>" method="post">
+					<p class="submit">
+						<input type="submit" name="Submit" id="submit_fix_design_tag_page" class="button button-primary" value="<?php esc_attr_e( 'Fix Design Tag Page', 'mystyle' ); ?>" /><br/>
+						<small>This tool will attempt to fix the Design Tag page. This may involve creating, recreating, or restoring the page.</small>
+					</p>
+				</form>
+				<form action="<?php echo esc_url( 'admin.php?page=mystyle&action=fix_design_collection_page&_wpnonce=' . wp_create_nonce( 'mystyle-admin-action' ) ); ?>" method="post">
+					<p class="submit">
+						<input type="submit" name="Submit" id="submit_fix_design_collection_page" class="button button-primary" value="<?php esc_attr_e( 'Fix Design Collection Page', 'mystyle' ); ?>" /><br/>
+						<small>This tool will attempt to fix the Design Collection page. This may involve creating, recreating, or restoring the page.</small>
 					</p>
 				</form>
 				<form action="<?php echo esc_url( 'admin.php?page=mystyle&action=fix_design_tag_index_page&_wpnonce=' . wp_create_nonce( 'mystyle-admin-action' ) ); ?>" method="post">
