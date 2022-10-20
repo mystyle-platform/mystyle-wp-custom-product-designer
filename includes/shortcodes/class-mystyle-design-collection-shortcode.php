@@ -42,7 +42,8 @@ abstract class MyStyle_Design_Collection_Shortcode {
         
 		$wp_user = wp_get_current_user();
 
-		$session = MyStyle()->get_session();
+		//$session = MyStyle()->get_session();
+		$session = null; // No longer using sessions for design-collection shortcode.
         
         $show_designs           = true ;
         $collections_per_page   = 24 ;
