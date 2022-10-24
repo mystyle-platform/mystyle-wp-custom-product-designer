@@ -119,14 +119,13 @@ class MyStyle_FrontEnd {
 	 */
 	public function init_vars() {
 
-		$this->user = wp_get_current_user();
-
-		$this->session = MyStyle()->get_session();
-
 		// Get the design from the url.
 		$design_id = MyStyle_Util::get_query_var_int( 'design_id' );
 
 		if ( null !== $design_id ) {
+			$this->user = wp_get_current_user();
+			$this->session = MyStyle()->get_session();
+
 			// Get the design. If the user doesn't have access, an exception
 			// is thrown.
 			try {
@@ -179,17 +178,17 @@ class MyStyle_FrontEnd {
 		// phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 		echo $form_integration_config;
 	}
-    
+
     /**
      * Add body class for MyStyle customizable products
      */
     public function filter_body_class( $classes ) {
-        
+
         if( is_product() ) {
             $product = wc_get_product() ;
-            
+
             if ( !$product->is_in_stock() ) {
-                $classes[] = 'mystyle-product-not-in-stock' ;    
+                $classes[] = 'mystyle-product-not-in-stock' ;
             }
         }
 

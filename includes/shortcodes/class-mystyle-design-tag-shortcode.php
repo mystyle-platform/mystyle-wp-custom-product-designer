@@ -37,7 +37,8 @@ abstract class MyStyle_Design_Tag_Shortcode {
         
 		$wp_user = wp_get_current_user();
 
-		$session = MyStyle()->get_session();
+		//$session = MyStyle()->get_session();
+		$session = null; // No longer using sessions for design-tag shortcode.
         
         $show_designs           = true ;
         $tags_per_page          = 24 ;
