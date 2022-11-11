@@ -1,3 +1,7 @@
+= 3.19.5 =
+
+* Fixed bug with legacy widget editor affecting tag clouds.
+
 = 3.19.4 =
 
 * Updated the MyStyle dashboard to link the various counts to their source admin
