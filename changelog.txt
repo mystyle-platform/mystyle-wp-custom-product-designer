@@ -1,3 +1,11 @@
+= 3.19.4 =
+
+* Updated the MyStyle dashboard to link the various counts to their source admin
+  pages.
+* Updated the design title on the design profile page to include who the design
+  was created by.
+* Now setting the default styling on the design tag cloud.
+
 = 3.19.3 =
 
 * Added standard WordPress pagination to Design Tags and Design Collections 

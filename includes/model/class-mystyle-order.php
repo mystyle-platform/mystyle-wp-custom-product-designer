@@ -185,7 +185,7 @@ class MyStyle_Order {
 			$mystyle_data = wc_get_order_item_meta( $item_id, 'mystyle_data' );
 		}
 
-		if ( null !== $mystyle_data ) {
+		if ( ( null !== $mystyle_data ) && ( is_array( $mystyle_data ) ) ) {
 			$design_id = $mystyle_data['design_id'];
 
 			/* @var $current_user \WP_User phpcs:ignore */

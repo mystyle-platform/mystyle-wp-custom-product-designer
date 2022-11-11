@@ -26,6 +26,8 @@ class MyStyle_Design_Tag_Taxonomy {
 	 */
 	public function __construct() {
 		add_action( 'init', array( &$this, 'register' ), 10, 0 );
+
+		add_filter( 'widget_tag_cloud_args', array( &$this, 'configure_design_tag_cloud_widget' ), 10, 2 );
 	}
 
 	/**
@@ -107,6 +109,24 @@ class MyStyle_Design_Tag_Taxonomy {
 		);
 
 		return $results;
+	}
+
+	/**
+	 * Configure the design tag cloud widget.
+	 *
+	 * Note that this only works with the classic/legacy Tag Cloud widget and
+	 * not with the new Tag Cloud block.
+	 *
+	 * @param array $args     Args used for the tag cloud widget.
+	 * @param array $instance Array of settings for the current widget.
+	 * @return array Returns the args (settings) for tag cloud.
+	 */
+	public static function configure_design_tag_cloud_widget( $args, $instance ) {
+		if ( MYSTYLE_TAXONOMY_NAME === $instance['taxonomy'] ) {
+			$args['number'] = 100;
+		}
+
+		return $args;
 	}
 
 	/**

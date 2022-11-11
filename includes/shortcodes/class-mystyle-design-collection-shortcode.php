@@ -33,7 +33,7 @@ class MyStyle_Design_Collection_Shortcode extends MyStyle_Design_Term_Shortcode 
 	 *
 	 * @var int
 	 */
-	const DEFAULT_INDEX_TERM_LIMIT = 10;
+	const DEFAULT_INDEX_TERM_LIMIT = 50;
 
 	/**
 	 * Singleton instance.
