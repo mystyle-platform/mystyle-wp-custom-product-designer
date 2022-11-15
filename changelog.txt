@@ -1,3 +1,6 @@
+= 3.19.16 =
+* Removed session handling for anonymous users
+
 = 3.19.15 =
 * Fixed WP Pagination on Design Tags and Collections pages
 
