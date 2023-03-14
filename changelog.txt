@@ -1,3 +1,6 @@
+= 3.19.17 =
+* Fixed bug related to designs being saved with a user_id of 0
+
 = 3.19.16 =
 * Removed session handling for anonymous users
 
