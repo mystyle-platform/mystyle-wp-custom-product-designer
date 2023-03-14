@@ -769,7 +769,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			)
 		);
 
-		if ( intval( $design_user_id ) === $user_id ) {
+		if ( intval( $design_user_id ) != 0 && intval( $design_user_id ) === $user_id ) {
 			$ret = true;
 		}
 

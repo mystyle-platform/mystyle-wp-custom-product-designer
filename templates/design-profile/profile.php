@@ -91,6 +91,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			|| ( current_user_can( 'administrator' ) ) //administrator
 
 		) : ?>
+			
 			<div class="design-manager-menu">
 				<br/>
 				<strong>Change the design access level</strong>

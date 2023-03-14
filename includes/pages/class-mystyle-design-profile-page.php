@@ -902,6 +902,9 @@ class MyStyle_Design_Profile_Page {
 					<meta name="author" content="<?php echo esc_html( $user->user_nicename ); ?>">
 					<?php
 				}
+				else {
+					$user = wp_get_current_user() ;
+				}
 
 				?>
 				<meta name="description" content="<?php echo esc_html( $product->get_title() ) . ' ' . esc_html( $design_title ); ?>">
