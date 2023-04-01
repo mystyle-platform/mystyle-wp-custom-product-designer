@@ -1,3 +1,6 @@
+= 3.19.18 =
+* Added custom canonical and shortlink hooks to tags, collections, and profile pages for SEO
+
 = 3.19.17 =
 * Fixed bug related to designs being saved with a user_id of 0
 
