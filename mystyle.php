@@ -107,6 +107,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			define( 'MYSTYLE_DESIGN_TAG_INDEX_PAGEID_NAME', 'mystyle_design_tag_index_page_id' );
 			define( 'MYSTYLE_DESIGN_TAG_INDEX_SEO_PAGEID_NAME', 'mystyle_design_tag_index_seo_page_id' );
 			define( 'MYSTYLE_DESIGN_COLLECTION_INDEX_PAGEID_NAME', 'mystyle_design_collection_index_page_id' );
+			define( 'MYSTYLE_DESIGN_COLLECTION_PAGEID_NAME', 'mystyle_design_collection_page_id' );
 			define( 'MYSTYLE_TAXONOMY_NAME', 'design_tag' );
 			define( 'MYSTYLE_COLLECTION_NAME', 'design_collection' );
 		}

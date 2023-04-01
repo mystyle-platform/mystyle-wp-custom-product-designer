@@ -48,6 +48,8 @@ class MyStyle_Design_Collection_Page {
         add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
 		add_filter( 'document_title_parts', array( &$this, 'document_title_parts' ) ) ;
 		add_filter( 'body_class', array( &$this, 'body_class' ), 10, 2 ) ;
+		add_filter( 'get_canonical_url', array( &$this, 'canonical_url' ), 10, 2 ) ;
+		add_filter( 'get_shortlink', array( &$this, 'shortlink' ), 10, 4 ) ;
 	}
     
     /**
@@ -74,6 +76,21 @@ class MyStyle_Design_Collection_Page {
 		$query_vars[] = 'collection_term';
 
 		return $query_vars;
+	}
+
+	/**
+	 * Function to get the page id.
+	 */
+	public static function get_id() {
+		$page_id = null;
+
+		// Get the page id of the Design Profile page.
+		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
+		if ( isset( $options[ MYSTYLE_DESIGN_COLLECTION_INDEX_PAGEID_NAME ] ) ) {
+			$page_id = $options[ MYSTYLE_DESIGN_COLLECTION_INDEX_PAGEID_NAME ];
+		}
+
+		return $page_id;
 	}
 
 	/**
@@ -173,6 +190,33 @@ class MyStyle_Design_Collection_Page {
 		}
         
 		return $post_id;
+	}
+
+	/**
+	 * Get canonical url.
+	 */
+	public function canonical_url( $url, $post ) {
+		$slug = get_query_var( 'collection_term' ) ;
+		
+		if ( $slug != "" ) {
+			$url = $this->get_collection_url( $slug ) ;
+		}
+
+		return $url;
+
+	}
+
+	/**
+	 * Filter the shortlink.
+	 */
+	public function shortlink( $shortlink, $id, $context ) {
+		$slug = get_query_var( 'collection_term' ) ;
+		
+		if ( $slug != "" ) {
+			$shortlink = $this->get_collection_url( $slug ) ;
+		}
+
+		return $shortlink;
 	}
 
     /**

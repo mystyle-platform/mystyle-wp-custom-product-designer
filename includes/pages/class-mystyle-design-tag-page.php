@@ -53,6 +53,8 @@ class MyStyle_Design_Tag_Page {
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
         add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 ) ;
 		add_filter( 'document_title_parts', array( &$this, 'document_title_parts' ) ) ;
+		add_filter( 'get_canonical_url', array( &$this, 'canonical_url' ), 10, 2 ) ;
+		add_filter( 'get_shortlink', array( &$this, 'shortlink' ), 10, 4 ) ;
 	}
 
 	/**
@@ -458,6 +460,34 @@ class MyStyle_Design_Tag_Page {
 		}
 
 		return $permalink;
+	}
+
+	/**
+	 * Get canonical url.
+	 */
+	public function canonical_url( $url, $post ) {
+		$slug = get_query_var( 'design_tag_term' ) ;
+
+		if ( $slug != "" ) {
+			$url = $this->get_tag_url( $slug ) ;
+		}
+
+		return $url;
+
+	}
+
+	/**
+	 * Filter the shortlink for the design tag page.
+	 */
+	public function shortlink( $shortlink, $id, $context ) {
+
+		$slug = get_query_var( 'design_tag_term' ) ;
+
+		if ( $slug != "" ) {
+			$shortlink = $this->get_tag_url( $slug ) ;
+		}
+
+		return $shortlink;
 	}
 
 	/**

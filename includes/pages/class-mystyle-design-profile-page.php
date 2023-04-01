@@ -105,6 +105,8 @@ class MyStyle_Design_Profile_Page {
 		add_action( 'wp_head', array( &$this, 'wp_head' ), 2 );
 		
 		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
+		add_filter( 'get_canonical_url', array( &$this, 'filter_canonical_url' ), 10, 2 );
+		add_filter( 'get_shortlink', array( &$this, 'filter_shortlink' ), 10, 4 ) ;
 	}
 
 	/**
@@ -768,6 +770,36 @@ class MyStyle_Design_Profile_Page {
 		$message .= $status;
 
 		return $message;
+	}
+
+	/** 
+	 * Filter the shortlink url
+	 */
+	public function filter_shortlink( $shortlink, $id, $context, $allow_slugs ) {
+		$design = $this->get_design();
+		if ( null !== $design ) {
+			$design_id = $design->get_design_id();
+			if ( '' !== $design_id ) {
+				return site_url( 'designs' ) . '/' . $design_id ;
+			}
+		}
+
+		return $shortlink ;
+	}
+
+	/**
+	 * Filter the canonical url.
+	 */
+	public function filter_canonical_url( $url, $post ) {
+		$design = $this->get_design();
+		if ( null !== $design ) {
+			$design_id = $design->get_design_id();
+			if ( '' !== $design_id ) {
+				return site_url( 'designs' ) . '/' . $design_id ;
+			}
+		}
+
+		return $url ;
 	}
 
 	/**
