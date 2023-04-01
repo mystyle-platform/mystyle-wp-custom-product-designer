@@ -50,6 +50,7 @@ class MyStyle_Design_Collection_Page {
 		add_filter( 'body_class', array( &$this, 'body_class' ), 10, 2 ) ;
 		add_filter( 'get_canonical_url', array( &$this, 'canonical_url' ), 10, 2 ) ;
 		add_filter( 'get_shortlink', array( &$this, 'shortlink' ), 10, 4 ) ;
+		add_filter( 'wpseo_canonical', array( &$this, 'wpseo_canonical' ), 10, 1 ) ;
 	}
     
     /**
@@ -190,6 +191,19 @@ class MyStyle_Design_Collection_Page {
 		}
         
 		return $post_id;
+	}
+
+	/**
+	 * WPSEO canonical url.
+	 */
+	public function wpseo_canonical( $canonical ) {
+		$slug = get_query_var( 'collection_term' ) ;
+		
+		if ( $slug != "" ) {
+			$canonical = $this->get_collection_url( $slug ) ;
+		}
+
+		return $canonical;
 	}
 
 	/**

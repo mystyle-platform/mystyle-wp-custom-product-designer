@@ -107,6 +107,7 @@ class MyStyle_Design_Profile_Page {
 		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
 		add_filter( 'get_canonical_url', array( &$this, 'filter_canonical_url' ), 10, 2 );
 		add_filter( 'get_shortlink', array( &$this, 'filter_shortlink' ), 10, 4 ) ;
+		add_filter( 'wpseo_canonical', array( &$this, 'filter_wpseo_canonical' ), 10, 1 );
 	}
 
 	/**
@@ -785,6 +786,21 @@ class MyStyle_Design_Profile_Page {
 		}
 
 		return $shortlink ;
+	}
+
+	/**
+	 * Filter wpseo canonical url
+	 */
+	public function filter_wpseo_canonical( $canonical ) {
+		$design = $this->get_design();
+		if ( null !== $design ) {
+			$design_id = $design->get_design_id();
+			if ( '' !== $design_id ) {
+				return site_url( 'designs' ) . '/' . $design_id ;
+			}
+		}
+
+		return $canonical ;
 	}
 
 	/**
