@@ -51,6 +51,7 @@ class MyStyle_Design_Collection_Page {
 		add_filter( 'get_canonical_url', array( &$this, 'canonical_url' ), 10, 2 ) ;
 		add_filter( 'get_shortlink', array( &$this, 'shortlink' ), 10, 4 ) ;
 		add_filter( 'wpseo_canonical', array( &$this, 'wpseo_canonical' ), 10, 1 ) ;
+		add_filter( 'rank_math/frontend/canonical', array( &$this, 'rank_math_canonical' ), 10, 1 ) ;
 	}
     
     /**
@@ -207,6 +208,19 @@ class MyStyle_Design_Collection_Page {
 	}
 
 	/**
+	 * Get Rank Math Canonical URL.
+	 */
+	public function rank_math_canonical( $canonical_url ) {
+		$slug = get_query_var( 'collection_term' ) ;
+		
+		if ( $slug != "" ) {
+			$canonical_url = $this->get_collection_url( $slug ) ;
+		}
+
+		return $canonical_url;
+	}
+
+	/**
 	 * Get canonical url.
 	 */
 	public function canonical_url( $url, $post ) {
@@ -344,7 +358,7 @@ class MyStyle_Design_Collection_Page {
 	 * collection.
 	 */
 	public static function get_collection_url( $slug ) {
-		$url = site_url( 'design-collections' ) . '/' . $slug;
+		$url = site_url( 'design-collections' ) . '/' . $slug . '/' ;
 
 		return $url;
 	}

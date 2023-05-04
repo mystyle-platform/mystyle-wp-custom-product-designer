@@ -56,6 +56,8 @@ class MyStyle_Design_Tag_Page {
 		add_filter( 'get_canonical_url', array( &$this, 'canonical_url' ), 10, 2 ) ;
 		add_filter( 'get_shortlink', array( &$this, 'shortlink' ), 10, 4 ) ;
 		add_filter( 'wpseo_canonical', array( &$this, 'wpseo_canonical' ) ) ;
+		add_filter( 'rank_math/frontend/canonical', array( &$this, 'rank_math_canonical' ), 10, 1 ) ;
+
 	}
 
 	/**
@@ -477,6 +479,19 @@ class MyStyle_Design_Tag_Page {
 	}
 
 	/**
+	 * Get Rank Math canonical url.
+	 */
+	public function rank_math_canonical( $canonical_url ) {
+		$slug = get_query_var( 'design_tag_term' ) ;
+
+		if ( $slug != "" ) {
+			$canonical_url = $this->get_tag_url( $slug ) ;
+		}
+
+		return $canonical_url;
+	}
+
+	/**
 	 * Get canonical url.
 	 */
 	public function canonical_url( $url, $post ) {
@@ -512,7 +527,7 @@ class MyStyle_Design_Tag_Page {
 	 * tag.
 	 */
 	public static function get_tag_url( $slug ) {
-		$url = site_url( 'design-tags' ) . '/' . $slug;
+		$url = site_url( 'design-tags' ) . '/' . $slug . '/' ;
 
 		return $url;
 	}

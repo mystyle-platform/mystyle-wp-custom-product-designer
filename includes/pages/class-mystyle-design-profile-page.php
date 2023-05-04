@@ -108,6 +108,8 @@ class MyStyle_Design_Profile_Page {
 		add_filter( 'get_canonical_url', array( &$this, 'filter_canonical_url' ), 10, 2 );
 		add_filter( 'get_shortlink', array( &$this, 'filter_shortlink' ), 10, 4 ) ;
 		add_filter( 'wpseo_canonical', array( &$this, 'filter_wpseo_canonical' ), 10, 1 );
+		add_filter( 'rank_math/frontend/canonical', array( &$this, 'filter_rank_math_canonical' ), 10, 1 ) ;
+
 	}
 
 	/**
@@ -796,11 +798,23 @@ class MyStyle_Design_Profile_Page {
 		if ( null !== $design ) {
 			$design_id = $design->get_design_id();
 			if ( '' !== $design_id ) {
-				return site_url( 'designs' ) . '/' . $design_id ;
+				return site_url( 'designs' ) . '/' . $design_id . '/' ;
 			}
 		}
 
 		return $canonical ;
+	}
+
+	/**
+	 * Filter Rank Math canonical url
+	 */
+	public function filter_rank_math_canonical( $canonical_url ) {
+		$design_id = get_query_var( 'design_id' ) ;
+		if ( '' !== $design_id ) {
+			return site_url( 'designs' ) . '/' . $design_id . '/' ;
+		}
+
+		return $canonical_url ;
 	}
 
 	/**
@@ -811,7 +825,7 @@ class MyStyle_Design_Profile_Page {
 		if ( null !== $design ) {
 			$design_id = $design->get_design_id();
 			if ( '' !== $design_id ) {
-				return site_url( 'designs' ) . '/' . $design_id ;
+				return site_url( 'designs' ) . '/' . $design_id . '/' ;
 			}
 		}
 
