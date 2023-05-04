@@ -1,3 +1,6 @@
+= 3.19.20 =
+* Added Rank Math canonical filter to design collections, tags, and profile pages
+
 = 3.19.19 =
 * Added custom canonical and shortlink hooks to tags, collections, and profile pages for Yoast SEO
 
