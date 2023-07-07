@@ -1,3 +1,6 @@
+= 3.19.21 =
+* Added trailing slash to design profile pages and design collection pages
+
 = 3.19.20 =
 * Added Rank Math canonical filter to design collections, tags, and profile pages
 
