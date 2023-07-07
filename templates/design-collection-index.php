@@ -15,7 +15,7 @@
             
         <div class="collection-row">
             <h3>
-                <a href="/design-collections/<?php print $term->slug ; ?>" title="<?php print $term->name ; ?>"><?php print $term->name ; ?></a>
+                <a href="/design-collections/<?php print $term->slug ; ?>/" title="<?php print $term->name ; ?>"><?php print $term->name ; ?></a>
             </h3>
             <?php $count = count($term->designs) ; ?>
             <?php if( $count > 0 ) : ?>

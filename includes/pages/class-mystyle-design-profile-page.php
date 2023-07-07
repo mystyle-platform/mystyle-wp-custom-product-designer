@@ -484,7 +484,7 @@ class MyStyle_Design_Profile_Page {
 			$url  = add_query_arg( $args, get_permalink( self::get_id() ) );
 		}
 
-		return $url;
+		return $url . '/' ;
 	}
 
 	/**
