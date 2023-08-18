@@ -645,12 +645,8 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	public static function get_total_design_count( WP_User $user = null ) {
 		global $wpdb;
 
-		$where = '';
-
 		// Add security WHERE clause.
-		if ( null !== $user ) {
-			$where .= self::get_security_where_clause( 'WHERE', $user );
-		}
+		$where = self::get_security_where_clause( 'WHERE', $user ) ;
 
 		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
 		$count = intval(

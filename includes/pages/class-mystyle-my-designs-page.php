@@ -59,6 +59,8 @@ class MyStyle_My_Designs_Page {
 		$this->http_response_code = 200;
 
 		add_action( 'init', array( &$this, 'design_endpoints' ) );
+		add_action( 'init', array( &$this, 'flush_rewrite_rules' )) ; 
+
 		add_filter( 'query_vars', array( &$this, 'design_query_vars' ), 0 );
 		add_action( 'woocommerce_account_my-designs_endpoint', array( &$this, 'designs_list' ) );
 
@@ -70,6 +72,7 @@ class MyStyle_My_Designs_Page {
 		add_action( 'template_redirect', array( &$this, 'init' ) );
 		add_filter( 'woocommerce_breadcrumb_defaults', array( &$this, 'breadcrumbs' ) );
 
+		
 	}
 
 	/**
@@ -116,7 +119,7 @@ class MyStyle_My_Designs_Page {
 	 */
 	public function design_query_vars( $vars ) {
 		$vars[] = 'my-designs';
-		$vars[] = 'paged';
+		$vars[] = 'page';
 
 		return $vars;
 	}
@@ -214,7 +217,7 @@ class MyStyle_My_Designs_Page {
 	 * Flush rewrite rules on Plugin activation and deactivation.
 	 */
 	public function flush_rewrite_rules() {
-		add_rewrite_endpoint( 'my-designs', EP_ROOT | EP_PAGES );
+		
 		flush_rewrite_rules();
 	}
 
@@ -222,10 +225,33 @@ class MyStyle_My_Designs_Page {
 	 * Display the user designs list.
 	 */
 	public function designs_list() {
-		$design_profile_page = MyStyle_My_Designs_Page::get_instance();
+		
+		//$design_profile_page = MyStyle_My_Designs_Page::get_instance();
+
+		$user = wp_get_current_user() ;
+		$count = MyStyle_DesignManager::get_total_user_design_count( $user ) ;
 
 		/* @var $pager \Mystyle_Pager phpcs:ignore */
-		$pager = $design_profile_page->get_pager();
+		$pager = new MyStyle_Pager();
+
+		$pager->set_items_per_page( $count ) ; // @TODO add pager for more then 100 designs
+		
+		$page_num = ( isset( $_GET['paged'] ) ? absint($_GET['paged']) : 1 ) ;
+
+		$pager->set_current_page_number( $page_num );
+
+		//get user designs
+		$designs = MyStyle_DesignManager::get_user_designs(
+			$pager->get_items_per_page(),
+			$pager->get_current_page_number(),
+			$user
+		);
+
+		$pager->set_items( $designs );
+
+		$pager->set_total_item_count(
+			$count
+		);
         
         if( ! $pager->get_items() || count( $pager->get_items() ) == 0 ) {
             $out = '<h3>No designs yet. <a href="/">Create one now!</a></h3>' ;
