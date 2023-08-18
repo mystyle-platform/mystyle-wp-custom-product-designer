@@ -1,3 +1,6 @@
+= 3.19.22 =
+* Fixed pagination bug on design index page, removed pagination on my-account/my-designs page, hide title box with inline style, use web image inplace of thumbnail
+
 = 3.19.21 =
 * Added trailing slash to design profile pages and design collection pages
 
