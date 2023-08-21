@@ -134,9 +134,12 @@ abstract class MyStyle_Design_Shortcode {
 			$tag = $atts['tag'];
 
 			$out = self::output_tagged_designs( $tag, $count );
+		} elseif (isset($atts['collection'])) { // If collection is passed, serve designs with the specified collection.
+			$collection = $atts['collection'];
+			$out = self::output_collection_designs($collection, $count);
 		} else {
 			// Serve random designs.
-			$out = self::output_random_designs( $count );
+			$out = self::output_random_designs($count);
 		}
 
 		return $out;
@@ -216,4 +219,44 @@ abstract class MyStyle_Design_Shortcode {
 		return $out;
 	}
 
+
+
+	/**
+	 * Private helper method that returns the output for the gallery of designs
+	 * for a specific collections.
+	 */
+
+
+	private static function output_collection_designs($collection, $count)
+	{
+
+		$term = get_term_by('name', $collection, 'design_collection');
+
+		$term_taxonomy_id = $term->term_taxonomy_id;
+
+		$user = wp_get_current_user();
+
+		$session = MyStyle()->get_session();
+
+		// Create a new pager.
+		$pager = new MyStyle_Pager();
+
+		// Designs per page.
+		$pager->set_items_per_page($count);
+
+		$pager->set_current_page_number(1);
+
+		// Pager items.
+		$designs = MyStyle_DesignManager::get_designs_by_term_id($term_taxonomy_id, $user, $session, $count, 1);
+
+		$pager->set_items($designs);
+
+		// ---------- Call the view layer ------------------ //
+		ob_start();
+		require MYSTYLE_TEMPLATES . 'design-profile/index.php';
+		$out = ob_get_contents();
+		ob_end_clean();
+
+		return $out;
+	}
 }
