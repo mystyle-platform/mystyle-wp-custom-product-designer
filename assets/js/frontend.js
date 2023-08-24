@@ -146,8 +146,10 @@
                                 'action': 'mystyle_design_tag_search',
                                 'tax': 'design_tag',
                                 'q': request.term
-                            }, function( data ) {
-                                response( data.data );
+                            }, function (data) {
+                                // Decode HTML entities before responding
+                                const decodedData = data.data.map(item => $("<textarea/>").html(item).text());
+                                response(decodedData);
                             });
                         },
                         delay: 100
@@ -213,8 +215,10 @@
                                 'action': 'mystyle_design_collection_search',
                                 'tax': 'design_collection',
                                 'q': request.term
-                            }, function( data ) {
-                                response( data.data );
+                            }, function (data) {
+                                // Decode HTML entities before responding
+                                const decodedData = data.data.map(item => $("<textarea/>").html(item).text());
+                                response(decodedData);
                             });
                         },
                         delay: 100
