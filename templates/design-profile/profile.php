@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div id="mystyle-design-profile-wrapper" class="woocommerce">
 	<?php if ( ( ( 0 !== $design->get_user_id() ) && ( get_current_user_id() === $design->get_user_id() ) ) || ( current_user_can( 'administrator' ) ) ) : ?>
-	<a id="ms-edit-title-form-show" href="#" style="display:none;">Edit Title</a>
-	<div id="ms-edit-title-form">
+	<a id="ms-edit-title-form-show" href="#">Edit Title</a>
+	<div id="ms-edit-title-form" style="display:none;">
 		<form method="post" id="ms-edit-title-form">
 			<input type="text" name="ms_title" value="<?php echo ( ( ! empty( $design->get_title() ) ) ? esc_attr( $design->get_title() ) : ( 'Design ' . esc_attr( $design->get_design_id() ) ) ); ?>" />
 			<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( 'mystyle_design_edit_nonce' ) ); ?>" />
