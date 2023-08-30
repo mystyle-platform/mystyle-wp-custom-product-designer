@@ -89,6 +89,9 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 [mystyle_design total=12 tag="amazing"] 
 – shows a gallery of 12 designs that are tagged amazing
 
+[mystyle_design total=12 collection="amazing"]
+– shows a gallery of 12 designs that are in the amazing collection
+
 [mystyle_customizer]
 – displays the Customizer or a list of customizable products.
 
