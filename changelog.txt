@@ -1,3 +1,9 @@
+= 3.19.23 =
+* New Feature: Display single collection via shortcode similar to single tag shortcode. 
+* Fix: Remove HTML char code with special char from design profile page. 
+* Enhancement: Use web image size instead of thumb image size by default on design tags pages. 
+* Fix: Show Edit Title Button.
+
 = 3.19.22 =
 * Fixed pagination bug on design index page, removed pagination on my-account/my-designs page, hide title box with inline style, use web image inplace of thumbnail
 
