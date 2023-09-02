@@ -552,6 +552,27 @@ class MyStyle_Design implements MyStyle_Entity {
 		$this->template_id = $template_id;
 	}
 
+
+
+
+	/**
+	 * Gets the value of image_url.
+	 * using license status.
+	 */
+	public function getImageUrl()
+	{
+		$license_status = get_option('mystyle_license_status_');
+
+		// Check if the license status is invalid
+		if ($license_status === 'invalid') {
+			$image_url = $this->get_thumb_url(); // Use thumbnail URL if license is invalid
+		} else {
+			$image_url = $this->get_web_url(); // Use web URL if license is valid
+		}
+
+		return $image_url;
+	}
+
 	/**
 	 * Gets the value of template_id.
 	 *
@@ -1051,5 +1072,4 @@ class MyStyle_Design implements MyStyle_Entity {
 
 		return $arr;
 	}
-
 }

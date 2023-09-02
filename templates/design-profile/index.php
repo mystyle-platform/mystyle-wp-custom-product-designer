@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				?>
 				<li>
 					<a href="<?php echo esc_attr( $design_url ); ?>">
-						<img src="<?php echo esc_attr( $design->get_web_url() ); ?>" />
+						<img src="<?php echo esc_attr( $design->getImageUrl() ); ?>" />
 						<h3 class="mystyle-design-id">
 							<?php
 							if ( ! empty( $design->get_title() ) ) {

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <p>
-	<img class="mystyle-centered" src="<?php echo esc_attr( $design->get_web_url() ); ?>"/>
+	<img class="mystyle-centered" src="<?php echo esc_attr( $design->getImageUrl() ); ?>"/>
 </p>
 <?php if ( null !== $design->get_print_url() ) { ?>
 	<ul class="mystyle-button-group">

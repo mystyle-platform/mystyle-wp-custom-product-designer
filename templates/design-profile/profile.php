@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<li>&nbsp;</li>
 		<?php } ?>
 	</ul>
-	<img id="mystyle-design-profile-img" class="skip-lazy" src="<?php echo esc_attr( $design->get_web_url() ); ?>"/>
+	<img id="mystyle-design-profile-img" class="skip-lazy" src="<?php echo esc_attr( $design->getImageUrl() ); ?>"/>
 	<ul class="mystyle-button-group">
 		<li>
 			<form enctype="multipart/form-data" method="post" action="<?php echo esc_attr( get_permalink( $design->get_product_id() ) ); ?>">

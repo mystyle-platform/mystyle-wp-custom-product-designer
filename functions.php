@@ -165,3 +165,76 @@ if ( ! function_exists( 'et_divi_post_meta' ) ) {
 		// phpcs:enable
 	}
 }
+
+register_activation_hook(__FILE__, 'myplugin_activate');
+
+add_action('wp', 'schedule_daily_cron');
+function schedule_daily_cron()
+{
+	if (!wp_next_scheduled('update_credentials_status')) {
+		// Set the cron job to run every day at 3:00 AM (adjust the time if needed)
+		$timestamp = strtotime('3:00 AM');
+		wp_schedule_event($timestamp, 'daily', 'update_credentials_status');
+	}
+}
+
+
+// Hook for the scheduled cron job
+add_action('update_credentials_status', 'update_credentials_status_callback');
+function update_credentials_status_callback()
+{
+	$stored_license_status = get_option('mystyle_license_status_');
+	$has_valid_credentials = false;
+	$design_id = 1; // An arbitrary design id.
+
+	// Set up the API call variables.
+	$api_key = MyStyle_Options::get_api_key();
+	$secret = MyStyle_Options::get_secret();
+	$action = 'design';
+	$method = 'get';
+	$data = '{"design_id":[' . $design_id . ']}';
+	$ts = time();
+
+	$to_hash = $action . $method . $api_key . $data . $ts;
+	$sig = base64_encode(hash_hmac('sha256', $to_hash, $secret, true));
+
+	$post_data = array(
+		'action' => $action,
+		'method' => $method,
+		'app_id' => $api_key,
+		'data' => $data,
+		'sig' => $sig,
+		'ts' => $ts,
+	);
+	include_once(dirname(__FILE__) . '/includes/api/class-mystyle-api.php');
+	$api_endpoint_url = 'http://api.ogmystyle.com/';
+	$response = wp_remote_post(
+		$api_endpoint_url,
+		array(
+			'method' => 'POST',
+			'timeout' => 45,
+			'redirection' => 5,
+			'httpversion' => '1.0',
+			'blocking' => true,
+			'headers' => array(),
+			'body' => $post_data,
+			'cookies' => array(),
+		)
+	);
+
+	if (!is_wp_error($response)) {
+		$response_data = json_decode($response['body'], true);
+
+		if (!isset($response_data['error'])) {
+			$has_valid_credentials = true;
+		}
+	}
+
+	if ($stored_license_status !== ($has_valid_credentials ? 'valid' : 'invalid')) {
+		update_option('mystyle_license_status_', $has_valid_credentials ? 'valid' : 'invalid');
+
+		// Store the last update date and time
+		update_option('mystyle_last_update_datetime', current_time('mysql'));
+	}
+	update_option('mystyle_last_license_update', time());
+}
