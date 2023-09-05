@@ -165,6 +165,23 @@ class MyStyle_Options_Page {
 			'mystyle_options',
 			'mystyle_options_advanced_section'
 		);
+		
+		
+		/* DESIGN IMAGE  */
+	add_settings_section(
+		'mystyle_options_image_section',
+		'Image Settings',
+		array(&$this, 'render_image_section_text'),
+		'mystyle_options'
+	);
+
+	add_settings_field(
+		'image_type',
+		'Image Type',
+		array(&$this, 'render_image_type'),
+		'mystyle_options',
+		'mystyle_options_image_section'
+	);
 	}
 
 	/**
@@ -488,6 +505,24 @@ class MyStyle_Options_Page {
 		<?php
 	}
 
+
+			// Function to render image size settings
+			public function render_image_section_text()
+			{
+				echo '<p>Select the type of image to render.</p>';
+			}
+
+			public function render_image_type()
+			{
+				$options = get_option(MYSTYLE_OPTIONS_NAME, array());
+				$imageType = (array_key_exists('image_type', $options)) ? $options['image_type'] : '';
+
+				echo '<label><input type="radio" name="mystyle_options[image_type]" value="thumbnail" ' . checked('thumbnail', $imageType, false) . ' /> Thumbnail Image</label><br>';
+				echo '<label><input type="radio" name="mystyle_options[image_type]" value="web" ' . checked('web', $imageType, false) . ' /> Web Image</label>';
+			}
+
+
+
 	/**
 	 * Function to render the design_profile_product_menu_type field.
 	 */
@@ -612,6 +647,9 @@ class MyStyle_Options_Page {
 			$msg_message = 'Invalid Enable Alternate Design Complete Redirect option';
 			$new_options['enable_alternate_design_complete_redirect'] = 0;
 		}
+			
+		// Design image type thumb/web
+		$new_options['image_type'] = isset($input['image_type']) && in_array($input['image_type'], array('thumbnail', 'web')) ? $input['image_type'] : 'thumbnail';
 
 		// Design Profile Page product menu type.
 		$new_options['design_profile_product_menu_type'] = trim( $input['design_profile_product_menu_type'] );

@@ -293,7 +293,7 @@ class MyStyle_Author_Designs_Page {
 		$session = MyStyle()->get_session();
 		try {
 			$design   = MyStyle_DesignManager::get( $post->design_id, $wp_user, $session );
-			$image[0] = $design->get_web_url();
+			$image[0] = $design->getImageUrl();
 			$image[1] = 200;
 			$image[2] = 200;
 		} catch ( MyStyle_Unauthorized_Exception $ex ) {
@@ -432,5 +432,4 @@ class MyStyle_Author_Designs_Page {
 
 		return self::$instance;
 	}
-
 }

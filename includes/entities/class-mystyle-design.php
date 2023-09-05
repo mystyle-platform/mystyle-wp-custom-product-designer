@@ -562,14 +562,14 @@ class MyStyle_Design implements MyStyle_Entity {
 	public function getImageUrl()
 	{
 		$license_status = get_option('mystyle_license_status_');
+		$options = get_option(MYSTYLE_OPTIONS_NAME, array());
+		$image_type = (array_key_exists('image_type', $options)) ? $options['image_type'] : 'thumbnail';
 
-		// Check if the license status is invalid
-		if ($license_status === 'invalid') {
-			$image_url = $this->get_thumb_url(); // Use thumbnail URL if license is invalid
+		if ($image_type === 'web' && $license_status == "valid") {
+			$image_url = $this->get_web_url();
 		} else {
-			$image_url = $this->get_web_url(); // Use web URL if license is valid
+			$image_url = $this->get_thumb_url();
 		}
-
 		return $image_url;
 	}
 
