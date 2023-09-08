@@ -1,3 +1,7 @@
+= 3.19.24 =
+* Added Web or Thumbnail setting for design galleries and design profile pages
+* Check valid lincense
+
 = 3.19.23 =
 * New Feature: Display single collection via shortcode similar to single tag shortcode. 
 * Fix: Remove HTML char code with special char from design profile page. 
