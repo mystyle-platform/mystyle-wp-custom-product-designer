@@ -110,7 +110,7 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 == Changelog ==
 = 3.19.24 =
 * Added Web or Thumbnail setting for design galleries and design profile pages
-* Check valid lincense
+* Check valid license
 
 = 3.19.23 =
 * New Feature: Display single collection via shortcode similar to single tag shortcode. 
