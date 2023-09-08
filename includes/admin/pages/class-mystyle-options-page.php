@@ -509,13 +509,13 @@ class MyStyle_Options_Page {
 			// Function to render image size settings
 			public function render_image_section_text()
 			{
-				echo '<p>Select the type of image to render.</p>';
+				echo '<p>Select the size of images to display in galleries.</p>';
 			}
 
 			public function render_image_type()
 			{
 				$options = get_option(MYSTYLE_OPTIONS_NAME, array());
-				$imageType = (array_key_exists('image_type', $options)) ? $options['image_type'] : '';
+				$imageType = (array_key_exists('image_type', $options)) ? $options['image_type'] : 'web';
 
 				echo '<label><input type="radio" name="mystyle_options[image_type]" value="thumbnail" ' . checked('thumbnail', $imageType, false) . ' /> Thumbnail Image</label><br>';
 				echo '<label><input type="radio" name="mystyle_options[image_type]" value="web" ' . checked('web', $imageType, false) . ' /> Web Image</label>';

@@ -171,16 +171,16 @@ register_activation_hook(__FILE__, 'myplugin_activate');
 add_action('wp', 'schedule_daily_cron');
 function schedule_daily_cron()
 {
-	if (!wp_next_scheduled('update_credentials_status')) {
+	if ( ! wp_next_scheduled('mystyle_update_credentials_status')) {
 		// Set the cron job to run every day at 3:00 AM (adjust the time if needed)
 		$timestamp = strtotime('3:00 AM');
-		wp_schedule_event($timestamp, 'daily', 'update_credentials_status');
+		wp_schedule_event($timestamp, 'daily', 'mystyle_update_credentials_status');
 	}
 }
 
 
 // Hook for the scheduled cron job
-add_action('update_credentials_status', 'update_credentials_status_callback');
+add_action('mystyle_update_credentials_status', 'update_credentials_status_callback');
 function update_credentials_status_callback()
 {
 	$stored_license_status = get_option('mystyle_license_status_');
