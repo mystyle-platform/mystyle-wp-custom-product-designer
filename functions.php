@@ -208,33 +208,39 @@ function update_credentials_status_callback()
 	);
 	include_once(dirname(__FILE__) . '/includes/api/class-mystyle-api.php');
 	$api_endpoint_url = 'http://api.ogmystyle.com/';
-	$response = wp_remote_post(
-		$api_endpoint_url,
-		array(
-			'method' => 'POST',
-			'timeout' => 45,
-			'redirection' => 5,
-			'httpversion' => '1.0',
-			'blocking' => true,
-			'headers' => array(),
-			'body' => $post_data,
-			'cookies' => array(),
-		)
-	);
 
-	if (!is_wp_error($response)) {
-		$response_data = json_decode($response['body'], true);
-
-		if (!isset($response_data['error'])) {
-			$has_valid_credentials = true;
+	try {
+		$response = wp_remote_post(
+			$api_endpoint_url,
+			array(
+				'method' => 'POST',
+				'timeout' => 45,
+				'redirection' => 5,
+				'httpversion' => '1.0',
+				'blocking' => true,
+				'headers' => array(),
+				'body' => $post_data,
+				'cookies' => array(),
+			)
+		);
+	
+		if (!is_wp_error($response)) {
+			$response_data = json_decode($response['body'], true);
+	
+			if (!isset($response_data['error'])) {
+				$has_valid_credentials = true;
+			}
 		}
+	
+		if ($stored_license_status !== ($has_valid_credentials ? 'valid' : 'invalid')) {
+			update_option('mystyle_license_status_', $has_valid_credentials ? 'valid' : 'invalid');
+	
+			// Store the last update date and time
+			update_option('mystyle_last_update_datetime', current_time('mysql'));
+		}
+		update_option('mystyle_last_license_update', time());
+		
+	} catch (Exception $e) {
+		// Do nothing.
 	}
-
-	if ($stored_license_status !== ($has_valid_credentials ? 'valid' : 'invalid')) {
-		update_option('mystyle_license_status_', $has_valid_credentials ? 'valid' : 'invalid');
-
-		// Store the last update date and time
-		update_option('mystyle_last_update_datetime', current_time('mysql'));
-	}
-	update_option('mystyle_last_license_update', time());
 }

@@ -559,12 +559,15 @@ class MyStyle_Design implements MyStyle_Entity {
 	 * Gets the value of image_url.
 	 * using license status.
 	 */
-	public function getImageUrl()
+	public function getImageUrl( $image_type = false )
 	{
 		$license_status = get_option('mystyle_license_status_');
-		$options = get_option(MYSTYLE_OPTIONS_NAME, array());
-		$image_type = (array_key_exists('image_type', $options)) ? $options['image_type'] : 'thumbnail';
 
+		if( ! $image_type ) {
+			$options = get_option(MYSTYLE_OPTIONS_NAME, array());
+			$image_type = (array_key_exists('image_type', $options)) ? $options['image_type'] : 'thumbnail';
+		}
+		
 		if ($image_type === 'web' && $license_status == "valid") {
 			$image_url = $this->get_web_url();
 		} else {

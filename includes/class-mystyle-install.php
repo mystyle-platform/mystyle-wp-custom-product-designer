@@ -186,6 +186,13 @@ class MyStyle_Install {
 			}
 		}
 
+		// Check license status.
+		if( version_compare( $old_version, '3.19.24', '<' ) ) {
+			if( is_admin() ) {
+				update_credentials_status_callback();
+			}
+		}
+
 		$upgrade_notice = MyStyle_Notice::create(
 			'notify_upgrade',
 			'Upgraded version from ' . $old_version . ' to ' . $new_version . '.'
