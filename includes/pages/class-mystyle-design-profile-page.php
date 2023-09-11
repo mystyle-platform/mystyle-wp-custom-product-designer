@@ -103,7 +103,10 @@ class MyStyle_Design_Profile_Page {
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
 		add_action( 'wp_head', array( &$this, 'wp_head' ), 2 );
-		
+		add_filter('wpseo_title', array(&$this, 'custom_wpseo_title'));
+		add_filter('wpseo_metadesc', array(&$this, 'custom_wpseo_metadesc'));
+		add_filter('rank_math/frontend/description', array(&$this, 'custom_rank_math_meta_description'));
+		add_filter('rank_math/frontend/title', array(&$this, 'custom_rank_math_meta_title'));
 		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
 		add_filter( 'get_canonical_url', array( &$this, 'filter_canonical_url' ), 10, 2 );
 		add_filter( 'get_shortlink', array( &$this, 'filter_shortlink' ), 10, 4 ) ;
@@ -125,7 +128,69 @@ class MyStyle_Design_Profile_Page {
 			'top'
 		);
 	}
+/**
+	 *   Rank Math plugin hook for meta description when its present
+	 */
+function custom_rank_math_meta_description($description)
+	{
+	if (is_page('designs')) {
+			$design = $this->get_design();
+			$design_id = get_query_var('design_id'); 
+			$description = "Design page";
+			if (isset($design)) {
+				$description .= ": " . $design_id . " : " . $design->get_title();
+			}
+		}
+		return $description;
+	}
 
+	/**
+	 * Add title for Rankmath plugin function
+	 */
+
+	function custom_rank_math_meta_title($title)
+	{
+		if (is_page('designs')) {
+		$design = $this->get_design();
+			$design_id = get_query_var('design_id');
+			if (isset($design)) {
+				$title  .= ": " . $design_id . " : " . $design->get_title();
+			}
+		}
+		return $title;
+	}
+
+	/**
+	 * Add title for Yoast/wpseo plugin function
+	 */
+	function custom_wpseo_title($title)
+	{
+		if (is_page('designs')) {
+			$design = $this->get_design();
+			$design_id = get_query_var('design_id'); 
+			
+			if (isset($design)) {
+				$title  .= ": " . $design_id . " : " . $design->get_title();
+			}		
+		}
+		return $title;
+	}
+
+	/**
+	 *   Yoast/wpseo plugin hook for meta description when its present
+	 */
+	function custom_wpseo_metadesc($description)
+	{
+		if (is_page('designs')) {
+			$design = $this->get_design();
+			$design_id = get_query_var('design_id'); 
+			$description = "Design page";
+			if (isset($design)) {
+				$description .= ": " . $design_id . " : " . $design->get_title();
+			}
+		}
+		return $description;
+	}
 
 	/**
 	 * Add custom query vars.

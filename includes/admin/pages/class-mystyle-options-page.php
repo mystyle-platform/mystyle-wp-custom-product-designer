@@ -174,7 +174,7 @@ class MyStyle_Options_Page {
 		array(&$this, 'render_image_section_text'),
 		'mystyle_options'
 	);
-
+	/* DESIGN IMAGE  FIELD */
 	add_settings_field(
 		'image_type',
 		'Image Type',
@@ -506,7 +506,9 @@ class MyStyle_Options_Page {
 	}
 
 
-			// Function to render image size settings
+	/**
+	 * Function to render image setting.
+	 */
 			public function render_image_section_text()
 			{
 				echo '<p>Select the size of images to display in galleries.</p>';
