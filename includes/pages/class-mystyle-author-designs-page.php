@@ -57,7 +57,9 @@ class MyStyle_Author_Designs_Page {
 		add_action( 'query_vars', array( &$this, 'query_vars' ) );
 		add_action( 'template_redirect', array( &$this, 'set_pager' ) );
 		add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 30, 2 );
-		
+		add_filter('wpseo_metadesc', array(&$this, 'author_wpseo_metadesc_'), 20);
+		add_action('wp_head', array(&$this, 'author_meta_description_'), 3);
+		add_filter('rank_math/frontend/description', array(&$this, 'author_rank_math_meta_description'), 20);
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_filter( 'et_before_main_content', array( &$this, 'divi_title' ) );
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
@@ -88,7 +90,42 @@ class MyStyle_Author_Designs_Page {
 			'top'
 		);
 	}
+	/**
+	 * Add meta description using wordpress hook for custom author pages.
+	 */
+	function author_meta_description_()
+	{
+		if (get_query_var('designpage')) {
+			$username = get_query_var('username');
+		?>
+			<meta name="description" content="<?php echo 'Author Design Page for :' . $username; ?>">
+		<?php
+		}
+	}
 
+	/**
+	 * Add meta description using Yoast plugin hook for custom author pages.
+	 */
+	function author_wpseo_metadesc_($description)
+	{
+		if (get_query_var('designpage')) {
+			$username = get_query_var('username');
+			$description .= 'Author Design Page for ' . ': ' . $username;
+		}
+		return $description;
+	}
+
+	/**
+	 * Add meta description using rankmath hook for custom author pages.
+	 */
+	function author_rank_math_meta_description($description)
+	{
+		if (get_query_var('designpage')) {
+			$username = get_query_var('username');
+			$description .= 'Author Design Page for ' . ': ' . $username;
+		}
+		return $description;
+	}
 	/**
 	 * Add custom query vars.
 	 *

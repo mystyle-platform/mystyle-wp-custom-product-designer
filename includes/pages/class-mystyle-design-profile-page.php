@@ -104,8 +104,8 @@ class MyStyle_Design_Profile_Page {
 		add_action( 'template_redirect', array( &$this, 'init' ) );
 		add_action( 'wp_head', array( &$this, 'wp_head' ), 2 );
 		add_filter('wpseo_title', array(&$this, 'custom_wpseo_title'));
-		add_filter('wpseo_metadesc', array(&$this, 'custom_wpseo_metadesc'));
-		add_filter('rank_math/frontend/description', array(&$this, 'custom_rank_math_meta_description'));
+		add_filter('wpseo_metadesc', array(&$this, 'custom_wpseo_metadesc'), 10);
+		add_filter('rank_math/frontend/description', array(&$this, 'custom_rank_math_meta_description'), 10);
 		add_filter('rank_math/frontend/title', array(&$this, 'custom_rank_math_meta_title'));
 		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
 		add_filter( 'get_canonical_url', array( &$this, 'filter_canonical_url' ), 10, 2 );
