@@ -97,24 +97,38 @@ class MyStyle_Author_Designs_Page {
 	{
 		if (get_query_var('designpage')) {
 			$username = get_query_var('username');
-		?>
-			<meta name="description" content="<?php echo 'Author Design Page for :' . $username; ?>">
+			$user = get_user_by('slug', $username);
+
+			if ($user) {
+				$first_name = get_user_meta($user->ID, 'first_name', true);
+				$last_name = get_user_meta($user->ID, 'last_name', true);
+			?>
+				<meta name="description" content="<?php echo 'Author Design Page for :' . $first_name . ' ' . $last_name; ?>">
+			<?php
+			} else { ?>
+				<meta name="description" content="<?php echo 'Author Design Page for :' . $username ?>">
 		<?php
+			}
 		}
 	}
-
 	/**
 	 * Add meta description using Yoast plugin hook for custom author pages.
 	 */
 	function author_wpseo_metadesc_($description)
 	{
-		if (get_query_var('designpage')) {
+		if(get_query_var('designpage')){
 			$username = get_query_var('username');
-			$description .= 'Author Design Page for ' . ': ' . $username;
+			$user = get_user_by('slug', $username);
+			if($user){
+				$first_name = get_user_meta($user->ID, 'first_name', true);
+				$last_name = get_user_meta($user->ID, 'last_name', true);
+				$description = 'Author Design Page for ' . $first_name . ' ' . $last_name;
+			}else{
+				$description = 'Author Design Page for ' . $username;
+			}
 		}
 		return $description;
 	}
-
 	/**
 	 * Add meta description using rankmath hook for custom author pages.
 	 */
@@ -122,10 +136,17 @@ class MyStyle_Author_Designs_Page {
 	{
 		if (get_query_var('designpage')) {
 			$username = get_query_var('username');
-			$description .= 'Author Design Page for ' . ': ' . $username;
+			$user = get_user_by('slug', $username);
+			if($user){
+				$first_name = get_user_meta($user->ID, 'first_name', true);
+				$last_name = get_user_meta($user->ID, 'last_name', true);
+				$description = 'Author Design Page for ' . $first_name . ' ' . $last_name;
+			}else{
+				$description = 'Author Design Page for ' . $username;
+			}
 		}
 		return $description;
-	}
+	}	
 	/**
 	 * Add custom query vars.
 	 *

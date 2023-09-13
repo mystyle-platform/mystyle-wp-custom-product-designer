@@ -133,12 +133,18 @@ class MyStyle_Design_Profile_Page {
 	 */
 function custom_rank_math_meta_description($description)
 	{
-	if (is_page('designs')) {
+		if (is_page('designs')) {
 			$design = $this->get_design();
-			$design_id = get_query_var('design_id'); 
-			$description = "Design page";
-			if (isset($design)) {
-				$description .= ": " . $design_id . " : " . $design->get_title();
+			$design_id = get_query_var('design_id');
+			$description = $design->get_title();
+			if(isset($design)){
+				$author_id = $design->get_user_id();
+				$author = get_userdata($author_id);
+				if($author){
+					$first_name = $author->first_name;
+					$last_name = $author->last_name;
+					$description .= " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+				}
 			}
 		}
 		return $description;
@@ -151,10 +157,17 @@ function custom_rank_math_meta_description($description)
 	function custom_rank_math_meta_title($title)
 	{
 		if (is_page('designs')) {
-		$design = $this->get_design();
+			$design = $this->get_design();
 			$design_id = get_query_var('design_id');
-			if (isset($design)) {
-				$title  .= ": " . $design_id . " : " . $design->get_title();
+			$title = $design->get_title();
+			if(isset($design)){
+				$author_id = $design->get_user_id();
+				$author = get_userdata($author_id);
+				if($author){
+					$first_name = $author->first_name;
+					$last_name = $author->last_name;
+					$title .= " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+				}
 			}
 		}
 		return $title;
@@ -165,33 +178,44 @@ function custom_rank_math_meta_description($description)
 	 */
 	function custom_wpseo_title($title)
 	{
-		if (is_page('designs')) {
+		if(is_page('designs')){
 			$design = $this->get_design();
-			$design_id = get_query_var('design_id'); 
-			
-			if (isset($design)) {
-				$title  .= ": " . $design_id . " : " . $design->get_title();
-			}		
+			$design_id = get_query_var('design_id');
+			$title = $design->get_title();
+			if(isset($design)){
+				$author_id = $design->get_user_id();
+				$author = get_userdata($author_id);
+				if($author){
+					$first_name = $author->first_name;
+					$last_name = $author->last_name;
+					$title .= " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+				}
+			}
 		}
 		return $title;
 	}
 
 	/**
-	 *   Yoast/wpseo plugin hook for meta description when its present
+	 * Yoast/wpseo plugin hook for meta description when its present
 	 */
 	function custom_wpseo_metadesc($description)
 	{
 		if (is_page('designs')) {
 			$design = $this->get_design();
-			$design_id = get_query_var('design_id'); 
-			$description = "Design page";
-			if (isset($design)) {
-				$description .= ": " . $design_id . " : " . $design->get_title();
+			$design_id = get_query_var('design_id');
+			$description = $design->get_title();
+			if(isset($design)){
+				$author_id = $design->get_user_id();
+				$author = get_userdata($author_id);
+				if($author){
+					$first_name = $author->first_name;
+					$last_name = $author->last_name;
+					$description .= " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+				}
 			}
 		}
 		return $description;
 	}
-
 	/**
 	 * Add custom query vars.
 	 *
