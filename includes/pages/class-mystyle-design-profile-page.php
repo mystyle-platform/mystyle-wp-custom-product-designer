@@ -159,8 +159,9 @@ function custom_rank_math_meta_description($description)
 		if (is_page('designs')) {
 			$design = $this->get_design();
 			$design_id = get_query_var('design_id');
-			$title = $design->get_title();
-			if(isset($design)){
+
+			if (isset($design)) {
+				$title = $design->get_title();
 				$author_id = $design->get_user_id();
 				$author = get_userdata($author_id);
 				if($author){
@@ -181,8 +182,9 @@ function custom_rank_math_meta_description($description)
 		if(is_page('designs')){
 			$design = $this->get_design();
 			$design_id = get_query_var('design_id');
-			$title = $design->get_title();
-			if(isset($design)){
+
+			if (isset($design)) {
+				$title = $design->get_title();
 				$author_id = $design->get_user_id();
 				$author = get_userdata($author_id);
 				if($author){
@@ -203,8 +205,9 @@ function custom_rank_math_meta_description($description)
 		if (is_page('designs')) {
 			$design = $this->get_design();
 			$design_id = get_query_var('design_id');
-			$description = $design->get_title();
-			if(isset($design)){
+
+			if (isset($design)) {
+				$description = $design->get_title();
 				$author_id = $design->get_user_id();
 				$author = get_userdata($author_id);
 				if($author){

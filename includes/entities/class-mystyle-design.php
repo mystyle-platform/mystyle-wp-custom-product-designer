@@ -552,6 +552,24 @@ class MyStyle_Design implements MyStyle_Entity {
 		$this->template_id = $template_id;
 	}
 
+	function mystyle_design_Url()
+	{
+		$options = get_option(MYSTYLE_OPTIONS_NAME, array());
+
+		$enable_cdn_image = (array_key_exists('enable_cdn_images', $options)) ? $options['enable_cdn_images'] : 0;
+		$enable_cdn_thumbs = (array_key_exists('enable_cdn_thumbs', $options)) ? $options['enable_cdn_thumbs'] : 0;
+		$custom_url = (array_key_exists('cdn_base_url', $options)) ? $options['cdn_base_url'] : '';
+
+		if ($enable_cdn_image == 1 && $enable_cdn_thumbs == 1 && !empty($custom_url)) {
+			$image_url = $this->getImageUrl(); 
+			$updated_url = str_replace('mystyle.s3.amazonaws.com', $custom_url, $image_url);
+		} else {
+			$updated_url = $this->getImageUrl(); 
+		}
+
+		return $updated_url;
+	}
+
 
 
 

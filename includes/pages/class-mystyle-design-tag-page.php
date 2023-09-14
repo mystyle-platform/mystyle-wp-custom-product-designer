@@ -437,7 +437,7 @@ class MyStyle_Design_Tag_Page {
 			$design = MyStyle_DesignManager::get( $post->design_id, $wp_user, $session );
             
             if ( null !== $design ) {
-				$image[0] = $design->getImageUrl();
+				$image[0] = $design->mystyle_design_Url();
 				$image[1] = 200;
 				$image[2] = 200;
 			}

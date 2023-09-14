@@ -182,6 +182,46 @@ class MyStyle_Options_Page {
 		'mystyle_options',
 		'mystyle_options_image_section'
 	);
+	
+	
+	// Add CDN Settings Section
+add_settings_section(
+    'mystyle_options_cdn_section',
+    'CDN Settings',
+    array(&$this, 'render_cdn_section_text'),
+    'mystyle_options'
+);
+
+// Enable CDN for Images
+add_settings_field(
+    'enable_cdn_images',
+    'Enable CDN for Images',
+    array(&$this, 'render_enable_cdn_images'),
+    'mystyle_options',
+    'mystyle_options_cdn_section'
+);
+
+// Base CDN URL
+add_settings_field(
+    'cdn_base_url',
+    'CDN Base URL',
+    array(&$this, 'render_cdn_base_url'),
+    'mystyle_options',
+    'mystyle_options_cdn_section'
+);
+
+// Enable CDN for Thumbs
+add_settings_field(
+    'enable_cdn_thumbs',
+    'Enable CDN for Thumbs',
+    array(&$this, 'render_enable_cdn_thumbs'),
+    'mystyle_options',
+    'mystyle_options_cdn_section'
+);
+
+	
+	
+	
 	}
 
 	/**
@@ -524,6 +564,28 @@ class MyStyle_Options_Page {
 			}
 
 
+public function render_cdn_section_text() {
+    echo '<p>Configure CDN settings for MyStyle images and designs.</p>';
+}
+
+public function render_enable_cdn_images() {
+    $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+    $enableCdnImages = (array_key_exists('enable_cdn_images', $options)) ? $options['enable_cdn_images'] : 0;
+    echo '<label><input type="checkbox" name="mystyle_options[enable_cdn_images]" value="1" ' . checked(1, $enableCdnImages, false) . ' /> Enable CDN for Images</label>';
+}
+
+public function render_cdn_base_url() {
+    $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+    $cdnBaseUrl = (array_key_exists('cdn_base_url', $options)) ? $options['cdn_base_url'] : '';
+    echo '<input type="text" name="mystyle_options[cdn_base_url]" value="' . esc_attr($cdnBaseUrl) . '" />';
+    echo '<p class="description">Enter the base URL for the CDN.</p>';
+}
+
+public function render_enable_cdn_thumbs() {
+    $options = get_option(MYSTYLE_OPTIONS_NAME, array());
+    $enableCdnThumbs = (array_key_exists('enable_cdn_thumbs', $options)) ? $options['enable_cdn_thumbs'] : 0;
+    echo '<label><input type="checkbox" name="mystyle_options[enable_cdn_thumbs]" value="1" ' . checked(1, $enableCdnThumbs, false) . ' /> Enable CDN for Thumbs</label>';
+}
 
 	/**
 	 * Function to render the design_profile_product_menu_type field.
@@ -658,7 +720,9 @@ class MyStyle_Options_Page {
 
 		// Alternate Design Tag/Collection title.
 		$new_options['alternate_design_tag_collection_title'] = trim( $input['alternate_design_tag_collection_title'] );
-
+			$new_options['enable_cdn_images'] = (isset($input['enable_cdn_images'])) ? intval($input['enable_cdn_images']) : 0;
+			$new_options['enable_cdn_thumbs'] = (isset($input['enable_cdn_thumbs'])) ? intval($input['enable_cdn_thumbs']) : 0;
+			$new_options['cdn_base_url'] = trim($input['cdn_base_url']);
 		// Alternate Design Complete Redirect URL.
 		$new_options['alternate_design_complete_redirect_url'] = trim( $input['alternate_design_complete_redirect_url'] );
 

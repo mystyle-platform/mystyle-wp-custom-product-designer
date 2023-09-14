@@ -38,7 +38,7 @@ if (!defined('ABSPATH')) {
                     ?>
                     <li>
                         <a href="<?php echo esc_url($design_url); ?>" title="<?php echo esc_attr((null !== $design->get_title()) ? $design->get_title() : 'Custom Design ' . $design->get_design_id()); ?>">
-                            <img alt="<?php echo esc_html((null !== $design->get_title()) ? $design->get_title() : 'Custom Design ' . $design->get_design_id()); ?> Image" src="<?php echo esc_url($design->getImageUrl()); ?>" />
+                            <img alt="<?php echo esc_html((null !== $design->get_title()) ? $design->get_title() : 'Custom Design ' . $design->get_design_id()); ?> Image" src="<?php echo esc_url($design->mystyle_design_Url()); ?>" />
                             <?php echo esc_html((null !== $design->get_title()) ? $design->get_title() : 'Custom Design ' . $design->get_design_id()); ?>
                         </a>
                         <div class="mystyle-design-author">Designed by: <?php echo esc_html($user->user_nicename); ?></div>
