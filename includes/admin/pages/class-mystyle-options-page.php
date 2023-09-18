@@ -195,7 +195,7 @@ add_settings_section(
 // Enable CDN for Images
 add_settings_field(
     'enable_cdn_images',
-    'Enable CDN for Images',
+    'Enable CDN ',
     array(&$this, 'render_enable_cdn_images'),
     'mystyle_options',
     'mystyle_options_cdn_section'
@@ -210,14 +210,6 @@ add_settings_field(
     'mystyle_options_cdn_section'
 );
 
-// Enable CDN for Thumbs
-add_settings_field(
-    'enable_cdn_thumbs',
-    'Enable CDN for Thumbs',
-    array(&$this, 'render_enable_cdn_thumbs'),
-    'mystyle_options',
-    'mystyle_options_cdn_section'
-);
 
 	
 	
@@ -565,13 +557,13 @@ add_settings_field(
 
 
 public function render_cdn_section_text() {
-    echo '<p>Configure CDN settings for MyStyle images and designs.</p>';
+    echo '<p>Configure CDN settings for MyStyle images and thumbs.</p>';
 }
 
 public function render_enable_cdn_images() {
     $options = get_option(MYSTYLE_OPTIONS_NAME, array());
     $enableCdnImages = (array_key_exists('enable_cdn_images', $options)) ? $options['enable_cdn_images'] : 0;
-    echo '<label><input type="checkbox" name="mystyle_options[enable_cdn_images]" value="1" ' . checked(1, $enableCdnImages, false) . ' /> Enable CDN for Images</label>';
+    echo '<label><input type="checkbox" name="mystyle_options[enable_cdn_images]" value="1" ' . checked(1, $enableCdnImages, false) . ' /> Enable CDN for Images And Thumbs</label>';
 }
 
 public function render_cdn_base_url() {
@@ -581,11 +573,6 @@ public function render_cdn_base_url() {
     echo '<p class="description">Enter the base URL for the CDN.</p>';
 }
 
-public function render_enable_cdn_thumbs() {
-    $options = get_option(MYSTYLE_OPTIONS_NAME, array());
-    $enableCdnThumbs = (array_key_exists('enable_cdn_thumbs', $options)) ? $options['enable_cdn_thumbs'] : 0;
-    echo '<label><input type="checkbox" name="mystyle_options[enable_cdn_thumbs]" value="1" ' . checked(1, $enableCdnThumbs, false) . ' /> Enable CDN for Thumbs</label>';
-}
 
 	/**
 	 * Function to render the design_profile_product_menu_type field.
@@ -721,7 +708,6 @@ public function render_enable_cdn_thumbs() {
 		// Alternate Design Tag/Collection title.
 		$new_options['alternate_design_tag_collection_title'] = trim( $input['alternate_design_tag_collection_title'] );
 			$new_options['enable_cdn_images'] = (isset($input['enable_cdn_images'])) ? intval($input['enable_cdn_images']) : 0;
-			$new_options['enable_cdn_thumbs'] = (isset($input['enable_cdn_thumbs'])) ? intval($input['enable_cdn_thumbs']) : 0;
 			$new_options['cdn_base_url'] = trim($input['cdn_base_url']);
 		// Alternate Design Complete Redirect URL.
 		$new_options['alternate_design_complete_redirect_url'] = trim( $input['alternate_design_complete_redirect_url'] );
