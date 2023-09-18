@@ -98,15 +98,17 @@ class MyStyle_Author_Designs_Page {
 		if (get_query_var('designpage')) {
 			$username = get_query_var('username');
 			$user = get_user_by('slug', $username);
-
+			$options     = get_option(MYSTYLE_OPTIONS_NAME, array()); // Get WP Options table Key of this option.
+			$product_phrase = (array_key_exists('alternate_design_tag_collection_title', $options)) ? $options['alternate_design_tag_collection_title'] : '';
+			
 			if ($user) {
 				$first_name = get_user_meta($user->ID, 'first_name', true);
-				$last_name = get_user_meta($user->ID, 'last_name', true);
+				$last_name = get_user_meta($user->ID, 'last_name', true);	
 			?>
-				<meta name="description" content="<?php echo 'Author Design Page for :' . $first_name . ' ' . $last_name; ?>">
+				<meta name="description" content="<?php echo  $product_phrase.' Designs by '.$first_name.' '. $last_name; ?>">
 			<?php
 			} else { ?>
-				<meta name="description" content="<?php echo 'Author Design Page for :' . $username ?>">
+				<meta name="description" content="<?php echo  $product_phrase.' Designs by '.$username ?>">
 		<?php
 			}
 		}
@@ -119,12 +121,16 @@ class MyStyle_Author_Designs_Page {
 		if(get_query_var('designpage')){
 			$username = get_query_var('username');
 			$user = get_user_by('slug', $username);
+			$options = get_option(MYSTYLE_OPTIONS_NAME, array()); // Get WP Options table Key of this option.
+			$product_phrase = (array_key_exists('alternate_design_tag_collection_title', $options)) ? $options['alternate_design_tag_collection_title'] : '';
+			
+			$description = '';
 			if($user){
 				$first_name = get_user_meta($user->ID, 'first_name', true);
 				$last_name = get_user_meta($user->ID, 'last_name', true);
-				$description = 'Author Design Page for ' . $first_name . ' ' . $last_name;
+				$description = $product_phrase.' Designs by '.$first_name.' '.$last_name;
 			}else{
-				$description = 'Author Design Page for ' . $username;
+				$description = $product_phrase.' Designs by '.$username;
 			}
 		}
 		return $description;
@@ -137,12 +143,16 @@ class MyStyle_Author_Designs_Page {
 		if (get_query_var('designpage')) {
 			$username = get_query_var('username');
 			$user = get_user_by('slug', $username);
+			$options = get_option(MYSTYLE_OPTIONS_NAME, array()); // Get WP Options table Key of this option.
+			$product_phrase = (array_key_exists('alternate_design_tag_collection_title', $options)) ? $options['alternate_design_tag_collection_title'] : '';
+			
+			$description = '';
 			if($user){
 				$first_name = get_user_meta($user->ID, 'first_name', true);
 				$last_name = get_user_meta($user->ID, 'last_name', true);
-				$description = 'Author Design Page for ' . $first_name . ' ' . $last_name;
+				$description = $product_phrase.' Designs by '.$first_name.' '.$last_name;
 			}else{
-				$description = 'Author Design Page for ' . $username;
+				$description = $product_phrase. 'Author Design Page for '.$username;
 			}
 		}
 		return $description;

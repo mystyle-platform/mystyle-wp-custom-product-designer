@@ -136,8 +136,9 @@ function custom_rank_math_meta_description($description)
 		if (is_page('designs')) {
 			$design = $this->get_design();
 			$design_id = get_query_var('design_id');
-			$description = $design->get_title();
+			
 			if(isset($design)){
+				$description = $design->get_title();
 				$author_id = $design->get_user_id();
 				$author = get_userdata($author_id);
 				if($author){
@@ -156,7 +157,7 @@ function custom_rank_math_meta_description($description)
 
 	function custom_rank_math_meta_title($title)
 	{
-		if (is_page('designs')) {
+		if(is_page('designs')){
 			$design = $this->get_design();
 			$design_id = get_query_var('design_id');
 
@@ -364,7 +365,7 @@ function custom_rank_math_meta_description($description)
 				wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', null, null, true );
 				wp_enqueue_script( 'jquery-ui' );
 
-				wp_register_style( 'tokenfield-custom-styles', MYSTYLE_ASSETS_URL . 'css/tokenfield.css' );
+				wp_register_style( 'tokenfield-custom-styles', MYSTYLE_ASSETS_URL . 'css/tokenfield.min.css' );
 				wp_enqueue_style( 'tokenfield-custom-styles' );
 			}
 
