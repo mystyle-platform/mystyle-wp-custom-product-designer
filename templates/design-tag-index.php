@@ -35,10 +35,18 @@ if (!defined('ABSPATH')) {
                     <?php
                     $design_url = MyStyle_Design_Profile_page::get_design_url($design);
                     $user       = get_user_by('id', $design->get_user_id());
+                    $options = get_option(MYSTYLE_OPTIONS_NAME, array()); // Get WP Options table Key of this option.
+                    $product_phrase = (array_key_exists('alternate_design_tag_collection_title', $options)) ? $options['alternate_design_tag_collection_title'] : '';
+
+                    if (empty($design->get_title())) {
+                        $title = 'Design' . ' ' . $design->get_design_id() . ' ' . $product_phrase;
+                    } else {
+                        $title = $design->get_title() . ' ' . $product_phrase;
+                    }
                     ?>
                     <li>
-                        <a href="<?php echo esc_url($design_url); ?>" title="<?php echo esc_attr((null !== $design->get_title()) ? $design->get_title() : 'Custom Design ' . $design->get_design_id()); ?>">
-                            <img alt="<?php echo esc_html((null !== $design->get_title()) ? $design->get_title() : 'Custom Design ' . $design->get_design_id()); ?> Image" src="<?php echo esc_url($design->mystyle_design_Url()); ?>" />
+                        <a href="<?php echo esc_url($design_url); ?>" title="<?php echo $title; ?>">
+                            <img alt="<?php echo $title;?> Image" src="<?php echo esc_url($design->mystyle_design_Url()); ?>" />
                             <?php echo esc_html((null !== $design->get_title()) ? $design->get_title() : 'Custom Design ' . $design->get_design_id()); ?>
                         </a>
                         <div class="mystyle-design-author">Designed by: <?php echo esc_html($user->user_nicename); ?></div>

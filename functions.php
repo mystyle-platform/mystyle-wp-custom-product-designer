@@ -244,3 +244,10 @@ function update_credentials_status_callback()
 		// Do nothing.
 	}
 }
+function add_title_attribute_to_tag_cloud($html, $args) {
+    $pattern = '/<a(.*?)href=["\'](.*?)["\'](.*?)>(.*?)<\/a>/i';
+    $replacement = '<a$1href="$2"$3 title="$4">$4</a>';
+    $html = preg_replace($pattern, $replacement, $html);
+    return $html;
+}
+add_filter('wp_tag_cloud', 'add_title_attribute_to_tag_cloud', 10, 2);
