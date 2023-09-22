@@ -561,7 +561,7 @@ class MyStyle_Design implements MyStyle_Entity {
 
 		if ($enable_cdn_image == 1 && !empty($custom_url)) {
 			$image_url = $this->getImageUrl(); 
-			$updated_url = str_replace('mystyle.s3.amazonaws.com', $custom_url, $image_url);
+			$updated_url = preg_replace('/http.*\.s3\.amazonaws\.com/', $custom_url, $image_url ) ;
 		} else {
 			$updated_url = $this->getImageUrl(); 
 		}
