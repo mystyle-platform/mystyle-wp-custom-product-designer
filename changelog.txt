@@ -1,3 +1,7 @@
+= 3.19.26 =
+* Added meta tags to design profile pages and author pages for SEO
+* Added support for CDN urls for design images, both web and thumbnails
+
 = 3.19.25 =
 * Add license check to admin dashboard hook on plugin update. 
 * Made the design profile page default to Web image, unless license is in-valid.
