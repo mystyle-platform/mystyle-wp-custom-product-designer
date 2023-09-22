@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	$options = get_option(MYSTYLE_OPTIONS_NAME, array()); // Get WP Options table Key of this option.
 	$product_phrase = (array_key_exists('alternate_design_tag_collection_title', $options)) ? $options['alternate_design_tag_collection_title'] : '';
 	?>
-	<img id="mystyle-design-profile-img" alt="<?php echo esc_attr('Design ' . $design->get_design_id() .' '. $product_phrase); ?>" class="skip-lazy" src="<?php echo esc_attr($design->getImageUrl('web')); ?>" />
+	<img id="mystyle-design-profile-img" alt="<?php echo esc_attr('Design ' . $design->get_design_id() .' '. $product_phrase); ?>" class="skip-lazy" src="<?php echo esc_url($design->mystyle_design_Url()); ?>" />
 	<ul class="mystyle-button-group">
 		<li>
 			<form enctype="multipart/form-data" method="post" action="<?php echo esc_attr( get_permalink( $design->get_product_id() ) ); ?>">
