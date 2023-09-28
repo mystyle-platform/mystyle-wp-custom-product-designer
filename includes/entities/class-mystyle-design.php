@@ -552,7 +552,7 @@ class MyStyle_Design implements MyStyle_Entity {
 		$this->template_id = $template_id;
 	}
 
-	function mystyle_design_Url()
+	function mystyle_design_Url( $image_type = false )
 	{
 		$options = get_option(MYSTYLE_OPTIONS_NAME, array());
 
@@ -560,10 +560,10 @@ class MyStyle_Design implements MyStyle_Entity {
 		$custom_url = (array_key_exists('cdn_base_url', $options)) ? $options['cdn_base_url'] : '';
 
 		if ($enable_cdn_image == 1 && !empty($custom_url)) {
-			$image_url = $this->getImageUrl(); 
+			$image_url = $this->getImageUrl( $image_type ); 
 			$updated_url = preg_replace('/http.*\.s3\.amazonaws\.com/', $custom_url, $image_url ) ;
 		} else {
-			$updated_url = $this->getImageUrl(); 
+			$updated_url = $this->getImageUrl( $image_type ); 
 		}
 
 		return $updated_url;
