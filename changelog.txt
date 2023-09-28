@@ -1,3 +1,6 @@
+= 3.19.27 =
+* Added support for web CDN urls on design profile pages.
+
 = 3.19.26 =
 * Added meta tags to design profile pages and author pages for SEO
 * Added support for CDN urls for design images, both web and thumbnails
