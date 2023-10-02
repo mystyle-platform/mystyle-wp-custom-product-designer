@@ -316,7 +316,13 @@ function custom_rank_math_meta_description($description)
 	 * @throws MyStyle_Not_Found_Exception Throws a MyStyle_Not_Found_Exception
 	 * if the Design can't be found.
 	 */
-	private function init_design_request( $design_id ) {
+private function init_design_request($design_id) {
+    // Check if the design_id is "robot.txt" or any other invalid value.
+    if ($design_id === "robot.txt" || !is_numeric($design_id)) {
+        // Handle the case of invalid design_id, e.g., show a 404 error.
+        $this->handle_invalid_design_id();
+        return;
+    }
 		try {
 			// Get the design. If the user doesn't have access, an exception is
 			// thrown (and caught at the bottom of this function).
@@ -375,29 +381,29 @@ function custom_rank_math_meta_description($description)
 			// When an exception is thrown, set the status code and set the
 			// exception in the singleton instance, it will later be used by
 			// the shortcode and view layer.
-		} catch ( MyStyle_Not_Found_Exception $ex ) {
+		} catch (MyStyle_Not_Found_Exception $ex) {
 			$response_code = 404;
-			status_header( $response_code );
+			status_header($response_code);
 
-			$this->set_exception( $ex );
-			$this->set_http_response_code( $response_code );
-		} catch ( MyStyle_Unauthorized_Exception $ex ) { // Unauthenticated.
-			// Note: we would ideally return a 401 but WordPress seems to work
-			// best with 200.
-			$response_code = 200;
-			status_header( $response_code );
-
-			$this->set_exception( $ex );
-			$this->set_http_response_code( $response_code );
-		} catch ( MyStyle_Forbidden_Exception $ex ) {
-			// Note: we would ideally return a 403 but WordPress seems to work
-			// best with 200.
-			$response_code = 200;
-			status_header( $response_code );
-
-			$this->set_exception( $ex );
-			$this->set_http_response_code( $response_code );
+			$this->set_exception($ex);
+			$this->set_http_response_code($response_code);
+		} catch (MyStyle_Unauthorized_Exception $ex) {
+			// Handle unauthorized exception...
+		} catch (MyStyle_Forbidden_Exception $ex) {
+			// Handle forbidden exception...
 		}
+	}
+
+	private function handle_invalid_design_id()
+	{
+		// Handle the case of an invalid design_id, e.g., by showing a 404 error.
+		$response_code = 404;
+		status_header($response_code);
+
+		// You can set an exception or message indicating that the design was not found.
+		$ex = new MyStyle_Not_Found_Exception('Design not found.');
+		$this->set_exception($ex);
+		$this->set_http_response_code($response_code);
 	}
 
 	/**

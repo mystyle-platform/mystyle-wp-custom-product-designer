@@ -47,10 +47,13 @@ class MyStyle_Design_Tag_Page {
         add_action( 'query_vars', array( &$this, 'query_vars' ) );
 		add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 25, 2 );
 		add_action( 'template_redirect', array( &$this, 'set_pager' ) );
-
+		add_filter('wpseo_title', array(&$this, 'mystyle_design_collection_page_title_'), 10, 1);
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
+		add_filter('wpseo_metadesc', array(&$this,  'custom_yoast_meta_description'), 10);
 		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
+		add_filter('rank_math/frontend/title', array(&$this, 'custom_design_collection_rank_math_title'), 10);
+		add_filter('rank_math/frontend/description', array(&$this, 'custom_rank_math_meta_description'), 10);
         add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 ) ;
 		add_filter( 'document_title_parts', array( &$this, 'document_title_parts' ) ) ;
 		add_filter( 'get_canonical_url', array( &$this, 'canonical_url' ), 10, 2 ) ;
@@ -58,6 +61,19 @@ class MyStyle_Design_Tag_Page {
 		add_filter( 'wpseo_canonical', array( &$this, 'wpseo_canonical' ) ) ;
 		add_filter( 'rank_math/frontend/canonical', array( &$this, 'rank_math_canonical' ), 10, 1 ) ;
 
+	}
+	function custom_design_collection_rank_math_title($title)
+	{
+		global $wp_query;
+		if (is_page('design-tags')) {
+			$term_slug = $wp_query->query['design_tag_term'];
+			if ($term_slug) {
+				$term = get_term_by('slug', $term_slug, MYSTYLE_TAXONOMY_NAME);
+				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+				$title = esc_attr($term->name) . (is_null($site_wide_title) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs') .' - '. get_bloginfo('name');
+			}
+		}
+		return $title;
 	}
 
 	/**
@@ -67,8 +83,6 @@ class MyStyle_Design_Tag_Page {
 	 */
 	public static function exists() {
 		$exists = false;
-
-		// Get the page id of the Design Profile page.
 		$options = get_option( MYSTYLE_OPTIONS_NAME, array() );
 		if ( isset( $options[ MYSTYLE_DESIGN_TAG_PAGEID_NAME ] ) ) {
 			$exists = true;
@@ -76,7 +90,19 @@ class MyStyle_Design_Tag_Page {
 
 		return $exists;
 	}
-    
+	function mystyle_design_collection_page_title_($title)
+	{
+		global $wp_query;
+		if (is_page('design-tags')) {
+			$term_slug = $wp_query->query['design_tag_term'];
+			if ($term_slug) {
+				$term = get_term_by('slug', $term_slug, MYSTYLE_TAXONOMY_NAME);
+				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+				$title = esc_attr($term->name) . (is_null($site_wide_title) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs')  . ' - ' . get_bloginfo('name');
+			}
+		}
+		return $title;
+	}
     /**
 	 * Function to determine if the post exists.
 	 *
@@ -93,7 +119,48 @@ class MyStyle_Design_Tag_Page {
 
 		return $exists;
 	}
-    
+    /**
+ * Filter the meta description for Rank Math plugin.
+ *
+ * @param string $description The current meta description.
+ * @return string $description The modified meta description.
+ */
+function custom_rank_math_meta_description($description) {
+    global $wp_query;
+
+			if (is_page('design-tags')) {
+				$term_slug = $wp_query->query['design_tag_term'];
+
+				if ($term_slug != "") {
+					$term = get_term_by('slug', $term_slug, MYSTYLE_TAXONOMY_NAME);
+					$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+					$main_title = esc_html($term->name) . (is_null($site_wide_title) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs');
+					$description = $main_title . ' customize or purchase at ' . get_bloginfo('name');
+				}
+			}
+
+		return $description;
+		}
+
+		
+	public function custom_yoast_meta_description($description)
+	{
+		global $wp_query;
+
+		if (is_page('design-tags')) {
+			$term_slug = $wp_query->query['design_tag_term'];
+
+			if ($term_slug != "") {
+				$term = get_term_by('slug', $term_slug, MYSTYLE_TAXONOMY_NAME);
+				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+				$main_title = esc_html($term->name) . (is_null($site_wide_title) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs');
+				$description = $main_title . ' customize or purchase at ' . get_bloginfo('name');
+			}
+		}
+
+		return $description;
+	}
+
     /**
 	 * Function to determine if the post exists.
 	 *
@@ -594,7 +661,7 @@ class MyStyle_Design_Tag_Page {
 					
 					$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
 
-					$title = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs' ) ;
+					$title = esc_attr($term->name) . ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs' ) ;
                 }
                 
             }
@@ -602,6 +669,14 @@ class MyStyle_Design_Tag_Page {
         
 		return $title;
 	}
+/**
+ * Filter the meta description for Yoast SEO plugin.
+ *
+ * @param string $description The current meta description.
+ * @return string $description The modified meta description.
+ */
+
+
 
 	/**
 	 * Filter Document title parts
@@ -634,7 +709,7 @@ class MyStyle_Design_Tag_Page {
 				
 				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
 
-				$title['title'] = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs' ) ;
+				$title['title'] = esc_attr($term->name). ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs' ) ;
 			}
 			
 		}

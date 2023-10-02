@@ -47,7 +47,12 @@ class MyStyle_Design_Collection_Page {
         add_action( 'query_vars', array( &$this, 'query_vars' ) );
         add_filter( 'the_title', array( &$this, 'filter_title' ), 10, 2 );
 		add_filter( 'document_title_parts', array( &$this, 'document_title_parts' ) ) ;
+		add_filter('wpseo_title', array(&$this, 'mystyle_design_collection_page_title'), 10);
+		add_filter('wp_title', array(&$this, 'custom_design_collection_page_title'), 10);
 		add_filter( 'body_class', array( &$this, 'body_class' ), 10, 2 ) ;
+		add_filter('wpseo_metadesc', array(&$this, 'mystyle_design_collection_yoast_description'),10, 2);
+		add_filter('rank_math/frontend/title', array(&$this, 'custom_design_collection_rank_math_title'), 10,1);
+		add_filter('rank_math/frontend/description', array(&$this, 'custom_design_collection_rank_math_description'), 10, 2);
 		add_filter( 'get_canonical_url', array( &$this, 'canonical_url' ), 10, 2 ) ;
 		add_filter( 'get_shortlink', array( &$this, 'shortlink' ), 10, 4 ) ;
 		add_filter( 'wpseo_canonical', array( &$this, 'wpseo_canonical' ), 10, 1 ) ;
@@ -68,7 +73,79 @@ class MyStyle_Design_Collection_Page {
 			'top'
 		);
 	}
-    
+    /**
+ * Filter the Rank Math title for the Design Collections page.
+ *
+ * @param string $title The current title.
+ * @return string The modified title.
+ */
+
+	/**
+	 * Filter the Rank Math meta description for the Design Collections page.
+	 *
+	 * @param string $description The current meta description.
+	 * @return string The modified meta description.
+	 */
+ function mystyle_design_collection_yoast_description($description)
+	{
+		global $wp_query;
+		// Check if you are on the Design Collections page.
+		if (is_page('design-collections')) {
+			$term_slug = get_query_var('collection_term');
+
+			if ($term_slug != "") {
+				$term = get_term_by('slug', $term_slug, MYSTYLE_COLLECTION_NAME);
+				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+
+				// Modify the main description based on your condition.
+				$main_description = ucfirst($term->name) . (is_null($site_wide_title) ? ' Design Collection' : ' ' . $site_wide_title . ' Collection') . ' customize or purchase at ' . get_bloginfo('name');
+
+				// Set the main description.
+				$description = $main_description;
+			}
+		}
+
+		return $description;
+	}
+/**
+ * Filter the document title for the Design Collections page.
+ *
+ * @param string $title The current title.
+ * @return string The modified title.
+ */
+/**
+ * Filter the document title for the Design Collections page.
+ *
+ * @param string $title The current title.
+ * @return string The modified title.
+ */
+function custom_design_collection_page_title($title) {
+    global $wp_query;
+
+    // Check if you are on the Design Collections page.
+    if (is_page('design-collections')) {
+        $term_slug = get_query_var('collection_term');
+
+        if ($term_slug != "") {
+            $term = get_term_by('slug', $term_slug, MYSTYLE_COLLECTION_NAME);
+            $site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+
+            // Modify the main title based on your condition.
+            $main_title = ucfirst($term->name) . (is_null($site_wide_title) ? ' Design Collection' : ' ' . $site_wide_title . ' Collection');
+
+            // Append the main title to the existing title.
+            $title = $main_title . ' - ' . get_bloginfo('name');
+        }
+    }
+
+    return $title;
+}
+
+
+
+
+
+
     /**
 	 * Add custom query vars.
 	 *
@@ -247,52 +324,136 @@ class MyStyle_Design_Collection_Page {
 		return $shortlink;
 	}
 
-    /**
-	 * Filter the post title.
-	 *
-	 * @param string $title The title of the post.
-	 * @param type   $id The id of the post.
-	 * @return string Returns the filtered title.
-	 */
-	public function filter_title( $title, $id = null ) {
-		
-        global $wp_query ;
-        
-        if (
-					( get_the_ID() === $id ) && // Make sure we're in the loop.
-					( in_the_loop() ) // Make sure we're in the loop.
-			)
-        {
-            if ( isset( $wp_query->query['collection_term'] ) ) {
-                
-                $term_slug = $wp_query->query['collection_term'] ;
-                
-                if( preg_match( '/\//', $term_slug) ) {
-                    $url_array  = explode('/', $term_slug ) ;
-                    if($url_array[0] == 'page' ) {
-                        $term_slug = false ;
-                    }
-                    else {
-                        $term_slug = $url_array[0] ;
-                    }
+   /**
+ * Filter the post title.
+ *
+ * @param string $title The title of the post.
+ * @param type   $id The id of the post.
+ * @return string Returns the filtered title.
+ */
+public function filter_title( $title, $id = null ) {
+    global $wp_query;
 
+    if (
+        ( get_the_ID() === $id ) && // Make sure we're in the loop.
+        ( in_the_loop() ) // Make sure we're in the loop.
+    ) {
+        if ( isset( $wp_query->query['design_tag_term'] ) ) {
+
+            $term_slug = $wp_query->query['design_tag_term'];
+
+            if( preg_match( '/\//', $term_slug) ) {
+                $url_array  = explode('/', $term_slug );
+                if($url_array[0] == 'page' ) {
+                    $term_slug = false;
                 }
-                
-                if( $term_slug ) {
-                    $term = get_term_by( 'slug', $term_slug, MYSTYLE_COLLECTION_NAME) ;
-
-					$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title() ;
-
-					$title = ucfirst( $term->name ) . ( is_null( $site_wide_title ) ? ' Design Collection' : ' ' . $site_wide_title . ' Collection' ) ;
+                else {
+                    $term_slug = $url_array[0];
                 }
-                
+
             }
-        }
-        
-        
 
-		return $title;
-	}
+            if( $term_slug ) {
+                $term = get_term_by( 'slug', $term_slug, MYSTYLE_TAXONOMY_NAME);
+
+                $site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+
+                $title = esc_attr($term->name). ( is_null( $site_wide_title ) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs' );
+            }
+
+        }
+    }
+
+    return $title;
+}
+
+/**
+ * Filter the document title for the Design Collections page.
+ *
+ * @param string $title The current title.
+ * @return string The modified title.
+ */
+function mystyle_design_collection_page_title($title) {
+    global $wp_query;
+
+    // Check if you are on the Design Collections page.
+    if (is_page('design-collections')) {
+        $term_slug = get_query_var('collection_term');
+
+        if ($term_slug != "") {
+            $term = get_term_by('slug', $term_slug, MYSTYLE_COLLECTION_NAME);
+            $site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+
+            // Modify the main title based on your condition.
+            $main_title = ucfirst($term->name) . (is_null($site_wide_title) ? ' Design Collection' : ' ' . $site_wide_title . ' Collection');
+
+            // Append the main title to the existing title.
+            $title = $main_title . ' - ' . get_bloginfo('name');
+        }
+    }
+
+    return $title;
+}
+
+/**
+ * Filter the Rank Math title for the Design Collections page.
+ *
+ * @param string $title The current title.
+ * @return string The modified title.
+ */
+function custom_design_collection_rank_math_title($title) {
+    global $wp_query;
+
+    // Check if you are on the Design Collections page.
+    if (is_page('design-collections')) {
+        $term_slug = get_query_var('collection_term');
+
+        if ($term_slug != "") {
+            $term = get_term_by('slug', $term_slug, MYSTYLE_COLLECTION_NAME);
+            $site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+
+            // Modify the main title based on your condition.
+            $main_title = ucfirst($term->name) . (is_null($site_wide_title) ? ' Design Collection' : ' ' . $site_wide_title . ' Collection');
+
+            // Set the main title.
+            $title =
+				$main_title . ' - ' . get_bloginfo('name');
+        }
+    }
+
+    return $title;
+}
+
+/**
+ * Filter the Rank Math meta description for the Design Collections page.
+ *
+ * @param string $description The current meta description.
+ * @return string The modified meta description.
+ */
+function custom_design_collection_rank_math_description($description) {
+    global $wp_query;
+
+    // Check if you are on the Design Collections page.
+    if (is_page('design-collections')) {
+        $term_slug = get_query_var('collection_term');
+
+        if ($term_slug != "") {
+            $term = get_term_by('slug', $term_slug, MYSTYLE_COLLECTION_NAME);
+            $site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+
+            // Modify the main description based on your condition.
+            $main_description = ucfirst($term->name) . (is_null($site_wide_title) ? ' Design Collection' : ' ' . $site_wide_title . ' Collection') . ' customize or purchase at ' . get_bloginfo('name');
+
+            // Set the main description.
+            $description = $main_description;
+        }
+    }
+
+    return $description;
+}
+
+
+
 
 	/**
 	 * Filter Document title parts
