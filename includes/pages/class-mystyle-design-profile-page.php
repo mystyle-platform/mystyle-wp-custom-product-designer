@@ -144,7 +144,13 @@ function custom_rank_math_meta_description($description)
 				if($author){
 					$first_name = $author->first_name;
 					$last_name = $author->last_name;
-					$description .= " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+					if (!empty($description)) {
+						// Title is not empty, format as "Title by Author (Design ID)"
+						$description = $description . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+					} else {
+						// Title is empty, format as "Design ID by Author"
+						$description = 'Design ' . $design_id . ' by ' . $first_name . ' ' . $last_name;
+					}
 				}
 			}
 		}
@@ -168,7 +174,13 @@ function custom_rank_math_meta_description($description)
 				if($author){
 					$first_name = $author->first_name;
 					$last_name = $author->last_name;
-					$title .= " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+					if (!empty($title)) {
+						// Title is not empty, format as "Title by Author (Design ID)"
+						$title = $title . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+					} else {
+						// Title is empty, format as "Design ID by Author"
+						$title = 'Design ' . $design_id . ' by ' . $first_name . ' ' . $last_name;
+					}
 				}
 			}
 		}
@@ -191,7 +203,14 @@ function custom_rank_math_meta_description($description)
 				if($author){
 					$first_name = $author->first_name;
 					$last_name = $author->last_name;
-					$title .= " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+					// Check if the design title is empty
+					if (!empty($title)) {
+						// Title is not empty, format as "Title by Author (Design ID)"
+						$title = $title . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+					} else {
+						// Title is empty, format as "Design ID by Author"
+						$title = 'Design ' . $design_id . ' by ' . $first_name . ' ' . $last_name;
+					}
 				}
 			}
 		}
@@ -214,7 +233,13 @@ function custom_rank_math_meta_description($description)
 				if($author){
 					$first_name = $author->first_name;
 					$last_name = $author->last_name;
-					$description .= " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+					if (!empty($description)) {
+						// Title is not empty, format as "Title by Author (Design ID)"
+						$description = $description . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
+					} else {
+						// Title is empty, format as "Design ID by Author"
+						$description = 'Design ' . $design_id . ' by ' . $first_name . ' ' . $last_name;
+					}
 				}
 			}
 		}
