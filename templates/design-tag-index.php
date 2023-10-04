@@ -29,7 +29,7 @@ if (!defined('ABSPATH')) {
 
     <?php
     // Determine the number of design tags to display per page and the current page number.
-    $designs_per_page = 50; 
+    $designs_per_page = 50;
     $current_page = get_query_var('paged') ? get_query_var('paged') : 1; // Get the current page.
 
     // Calculate the offset to start displaying the tags for the current page.
@@ -61,7 +61,12 @@ if (!defined('ABSPATH')) {
                     <li>
                         <a href="<?php echo esc_url($design_url); ?>" title="<?php echo $title; ?>">
                             <img alt="<?php echo $title; ?> Image" src="<?php echo esc_url($design->mystyle_design_Url()); ?>" />
-                            <?php echo esc_html((null !== $design->get_title()) ? $design->get_title() : 'Custom Design ' . $design->get_design_id()); ?>
+                            <?php
+                            $design_title = (null !== $design->get_title()) ? esc_html($design->get_title()) : 'Custom Design ' . esc_html($design->get_design_id());
+                            ?>
+
+                            <span class="design-title"><?php echo $design_title; ?></span>
+
                         </a>
                         <div class="mystyle-design-author">Designed by: <?php echo esc_html($user->user_nicename); ?></div>
                     </li>
