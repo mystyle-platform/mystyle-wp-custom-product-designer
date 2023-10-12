@@ -218,7 +218,7 @@ class MyStyle_Author_Designs_Page {
 		} else {
 			$user = get_user_by( 'slug', $username );
 		}
-
+		
 		// Create a new pager.
 		$this->pager = new MyStyle_Pager();
 

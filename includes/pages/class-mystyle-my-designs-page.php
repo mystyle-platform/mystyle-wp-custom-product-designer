@@ -35,6 +35,14 @@ class MyStyle_My_Designs_Page {
 	private $session;
 
 	/**
+	 * Stores the current exception (when the class is instantiated as a
+	 * singleton).
+	 *
+	 * @var \MyStyle_Exception
+	 */
+	private $exception;
+
+	/**
 	 * Pager for the design profile index.
 	 *
 	 * @var \MyStyle_Pager
@@ -170,13 +178,9 @@ class MyStyle_My_Designs_Page {
 	}
 
 	public function uwp_add_profile_mystyle_designs_tab_content($user, $tab) {
-		$design_profile_page = self::get_instance();
-
 		// Set the user.
 		/* @var $user \WP_User phpcs:ignore */
-		$design_profile_page->set_user( $user ) ;
-		
-		$design_profile_page->init_user_index_request();
+		$this->set_user( $user ) ;
 		
 		$this->designs_list() ;
 	}
@@ -225,11 +229,7 @@ class MyStyle_My_Designs_Page {
 	 * Display the user designs list.
 	 */
 	public function designs_list() {
-		
-		//$design_profile_page = MyStyle_My_Designs_Page::get_instance();
-
-		$user = wp_get_current_user() ;
-		$count = MyStyle_DesignManager::get_total_user_design_count( $user ) ;
+		$count = MyStyle_DesignManager::get_total_user_design_count( $this->user ) ;
 
 		/* @var $pager \Mystyle_Pager phpcs:ignore */
 		$pager = new MyStyle_Pager();
@@ -244,7 +244,7 @@ class MyStyle_My_Designs_Page {
 		$designs = MyStyle_DesignManager::get_user_designs(
 			$pager->get_items_per_page(),
 			$pager->get_current_page_number(),
-			$user
+			$this->user
 		);
 
 		$pager->set_items( $designs );
@@ -320,13 +320,14 @@ class MyStyle_My_Designs_Page {
 		$this->pager->set_current_page_number(
 			max( 1, get_query_var( 'paged' ) )
 		);
-
+		
 		// Pager items.
 		$designs = MyStyle_DesignManager::get_user_designs(
 			$this->pager->get_items_per_page(),
 			$this->pager->get_current_page_number(),
 			$this->user
 		);
+		
 		$this->pager->set_items( $designs );
 
 		// Total items.
@@ -387,6 +388,10 @@ class MyStyle_My_Designs_Page {
 	 */
 	public function get_pager() {
 		return $this->pager;
+	}
+
+	public function set_exception( MyStyle_Exception $exception ) {
+		$this->exception = $exception;
 	}
 
 
