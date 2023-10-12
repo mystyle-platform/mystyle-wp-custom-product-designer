@@ -251,3 +251,83 @@ function add_title_attribute_to_tag_cloud($html, $args) {
     return $html;
 }
 add_filter('wp_tag_cloud', 'add_title_attribute_to_tag_cloud', 10, 2);
+
+// Function for Adding classes in body tag
+function add_custom_body_classes($classes)
+{
+	// Check for customizer page
+	if (is_customize_preview()) {
+		$classes[] = 'mystyle-customize';
+	}
+
+	
+
+	// Check for design complete
+	if (isset($_GET['design_complete']) && $_GET['design_complete'] == 1 && isset($_GET['design_id'])) {
+		$classes[] = 'design-complete';
+	}
+
+	// Check for product page
+	if (is_single() && is_product() && is_cart() && is_checkout()) {
+		$classes[] = 'single-product';
+	}
+
+	// Check for Divi theme
+	if (defined('ET_BUILDER_DIR') && !is_admin()) {
+		$classes[] = 'et_divi_theme';
+	}
+
+	// Check for search page
+	if (is_search()) {
+		$classes[] = 'search-results';
+	}
+
+	// Check for user profile page
+	if (is_page('user-profile')) {
+		$classes[] = 'uwp_profile_page';
+	}
+	if (is_page('customize')) {
+		$classes[] = 'mystyle-customizer-page';
+	}
+
+	// Check for gift guide
+	if (is_page('gift-guide')) {
+		$classes[] = 'gift-guide';
+	}
+
+	// Check for FAQ page
+	if (is_page('faq') || is_page('frequently-asked-questions')) {
+		$classes[] = 'faq-page';
+	}
+
+	// Check for shipping policy page
+	if (is_page('shipping-policy') || (is_single() && get_the_title() == 'Shipping Policy')) {
+		$classes[] = 'shipping-policy-page';
+	}
+
+	// Check for private design page
+	if (is_singular('designs') && has_term('private', 'design_visibility')) {
+		$classes[] = 'private-design';
+	}
+
+	// Check for My Account page
+	if (is_account_page()) {
+		$classes[] = 'woocommerce-account';
+	}
+
+	// Check for design tag index page
+	if (is_page('design-tags-index')) {
+		$classes[] = 'mystyle-design-tags-index';
+	}
+
+	// Check for design tag gallery
+	if (is_page('design-tags')) {
+		$classes[] = 'mystyle-tags-gallery';
+	}
+	if (is_page('design-collections')) {
+		$classes[] = 'mystyle-design-collections-gallery';
+	}
+
+	return $classes;
+}
+add_filter('body_class', 'add_custom_body_classes');

@@ -50,6 +50,7 @@ class MyStyle_Design_Tag_Page {
 		add_filter('wpseo_title', array(&$this, 'mystyle_design_collection_page_title_'), 10, 1);
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
 		add_filter('wpseo_metadesc', array(&$this,  'custom_yoast_meta_description'), 10);
+		add_filter('body_class', array(&$this, 'add_tag_term_body_class'),10,2);
 		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 		add_filter( 'post_link', array( &$this, 'post_link' ), 10, 3 );
 		add_filter('rank_math/frontend/title', array(&$this, 'custom_design_collection_rank_math_title'), 10);
@@ -455,6 +456,27 @@ function custom_rank_math_meta_description($description) {
         
 		return $designs;
 	}
+
+	/*
+	 * function for adding body class on single design page
+	 */
+
+
+function add_tag_term_body_class($classes) {
+		global $wp_query;
+		// Check if you are on a single tag term page
+		if (is_page('design-tags')) {
+			$term_slug = $wp_query->query['design_tag_term'];
+
+			if ($term_slug) {
+            $classes[] = 'mystyle-single-tag-gallery';
+        }
+    }
+
+    return $classes;
+}
+
+
 
 	/**
 	 * Force showing post thumbnail on design archive pages.
