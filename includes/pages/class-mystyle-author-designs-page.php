@@ -79,7 +79,7 @@ class MyStyle_Author_Designs_Page {
 	public function rewrite_rules() {
 		
 		add_rewrite_rule(
-			'author/([a-zA-Z0-9_-].+)/([a-z]+)/?$',
+			'author/(.+)/([a-z]+)/?$',
 			'index.php?designpage=$matches[2]&username=$matches[1]',
 			'top'
 		);
@@ -216,7 +216,7 @@ class MyStyle_Author_Designs_Page {
 		if ( $decrypted ) {
 			$user = $decrypted;
 		} else {
-			$user = get_user_by( 'slug', $username );
+			$user = get_user_by( 'login', $username );
 		}
 		
 		// Create a new pager.
@@ -435,7 +435,7 @@ class MyStyle_Author_Designs_Page {
 		} elseif ( 'decrypt' === $action ) {
 			$output = openssl_decrypt( base64_decode( $string ), $encrypt_method, $key, 0, $iv );
 		}
-
+		
 		return $output;
 	}
 
