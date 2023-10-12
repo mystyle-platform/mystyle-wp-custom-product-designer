@@ -1,3 +1,6 @@
+= 3.19.28 =
+* Fixed UsersWP profile page designs bug.
+
 = 3.19.27 =
 * Added support for web CDN urls on design profile pages.
 
