@@ -67,8 +67,9 @@ class MyStyle_Design_Tag_Page {
 	{
 		global $wp_query;
 		if (is_page('design-tags')) {
-			$term_slug = $wp_query->query['design_tag_term'];
-			if ($term_slug) {
+			
+			if (isset( $wp_query->query['design_tag_term'] ) ) {
+				$term_slug = $wp_query->query['design_tag_term'];
 				$term = get_term_by('slug', $term_slug, MYSTYLE_TAXONOMY_NAME);
 				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
 				$title = esc_attr($term->name) . (is_null($site_wide_title) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs') .' - '. get_bloginfo('name');
@@ -95,8 +96,9 @@ class MyStyle_Design_Tag_Page {
 	{
 		global $wp_query;
 		if (is_page('design-tags')) {
-			$term_slug = $wp_query->query['design_tag_term'];
-			if ($term_slug) {
+			
+			if (isset($wp_query->query['design_tag_term'])) {
+				$term_slug = $wp_query->query['design_tag_term'];
 				$term = get_term_by('slug', $term_slug, MYSTYLE_TAXONOMY_NAME);
 				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
 				$title = esc_attr($term->name) . (is_null($site_wide_title) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs')  . ' - ' . get_bloginfo('name');
@@ -130,9 +132,10 @@ function custom_rank_math_meta_description($description) {
     global $wp_query;
 
 			if (is_page('design-tags')) {
-				$term_slug = $wp_query->query['design_tag_term'];
+				
 
-				if ($term_slug != "") {
+				if (isset($wp_query->query['design_tag_term'])) {
+					$term_slug = $wp_query->query['design_tag_term'];
 					$term = get_term_by('slug', $term_slug, MYSTYLE_TAXONOMY_NAME);
 					$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
 					$main_title = esc_html($term->name) . (is_null($site_wide_title) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs');
@@ -149,9 +152,8 @@ function custom_rank_math_meta_description($description) {
 		global $wp_query;
 
 		if (is_page('design-tags')) {
-			$term_slug = $wp_query->query['design_tag_term'];
-
-			if ($term_slug != "") {
+			if (isset($wp_query->query['design_tag_term'])) {
+				$term_slug = $wp_query->query['design_tag_term'];
 				$term = get_term_by('slug', $term_slug, MYSTYLE_TAXONOMY_NAME);
 				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
 				$main_title = esc_html($term->name) . (is_null($site_wide_title) ? ' Design Tag' : ' ' . $site_wide_title . ' Community Designs');
@@ -466,12 +468,10 @@ function add_tag_term_body_class($classes) {
 		global $wp_query;
 		// Check if you are on a single tag term page
 		if (is_page('design-tags')) {
-			$term_slug = $wp_query->query['design_tag_term'];
-
-			if ($term_slug) {
-            $classes[] = 'mystyle-single-tag-gallery';
+			if (isset( $wp_query->query['design_tag_term'])) {
+            	$classes[] = 'mystyle-single-tag-gallery';
+			}
         }
-    }
 
     return $classes;
 }
