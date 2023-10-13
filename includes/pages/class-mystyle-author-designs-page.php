@@ -216,7 +216,7 @@ class MyStyle_Author_Designs_Page {
 		if ( $decrypted ) {
 			$user = $decrypted;
 		} else {
-			$user = get_user_by( 'login', $username );
+			$user = get_user_by( 'slug', $username );
 		}
 		
 		// Create a new pager.
