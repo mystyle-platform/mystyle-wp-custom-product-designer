@@ -1,3 +1,6 @@
+= 3.19.29 =
+* Fixed broken author design link, and added design tag meta tags.
+
 = 3.19.28 =
 * Fixed UsersWP profile page designs bug.
 
