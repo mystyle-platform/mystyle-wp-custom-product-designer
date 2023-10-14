@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
 
     <?php
     // Set the limit for terms per page conditionally
-    $terms_per_page = !$show_designs ? 10 : count($terms);
+    $terms_per_page = !$show_designs ? 50 : count($terms);
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
     $offset = ($paged - 1) * $terms_per_page;
     $paged_terms = array_slice($terms, $offset, $terms_per_page);
