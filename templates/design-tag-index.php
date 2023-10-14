@@ -13,7 +13,6 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 ?>
-
 <div id="mystyle-design-tag-index-wrapper" class="mystyle-design-tag-index woocommerce design-tags<?php print($show_designs ? ' show-designs' : ''); ?>">
     <?php if (!$term) : ?>
         <div class="mystyle-sort">
@@ -26,7 +25,16 @@ if (!defined('ABSPATH')) {
             </form>
         </div>
     <?php endif; ?>
-    <?php foreach ($terms as $term) : ?>
+
+    <?php
+    // Set the limit for terms per page conditionally
+    $terms_per_page = !$show_designs ? 10 : count($terms);
+    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+    $offset = ($paged - 1) * $terms_per_page;
+    $paged_terms = array_slice($terms, $offset, $terms_per_page);
+
+    foreach ($paged_terms as $term) :
+    ?>
         <?php if ($show_designs) : ?>
             <?php $term_name = preg_replace('/\-/', ' ', $term->name); ?>
             <h3 class="mystyle-tag-id"><a href="<?php echo esc_url(get_term_link($term)); ?>" title="<?php echo esc_attr($term_name); ?> Gallery"><?php echo esc_html($term_name); ?></a></h3>
@@ -34,7 +42,7 @@ if (!defined('ABSPATH')) {
                 <?php foreach ($term->designs as $design) : ?>
                     <?php
                     $design_url = MyStyle_Design_Profile_page::get_design_url($design);
-                    $user       = get_user_by('id', $design->get_user_id());
+                    $user = get_user_by('id', $design->get_user_id());
                     $options = get_option(MYSTYLE_OPTIONS_NAME, array()); // Get WP Options table Key of this option.
                     $product_phrase = (array_key_exists('alternate_design_tag_collection_title', $options)) ? $options['alternate_design_tag_collection_title'] : '';
 
@@ -46,7 +54,7 @@ if (!defined('ABSPATH')) {
                     ?>
                     <li>
                         <a href="<?php echo esc_url($design_url); ?>" title="<?php echo $title; ?>">
-                            <img alt="<?php echo $title;?> Image" src="<?php echo esc_url($design->mystyle_design_Url()); ?>" />
+                            <img alt="<?php echo $title; ?> Image" src="<?php echo esc_url($design->mystyle_design_Url()); ?>" />
                             <?php echo esc_html((null !== $design->get_title()) ? $design->get_title() : 'Custom Design ' . $design->get_design_id()); ?>
                         </a>
                         <div class="mystyle-design-author">Designed by: <?php echo esc_html($user->user_nicename); ?></div>
@@ -55,24 +63,18 @@ if (!defined('ABSPATH')) {
             </ul>
         <?php else : ?>
             <a href="<?php echo esc_url(get_term_link($term)); ?>" title="<?php echo esc_attr($term->name); ?> Gallery"><?php echo esc_html($term->name); ?></a>
-            <?php endif; ?>&nbsp;
-        <?php endforeach; ?>
-        <nav class="woocommerce-pagination">
-            <?php
-            echo paginate_links( // WPCS: XSS ok.
-                array(
-                    'base'      => esc_url_raw(str_replace(999999999, '%#%', get_pagenum_link(999999999, false))),
-                    'format'    => '',
-                    'add_args'  => false,
-                    'current'   => $mystyle_pager->get_current_page_number(),
-                    'total'     => $mystyle_pager->get_page_count(),
-                    'prev_text' => '&larr;',
-                    'next_text' => '&rarr;',
-                    'type'      => 'list',
-                    'end_size'  => 3,
-                    'mid_size'  => 3,
-                )
-            );
-            ?>
-        </nav>
+    <?php endif; ?>&nbsp;<?php
+    endforeach;
+    if (isset($atts['show_designs']) && $atts['show_designs'] == 'false') {
+        if (method_exists('MyStyle_Pager', 'generate_pagination')) {
+            echo $mystyle_pager->generate_pagination($show_designs, $terms, $terms_per_page, $paged);
+        }
+    } else {
+
+        if (method_exists('MyStyle_Pager', 'generate_pagination_html')) {
+            echo $mystyle_pager->generate_pagination_html();
+        }
+    }
+
+    ?>
 </div>
