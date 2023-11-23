@@ -234,7 +234,7 @@ class MyStyle_Author_Designs_Page {
 		$designs = MyStyle_DesignManager::get_user_designs(
 			$this->pager->get_items_per_page(),
 			$this->pager->get_current_page_number(),
-			$user->user_email
+			$user
 		);
 
 		$this->pager->set_items( $designs );
