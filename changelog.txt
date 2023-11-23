@@ -1,3 +1,6 @@
+= 3.19.30 =
+* Fixed bug related to author designs page not showing private designs.
+
 = 3.19.29 =
 * Fixed broken author design link, and added design tag meta tags.
 
