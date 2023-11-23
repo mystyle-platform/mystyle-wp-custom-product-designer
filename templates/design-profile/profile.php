@@ -95,7 +95,7 @@ if (!defined('ABSPATH')) {
 		) :
 			if (
 				current_user_can('administrator') || // Check if the current user is an administrator
-				(MyStyle_DesignManager::is_user_design_owner($current_user->ID, $design->get_design_id()))
+				(MyStyle_DesignManager::is_user_design_owner($user_id, $design->get_design_id()))
 			) {
 				if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_design_nonce'])) {
 					$nonce = sanitize_text_field($_POST['delete_design_nonce']);
@@ -113,7 +113,7 @@ if (!defined('ABSPATH')) {
 			<div class="design-manager-menu">
 				<br />
 				<?php
-				if (current_user_can('administrator') || (MyStyle_DesignManager::is_user_design_owner($current_user->ID, $design->get_design_id()))) :
+				if (current_user_can('administrator') || (MyStyle_DesignManager::is_user_design_owner($user_id, $design->get_design_id()))) :
 				?>
 					<form method="post" class="delete-design-form">
 						<input type="hidden" name="delete_design_nonce" value="<?php echo esc_attr(wp_create_nonce('mystyle_delete_design_nonce')); ?>" />
