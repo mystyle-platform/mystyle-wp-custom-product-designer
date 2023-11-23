@@ -49,6 +49,7 @@ class MyStyle_Design_Collection_Page {
 		add_filter( 'document_title_parts', array( &$this, 'document_title_parts' ) ) ;
 		add_filter('wpseo_title', array(&$this, 'mystyle_design_collection_page_title'), 10);
 		add_filter('wp_title', array(&$this, 'custom_design_collection_page_title'), 10);
+		add_filter('the_title', array(&$this, 'wpse46249_filter_wp_title'));
 		add_filter( 'body_class', array( &$this, 'body_class' ), 10, 2 ) ;
 		add_filter('wpseo_metadesc', array(&$this, 'mystyle_design_collection_yoast_description'),10, 2);
 		add_filter('rank_math/frontend/title', array(&$this, 'custom_design_collection_rank_math_title'), 10,1);
@@ -142,6 +143,18 @@ function custom_design_collection_page_title($title) {
 }
 
 
+function wpse46249_filter_wp_title( $title ) {
+		if (is_page('design-collections')) {
+			$term_slug = get_query_var('collection_term');
+			if ($term_slug != "") {
+				$term = get_term_by('slug', $term_slug, MYSTYLE_COLLECTION_NAME);
+				$site_wide_title = MyStyle_Options::get_alternate_design_tag_collection_title();
+				$main_title = ucfirst($term->name) . (is_null($site_wide_title) ? ' Design Collection' : ' ' . $site_wide_title . ' Collection');
+				$title = $main_title ;
+			}
+		}
+		return $title;
+}
 
 
 

@@ -12,64 +12,72 @@ The MyStyle Custom Product Designer allows your website visitors to design, cust
 
 == Description ==
 
-You can enable any product in WooCommerce for personalization / customization using the MyStyle Custom Product Designer.  This allows any user to design their own graphics with a photo-realistic live product preview, and can generate the print file for the order to exact high-res specs (Full-Mode only).  The Customizer itself complete with graphics, uploaded images, and high-res print images are hosted remotely in the cloud by the MyStyle Platform and Amazon s3.  Users have a live product preview throughout the design experience.  Popular products to personalize include phone cases, t-shirts, canvas prints, etc.
+You can enable any product in WooCommerce for single side or multi-side personalization & customization using the MyStyle Custom Product Designer.  This allows any user to design their own graphics with a photo-realistic live product preview.  Our renderer can then generate the print file for any order(s) to exact high-res specs that meet your needs, and allow for print file editing on the fly to save time and eliminate needing Photoshop and/or Illustrator to process graphics for print.  
+
+The Customizer itself comes complete with free graphics, uploaded images, and high-res print images for users to add to their designs if they don't have their own image.  This stock library is hosted remotely in the cloud by the MyStyle Platform and Amazon S3 + Cloudfront CDN, so no extra load or HD space used on your server/hosting.  
+
+Users have a live product preview throughout the design experience.  Popular products to personalize include phone cases, t-shirts, canvas prints, or anything that can be printed with a customer image!
 
 = Requirements =
 
-Please note that the MyStyle Custom Product Designer is a serviceware plugin, and requires an active MyStyle Developer account to use in Full-Mode and for access to the high-res, cloud-hosted print files.  The MyStyle Custom Product Designer works in conjunction with the [MyStylePlatform.com](http://www.mystyleplatform.com/?ref=wprm) customization service.
+* WooCommerce
+* Please note that the MyStyle Custom Product Designer is a serviceware plugin, which means it works by connecting to a remote service.  The [MyStylePlatform.com](http://www.mystyleplatform.com/?ref=wprm) customization apps, graphics, and cloud storage that it uses require a paid/active MyStyle License.
 
 = Benefits =
 
+* Easy / Quick to install
 * Awesome User Experience
-* User-designed products saves time and eliminates redundant design work
+* User-designed products save time and eliminates redundant design work
 * High design-completion and sell-thru ratios
 * World-class design tools in the MyStyle Customizer
-* Easy / Quick to install
-* Print-ready images streamline production with any fulfillment
- * Use our catalog of products and network of manufacturers, or use your own!
+* Print Rendered images streamline and ensure quality control with any fulfillment
+* Do your own fulfillment, or try our network of manufacturers (optional / contact us).
+* No added fees for purchases, no commissions!
+* Use any CC processor/checkout
+* Made in America (California)
 * Experienced San Diego based development team for support or custom feature development
-* 100% American Made in the USA! No outsourcing!
+
 
 = Plugin Features =
 
 * Users can design their own products right on your website and:
- * Upload photos
+ * Upload images/photos
  * Add custom text (vector)
- * Add custom patterns with custom colors
- * Apply cool effects (dropshadow, glow, bevel)
- * Design multi-side products
- * Design multiple sides simultaneously
+ * Add custom colors
  * Add gradients (color fades)
+ * Drag and drop images and text right on the product visually
+ * Design multi-side products
+* Users can save designs publicly or privately
 * Integrates with WooCommerce products easily
 * Adds custom products directly to the user's WooCommerce shopping cart
-* Product prices and description content controlled by WooCommerce as normal
 * Thumbnail of user's custom design shows in the shopping cart for each customized item
-* Flash AND HTML5 Mobile versions
- * Mobile auto-detection
-* Print-ready image file generation (can be made to match your exact print specs)
- * Print files can be retrieved in the normal WooCommerce order history in the admin (Full-Mode only)
- * Print files are available with a paid license (see [MyStyle Platform website](http://www.mystyleplatform.com/?ref=wprm2) for pricing)
-* New products can be added to our system upon request
-* New backgrounds, foregrounds or fonts can be added upon request
-* Configur8 feature allowing the product image on the product info page to be changed based on user input.
+* Product prices and description content controlled by WooCommerce as normal
+* HTML5 & Mobile Compatible
+ * Mobile auto-detection with portrait and landscape modes
+* Print-ready image file rendering (can be made to match your exact print specs)
+ * Print files can be retrieved in the normal WooCommerce order history in the admin or synced to Shipsation etc
+ * Print files Renderer is available with a paid license (see [MyStyle Platform website](http://www.mystyleplatform.com/?ref=wprm2) for pricing)
+* New products can be added to our remote template catalog upon request
+* Custom libraries of backgrounds, foregrounds, or fonts can be added upon request
+* Configur8 feature allowing the product image on the product info page to be changed based on user input (beta).
 
 = Examples =
 
 You can see some examples of the MyStyle Custom Product Designer in use (and try it out) at the following sites:
 
-* [Custom skateboards and longboards](http://www.whateverskateboards.com/?ref=wprm2) (Whatever Skateboards)
-* [Custom canvas prints](http://www.makecanvasprints.com/?ref=wprm2) (Make Canvas Prints)
-* [Disc golf discs and ultimate frisbee discs](http://www.flydiscs.com/?ref=wprm2) (Fly Discs)
-* [iPhone cases and phone cases](http://www.case-monkey.com/?ref=wprm2) (Case Monkey)
+* [Custom Skateboards and Longboards](http://www.whateverskateboards.com/?ref=wprm2) (Whatever Skateboards)
+* [Custom Canvas Prints](http://www.makecanvasprints.com/?ref=wprm2) (Make Canvas Prints)
+* [Disc Golf Discs and Ultimate Frisbees](http://www.flydiscs.com/?ref=wprm2) (Fly Discs)
+* [iPhone Cases & Other Phone Cases](http://www.case-monkey.com/?ref=wprm2) (Case Monkey)
 
 == Installation ==
 
-The MyStyle Custom Product Designer requires that you have WordPress with the WooCommerce plugin activated. The plugin is very easy to install and can be set up in just a few minutes.  This is a serviceware plugin, meaning that once installed, it will load the Custom Product Designer app remotely from a hosted service, and it will function with all features. However, when in Demo Mode, it will function without access to Print Files. To enable Full Mode, with access to print files, you will need to obtain your MyStyle Developer API Key and Secret, and enter them in your MyStyle settings.
+The MyStyle Custom Product Designer requires that you have WordPress with the WooCommerce plugin activated. The plugin is very easy to install and can be set up in just a few minutes.  This is a serviceware plugin, meaning that once installed, it will load the Custom Product Designer app remotely from a hosted service, and it will function with all features, but you will need to obtain your MyStyle Developer API Key and Secret, and enter them in your MyStyle settings for the plugin to connect to the remote service.
 
-1. Install the Plugin:  Upload the mystyle folder to your website's `/wp-content/plugins/` directory
-2. Activate the plugin:  Find MyStyle in your 'Plugins' menu in the WordPress admin and press 'Activate'.  This will enable the plugin and also automatically create a "customize" page where the Product Designer will load when someone goes to design their own product. This new Customize page will be created complete with the Customizer Shortcode already in the content. You do not have to manually create your Customize App page or use the shortcode anywhere.  When a user clicks 'customize' on any product, they will be taken to this automatically created page.  You may change the title of this page in your page list, or add your own content to it before or after the shortcode.
-3. Follow the links in the Settings > MyStyle admin to obtain your Developer account, API Key and Secret, and enter them in the settings page.  When you register for your Developer account, you'll be given a temporary demo ID to test with until we can review your account and provide you with your own credentials.
-4. In the WooCommerce product settings, go to the MyStyle tab (beneath product data), check the box 'Make Customizable' box and enter a corresponding Template Id. Try using the Template Id 70 for a 12x16 canvas print template.  You will receive a list of template ids once you have an active license.
+1. Install the Plugin:  Install from WP Marketplace or Upload the plugi zip file to your website's `/wp-content/plugins/` directory
+2. Activate the plugin:  Find MyStyle in your 'Plugins' menu in the WordPress admin and press 'Activate'.  This will enable the plugin and also automatically create the core pages like "customize" page where the Product Designer will load when someone goes to design their own product. This new Customize page will be created complete with the Customizer Shortcode already in the content. You do not have to manually create your Customize App page or use the shortcode anywhere.  When a user clicks 'customize' on any product, they will be taken to this automatically created page.  You may change the title of this page in your page list, or add your own content to it before or after the shortcode, but it needs to be present.
+3. Follow the link in the Settings > MyStyle admin to obtain your Developer account, API Key and Secret, and enter them in the MyStyle plugin settings page in the WP Admin.
+4. In the WooCommerce Product settings, go to the MyStyle tab (beneath product data), check the 'Make Customizable' box and enter a corresponding Template Id. Try using the Template Id 1 for a blank rectangle to test with before beginning to set up product templates.  Once that is working, proceed to set up your products with a template ID of your choice (see our website for some template IDs to test with or to make your own).
 
 == Screenshots ==
 
