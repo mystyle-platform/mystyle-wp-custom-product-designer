@@ -414,8 +414,10 @@ private function init_design_request($design_id) {
 			$this->set_http_response_code($response_code);
 		} catch (MyStyle_Unauthorized_Exception $ex) {
 			// Handle unauthorized exception...
+			$this->set_exception($ex);
 		} catch (MyStyle_Forbidden_Exception $ex) {
 			// Handle forbidden exception...
+			$this->set_exception($ex);
 		}
 	}
 
