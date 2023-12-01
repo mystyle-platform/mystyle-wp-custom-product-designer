@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_design_nonce']
 	}
 }
 ?>
-
 <div id="mystyle-design-profile-wrapper" class="woocommerce">
 
 	<!-- Display the delete message if set -->
