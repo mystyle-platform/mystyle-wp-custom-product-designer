@@ -125,33 +125,6 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 					}
 				}
 			}
-
-			if (MyStyle_Access::ACCESS_RESTRICTED === $design->get_access()) {
-				// Check if created by current/passed session.
-				if ( // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
-					(null !== $session) &&
-					(null !== $design->get_session_id()) &&
-					($session->get_session_id() === "design->get_session_id()")
-				) {
-					// Design was created by the passed session, continue.
-				} else {
-					// Check for wp user match.
-					if (null !== $design->get_user_id()) {
-						if ((null === $user) || (0 === $user->ID)) {
-							return false;
-							//throw new MyStyle_Unauthorized_Exception( 'This design is private, you must log in to view it.' );
-						}
-						if ($design->get_user_id() !== $user->ID) {
-							if (!$user->has_cap('read_private_posts')) { //not admin
-								if (!$user->has_cap('print_url_write')) { //not Mystyle CS
-									return false;
-									//throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
-								}
-							}
-						}
-					}
-				}
-			}
 		}
         
         return true ;
