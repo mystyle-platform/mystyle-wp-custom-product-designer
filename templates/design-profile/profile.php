@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 ?>
-
 <div id="mystyle-design-profile-wrapper" class="woocommerce">
 	<?php if ( ( ( 0 !== $design->get_user_id() ) && ( get_current_user_id() === $design->get_user_id() ) ) || ( current_user_can( 'administrator' ) ) ) : ?>
 	<a id="ms-edit-title-form-show" href="#">Edit Title</a>
