@@ -31,7 +31,7 @@ abstract class MyStyle_Design_Profile_Shortcode {
 						$template_name = 'design-profile/profile-error-unauthorized.php';
 						break;
 					case 'MyStyle_Forbidden_Exception':
-						$template_name = 'design-profile/profile-error-forbidden.php';
+						$template_name = 'design-profile/profile-error-unauthorized.php';
 						break;
 					default:
 						$template_name = 'design-profile/profile-error-general.php';
