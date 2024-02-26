@@ -31,7 +31,7 @@ abstract class MyStyle_Design_Profile_Shortcode {
 						$template_name = 'design-profile/profile-error-unauthorized.php';
 						break;
 					case 'MyStyle_Forbidden_Exception':
-						$template_name = 'design-profile/profile-error-unauthorized.php';
+						$template_name = 'design-profile/profile-error-forbidden.php';
 						break;
 					default:
 						$template_name = 'design-profile/profile-error-general.php';
@@ -89,11 +89,9 @@ abstract class MyStyle_Design_Profile_Shortcode {
 		$show_add_to_cart_button = MyStyle_Design_Profile_Page::show_add_to_cart_button();
 		$design_tags             = MyStyle_DesignManager::get_design_tags( $design->get_design_id(), true );
 
-		$template = MYSTYLE_TEMPLATES . 'design-profile/profile.php';
-
 		// ---------- Call the view layer -------------------- //
 		ob_start();
-		require $template;
+		require MYSTYLE_TEMPLATES . 'design-profile/profile.php';
 		$out = ob_get_contents();
 		ob_end_clean();
 
@@ -109,14 +107,12 @@ abstract class MyStyle_Design_Profile_Shortcode {
 		// Get the design profile page.
 		$design_profile_page = MyStyle_Design_Profile_Page::get_instance();
 
-		$template = MYSTYLE_TEMPLATES . 'design-profile/index.php'; 
-
 		/* @var $pager \Mystyle_Pager phpcs:ignore */
 		$pager = $design_profile_page->get_pager();
 
 		// ---------- Call the view layer ------------------ //
 		ob_start();
-		require $template;
+		require MYSTYLE_TEMPLATES . 'design-profile/index.php';
 		$out = ob_get_contents();
 		ob_end_clean();
 
