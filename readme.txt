@@ -116,6 +116,9 @@ The MyStyle Custom Product Designer requires that you have WordPress with the Wo
 – displays a list of design collections with a few design thumbs per collection
 
 == Changelog ==
+= 3.19.31 =
+* Fixed bug related Design Unauthorized Exception error not showing on design profile page.
+
 = 3.19.30 =
 Fixed bug related to author designs page not showing private designs.
 
