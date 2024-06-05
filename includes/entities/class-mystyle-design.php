@@ -266,7 +266,7 @@ class MyStyle_Design implements MyStyle_Entity {
 	 * using MyStyle_Design::create_from_result_object($result_object);  This
 	 * function should correspond with the get_data_array() function below.
 	 *
-	 * @param array $result_object A WP row result object to be used to
+	 * @param Object $result_object A WP row result object to be used to
 	 * construct the Design. This is an object with public fields that
 	 * correspond to the column names from the database.
 	 * @return \self Works like a constructor.
@@ -278,9 +278,9 @@ class MyStyle_Design implements MyStyle_Entity {
 		$instance->template_id    = (int) htmlspecialchars( $result_object->ms_product_id );
 		$instance->designer_id    = (int) htmlspecialchars( $result_object->ms_user_id );
 		$instance->email          = htmlspecialchars( $result_object->ms_email );
-		$instance->title          = htmlspecialchars( $result_object->ms_title );
-		$instance->description    = htmlspecialchars( $result_object->ms_description );
-		$instance->price          = (int) htmlspecialchars( $result_object->ms_price );
+		$instance->title          = ( ! is_null( $result_object->ms_title) ? htmlspecialchars( $result_object->ms_title ) : false );
+		$instance->description    = ( ! is_null( $result_object->ms_description) ? htmlspecialchars( $result_object->ms_description ) : false );
+		$instance->price          = (int) ( ! is_null( $result_object->ms_price) ? htmlspecialchars( $result_object->ms_price ) : 0 );
 		$instance->print_url      = htmlspecialchars( $result_object->ms_print_url );
 		$instance->web_url        = htmlspecialchars( $result_object->ms_web_url );
 		$instance->thumb_url      = htmlspecialchars( $result_object->ms_thumb_url );
