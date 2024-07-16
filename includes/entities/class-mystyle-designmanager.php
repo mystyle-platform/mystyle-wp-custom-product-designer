@@ -451,7 +451,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	public static function get_user_designs(
 		$per_page = 250,
 		$page_number = 1,
-		$user
+		$user = null
 	) {
 		global $wpdb;
 

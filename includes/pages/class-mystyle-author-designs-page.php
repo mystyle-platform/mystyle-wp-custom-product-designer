@@ -57,9 +57,9 @@ class MyStyle_Author_Designs_Page {
 		add_action( 'query_vars', array( &$this, 'query_vars' ) );
 		add_action( 'template_redirect', array( &$this, 'set_pager' ) );
 		add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 30, 2 );
-		add_filter('wpseo_metadesc', array(&$this, 'author_wpseo_metadesc_'), 20);
-		add_action('wp_head', array(&$this, 'author_meta_description_'), 3);
-		add_filter('rank_math/frontend/description', array(&$this, 'author_rank_math_meta_description'), 20);
+		add_filter( 'wpseo_metadesc', array(&$this, 'author_wpseo_metadesc_'), 20);
+		add_action( 'wp_head', array(&$this, 'author_meta_description_'), 3);
+		add_filter( 'rank_math/frontend/description', array(&$this, 'author_rank_math_meta_description'), 20);
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_filter( 'et_before_main_content', array( &$this, 'divi_title' ) );
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
