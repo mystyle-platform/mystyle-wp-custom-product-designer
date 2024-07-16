@@ -1,3 +1,6 @@
+= 3.19.33 =
+* Added support for WP 6.6 and PHP8.x
+
 = 3.19.32 =
 * Fixed bug related to My Account Designs page not showing private designs.
 
