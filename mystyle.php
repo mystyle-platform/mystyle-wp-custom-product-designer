@@ -124,6 +124,9 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			add_action( 'init', array( $this, 'check_version' ), 10, 0 );
 			add_action( 'init', array( $this, 'register_shortcodes' ), 10, 0 );
 			add_action( 'admin_init', array( $this, 'check_woocommerce' ), 10, 0 );
+
+			// Add the action before_woocommerce_init here
+			add_action('before_woocommerce_init', array($this, 'before_woocommerce_init_action'));
 		}
 
 		/**
@@ -351,6 +354,16 @@ if ( ! class_exists( 'MyStyle' ) ) :
 			if ( ! $this->wc->is_installed() ) {
 				$wc_missing_notice = MyStyle_Notice::create( 'notify_wc_missing', 'MyStyle requires WooCommerce but WooCommerce wasn\'t found. Please install and activate WooCommerce.' );
 				mystyle_notice_add_to_queue( $wc_missing_notice );
+			}
+		}
+
+		/**
+		 * Action to be executed before WooCommerce init.
+		 */
+		public function before_woocommerce_init_action()
+		{
+			if (class_exists('\Automattic\WooCommerce\Utilities\FeaturesUtil')) {
+				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
 			}
 		}
 
