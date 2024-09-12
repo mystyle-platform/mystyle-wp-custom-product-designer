@@ -1,3 +1,6 @@
+= 3.20 =
+* Added support for WooCommerce HPOS
+
 = 3.19.33 =
 * Added support for WP 6.6 and PHP8.x
 
