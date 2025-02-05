@@ -126,6 +126,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 				}
 			}
 
+		
 			if (MyStyle_Access::ACCESS_RESTRICTED === $design->get_access()) {
 				// Check if created by current/passed session.
 				if ( // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
@@ -478,12 +479,12 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 	public static function get_user_designs(
 		$per_page = 250,
 		$page_number = 1,
-		$user
+		$user = null
 	) {
 		global $wpdb;
 
 		$sql = '';
-
+		
 		if ( is_string( $user ) ) {
             if( current_user_can('edit_posts') || current_user_can('print_url_write') ) {
                 $sql .= ' WHERE (ms_email = "' . $user . '")' ;
@@ -535,7 +536,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 				array_push( $designs, $design );
 			}
 		}
-
+		
 		return $designs;
 	}
 
@@ -706,11 +707,17 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 		}
 
 		$where = ' WHERE ms_access = ' . esc_sql( $access );
-
+		
 		if ( is_string( $user ) ) {
 			$where .= ' AND ms_email = ' . esc_sql( $user );
 		} else {
-			$where .= ' AND user_id = ' . esc_sql( $user->ID );
+			$current_user_id = get_current_user_id();
+			if ( $current_user_id === $user->ID ) {
+				$where = ' WHERE user_id = ' . esc_sql( $user->ID );
+			}
+			else {
+				$where .= ' AND user_id = ' . esc_sql( $user->ID );
+			}
 		}
 
 		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
@@ -722,7 +729,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			)
 		);
 		// phpcs:enable WordPress.WP.PreparedSQL.NotPrepared
-
+		
 		return $count;
 	}
 
