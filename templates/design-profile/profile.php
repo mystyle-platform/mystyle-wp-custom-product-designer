@@ -131,6 +131,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
                 <br />
 			</div>
+
+			<?php
+				if (current_user_can('administrator') || (MyStyle_DesignManager::is_user_design_owner($current_user->ID, $design->get_design_id()))) :
+				?>
+					<form method="post" class="delete-design-form">
+						<input type="hidden" name="delete_design_nonce" value="<?php echo esc_attr(wp_create_nonce('mystyle_delete_design_nonce')); ?>" />
+						<input type="hidden" name="design_id" value="<?php echo esc_attr($design->get_design_id()); ?>" />
+						<button type="submit" class="button">Delete Design</button>
+					</form>
+				<?php endif; ?>
 		<?php else : ?>
 			<div class="design-tags">
 				Design Tags:
