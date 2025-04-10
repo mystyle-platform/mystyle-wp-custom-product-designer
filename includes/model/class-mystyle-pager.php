@@ -173,51 +173,52 @@ class MyStyle_Pager
 
 		return $this->page_count;
 	}
-/**
- * Generates the pagination HTML for the pager.
- *
- * @return string The HTML for the pagination.
- */
-public function generate_pagination_html()
-{
-    ob_start();
-    ?>
-    <nav class="woocommerce-pagination">
-        <?php
-        echo paginate_links(
-            array(
-                'base'      => esc_url_raw(str_replace(999999999, '%#%', get_pagenum_link(999999999, false))),
-                'format'    => '',
-                'add_args'  => false,
-                'current'   => $this->get_current_page_number(),
-                'total'     => $this->get_page_count(),
-                'prev_text' => '&larr;',
-                'next_text' => '&rarr;',
-                'type'      => 'list',
-                'end_size'  => 3,
-                'mid_size'  => 3,
-            )
-        );
-        ?>
-    </nav>
-    <?php
-    return ob_get_clean();
-}
-	function generate_pagination($show_designs, $terms, $terms_per_page, $paged)
+	/**
+	 * Generates the pagination HTML for the pager.
+	 *
+	 * @return string The HTML for the pagination.
+	 */
+	public function generate_pagination_html()
 	{
-		if (!$show_designs && method_exists('MyStyle_Pager', 'generate_pagination')) {
+		ob_start();
+		?>
+		<nav class="woocommerce-pagination">
+			<?php
+			echo paginate_links(
+				array(
+					'base'      => esc_url_raw(str_replace(999999999, '%#%', get_pagenum_link(999999999, false))),
+					'format'    => '',
+					'add_args'  => false,
+					'current'   => $this->get_current_page_number(),
+					'total'     => $this->get_page_count(),
+					'prev_text' => '&larr;',
+					'next_text' => '&rarr;',
+					'type'      => 'list',
+					'end_size'  => 3,
+					'mid_size'  => 3,
+				)
+			);
+			?>
+		</nav>
+		<?php
+		return ob_get_clean();
+	}
+
+	public function generate_pagination($show_designs, $terms, $terms_per_page, $paged)
+	{
+		if ( ! $show_designs ) {
 			$total_terms = count($terms);
 			$total_pages = ceil($total_terms / $terms_per_page);
 			$pagination_args = array(
 				'base' => get_pagenum_link(1) . '%_%',
-				'format' => '/page/%#%',
+				'format' => 'page/%#%',
 				'current' => $paged,
 				'total' => $total_pages,
+				'end_size' => 2,
 			);
 			echo paginate_links($pagination_args);
 		}
 	}
-
 
 	/**
 	 * Looks at the current pager variables to determine if the page is valid.
@@ -231,4 +232,5 @@ public function generate_pagination_html()
 			throw new MyStyle_Not_Found_Exception('Page not found.');
 		}
 	}
+	
 }

@@ -81,6 +81,13 @@ class MyStyle_Design_Profile_Page {
 	private $exception;
 
 	/**
+	 * Set the delete design success message.
+	 * 
+	 * @var string
+	 */
+	private $delete_design_success_message;
+
+	/**
 	 * Stores the current ( when the class is instantiated as a singleton ) status
 	 * code.  We store it here since php's http_response_code() function wasn't
 	 * added until php 5.4.
@@ -96,6 +103,7 @@ class MyStyle_Design_Profile_Page {
 	 */
 	public function __construct() {
 		$this->http_response_code = 200;
+		$this->delete_design_success_message = false ;
 
 		add_action( 'init', array( &$this, 'rewrite_rules' ) );
 		add_action( 'query_vars', array( &$this, 'query_vars' ) );
@@ -128,10 +136,11 @@ class MyStyle_Design_Profile_Page {
 			'top'
 		);
 	}
-/**
-	 *   Rank Math plugin hook for meta description when its present
-	 */
-function custom_rank_math_meta_description($description)
+
+	/**
+		 *   Rank Math plugin hook for meta description when its present
+		 */
+	function custom_rank_math_meta_description($description)
 	{
 		if (is_page('designs')) {
 			$design = $this->get_design();
@@ -326,6 +335,20 @@ function custom_rank_math_meta_description($description)
 		// Get the design from the url, if it's not found, this function
 		// returns false.
 		$design_id = self::get_design_id_from_url();
+
+		if( isset( $_POST['delete_design_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['delete_design_nonce'] ), 'mystyle_delete_design_nonce' ) ) {
+			
+			$design = MyStyle_DesignManager::get( $design_id, $user, $session ) ;
+			if ( $design ) {
+				// Check if the user is the owner of the design or an admin.
+				if ( current_user_can( 'administrator' ) || MyStyle_DesignManager::is_user_design_owner( $this->user->ID, $design_id ) ) {
+					// restrict the design access to 2 (deleted).
+					$design->set_access( 2 );
+					MyStyle_DesignManager::persist( $design );
+					$this->delete_design_success_message = 'Design has been successfully deleted.';
+				}
+			}
+		}
 
 		if ( false === $design_id || preg_match( '/page/', $design_id ) ) {
 			$design_profile_page->init_index_request();

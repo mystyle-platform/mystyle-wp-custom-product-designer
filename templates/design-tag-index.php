@@ -28,12 +28,12 @@ if (!defined('ABSPATH')) {
 
     <?php
     // Set the limit for terms per page conditionally
-    $terms_per_page = !$show_designs ? 50 : count($terms);
-    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-    $offset = ($paged - 1) * $terms_per_page;
-    $paged_terms = array_slice($terms, $offset, $terms_per_page);
+    $terms_per_page = ! $show_designs ? absint($term_limit) : count($terms);
+    //$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+    //$offset = ($paged - 1) * $terms_per_page;
+    //$paged_terms = array_slice($terms, $offset, $terms_per_page);
 
-    foreach ($paged_terms as $term) :
+    foreach ($terms as $term) :
     ?>
         <?php if ($show_designs) : ?>
             <?php $term_name = preg_replace('/\-/', ' ', $term->name); ?>
@@ -67,7 +67,9 @@ if (!defined('ABSPATH')) {
     endforeach;
     if (isset($atts['show_designs']) && $atts['show_designs'] == 'false') {
         if (method_exists('MyStyle_Pager', 'generate_pagination')) {
-            echo $mystyle_pager->generate_pagination($show_designs, $terms, $terms_per_page, $paged);
+            echo '<div class="mystyle-pagination">';
+            echo $mystyle_pager->generate_pagination($show_designs, $all_terms, $terms_per_page, $paged);
+            echo '</div>';
         }
     } else {
 

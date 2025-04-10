@@ -15,24 +15,8 @@ abstract class MyStyle_Design_Tag_Shortcode {
         global $wp_query ;
         
         $term       = false ;
-        $page_num   = 1 ;
-        
-        if( isset($wp_query->query['design_tag_term']) ) {
-            $term = $wp_query->query['design_tag_term'] ;
-            if( preg_match( '/\//', $term) ) {
-                $url_array  = explode('/', $term ) ;
-                if($url_array[0] == 'page' ) {
-                    $page_num   = $url_array[1] ;
-                    $term       = false ;
-                }
-                else {
-                    $term       = $url_array[0] ;
-                    $page_num   = $url_array[2] ;
-                }
-                
-            }
-        }
-        
+        $page_num   = false ;
+
         $mystyle_pager = new MyStyle_Pager();
         
 		$wp_user = wp_get_current_user();
@@ -90,8 +74,9 @@ abstract class MyStyle_Design_Tag_Shortcode {
             $terms[] = get_term_by( 'slug', $term, MYSTYLE_TAXONOMY_NAME) ;
         }
         else {
-            if ( isset( $_GET['pager'] ) && $_GET['pager'] != 0 ) {
-                $pager  = intval( $_GET['pager'] );
+            $paged = get_query_var( 'paged', 1 );
+            if ( isset( $paged ) && $paged != 0 ) {
+                $pager  = intval( $paged ) - 1 ;
                 $offset = ( $pager * $term_limit );
             }
             elseif( $page_num ) {
@@ -99,7 +84,6 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 $offset = ( $pager * $term_limit );
             }
             
-        
             $mystyle_pager->set_current_page_number( ( $pager + 1 ) );
             
             $terms = get_terms(
@@ -123,9 +107,9 @@ abstract class MyStyle_Design_Tag_Shortcode {
             
             if($terms_count == 1) {
                 
-                if ( ( isset( $_GET['pager'] ) ) && ( null !== $_GET['pager'] ) ) {
-                    $pager  = intval( $_GET['pager'] );
-                    $page_num = $_GET['pager'] + 1 ;
+                if ( ( isset( $paged ) ) && ( null !== $paged ) ) {
+                    $pager  = intval( $paged );
+                    $page_num = $paged + 1 ;
                 }
                 elseif( $page_num ) {
                     $pager = ( $page_num - 1 ) ;

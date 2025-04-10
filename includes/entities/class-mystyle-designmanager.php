@@ -125,6 +125,12 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 					}
 				}
 			}
+			elseif( MyStyle_Access::ACCESS_RESTRICTED === $design->get_access() ) {
+				if ( ! current_user_can( 'administrator' ) ) {
+					return false ;
+					//throw new MyStyle_Forbidden_Exception( 'You are not authorized to access this design.' );
+				}
+			}
 		}
         
         return true ;

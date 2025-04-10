@@ -86,6 +86,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				><?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_html( $author->display_name ) ); ?></a>
 		</div>
 		<?php endif; ?>
+		<?php if( $design->get_access() == MyStyle_Access::ACCESS_RESTRICTED ) : ?>
+			<div class="design-access-notice">
+				<p>This design is RESTRICTED, only admins can see it.</p>
+			</div>
+		<?php endif; ?>
 		<?php 
 		if ( 
 			( MyStyle_DesignManager::is_user_design_owner( $user_id, $design->get_design_id() ) ) //design owner
@@ -133,13 +138,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 
 			<?php
-				if (current_user_can('administrator') || (MyStyle_DesignManager::is_user_design_owner($current_user->ID, $design->get_design_id()))) :
+				if (current_user_can('administrator') || (MyStyle_DesignManager::is_user_design_owner($user_id, $design->get_design_id()))) :
 				?>
 					<form method="post" class="delete-design-form">
 						<input type="hidden" name="delete_design_nonce" value="<?php echo esc_attr(wp_create_nonce('mystyle_delete_design_nonce')); ?>" />
 						<input type="hidden" name="design_id" value="<?php echo esc_attr($design->get_design_id()); ?>" />
 						<button type="submit" class="button">Delete Design</button>
 					</form>
+					<br />
 				<?php endif; ?>
 		<?php else : ?>
 			<div class="design-tags">

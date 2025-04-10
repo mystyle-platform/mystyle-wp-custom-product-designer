@@ -45,7 +45,7 @@ class MyStyle_Design_Tag_Page {
 
         add_action( 'init', array( &$this, 'rewrite_rules' ) );
         add_action( 'query_vars', array( &$this, 'query_vars' ) );
-		add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 25, 2 );
+		//add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 25, 2 );
 		add_action( 'template_redirect', array( &$this, 'set_pager' ) );
 		add_filter('wpseo_title', array(&$this, 'mystyle_design_collection_page_title_'), 10, 1);
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
