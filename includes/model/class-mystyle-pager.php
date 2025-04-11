@@ -188,10 +188,10 @@ class MyStyle_Pager
 			<?php
 			echo paginate_links(
 				array(
-					//'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+					'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 					'format' 	=> '?paged=%#%',
 					'add_args'  => false,
-					'current'   => $this->get_current_page_number() - 1,
+					'current'   => $this->get_current_page_number(),
 					'total'     => $this->get_page_count(),
 					'prev_text' => '&larr;',
 					'next_text' => '&rarr;',

@@ -15,7 +15,23 @@ abstract class MyStyle_Design_Tag_Shortcode {
         global $wp_query ;
         
         $term       = false ;
-        $page_num   = false ;
+        $page_num   = 1 ;
+
+        if( isset($wp_query->query['design_tag_term']) ) {
+            $term = $wp_query->query['design_tag_term'] ;
+            if( preg_match( '/\//', $term) ) {
+                $url_array  = explode('/', $term ) ;
+                if($url_array[0] == 'page' ) {
+                    $page_num   = absint($url_array[1]) ;
+                    $term       = false ;
+                }
+                else {
+                    $term       = $url_array[0] ;
+                    $page_num   = absint($url_array[2]) ;
+                }
+                
+            }
+        }
 
         $mystyle_pager = new MyStyle_Pager();
         
@@ -57,10 +73,6 @@ abstract class MyStyle_Design_Tag_Shortcode {
             $sort_by_slug = 'name' ; 
             $sort_by_order = 'ASC' ;
         }
-
-		if ( isset( $wp_query->query['design_tag_term'] ) ) {
-            $term = $wp_query->query['design_tag_term'] ;
-        }
         
 		$pager        = 0 ;
 		$limit        = $per_tag ;
@@ -93,7 +105,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 $offset = ( $pager * $term_limit );
             }
             
-            $mystyle_pager->set_current_page_number( ( $pager + 1 ) );
+            $mystyle_pager->set_current_page_number( ( $pager ) );
             
             $terms = get_terms(
                 array(
@@ -115,13 +127,8 @@ abstract class MyStyle_Design_Tag_Shortcode {
         if( $show_designs ){
             
             if($terms_count == 1) {
-                $paged = get_query_var( 'paged', 1 );
-            
-                if ( ( isset( $paged ) ) && ( null !== $paged ) ) {
-                    $pager  = intval( $paged );
-                    $page_num = $paged + 1 ;
-                }
-                elseif( $page_num ) {
+                
+                if( $page_num ) {
                     $pager = ( $page_num - 1 ) ;
                     $offset = ( $pager * $term_limit );
                 }
@@ -162,10 +169,9 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 );
             }
             
-            $mystyle_pager->set_current_page_number( $page_num ) ;
-
+            //$page_num = ( $page_num == 1 ? 1 : $page_num - 1 ) ;
+            
             for ( $i = 0; $i < $terms_count; $i++ ) {
-                $page_num = ( $page_num == 1 ? 1 : $page_num - 1 ) ;
                 
                 $designs = MyStyle_DesignManager::get_designs_by_term_id(
                     $terms[ $i ]->term_taxonomy_id,
@@ -181,6 +187,9 @@ abstract class MyStyle_Design_Tag_Shortcode {
                     $terms[ $i ]->designs = $designs;
                 }
             }
+
+            $mystyle_pager->set_current_page_number( $page_num ) ;
+
             
         }
 
