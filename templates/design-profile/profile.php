@@ -66,7 +66,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</li>
 		<li><a rel="nofollow" href="<?php echo esc_attr( $design->get_reload_url() ); ?>" class="button">Customize</a></li>
 		<li><a rel="nofollow" href="<?php echo esc_attr( $design->get_scratch_url() ); ?>" class="button">Design from scratch</a></li>
-
+		<?php do_action( 'mystyle_wp_custom_product_designer_profile_actions', $design ) ; ?>
 	</ul>
 
 	<div class="product_description">
