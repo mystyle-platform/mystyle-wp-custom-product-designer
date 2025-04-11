@@ -27,6 +27,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
         $show_designs           = true ;
         $tags_per_page          = 24 ;
         $per_tag                = 4 ;
+        $per_tag_on_term_page   = 20 ;
         $sort_by                = "qty" ;
         
         if(isset($atts['show_designs']) && $atts['show_designs'] == 'false') {
@@ -35,6 +36,10 @@ abstract class MyStyle_Design_Tag_Shortcode {
         
         if(isset($atts['per_tag'])) {
             $per_tag = $atts['per_tag'] ;    
+        }
+
+        if(isset($atts['per_tag_on_term_page'])) {
+            $per_tag_on_term_page = $atts['per_tag_on_term_page'] ;    
         }
         
         if(isset($atts['tags_per_page'])) {
@@ -51,6 +56,10 @@ abstract class MyStyle_Design_Tag_Shortcode {
         if( $sort_by === 'alpha' ) {
             $sort_by_slug = 'name' ; 
             $sort_by_order = 'ASC' ;
+        }
+
+		if ( isset( $wp_query->query['design_tag_term'] ) ) {
+            $term = $wp_query->query['design_tag_term'] ;
         }
         
 		$pager        = 0 ;
@@ -106,7 +115,8 @@ abstract class MyStyle_Design_Tag_Shortcode {
         if( $show_designs ){
             
             if($terms_count == 1) {
-                
+                $paged = get_query_var( 'paged', 1 );
+            
                 if ( ( isset( $paged ) ) && ( null !== $paged ) ) {
                     $pager  = intval( $paged );
                     $page_num = $paged + 1 ;
@@ -116,7 +126,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
                     $offset = ( $pager * $term_limit );
                 }
                 
-                $limit = 50 ; //increase number of tags on term pages
+                $limit = $per_tag_on_term_page ;
                 
                 $total_design_count = MyStyle_DesignManager::get_total_term_design_count( $terms[0]->term_taxonomy_id, $wp_user, $session ) ;
                 
@@ -152,14 +162,17 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 );
             }
             
+            $mystyle_pager->set_current_page_number( $page_num ) ;
+
             for ( $i = 0; $i < $terms_count; $i++ ) {
+                $page_num = ( $page_num == 1 ? 1 : $page_num - 1 ) ;
                 
                 $designs = MyStyle_DesignManager::get_designs_by_term_id(
                     $terms[ $i ]->term_taxonomy_id,
                     $wp_user,
                     $session,
                     $limit,
-                    ( !$term ? 1 : $page_num )
+                    ( ! $term ? 1 : $page_num )
                 );
                 
                 if ( 0 === count( $designs ) ) {
@@ -169,7 +182,6 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 }
             }
             
-            $mystyle_pager->set_current_page_number( $page_num ) ;
         }
 
             

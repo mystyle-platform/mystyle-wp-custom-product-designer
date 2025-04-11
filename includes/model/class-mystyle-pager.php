@@ -180,16 +180,18 @@ class MyStyle_Pager
 	 */
 	public function generate_pagination_html()
 	{
+		$big = 999999999 ;
+		
 		ob_start();
 		?>
 		<nav class="woocommerce-pagination">
 			<?php
 			echo paginate_links(
 				array(
-					'base'      => esc_url_raw(str_replace(999999999, '%#%', get_pagenum_link(999999999, false))),
-					'format'    => '',
+					//'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+					'format' 	=> '?paged=%#%',
 					'add_args'  => false,
-					'current'   => $this->get_current_page_number(),
+					'current'   => $this->get_current_page_number() - 1,
 					'total'     => $this->get_page_count(),
 					'prev_text' => '&larr;',
 					'next_text' => '&rarr;',
@@ -214,7 +216,7 @@ class MyStyle_Pager
 				'format' => 'page/%#%',
 				'current' => $paged,
 				'total' => $total_pages,
-				'end_size' => 2,
+				'end_size' => 2
 			);
 			echo paginate_links($pagination_args);
 		}
