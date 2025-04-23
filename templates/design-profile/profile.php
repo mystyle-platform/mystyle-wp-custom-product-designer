@@ -158,6 +158,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<a href="<?php echo esc_url( MyStyle_Design_Tag_Page::get_tag_url( $tag['slug'] ) ); ?>" title="<?php echo esc_attr( $tag['name'] ); ?> Design Tags"><?php echo esc_html( $tag['name'] ); ?></a>
 				<?php endforeach; ?>
 			</div>
+			<div class="design-collection">
+				Design Collections:
+				<?php foreach ( $design_collections  as $i => $tag ) : ?>
+					<?php
+					if ( $i > 0 ) {
+						echo ', ';}
+					?>
+					<a href="<?php echo esc_url( MyStyle_Design_Collection_Page::get_collection_url( $tag['slug'] ) ); ?>" title="<?php echo esc_attr( $tag['name'] ); ?> Design Tags"><?php echo esc_html( $tag['name'] ); ?></a>
+				<?php endforeach; ?>
+			</div>
 		<?php endif; ?>
 
 		<?php do_action( 'mystyle_design_profile_description_after', array( $design ) ); ?>
