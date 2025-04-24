@@ -15,7 +15,23 @@ abstract class MyStyle_Design_Tag_Shortcode {
         global $wp_query ;
         
         $term       = false ;
-        $page_num   = false ;
+        $page_num   = 1 ;
+
+        if( isset($wp_query->query['design_tag_term']) ) {
+            $term = $wp_query->query['design_tag_term'] ;
+            if( preg_match( '/\//', $term) ) {
+                $url_array  = explode('/', $term ) ;
+                if($url_array[0] == 'page' ) {
+                    $page_num   = absint($url_array[1]) ;
+                    $term       = false ;
+                }
+                else {
+                    $term       = $url_array[0] ;
+                    $page_num   = absint($url_array[2]) ;
+                }
+                
+            }
+        }
 
         $mystyle_pager = new MyStyle_Pager();
         
@@ -27,6 +43,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
         $show_designs           = true ;
         $tags_per_page          = 24 ;
         $per_tag                = 4 ;
+        $per_tag_on_term_page   = 20 ;
         $sort_by                = "qty" ;
         
         if(isset($atts['show_designs']) && $atts['show_designs'] == 'false') {
@@ -35,6 +52,10 @@ abstract class MyStyle_Design_Tag_Shortcode {
         
         if(isset($atts['per_tag'])) {
             $per_tag = $atts['per_tag'] ;    
+        }
+
+        if(isset($atts['per_tag_on_term_page'])) {
+            $per_tag_on_term_page = $atts['per_tag_on_term_page'] ;    
         }
         
         if(isset($atts['tags_per_page'])) {
@@ -84,7 +105,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 $offset = ( $pager * $term_limit );
             }
             
-            $mystyle_pager->set_current_page_number( ( $pager + 1 ) );
+            $mystyle_pager->set_current_page_number( ( $pager ) );
             
             $terms = get_terms(
                 array(
@@ -107,16 +128,12 @@ abstract class MyStyle_Design_Tag_Shortcode {
             
             if($terms_count == 1) {
                 
-                if ( ( isset( $paged ) ) && ( null !== $paged ) ) {
-                    $pager  = intval( $paged );
-                    $page_num = $paged + 1 ;
-                }
-                elseif( $page_num ) {
+                if( $page_num ) {
                     $pager = ( $page_num - 1 ) ;
                     $offset = ( $pager * $term_limit );
                 }
                 
-                $limit = 50 ; //increase number of tags on term pages
+                $limit = $per_tag_on_term_page ;
                 
                 $total_design_count = MyStyle_DesignManager::get_total_term_design_count( $terms[0]->term_taxonomy_id, $wp_user, $session ) ;
                 
@@ -152,6 +169,8 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 );
             }
             
+            //$page_num = ( $page_num == 1 ? 1 : $page_num - 1 ) ;
+            
             for ( $i = 0; $i < $terms_count; $i++ ) {
                 
                 $designs = MyStyle_DesignManager::get_designs_by_term_id(
@@ -159,7 +178,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
                     $wp_user,
                     $session,
                     $limit,
-                    ( !$term ? 1 : $page_num )
+                    ( ! $term ? 1 : $page_num )
                 );
                 
                 if ( 0 === count( $designs ) ) {
@@ -168,8 +187,10 @@ abstract class MyStyle_Design_Tag_Shortcode {
                     $terms[ $i ]->designs = $designs;
                 }
             }
-            
+
             $mystyle_pager->set_current_page_number( $page_num ) ;
+
+            
         }
 
             
