@@ -994,7 +994,7 @@ class MyStyle_Design_Profile_Page {
 				if ( null !== $design ) {
                     $product = $design->get_product() ;
 					if ( '' !== $design->get_title() ) {
-						$title = $design->get_title() . ' <span> ' . $product->get_title() . '</span>' ;
+						$title = 'Design ' . $design->get_design_id() . ' - ' . $design->get_title() . ' <span> ' . $product->get_title() . '</span>' ;
 					} else {
 						$title = 'Design ' . $design->get_design_id() . '<span> ' . $product->get_title() . '</span>' ;
 					}
@@ -1034,9 +1034,13 @@ class MyStyle_Design_Profile_Page {
 	public function filter_document_title_parts( $title ) {
 
 		if ( $this->design ) {
-			if ( '' !== $this->design->get_title() ) {
-                $product = wc_get_product( $this->design->get_product_id() ) ;
+			$product = wc_get_product( $this->design->get_product_id() ) ;
+
+			if ( $this->design->get_title() && '' !== $this->design->get_title() ) {
 				$title['title'] = $this->design->get_title() . ' - ' . $product->get_title() ;
+			}
+			else {
+				$title['title'] = 'Design ' . $this->design->get_design_id() . ' - ' . $product->get_title() ;
 			}
 		}
 
