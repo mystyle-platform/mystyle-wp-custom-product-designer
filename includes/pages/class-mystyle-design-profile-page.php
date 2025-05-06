@@ -111,10 +111,10 @@ class MyStyle_Design_Profile_Page {
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
 		add_action( 'wp_head', array( &$this, 'wp_head' ), 2 );
-		add_filter('wpseo_title', array(&$this, 'custom_wpseo_title'));
-		add_filter('wpseo_metadesc', array(&$this, 'custom_wpseo_metadesc'), 10);
-		add_filter('rank_math/frontend/description', array(&$this, 'custom_rank_math_meta_description'), 10);
-		add_filter('rank_math/frontend/title', array(&$this, 'custom_rank_math_meta_title'));
+		add_filter( 'wpseo_title', array(&$this, 'custom_wpseo_title'));
+		add_filter( 'wpseo_metadesc', array(&$this, 'custom_wpseo_metadesc'), 10);
+		add_filter( 'rank_math/frontend/description', array(&$this, 'custom_rank_math_meta_description'), 10);
+		add_filter( 'rank_math/frontend/title', array(&$this, 'custom_rank_math_meta_title'));
 		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
 		add_filter( 'get_canonical_url', array( &$this, 'filter_canonical_url' ), 10, 2 );
 		add_filter( 'get_shortlink', array( &$this, 'filter_shortlink' ), 10, 4 ) ;
@@ -148,6 +148,9 @@ class MyStyle_Design_Profile_Page {
 			
 			if(isset($design)){
 				$description = $design->get_title();
+				$product_id = $design->get_product_id();
+				$product = wc_get_product($product_id);
+				$product_title = $product ? $product->get_title() : '';
 				$author_id = $design->get_user_id();
 				$author = get_userdata($author_id);
 				if($author){
@@ -158,7 +161,7 @@ class MyStyle_Design_Profile_Page {
 						$description = $description . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
 					} else {
 						// Title is empty, format as "Design ID by Author"
-						$description = 'Design ' . $design_id . ' by ' . $first_name . ' ' . $last_name;
+						$description = 'Design ' . $design_id . ' - ' . $product_title . ' by ' . $first_name . ' ' . $last_name;
 					}
 				}
 			}
@@ -178,6 +181,9 @@ class MyStyle_Design_Profile_Page {
 
 			if (isset($design)) {
 				$title = $design->get_title();
+				$product_id = $design->get_product_id();
+				$product = wc_get_product($product_id);
+				$product_title = $product ? $product->get_title() : '';
 				$author_id = $design->get_user_id();
 				$author = get_userdata($author_id);
 				if($author){
@@ -188,7 +194,7 @@ class MyStyle_Design_Profile_Page {
 						$title = $title . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
 					} else {
 						// Title is empty, format as "Design ID by Author"
-						$title = 'Design ' . $design_id . ' by ' . $first_name . ' ' . $last_name;
+						$title = 'Design ' . $design_id . ' - ' . $product_title . ' by ' . $first_name . ' ' . $last_name;
 					}
 				}
 			}
@@ -207,6 +213,9 @@ class MyStyle_Design_Profile_Page {
 
 			if (isset($design)) {
 				$title = $design->get_title();
+				$product_id = $design->get_product_id();
+				$product = wc_get_product($product_id);
+				$product_title = $product ? $product->get_title() : '';
 				$author_id = $design->get_user_id();
 				$author = get_userdata($author_id);
 				if($author){
@@ -218,7 +227,7 @@ class MyStyle_Design_Profile_Page {
 						$title = $title . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
 					} else {
 						// Title is empty, format as "Design ID by Author"
-						$title = 'Design ' . $design_id . ' by ' . $first_name . ' ' . $last_name;
+						$title = 'Design ' . $design_id . ' - ' . $product_title . ' by ' . $first_name . ' ' . $last_name;
 					}
 				}
 			}
@@ -237,6 +246,9 @@ class MyStyle_Design_Profile_Page {
 
 			if (isset($design)) {
 				$description = $design->get_title();
+				$product_id = $design->get_product_id();
+				$product = wc_get_product($product_id);
+				$product_title = $product ? $product->get_title() : '';
 				$author_id = $design->get_user_id();
 				$author = get_userdata($author_id);
 				if($author){
@@ -247,7 +259,7 @@ class MyStyle_Design_Profile_Page {
 						$description = $description . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
 					} else {
 						// Title is empty, format as "Design ID by Author"
-						$description = 'Design ' . $design_id . ' by ' . $first_name . ' ' . $last_name;
+						$description = 'Design ' . $design_id . ' - ' . $product_title . ' by ' . $first_name . ' ' . $last_name;
 					}
 				}
 			}
@@ -1000,7 +1012,7 @@ class MyStyle_Design_Profile_Page {
 					}
                     
                     $designer = get_user_by( 'ID', $design->get_user_id() ) ;
-                    
+					
                     if( $designer ) {
                         $title .= ' by ' . esc_html( $designer->display_name ) ;
                     }
@@ -1032,7 +1044,7 @@ class MyStyle_Design_Profile_Page {
 	 * @todo Unit test this method.
 	 */
 	public function filter_document_title_parts( $title ) {
-
+		
 		if ( $this->design ) {
 			$product = wc_get_product( $this->design->get_product_id() ) ;
 
@@ -1041,6 +1053,12 @@ class MyStyle_Design_Profile_Page {
 			}
 			else {
 				$title['title'] = 'Design ' . $this->design->get_design_id() . ' - ' . $product->get_title() ;
+			}
+
+			$designer = get_user_by( 'ID', $this->design->get_user_id() ) ;
+			
+			if( $designer ) {
+				$title['title'] .= ' by ' . esc_html( $designer->display_name ) ;
 			}
 		}
 
