@@ -1,3 +1,6 @@
+= 3.21.1 =
+* Added Design ID to design titles on third party SEO plugins. Added design collection links to design profile pages
+
 = 3.21 =
 * Added hook on design profile pages. Fixed bug related to Design Tag pagination
 
