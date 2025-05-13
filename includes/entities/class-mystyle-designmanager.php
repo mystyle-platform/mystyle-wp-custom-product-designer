@@ -396,8 +396,23 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 
 		// phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
 		if ( ! empty( $_GET['orderby'] ) ) {
-			$order  = ' ORDER BY ' . sanitize_text_field( wp_unslash( $_GET['orderby'] ) );
-			$order .= ! empty( $_GET['order'] ) ? ' ' . sanitize_text_field( wp_unslash( $_GET['order'] ) ) : ' ASC';
+			$orderby = sanitize_text_field( wp_unslash( $_GET['orderby'] ) );
+			$order   = ! empty( $_GET['order'] ) ? sanitize_text_field( wp_unslash( $_GET['order'] ) ) : 'ASC';
+			
+			// Validate order direction to prevent SQL injection.
+			$allowed_orderby = array(
+				'ms_design_id',
+				'ms_title',
+				'ms_access',
+				'ms_email',
+				'ms_date_created',
+				'ms_date_modified',
+			);
+			$orderby = in_array( strtolower( $orderby ), $allowed_orderby, true ) ? $orderby : 'ms_design_id';
+
+			$order = in_array( strtoupper( $order ), array( 'ASC', 'DESC' ), true ) ? $order : 'ASC';
+			
+			$order = ' ORDER BY ' . $orderby . ' ' . $order;
 		} else {
 			$order = ' ORDER BY ms_design_id DESC';
 		}
@@ -420,7 +435,7 @@ abstract class MyStyle_DesignManager extends \MyStyle_EntityManager {
 			'OBJECT'
 		);
 		// phpcs:enable WordPress.WP.PreparedSQL.NotPrepared
-
+		
 		// Transform the result objects (stdClass) into MyStyle_Designs.
 		$designs = null;
 		if ( null !== $results ) {
