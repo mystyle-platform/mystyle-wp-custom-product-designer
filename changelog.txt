@@ -1,3 +1,6 @@
+= 3.21.2 = 
+* Fixed possible SQL injection vulnerability 
+
 = 3.21.1 =
 * Added Design ID to design titles on third party SEO plugins. Added design collection links to design profile pages
 
