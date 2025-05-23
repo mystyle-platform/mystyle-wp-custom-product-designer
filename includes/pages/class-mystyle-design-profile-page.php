@@ -1044,8 +1044,7 @@ class MyStyle_Design_Profile_Page {
 	 * @todo Unit test this method.
 	 */
 	public function filter_document_title_parts( $title ) {
-		
-		if ( $this->design ) {
+		if ( is_a( $this->design, 'MyStyle_Design' ) ) {
 			$product = wc_get_product( $this->design->get_product_id() ) ;
 
 			if ( $this->design->get_title() && '' !== $this->design->get_title() ) {
