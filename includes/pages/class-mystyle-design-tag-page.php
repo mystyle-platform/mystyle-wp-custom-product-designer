@@ -360,7 +360,10 @@ function custom_rank_math_meta_description($description) {
 				return;
 			}
 
-			$wp_query->max_num_pages = $this->pager->get_page_count();
+			//check for pager object is not null
+			if( isset( $this->pager ) && ! is_null( $this->pager ) ) {
+				$wp_query->max_num_pages = $this->pager->get_page_count();
+			}
 		}
 	}
 

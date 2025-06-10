@@ -27,6 +27,50 @@ class MyStyle_Customize_Page {
 
 		// Set the priority to 11 ( instead of the default 10 ) so that our scripts load after jQuery.
 		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_scripts' ), 11, 0 );
+		
+		// Add meta no-index for customizer pages
+		add_action( 'wp_head', array( &$this, 'add_noindex_meta' ), 1 );
+	}
+
+	/**
+	 * Adds meta robots tag and X-Robots-Tag header to prevent search engines from indexing customizer pages.
+	 * 
+	 * This function performs the following:
+	 * 1. Checks if we're on a frontend page and in the main query
+	 * 2. Gets the current post ID and validates it
+	 * 3. If it's a customizer page, adds both meta tag and HTTP header for noindex
+	 * 
+	 * @since 1.0.0
+	 * @access public
+	 * 
+	 * @uses get_the_ID() To get the current post ID
+	 * @uses is_customize_page() To check if current page is a customizer page
+	 * 
+	 * @throws MyStyle_Exception If the customize page is missing (caught internally)
+	 * @return void
+	 */
+	public function add_noindex_meta() {
+		// Only run on frontend main query
+		if ( is_admin() || ! is_main_query() ) {
+			return;
+		}
+
+		try {
+			$post_id = get_the_ID();
+			
+			// Check if we have a valid post ID
+			if ( $post_id && $this->is_customize_page( $post_id ) ) {
+				echo '<meta name="robots" content="noindex,nofollow" />' . "\n";
+				
+				// Also add X-Robots-Tag header for additional coverage
+				if ( ! headers_sent() ) {
+					header( 'X-Robots-Tag: noindex, nofollow', true );
+				}
+			}
+		} catch ( MyStyle_Exception $e ) {
+			// This exception may be thrown if the Customize Page is missing.
+			// For this function, that is okay, just continue.
+		}
 	}
 
 	/**
