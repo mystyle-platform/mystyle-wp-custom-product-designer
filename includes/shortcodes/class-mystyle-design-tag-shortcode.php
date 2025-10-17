@@ -321,7 +321,6 @@ abstract class MyStyle_Design_Tag_Shortcode {
                 );
                 
                 $design_count = count( $designs ) ;
-                var_dump($design_count) ; die() ;
 
                 if ( 0 === $design_count ) {
                     unset( $terms[ $i ] );

@@ -230,7 +230,8 @@ class MyStyle_Ajax {
 			);
 		}
 		catch( MyStyle_Unauthorized_Exception $error ) {
-			var_dump($error) ; die() ;
+			wp_send_json_error( array( 'message' => $error->getMessage() ), 403 );
+			return ;
 		}
 		
 

@@ -49,7 +49,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 				// throw it all into hidden fields.
 				if ( null !== $design->get_cart_data_array() ) {
 					foreach ( $design->get_cart_data_array() as $key => $value ) {
-						echo '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '" />';
+						if( $key != 'customize') {
+							echo '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '" />';
+						}
 					}
 				} else {
 					// If we don't have the cart data just use the product_id
