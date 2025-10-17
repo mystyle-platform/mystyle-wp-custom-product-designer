@@ -82,8 +82,8 @@ class MyStyle_Cart {
 			$mystyle_product = new \MyStyle_Product( $product );
 
 			if ( $mystyle_product->is_customizable() && $mystyle_product->is_add_to_cart() ) {
-				
-				?><div class="purchase_as_is"><button type="submit" name="customize" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt">Customize</button></div><br /><?php
+
+				?><div class="purchase_as_is"><button type="submit" name="customize" value="<?php echo esc_attr( $product->get_id() ); ?>" class="<?php print apply_filters( 'mystyle_add_to_cart_link_class', 'single_add_to_cart_button button alt' ) ; ?>">Customize</button></div><br /><?php
 			}
 		}
 	}
@@ -102,7 +102,7 @@ class MyStyle_Cart {
 		if ( MyStyle_Tm_Extra_Product_Options::is_tm_extra_product_options_edit_request( $_REQUEST ) ) { // phpcs:ignore
 			return $handler;
 		}
-
+		
 		if ( null !== $product ) {
 			$mystyle_product = new \MyStyle_Product( $product );
 			$product_id      = $mystyle_product->get_id();
@@ -122,7 +122,7 @@ class MyStyle_Cart {
 			if ( $mystyle_product->is_customizable() && ! $mystyle_product->is_add_to_cart() ) {
 				
 				$handler = 'mystyle_customizer';
-				
+
 				if ( MyStyle()->get_WC()->version_compare( '2.3', '<' ) ) {
 					// Old versions of woo commerce don't support custom add_to_cart handlers so just go there now.
 					self::mystyle_add_to_cart_handler_customize( false );

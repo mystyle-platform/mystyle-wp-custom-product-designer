@@ -43,7 +43,7 @@ abstract class MyStyle_Design_Tag_Shortcode {
         $show_designs           = true ;
         $tags_per_page          = 24 ;
         $per_tag                = 4 ;
-        $per_tag_on_term_page   = 20 ;
+        $per_tag_on_term_page   = 50 ;
         $sort_by                = "qty" ;
         
         if(isset($atts['show_designs']) && $atts['show_designs'] == 'false') {

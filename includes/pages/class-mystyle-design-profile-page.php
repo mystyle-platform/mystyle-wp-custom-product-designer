@@ -111,11 +111,12 @@ class MyStyle_Design_Profile_Page {
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_action( 'template_redirect', array( &$this, 'init' ) );
 		add_action( 'wp_head', array( &$this, 'wp_head' ), 2 );
+		add_action( 'pre_get_document_title', array( &$this, 'filter_pre_get_document_title' ), 100, 1 );
+		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
 		add_filter( 'wpseo_title', array(&$this, 'custom_wpseo_title'));
 		add_filter( 'wpseo_metadesc', array(&$this, 'custom_wpseo_metadesc'), 10);
 		add_filter( 'rank_math/frontend/description', array(&$this, 'custom_rank_math_meta_description'), 10);
 		add_filter( 'rank_math/frontend/title', array(&$this, 'custom_rank_math_meta_title'));
-		add_filter( 'document_title_parts', array( &$this, 'filter_document_title_parts' ), 10, 1 );
 		add_filter( 'get_canonical_url', array( &$this, 'filter_canonical_url' ), 10, 2 );
 		add_filter( 'get_shortlink', array( &$this, 'filter_shortlink' ), 10, 4 ) ;
 		add_filter( 'wpseo_canonical', array( &$this, 'filter_wpseo_canonical' ), 10, 1 );
@@ -138,32 +139,32 @@ class MyStyle_Design_Profile_Page {
 	}
 
 	/**
+	 * Filter the document title in pre_get_document_title.
+	 */
+	public function filter_pre_get_document_title($title) {
+		if ( is_page('designs') ) {
+			$design = $this->get_design();
+
+			if (isset($design)) {
+				$design_title = $design->get_title();
+				$title = $this->build_design_display_string($design_title, false, 'display_name', 'seo');
+				$title .= ' | ' . get_bloginfo('name');
+			}
+		}
+		return $title;
+	}
+
+	/**
 		 *   Rank Math plugin hook for meta description when its present
 		 */
 	function custom_rank_math_meta_description($description)
 	{
 		if (is_page('designs')) {
 			$design = $this->get_design();
-			$design_id = get_query_var('design_id');
 			
 			if(isset($design)){
-				$description = $design->get_title();
-				$product_id = $design->get_product_id();
-				$product = wc_get_product($product_id);
-				$product_title = $product ? $product->get_title() : '';
-				$author_id = $design->get_user_id();
-				$author = get_userdata($author_id);
-				if($author){
-					$first_name = $author->first_name;
-					$last_name = $author->last_name;
-					if (!empty($description)) {
-						// Title is not empty, format as "Title by Author (Design ID)"
-						$description = $description . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
-					} else {
-						// Title is empty, format as "Design ID by Author"
-						$description = 'Design ' . $design_id . ' - ' . $product_title . ' by ' . $first_name . ' ' . $last_name;
-					}
-				}
+				$design_title = $design->get_title();
+				$description = $this->build_design_display_string($design_title, false ) ;
 			}
 		}
 		return $description;
@@ -177,29 +178,131 @@ class MyStyle_Design_Profile_Page {
 	{
 		if(is_page('designs')){
 			$design = $this->get_design();
-			$design_id = get_query_var('design_id');
 
 			if (isset($design)) {
-				$title = $design->get_title();
-				$product_id = $design->get_product_id();
-				$product = wc_get_product($product_id);
-				$product_title = $product ? $product->get_title() : '';
-				$author_id = $design->get_user_id();
-				$author = get_userdata($author_id);
-				if($author){
-					$first_name = $author->first_name;
-					$last_name = $author->last_name;
-					if (!empty($title)) {
-						// Title is not empty, format as "Title by Author (Design ID)"
-						$title = $title . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
-					} else {
-						// Title is empty, format as "Design ID by Author"
-						$title = 'Design ' . $design_id . ' - ' . $product_title . ' by ' . $first_name . ' ' . $last_name;
-					}
-				}
+				$design_title = $design->get_title();
+				$title = $this->build_design_display_string($design_title);
 			}
 		}
 		return $title;
+	}
+
+	/**
+	 * Build design display string for title and meta description.
+	 * 
+	 * This function consolidates the common logic used by both custom_wpseo_title() 
+	 * and custom_wpseo_metadesc() functions to construct design display strings.
+	 *
+	 * @param string $base_text The base text (design title or initial description).
+	 * @param bool $add_span_tag Whether to add span tags around the design ID.
+	 * @param string $name_format Format for author name: 'first_last' or 'display_name'.
+	 * @param string $format_style Style format: 'seo' (standard SEO format) or 'wp_core' (WordPress core format).
+	 * @return string The formatted display string.
+	 */
+	private function build_design_display_string($base_text, $add_span_tag = true, $name_format = 'first_last', $format_style = 'seo') {
+		$design = $this->get_design();
+		$design_id = get_query_var('design_id');
+
+		if (!isset($design)) {
+			return $base_text;
+		}
+
+		$product_id = $design->get_product_id();
+		$product = wc_get_product($product_id);
+		$product_title = $product ? $product->get_title() : '';
+		
+		//check for the word "Custom" in the product title and if it does not exist then add it
+		if (strpos($product_title, 'Custom') === false) {
+			$product_title = 'Custom ' . $product_title;
+		}
+
+		$author_id = $design->get_user_id();
+		$author = get_userdata($author_id);
+
+		if (!$author) {
+			return $base_text;
+		}
+
+		// Format author name based on preference
+		if ($name_format === 'display_name') {
+			$author_name = esc_html($author->display_name);
+		} else {
+			$author_name = $author->first_name . ' ' . $author->last_name;
+		}
+
+		// Format design ID based on style
+		if ($format_style === 'wp_core') {
+			// WordPress core style formatting
+			if (!empty($base_text)) {
+				if ($add_span_tag) {
+					return 'Design ' . $design_id . ' - ' . $base_text . ' <span> ' . $product_title . '</span> by ' . $author_name;
+				} else {
+					return $base_text . ' - ' . $product_title . ' by ' . $author_name;
+				}
+			} else {
+				if ($add_span_tag) {
+					return 'Design ' . $design_id . '<span> ' . $product_title . '</span> by ' . $author_name;
+				} else {
+					return 'Design ' . $design_id . ' - ' . $product_title . ' by ' . $author_name;
+				}
+			}
+		} else {
+			// SEO style formatting (original)
+			$design_id_display = '(#' . $design_id . ')';
+
+			if ($add_span_tag) {
+				$design_id_display = '<span class="mystyle-title-design-id">' . $design_id_display . '</span>';
+			}
+
+			// Check if the base text is empty
+			if (!empty($base_text)) {
+				// Base text is not empty, format as "Text by Author (Design ID)"
+				return $base_text . " " . $product_title . " by " . $author_name . ' ' . $design_id_display;
+			} else {
+				// Base text is empty, format as "Design ID by Author"
+				return $product_title . ' by ' . $author_name . ' ' . $design_id_display;
+			}
+		}
+	}
+
+	/**
+	 * Build design display string specifically for document title parts.
+	 * 
+	 * This is a specialized version for the filter_document_title_parts function
+	 * that works with the $this->design property instead of get_design().
+	 *
+	 * @param string $base_text The base text (design title).
+	 * @return string The formatted display string.
+	 */
+	private function build_design_display_string_for_document_title($base_text) {
+		if (!is_a($this->design, 'MyStyle_Design')) {
+			return $base_text;
+		}
+
+		$product = wc_get_product($this->design->get_product_id());
+		$product_title = $product ? $product->get_title() : '';
+		//check for the word "Custom" in the product title and if it does not exist then add it
+		if (strpos($product_title, 'Custom') === false) {
+			$product_title = 'Custom ' . $product_title;
+		}
+		$designer = get_user_by('ID', $this->design->get_user_id());
+
+		$design_id_display = '(#' . $this->design->get_design_id() . ')';
+
+		if (!$designer) {
+			return $base_text;
+		}
+
+		$author_name = esc_html($designer->display_name);
+
+		// Check if the base text is empty
+		if (!empty($base_text)) {
+			// Base text is not empty, format as "Text by Author (Design ID)"
+			return $base_text . " " . $product_title . " by " . $author_name . ' ' . $design_id_display;
+		} else {
+			// Base text is empty, format as "Design ID by Author"
+			return $product_title . ' by ' . $author_name . ' ' . $design_id_display;
+		}
 	}
 
 	/**
@@ -209,27 +312,10 @@ class MyStyle_Design_Profile_Page {
 	{
 		if(is_page('designs')){
 			$design = $this->get_design();
-			$design_id = get_query_var('design_id');
 
 			if (isset($design)) {
-				$title = $design->get_title();
-				$product_id = $design->get_product_id();
-				$product = wc_get_product($product_id);
-				$product_title = $product ? $product->get_title() : '';
-				$author_id = $design->get_user_id();
-				$author = get_userdata($author_id);
-				if($author){
-					$first_name = $author->first_name;
-					$last_name = $author->last_name;
-					// Check if the design title is empty
-					if (!empty($title)) {
-						// Title is not empty, format as "Title by Author (Design ID)"
-						$title = $title . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
-					} else {
-						// Title is empty, format as "Design ID by Author"
-						$title = 'Design ' . $design_id . ' - ' . $product_title . ' by ' . $first_name . ' ' . $last_name;
-					}
-				}
+				$design_title = $design->get_title();
+				$title = $this->build_design_display_string($design_title);
 			}
 		}
 		return $title;
@@ -242,26 +328,10 @@ class MyStyle_Design_Profile_Page {
 	{
 		if (is_page('designs')) {
 			$design = $this->get_design();
-			$design_id = get_query_var('design_id');
 
 			if (isset($design)) {
-				$description = $design->get_title();
-				$product_id = $design->get_product_id();
-				$product = wc_get_product($product_id);
-				$product_title = $product ? $product->get_title() : '';
-				$author_id = $design->get_user_id();
-				$author = get_userdata($author_id);
-				if($author){
-					$first_name = $author->first_name;
-					$last_name = $author->last_name;
-					if (!empty($description)) {
-						// Title is not empty, format as "Title by Author (Design ID)"
-						$description = $description . " by " . $first_name . ' ' . $last_name . ' ' . '(Design ' . $design_id . ')';
-					} else {
-						// Title is empty, format as "Design ID by Author"
-						$description = 'Design ' . $design_id . ' - ' . $product_title . ' by ' . $first_name . ' ' . $last_name;
-					}
-				}
+				$design_title = $design->get_title();
+				$description = $this->build_design_display_string($design_title, false ) ;
 			}
 		}
 		return $description;
@@ -980,7 +1050,7 @@ class MyStyle_Design_Profile_Page {
 		if ( null !== $design ) {
 			$design_id = $design->get_design_id();
 			if ( '' !== $design_id ) {
-				return site_url( 'designs' ) . '/' . $design_id . '/' ;
+				return site_url( 'designs' ) . '/' . $design_id ;
 			}
 		}
 
@@ -1004,19 +1074,8 @@ class MyStyle_Design_Profile_Page {
 			) {
 				$design = $this->get_design();
 				if ( null !== $design ) {
-                    $product = $design->get_product() ;
-					if ( '' !== $design->get_title() ) {
-						$title = 'Design ' . $design->get_design_id() . ' - ' . $design->get_title() . ' <span> ' . $product->get_title() . '</span>' ;
-					} else {
-						$title = 'Design ' . $design->get_design_id() . '<span> ' . $product->get_title() . '</span>' ;
-					}
-                    
-                    $designer = get_user_by( 'ID', $design->get_user_id() ) ;
-					
-                    if( $designer ) {
-                        $title .= ' by ' . esc_html( $designer->display_name ) ;
-                    }
-                    
+					$design_title = $design->get_title();
+					$title = $this->build_design_display_string($design_title, true, 'display_name', 'seo');
 				}
 			}
 		} catch ( MyStyle_Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
@@ -1045,20 +1104,8 @@ class MyStyle_Design_Profile_Page {
 	 */
 	public function filter_document_title_parts( $title ) {
 		if ( is_a( $this->design, 'MyStyle_Design' ) ) {
-			$product = wc_get_product( $this->design->get_product_id() ) ;
-
-			if ( $this->design->get_title() && '' !== $this->design->get_title() ) {
-				$title['title'] = $this->design->get_title() . ' - ' . $product->get_title() ;
-			}
-			else {
-				$title['title'] = 'Design ' . $this->design->get_design_id() . ' - ' . $product->get_title() ;
-			}
-
-			$designer = get_user_by( 'ID', $this->design->get_user_id() ) ;
-			
-			if( $designer ) {
-				$title['title'] .= ' by ' . esc_html( $designer->display_name ) ;
-			}
+			$design_title = $this->design->get_title();
+			$title['title'] = $this->build_design_display_string_for_document_title($design_title);
 		}
 
 		return $title;

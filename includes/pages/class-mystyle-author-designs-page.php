@@ -59,7 +59,6 @@ class MyStyle_Author_Designs_Page {
 		add_action( 'posts_pre_query', array( &$this, 'alter_query' ), 30, 2 );
 		add_filter( 'wpseo_metadesc', array(&$this, 'author_wpseo_metadesc_'), 20);
 		add_action( 'wp_head', array(&$this, 'author_meta_description_'), 3);
-		add_filter( 'rank_math/frontend/description', array(&$this, 'author_rank_math_meta_description'), 20);
 		add_filter( 'body_class', array( &$this, 'filter_body_class' ), 10, 1 );
 		add_filter( 'et_before_main_content', array( &$this, 'divi_title' ) );
 		add_filter( 'has_post_thumbnail', array( &$this, 'has_post_thumbnail' ), 10, 3 );
@@ -70,6 +69,10 @@ class MyStyle_Author_Designs_Page {
 	 * Init hook.
 	 */
 	public function init() {
+		add_filter( 'pre_get_document_title', array( &$this, 'filter_pre_get_document_title' ), 10, 1 );
+		add_filter( 'rank_math/frontend/description', array(&$this, 'author_rank_math_meta_description'), 20);
+		add_filter( 'rank_math/frontend/title', array(&$this, 'author_rank_math_title'), 20);
+		
 		add_filter( 'wp_get_attachment_image_src', array( &$this, 'wp_get_attachment_image_src' ), 10, 4 );
 	}
 
@@ -156,6 +159,29 @@ class MyStyle_Author_Designs_Page {
 			}
 		}
 		return $description;
+	}
+	
+	/**
+	 * Add title using rankmath hook for custom author pages.
+	 */
+	function author_rank_math_title($title)
+	{
+		if (get_query_var('designpage')) {
+			$username = get_query_var('username');
+			$user = get_user_by('slug', $username);
+			
+			if($user){
+				$first_name = get_user_meta($user->ID, 'first_name', true);
+				$last_name = get_user_meta($user->ID, 'last_name', true);
+				$display_name = trim($first_name . ' ' . $last_name);
+				$display_name = !empty($display_name) ? $display_name : $username;
+			}else{
+				$display_name = $username;
+			}
+			
+			$title = 'Designed by ' . $display_name;
+		}
+		return $title;
 	}	
 	/**
 	 * Add custom query vars.
@@ -265,11 +291,11 @@ class MyStyle_Author_Designs_Page {
 			$design_post->post_name    = $title;
 			$design_post->post_type    = 'Design';
 			$design_post->post_title   = $title;
-			$design_post->post_content = $title . ' custom ' . ( $product ? $product->get_title() : '' ) ;
+			$design_post->post_content = $title . ( $product ? $product->get_title() : '' ) ;
 
 			$design_posts[] = $design_post;
 		}
-
+		
 		return $design_posts;
 	}
 
@@ -282,6 +308,33 @@ class MyStyle_Author_Designs_Page {
 			echo '<div class="container"><h1 class="page-title">Designs by ' . $username . '</h1></div>' ;
 		}
 		
+	}
+
+	/**
+	 * Filter the document title before it's generated (WordPress 4.4+).
+	 * This hook runs early and should override other title modifications.
+	 *
+	 * @param string $title The document title.
+	 * @return string Returns the filtered title.
+	 */
+	public function filter_pre_get_document_title( $title ) {
+		if ( get_query_var( 'username' ) && get_query_var( 'designpage' ) ) {
+			$username = get_query_var( 'username' );
+			$user = get_user_by( 'slug', $username );
+			
+			if ( $user ) {
+				$first_name = get_user_meta( $user->ID, 'first_name', true );
+				$last_name = get_user_meta( $user->ID, 'last_name', true );
+				$display_name = trim( $first_name . ' ' . $last_name );
+				$display_name = ! empty( $display_name ) ? $display_name : $username;
+			} else {
+				$display_name = $username;
+			}
+			
+			return 'Designs by ' . $display_name . ' - ' . get_bloginfo( 'name' );
+		}
+		
+		return $title;
 	}
 
 	/**
@@ -390,7 +443,7 @@ class MyStyle_Author_Designs_Page {
 
 		if ( false !== get_query_var( 'designpage' ) ) {
 			if ( '' !== get_query_var( 'designpage' ) ) {
-				$permalink = get_site_url() . '/designs/' . $post->design_id;
+				$permalink = get_site_url() . '/designs/' . $post->design_id . '/';
 			}
 		}
 
