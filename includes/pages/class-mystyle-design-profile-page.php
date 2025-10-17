@@ -219,15 +219,16 @@ class MyStyle_Design_Profile_Page {
 		$author_id = $design->get_user_id();
 		$author = get_userdata($author_id);
 
-		if (!$author) {
-			return $base_text;
+		if ( ! $author) {
+			$author_name = '';
 		}
-
-		// Format author name based on preference
-		if ($name_format === 'display_name') {
-			$author_name = esc_html($author->display_name);
-		} else {
-			$author_name = $author->first_name . ' ' . $author->last_name;
+		else {
+			// Format author name based on preference
+			if ($name_format === 'display_name' && $author ) {
+				$author_name = esc_html( ' by ' . $author->display_name );
+			} else {
+				$author_name = ' by ' . $author->first_name . ' ' . $author->last_name;
+			}
 		}
 
 		// Format design ID based on style
@@ -235,15 +236,15 @@ class MyStyle_Design_Profile_Page {
 			// WordPress core style formatting
 			if (!empty($base_text)) {
 				if ($add_span_tag) {
-					return 'Design ' . $design_id . ' - ' . $base_text . ' <span> ' . $product_title . '</span> by ' . $author_name;
+					return 'Design ' . $design_id . ' - ' . $base_text . ' <span> ' . $product_title . '</span>' . $author_name;
 				} else {
-					return $base_text . ' - ' . $product_title . ' by ' . $author_name;
+					return $base_text . ' - ' . $product_title . $author_name;
 				}
 			} else {
 				if ($add_span_tag) {
-					return 'Design ' . $design_id . '<span> ' . $product_title . '</span> by ' . $author_name;
+					return 'Design ' . $design_id . '<span> ' . $product_title . '</span>' . $author_name;
 				} else {
-					return 'Design ' . $design_id . ' - ' . $product_title . ' by ' . $author_name;
+					return 'Design ' . $design_id . ' - ' . $product_title . $author_name;
 				}
 			}
 		} else {
@@ -257,10 +258,10 @@ class MyStyle_Design_Profile_Page {
 			// Check if the base text is empty
 			if (!empty($base_text)) {
 				// Base text is not empty, format as "Text by Author (Design ID)"
-				return $base_text . " " . $product_title . " by " . $author_name . ' ' . $design_id_display;
+				return $base_text . " " . $product_title . $author_name . ' ' . $design_id_display;
 			} else {
 				// Base text is empty, format as "Design ID by Author"
-				return $product_title . ' by ' . $author_name . ' ' . $design_id_display;
+				return $product_title . $author_name . ' ' . $design_id_display;
 			}
 		}
 	}
@@ -290,18 +291,19 @@ class MyStyle_Design_Profile_Page {
 		$design_id_display = '(#' . $this->design->get_design_id() . ')';
 
 		if (!$designer) {
-			return $base_text;
+			$author_name = '';
 		}
-
-		$author_name = esc_html($designer->display_name);
+		else {
+			$author_name = esc_html( ' by ' . $designer->first_name . ' ' . $designer->last_name ) ;
+		}
 
 		// Check if the base text is empty
 		if (!empty($base_text)) {
 			// Base text is not empty, format as "Text by Author (Design ID)"
-			return $base_text . " " . $product_title . " by " . $author_name . ' ' . $design_id_display;
+			return $base_text . " " . $product_title . $author_name . ' ' . $design_id_display;
 		} else {
 			// Base text is empty, format as "Design ID by Author"
-			return $product_title . ' by ' . $author_name . ' ' . $design_id_display;
+			return $product_title . $author_name . ' ' . $design_id_display;
 		}
 	}
 
