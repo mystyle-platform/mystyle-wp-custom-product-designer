@@ -1,3 +1,6 @@
+= 3.21.3 =
+* Added custom mystyle filter to add or remove html classes from the Customize button, Refactored the PHP code in the design-profile-page class to better handle the construction of the Profile Page Title. Increased the default designs per tag limit on the design tag page.
+
 = 3.21.2 = 
 * Fixed possible SQL injection vulnerability 
 
