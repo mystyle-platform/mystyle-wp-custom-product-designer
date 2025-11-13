@@ -1,3 +1,6 @@
+= 3.21.5 =
+* Added noindex, nofollow to customizer pages with URL parameters in place.
+
 = 3.21.4 =
 * Bug Fixes
 
