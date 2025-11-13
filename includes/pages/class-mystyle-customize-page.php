@@ -30,6 +30,9 @@ class MyStyle_Customize_Page {
 		
 		// Add meta no-index for customizer pages
 		add_action( 'wp_head', array( &$this, 'add_noindex_meta' ), 1 );
+		
+		// Remove Yoast SEO meta robots tag on customizer pages
+		add_filter( 'wpseo_robots', array( &$this, 'override_yoast_robots' ), 10, 1 );
 	}
 
 	/**
@@ -55,6 +58,11 @@ class MyStyle_Customize_Page {
 			return;
 		}
 
+		// Only add noindex if the hash parameter is present
+		if ( ! isset( $_GET['h'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+			return;
+		}
+
 		try {
 			$post_id = get_the_ID();
 			
@@ -71,6 +79,38 @@ class MyStyle_Customize_Page {
 			// This exception may be thrown if the Customize Page is missing.
 			// For this function, that is okay, just continue.
 		}
+	}
+
+	/**
+	 * Override Yoast SEO robots meta tag for customizer pages.
+	 * 
+	 * Forces noindex,nofollow on customizer pages to prevent them from being indexed,
+	 * overriding any Yoast SEO settings.
+	 * 
+	 * @since 1.0.0
+	 * @access public
+	 * 
+	 * @param string $robots The robots meta tag value from Yoast SEO.
+	 * @return string Modified robots value for customizer pages, original value otherwise.
+	 */
+	public function override_yoast_robots( $robots ) {
+		// Only override if the hash parameter is present
+		if ( ! isset( $_GET['h'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification
+			return $robots;
+		}
+
+		try {
+			$post_id = get_the_ID();
+			
+			if ( $post_id && $this->is_customize_page( $post_id ) ) {
+				return 'noindex,nofollow';
+			}
+		} catch ( MyStyle_Exception $e ) {
+			// This exception may be thrown if the Customize Page is missing.
+			// For this function, that is okay, just continue.
+		}
+		
+		return $robots;
 	}
 
 	/**
@@ -198,7 +238,7 @@ class MyStyle_Customize_Page {
                 
 				$passthru['width']  = get_post_meta( $custom_product_id, '_mystyle_custom_template_width', true );
 				$passthru['height'] = get_post_meta( $custom_product_id, '_mystyle_custom_template_height', true );
-				$passthru['shape']  = get_post_meta( $custom_product_id, '_mystyle_custom_template_shape', true );
+				$passthru['shape' ]  = get_post_meta( $custom_product_id, '_mystyle_custom_template_shape', true );
 
 				if ( get_post_meta( $custom_product_id, '_mystyle_custom_template_color', true ) ) {
 					$passthru['color'] = get_post_meta( $custom_product_id, '_mystyle_custom_template_color', true );
@@ -293,9 +333,9 @@ class MyStyle_Customize_Page {
 			$mystyle_custom_template_enabled = get_post_meta( $design->get_product_id(), '_mystyle_custom_template', true );
 
 			if ( 'yes' === $mystyle_custom_template_enabled ) {
-				$passthru['width']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_width', true );
+				$passthru['width' ]  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_width', true );
 				$passthru['height'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_height', true );
-				$passthru['shape']  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_shape', true );
+				$passthru['shape' ]  = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_shape', true );
 
 				if ( get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true ) ) {
 					$passthru['color'] = get_post_meta( $design->get_product_id(), '_mystyle_custom_template_color', true );
