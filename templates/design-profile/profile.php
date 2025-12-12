@@ -81,11 +81,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php echo ( $product->get_description() ) ?: 'No description.'; ?>
 		</div>
 		<?php if ( $author ) : ?>
+			<?php 
+			//check to see if display name contains an email address
+			if (filter_var($author->display_name, FILTER_VALIDATE_EMAIL)) {
+				//display the first initial and last name
+				$author_name = substr($author->first_name, 0, 1) . '. ' . substr($author->last_name, 0, 3) ;
+			} 
+			else {
+				$author_name = esc_html( $author->display_name ) ;
+			}
+			?>
 		<div class="linked_user">
 			Designer: <a
 				href="<?php echo esc_url( MyStyle_Author_Designs_Page::get_author_url( $author ) ); ?>"
-				title="<?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_attr( $author->display_name ) ); ?> Designs"
-				><?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_html( $author->display_name ) ); ?></a>
+				title="<?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_attr( $author_name ) ); ?> Designs"
+				><?php echo ( ( is_string( $author ) ) ? 'Anonymous User' : esc_html( $author_name ) ); ?></a>
 		</div>
 		<?php endif; ?>
 		<?php if( $design->get_access() == MyStyle_Access::ACCESS_RESTRICTED ) : ?>

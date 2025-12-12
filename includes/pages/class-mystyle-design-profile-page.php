@@ -225,7 +225,14 @@ class MyStyle_Design_Profile_Page {
 		else {
 			// Format author name based on preference
 			if ($name_format === 'display_name' && $author ) {
-				$author_name = esc_html( ' by ' . $author->display_name );
+				// check to see if display name contains an email address
+				if (filter_var($author->display_name, FILTER_VALIDATE_EMAIL)) {
+					//display the first initial and last name
+					$author_name = ' by ' . substr($author->first_name, 0, 1) . '. ' . substr($author->last_name, 0, 3) ;
+				} 
+				else {
+					$author_name = esc_html( ' by ' . $author->display_name );
+				}
 			} else {
 				$author_name = ' by ' . $author->first_name . ' ' . $author->last_name;
 			}

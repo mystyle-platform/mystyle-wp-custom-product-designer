@@ -305,6 +305,16 @@ class MyStyle_Author_Designs_Page {
 			get_query_var( 'username' )
 		) {
 			$username  = get_query_var( 'username' );
+			$decrypted = $this->encrypt_decrypt( 'decrypt', $username );
+			if ( $decrypted ) {
+				$username = $decrypted;
+				// check if username contains an email address
+				if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
+					//display the first initial and last name
+					$user = get_user_by( 'email', $username );
+					$username = substr($user->first_name, 0, 1) . '. ' . substr($user->last_name, 0, 3) ;
+				}
+			}
 			echo '<div class="container"><h1 class="page-title">Designs by ' . $username . '</h1></div>' ;
 		}
 		
@@ -458,8 +468,18 @@ class MyStyle_Author_Designs_Page {
 	 * @return string Returns a URL that can be used to view the page.
 	 */
 	public static function get_author_url( $author ) {
+		//check if author name contains an email address
+		if ( is_object( $author ) && filter_var( $author->display_name,
+			FILTER_VALIDATE_EMAIL ) ) {
+			$encrypted_name = self::get_instance()->encrypt_decrypt( 'encrypt', $author->display_name );
+			$username = rawurlencode( $encrypted_name );
+		} 
+		else {
+			$username = ( is_string( $author ) ) ? $author : $author->user_nicename;
+		}
+
 		$url = site_url( 'author' )
-			. '/' . ( ( is_string( $author ) ) ? $author : $author->user_nicename )
+			. '/' . $username
 			. '/designs/';
 
 		return $url;
