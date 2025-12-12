@@ -1,3 +1,6 @@
+= 3.21.6 =
+* Updated display name containing email address issue
+
 = 3.21.5 =
 * Added noindex, nofollow to customizer pages with URL parameters in place.
 
