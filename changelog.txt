@@ -1,3 +1,6 @@
+= 3.21.7 =
+* Added MyStyle custom product thumbnail iamge to checkout and customer order history. Plus minor bug fixes. 
+
 = 3.21.6 =
 * Updated display name containing email address issue
 
