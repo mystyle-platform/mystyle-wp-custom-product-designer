@@ -402,9 +402,25 @@ class MyStyle_Cart {
 			// they return to their cart after the admin deletes it for some
 			// reason.
 			if ( ! is_null( $design ) ) {
+
+				$design_image = '' ;
+
+				if( ! is_cart() ) {
+					// Get the design thumbnail URL.
+					$thumb_url = $design->get_thumb_url();
+
+					// Create the image HTML.
+					$design_image = sprintf(
+						'<img src="%1$s" alt="%2$s" style="width: 50px; height: 50px; margin-right: 10px; vertical-align: middle; display: inline-block;" />',
+						esc_url( $thumb_url ),
+						esc_attr( 'Design ' . $design_id )
+					);
+				}
+				
 				$url = MyStyle_Design_Profile_Page::get_design_url( $design, $cart_item_key );
 
-				$new_name = sprintf( '<a href="%s">%s</a>', esc_url( $url ), $name );
+				$new_name = $design_image . sprintf( '<a href="%s">%s</a>', esc_url( $url ), $name );
+				
 			} else {
 				$new_name = 'Design Not Found. Please remove from cart and re-add';
 			}

@@ -226,6 +226,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 		 */
 		private function frontend_includes() {
 			require_once MYSTYLE_INCLUDES . 'frontend/class-mystyle-cart.php';
+			require_once MYSTYLE_INCLUDES . 'frontend/class-mystyle-order.php';
 			require_once MYSTYLE_INCLUDES . 'frontend/class-mystyle-design-complete.php';
 			require_once MYSTYLE_INCLUDES . 'frontend/endpoints/class-mystyle-handoff.php';
 			require_once MYSTYLE_INCLUDES . 'frontend/class-mystyle-configur8.php';
@@ -296,6 +297,7 @@ if ( ! class_exists( 'MyStyle' ) ) :
 				MyStyle_SessionHandler::get_instance();
 				MyStyle_FrontEnd::get_instance();
 				MyStyle_Cart::get_instance();
+				MyStyle_Frontend_Order::get_instance();
 				MyStyle_Design_Complete::get_instance();
 
 				/* @var $mystyle_handoff MyStyle_Handoff The MyStyle_Handoff singleton. */
