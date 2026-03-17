@@ -290,8 +290,10 @@ class MyStyle_Cart {
 
 		// Fix for WC 2.2 (if our data is missing from the cart item, get it from the session variable.
 		if ( ! isset( $session_data['mystyle_data'] ) ) {
-			$cart_item_data               = WC()->session->get( 'mystyle_' . $key );
-			$session_data['mystyle_data'] = $cart_item_data['mystyle_data'];
+			$cart_item_data = WC()->session->get( 'mystyle_' . $key );
+			if ( ! empty( $cart_item_data ) && isset( $cart_item_data['mystyle_data'] ) ) {
+				$session_data['mystyle_data'] = $cart_item_data['mystyle_data'];
+			}
 		}
 
 		return $session_data;
