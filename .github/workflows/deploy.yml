@@ -1,0 +1,21 @@
+name: Deploy to WordPress.org
+
+on:
+  push:
+    tags:
+      - "*" # Trigger on any tag push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: WordPress.org Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
+          # Optional: Set the plugin slug if it differs from the GitHub repo name
+          SLUG: mystyle-custom-product-designer
