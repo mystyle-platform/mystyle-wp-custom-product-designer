@@ -28,7 +28,7 @@ at: https://www.mystyleplatform.com/support/.
 ## Coding Guidelines
 
 - **Ensure you stick to the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/)**
-- Install [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer). It'll help with the Coding Standards.
+- Install [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer). It'll help with the Coding Standards.
 - Ensure you use LF line endings in your code editor. Use [EditorConfig](http://editorconfig.org/) if your editor supports it so that indentation, line endings and other settings are auto configured.
 - When committing, reference your issue number (#1234) and include a note about the fix.
 - Ensure that your code is compatible with PHP 5.2+.
