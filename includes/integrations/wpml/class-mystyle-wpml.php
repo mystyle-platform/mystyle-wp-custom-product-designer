@@ -43,6 +43,13 @@ class MyStyle_Wpml {
 	private static $instance;
 
 	/**
+	 * Cached result of is_installed(). Null means not yet queried.
+	 *
+	 * @var bool|null
+	 */
+	private $is_installed_cached = null;
+
+	/**
 	 * Returns the name of the WPML translations table.
 	 *
 	 * @global type $wpdb
@@ -60,11 +67,19 @@ class MyStyle_Wpml {
 	 * Note: we test against database tables so that this function will work
 	 * regardless of plugin load order.
 	 *
+	 * The result is cached on the singleton instance so that the database is
+	 * only queried once per page load, regardless of how many times this method
+	 * is called.
+	 *
 	 * @returns boolean Returns true if the WPML plugin is installed. Otherwise,
 	 * returns false.
 	 * @global type $wpdb
 	 */
 	public function is_installed() {
+		if ( null !== $this->is_installed_cached ) {
+			return $this->is_installed_cached;
+		}
+
 		global $wpdb;
 
 		$table_name = $this->get_translations_table_name();
@@ -77,12 +92,12 @@ class MyStyle_Wpml {
 		);
 
 		if ( $found_table_name === $table_name ) {
-			$is_installed = true;
+			$this->is_installed_cached = true;
 		} else {
-			$is_installed = false;
+			$this->is_installed_cached = false;
 		}
 
-		return $is_installed;
+		return $this->is_installed_cached;
 	}
 
 	/**

@@ -27,6 +27,9 @@ class MyStyleWpmlTest extends WP_UnitTestCase {
 		remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
 		remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
 
+		// Reset the singleton so the is_installed cache is cleared.
+		MyStyle_Wpml::reset_instance();
+
 		// Create the tables.
 		$this->create_tables();
 	}
@@ -43,6 +46,28 @@ class MyStyleWpmlTest extends WP_UnitTestCase {
 
 		// Drop the tables that we created.
 		$wpdb->query( 'DROP TABLE IF EXISTS ' . MyStyle_Wpml::get_instance()->get_translations_table_name() );
+	}
+
+	/**
+	 * Test that is_installed only queries the database once even when called
+	 * multiple times (result is cached on the singleton instance).
+	 *
+	 * @global $wpdb
+	 */
+	public function test_is_installed_caches_result() {
+		global $wpdb;
+
+		$query_count_before = $wpdb->num_queries;
+
+		// Call the method multiple times.
+		MyStyle_Wpml::get_instance()->is_installed();
+		MyStyle_Wpml::get_instance()->is_installed();
+		MyStyle_Wpml::get_instance()->is_installed();
+
+		$query_count_after = $wpdb->num_queries;
+
+		// Assert that only one query was executed for all three calls.
+		$this->assertEquals( 1, $query_count_after - $query_count_before );
 	}
 
 	/**
